@@ -86,20 +86,20 @@ export default function HelpDialog() {
                 <h3 className="font-semibold text-base">Getting Started</h3>
               </div>
               <ol className="list-decimal list-inside space-y-1.5 text-muted-foreground">
-                <li><strong className="text-foreground">Edit the sample resume</strong> — Replace the pre-loaded sample with your own details, or click Reset to start blank. The completion bar at the top shows your resume progress with color-coded feedback.</li>
-                <li><strong className="text-foreground">Upload a photo</strong> — Add an optional profile photo in Personal Info (max 2MB).</li>
-                <li><strong className="text-foreground">Choose a template</strong> — Click &quot;Style&quot; to browse 20 ATS-friendly designs. Use the eye icon to preview full-size before selecting.</li>
-                <li><strong className="text-foreground">Customize appearance</strong> — Adjust font, accent color, font size, line spacing, and margins.</li>
-                <li><strong className="text-foreground">Add custom sections</strong> — Click &quot;Add Section&quot; for Volunteer Work, Publications, Awards, etc.</li>
-                <li><strong className="text-foreground">Reorder sections &amp; entries</strong> — Click &quot;Reorder Sections&quot; at the bottom of any form. You can also drag-and-drop individual entries within Experience, Education, and Projects.</li>
-                <li><strong className="text-foreground">Write a cover letter</strong> — Use the Cover Letter tab with optional AI generation.</li>
-                <li><strong className="text-foreground">Check ATS score</strong> — Click &quot;ATS&quot; to analyze compatibility, readability, formatting, and match keywords from a job description. Expand &quot;Enhanced Analysis&quot; for readability scoring, resume length check, date consistency, and active voice detection. Use &quot;Smart Matching&quot; for industry-specific keywords and multi-JD comparison.</li>
-                <li><strong className="text-foreground">Use AI suggestions</strong> — Click &quot;AI&quot; to generate summaries, bullet points, and skills (bring your own free Groq API key).</li>
-                <li><strong className="text-foreground">Import existing resume</strong> — Upload a PDF, DOCX, TXT, HTML, or MD file to auto-fill the form. PDF import extracts text directly from your document.</li>
-                <li><strong className="text-foreground">Navigate sections</strong> — Use Previous/Next buttons at the bottom, the dropdown navigator, or click any progress dot at the top. On mobile, swipe left/right to switch between tabs (Edit, Preview, Style, ATS, AI) and use the bottom sheet section picker for quick navigation.</li>
-                <li><strong className="text-foreground">Manage profiles</strong> — Save up to 10 resume profiles from the header menu. Load, rename, or delete profiles to target different jobs.</li>
-                <li><strong className="text-foreground">Download</strong> — Export as PDF (best for ATS), DOCX, HTML, or JSON.</li>
-                <li><strong className="text-foreground">What&apos;s New</strong> — A popup notification shows the latest features whenever a new version is released.</li>
+                <li><strong className="text-foreground">Edit the sample resume</strong>  -  Replace the pre-loaded sample with your own details, or click Reset to start blank. The completion bar at the top shows your resume progress with color-coded feedback.</li>
+                <li><strong className="text-foreground">Upload a photo</strong>  -  Add an optional profile photo in Personal Info (max 2MB).</li>
+                <li><strong className="text-foreground">Choose a template</strong>  -  Click &quot;Style&quot; to browse 20 ATS-friendly designs. Use the eye icon to preview full-size before selecting.</li>
+                <li><strong className="text-foreground">Customize appearance</strong>  -  Adjust font, accent color, font size, line spacing, and margins.</li>
+                <li><strong className="text-foreground">Add custom sections</strong>  -  Click &quot;Add Section&quot; for Volunteer Work, Publications, Awards, etc.</li>
+                <li><strong className="text-foreground">Reorder sections &amp; entries</strong>  -  Click &quot;Reorder Sections&quot; at the bottom of any form. You can also drag-and-drop individual entries within Experience, Education, and Projects.</li>
+                <li><strong className="text-foreground">Write a cover letter</strong>  -  Use the Cover Letter tab with optional AI generation.</li>
+                <li><strong className="text-foreground">Check ATS score</strong>  -  Click &quot;ATS&quot; to analyze compatibility, readability, formatting, and match keywords from a job description. Expand &quot;Enhanced Analysis&quot; for readability scoring, resume length check, date consistency, and active voice detection. Use &quot;Smart Matching&quot; for industry-specific keywords and multi-JD comparison.</li>
+                <li><strong className="text-foreground">Use AI suggestions</strong>  -  Click &quot;AI&quot; to generate summaries, bullet points, and skills (bring your own free Groq API key).</li>
+                <li><strong className="text-foreground">Import existing resume</strong>  -  Upload a PDF, DOCX, TXT, HTML, or MD file to auto-fill the form. PDF import extracts text directly from your document.</li>
+                <li><strong className="text-foreground">Navigate sections</strong>  -  Use Previous/Next buttons at the bottom, the dropdown navigator, or click any progress dot at the top. On mobile, swipe left/right to switch between tabs (Edit, Preview, Style, ATS, AI) and use the bottom sheet section picker for quick navigation.</li>
+                <li><strong className="text-foreground">Manage profiles</strong>  -  Save up to 10 resume profiles from the header menu. Load, rename, or delete profiles to target different jobs.</li>
+                <li><strong className="text-foreground">Download</strong>  -  Export as PDF (best for ATS), DOCX, HTML, or JSON.</li>
+                <li><strong className="text-foreground">What&apos;s New</strong>  -  A popup notification shows the latest features whenever a new version is released.</li>
               </ol>
             </CardContent>
           </Card>
@@ -139,26 +139,26 @@ export default function HelpDialog() {
                 <h3 className="font-semibold text-base">20 Templates</h3>
               </div>
               <div className="grid grid-cols-4 gap-1.5 text-muted-foreground text-[11px]">
-                <div><strong className="text-foreground">Classic</strong> — Serif</div>
-                <div><strong className="text-foreground">Modern</strong> — Sidebar</div>
-                <div><strong className="text-foreground">Minimalist</strong> — Clean</div>
-                <div><strong className="text-foreground">Professional</strong> — Bold</div>
-                <div><strong className="text-foreground">Executive</strong> — Elegant</div>
-                <div><strong className="text-foreground">Creative</strong> — Colorful</div>
-                <div><strong className="text-foreground">Compact</strong> — Dense</div>
-                <div><strong className="text-foreground">Tech</strong> — Dark code</div>
-                <div><strong className="text-foreground">Elegant</strong> — Refined</div>
-                <div><strong className="text-foreground">Bold</strong> — Heavy type</div>
-                <div><strong className="text-foreground">Academic</strong> — Research</div>
-                <div><strong className="text-foreground">Corporate</strong> — Formal</div>
-                <div><strong className="text-foreground">Nordic</strong> — Airy</div>
-                <div><strong className="text-foreground">Gradient</strong> — Modern</div>
-                <div><strong className="text-foreground">Timeline</strong> — Vertical</div>
-                <div><strong className="text-foreground">Sidebar</strong> — Right panel</div>
-                <div><strong className="text-foreground">Infographic</strong> — Visual</div>
-                <div><strong className="text-foreground">Federal</strong> — Government</div>
-                <div><strong className="text-foreground">Startup</strong> — Tech-forward</div>
-                <div><strong className="text-foreground">Monochrome</strong> — B&amp;W</div>
+                <div><strong className="text-foreground">Classic</strong>  -  Serif</div>
+                <div><strong className="text-foreground">Modern</strong>  -  Sidebar</div>
+                <div><strong className="text-foreground">Minimalist</strong>  -  Clean</div>
+                <div><strong className="text-foreground">Professional</strong>  -  Bold</div>
+                <div><strong className="text-foreground">Executive</strong>  -  Elegant</div>
+                <div><strong className="text-foreground">Creative</strong>  -  Colorful</div>
+                <div><strong className="text-foreground">Compact</strong>  -  Dense</div>
+                <div><strong className="text-foreground">Tech</strong>  -  Dark code</div>
+                <div><strong className="text-foreground">Elegant</strong>  -  Refined</div>
+                <div><strong className="text-foreground">Bold</strong>  -  Heavy type</div>
+                <div><strong className="text-foreground">Academic</strong>  -  Research</div>
+                <div><strong className="text-foreground">Corporate</strong>  -  Formal</div>
+                <div><strong className="text-foreground">Nordic</strong>  -  Airy</div>
+                <div><strong className="text-foreground">Gradient</strong>  -  Modern</div>
+                <div><strong className="text-foreground">Timeline</strong>  -  Vertical</div>
+                <div><strong className="text-foreground">Sidebar</strong>  -  Right panel</div>
+                <div><strong className="text-foreground">Infographic</strong>  -  Visual</div>
+                <div><strong className="text-foreground">Federal</strong>  -  Government</div>
+                <div><strong className="text-foreground">Startup</strong>  -  Tech-forward</div>
+                <div><strong className="text-foreground">Monochrome</strong>  -  B&amp;W</div>
               </div>
             </CardContent>
           </Card>
@@ -251,7 +251,7 @@ export default function HelpDialog() {
                 <li>Use the JD Matcher to check keyword coverage for each application</li>
                 <li>Submit as PDF unless the employer specifically asks for DOCX</li>
                 <li>Aim for 80+ ATS score and 70%+ keyword match</li>
-                <li>Keep readability at 60-70 (Flesch-Kincaid) — use the Readability Score tool to check</li>
+                <li>Keep readability at 60-70 (Flesch-Kincaid)  -  use the Readability Score tool to check</li>
                 <li>Use the Active Voice Detector to replace passive voice in bullet points</li>
                 <li>Check Industry Keywords for role-specific terms across 20 industries and 201 roles</li>
                 <li>Save multiple job descriptions with Multi-JD Matching to compare scores across applications</li>

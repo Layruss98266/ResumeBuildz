@@ -27,10 +27,10 @@ export default function ATSGuidePage() {
               ATS Guide
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up delay-100">
-              The Complete ATS Guide
+              How to Beat ATS: The Complete Guide
             </h1>
             <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto animate-fade-in-up delay-200">
-              Everything you need to know about Applicant Tracking Systems and how to get your resume past them.
+              75% of resumes never reach a human recruiter. Here's how ATS works, why your resume might be getting filtered out, and exactly how to fix it.
             </p>
           </div>
         </section>
@@ -47,10 +47,13 @@ export default function ATSGuidePage() {
               <div>
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">What is an ATS?</h2>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  An Applicant Tracking System (ATS) is software used by employers and recruiters to manage the recruitment process. It collects, scans, sorts, and ranks job applications automatically. When you submit your resume online, it almost always goes through an ATS before a human ever sees it.
+                  An Applicant Tracking System (ATS) is software that companies use to sort through job applications. According to Jobscan, 98% of Fortune 500 companies use one. When you submit your resume online, it almost always goes through an ATS before any human reads it.
+                </p>
+                <p className="text-gray-600 leading-relaxed mb-4">
+                  Here's what happens: the ATS scans your resume, pulls out your contact info, job titles, skills, and education, then compares everything against the job description. If your resume doesn't match enough keywords and criteria, it gets filtered out -- and no recruiter ever sees it.
                 </p>
                 <p className="text-gray-600 leading-relaxed">
-                  The ATS parses your resume into a structured format, extracts key information like your contact details, work experience, education, and skills, and then compares this data against the job description. If your resume does not match enough criteria, it may never reach a recruiter.
+                  The good news? Once you understand how ATS works, it's not hard to beat. You can check your resume right now with our <Link href="/builder" className="text-blue-500 hover:underline">free ATS score checker</Link>.
                 </p>
               </div>
             </div>
@@ -87,13 +90,13 @@ export default function ATSGuidePage() {
         {/* ATS Statistics */}
         <section className="bg-white py-16 md:py-20">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12 animate-fade-in-up">ATS Statistics You Should Know</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12 animate-fade-in-up">ATS Statistics That Matter</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { stat: '75%', desc: 'of resumes are rejected by ATS before reaching a human recruiter' },
-                { stat: '98%', desc: 'of Fortune 500 companies use ATS to filter candidates' },
-                { stat: '250+', desc: 'applications are received for a single corporate job posting on average' },
-                { stat: '70%', desc: 'of jobs are filled through networking and optimized applications' },
+                { stat: '75%', desc: 'of resumes are filtered out by ATS before a recruiter ever reads them (Jobscan, 2024)' },
+                { stat: '98%', desc: 'of Fortune 500 companies use an ATS to screen applicants (Jobscan)' },
+                { stat: '250+', desc: 'applications per corporate job posting on average (Glassdoor)' },
+                { stat: '6 sec', desc: 'is the average time a recruiter spends on an initial resume scan (Ladders eye-tracking study)' },
               ].map((item, i) => (
                 <div key={i} className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-center animate-fade-in-up delay-${(i + 1) * 100}`}>
                   <div className="text-4xl font-bold text-blue-500 mb-2">{item.stat}</div>
@@ -107,9 +110,9 @@ export default function ATSGuidePage() {
         {/* How to Pass ATS */}
         <section className="bg-gray-50 py-16 md:py-20">
           <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">10 Tips to Pass ATS Screening</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">10 Ways to Get Past ATS Screening</h2>
             <p className="text-gray-500 text-center mb-12 max-w-2xl mx-auto">
-              Follow these proven strategies to increase your chances of getting past the ATS.
+              These are the tactics that actually work. Each one addresses a specific reason resumes get filtered out.
             </p>
             <div className="space-y-4">
               {[
@@ -122,7 +125,7 @@ export default function ATSGuidePage() {
                 { num: 7, title: 'Quantify Your Achievements', desc: 'Use numbers and metrics to demonstrate impact: percentages, dollar amounts, team sizes, and time saved.' },
                 { num: 8, title: 'Tailor Each Application', desc: 'Customize your resume for every job. One-size-fits-all resumes score poorly with ATS keyword matching.' },
                 { num: 9, title: 'Proofread Carefully', desc: 'Typos and misspellings can prevent keyword matches. Double-check all text, especially technical terms.' },
-                { num: 10, title: 'Use ResumeForge', desc: 'Our ATS-optimized templates and built-in ATS score checker help you create resumes that pass any system.' },
+                { num: 10, title: 'Use an ATS-Optimized Template', desc: 'Start with a template that\'s already built for ATS compatibility. ResumeForge\'s 20 templates are tested against real ATS parsers.' },
               ].map((tip, i) => (
                 <div key={tip.num} className={`bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-start gap-4 animate-fade-in-up delay-${Math.min((i + 1) * 100, 500)}`}>
                   <span className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white text-sm font-bold rounded-full flex items-center justify-center">
@@ -206,7 +209,7 @@ export default function ATSGuidePage() {
               Check Your Resume&apos;s ATS Score
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-              Use our free ATS score checker to see how your resume performs and get actionable suggestions for improvement.
+              Upload your resume or build one from scratch. Our 12-point ATS checker shows you exactly what to fix -- keyword gaps, formatting issues, and weak verbs. You can also browse our <Link href="/templates" className="text-blue-400 hover:underline">ATS-friendly templates</Link> or read our <Link href="/resume-tips" className="text-blue-400 hover:underline">resume writing tips</Link>.
             </p>
             <Link
               href="/builder"

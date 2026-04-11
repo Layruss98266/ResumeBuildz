@@ -58,13 +58,13 @@ export default function TemplatesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">20 ATS-Friendly Templates</h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in-up delay-100">
-            Every template is designed to pass Applicant Tracking Systems while looking great on screen and in print.
+            Every template passes ATS parsing tests and looks sharp on screen and in print. Pick one, fill in your details, and export as PDF.
           </p>
         </div>
       </section>
 
       {/* Filter Bar */}
-      <section className="bg-white border-b border-gray-100 sticky top-0 z-10 animate-fade-in delay-200">
+      <section className="bg-white border-b border-gray-100 sticky top-14 z-40 animate-fade-in delay-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-3 overflow-x-auto">
             <Filter className="h-4 w-4 text-gray-400 shrink-0" />

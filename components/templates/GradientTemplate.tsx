@@ -147,7 +147,7 @@ export default function GradientTemplate({ data, primaryColor }: TemplateProps) 
                 <div key={cert.id} className="flex justify-between items-baseline">
                   <div>
                     <span className="text-[11px] font-semibold text-gray-800">{cert.name}</span>
-                    <span className="text-[10px] text-gray-500"> — {cert.issuer}</span>
+                    <span className="text-[10px] text-gray-500">  -  {cert.issuer}</span>
                   </div>
                   <span className="text-[9px] text-gray-400">{cert.date}</span>
                 </div>

@@ -27,7 +27,7 @@ export default function NordicTemplate({ data, primaryColor }: TemplateProps) {
               <div key={exp.id} className="mb-5">
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-[11px] font-semibold text-gray-800">{exp.position}</h3>
-                  <span className="text-[9px] text-gray-400 tracking-wide">{exp.startDate} — {exp.current ? 'Present' : exp.endDate}</span>
+                  <span className="text-[9px] text-gray-400 tracking-wide">{exp.startDate}  -  {exp.current ? 'Present' : exp.endDate}</span>
                 </div>
                 <p className="text-[10px] text-gray-500 mt-0.5">{exp.company}{exp.location ? ` · ${exp.location}` : ''}</p>
                 {exp.highlights.length > 0 && (
@@ -54,7 +54,7 @@ export default function NordicTemplate({ data, primaryColor }: TemplateProps) {
               <div key={edu.id} className="mb-4">
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-[11px] font-semibold text-gray-800">{edu.degree}{edu.field ? `, ${edu.field}` : ''}</h3>
-                  <span className="text-[9px] text-gray-400 tracking-wide">{edu.startDate} — {edu.endDate}</span>
+                  <span className="text-[9px] text-gray-400 tracking-wide">{edu.startDate}  -  {edu.endDate}</span>
                 </div>
                 <p className="text-[10px] text-gray-500 mt-0.5">{edu.institution}{edu.location ? ` · ${edu.location}` : ''}</p>
                 {edu.gpa && <p className="text-[9px] text-gray-400 mt-0.5">GPA: {edu.gpa}</p>}
@@ -99,7 +99,7 @@ export default function NordicTemplate({ data, primaryColor }: TemplateProps) {
               <div key={proj.id} className="mb-5">
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-[11px] font-semibold text-gray-800">{proj.name}</h3>
-                  {proj.startDate && <span className="text-[9px] text-gray-400 tracking-wide">{proj.startDate}{proj.endDate ? ` — ${proj.endDate}` : ''}</span>}
+                  {proj.startDate && <span className="text-[9px] text-gray-400 tracking-wide">{proj.startDate}{proj.endDate ? `  -  ${proj.endDate}` : ''}</span>}
                 </div>
                 {proj.technologies.length > 0 && (
                   <p className="text-[9px] text-gray-400 mt-0.5">{proj.technologies.join(' · ')}</p>
@@ -129,7 +129,7 @@ export default function NordicTemplate({ data, primaryColor }: TemplateProps) {
                 <div key={cert.id} className="flex justify-between">
                   <div>
                     <span className="text-[10px] font-semibold text-gray-700">{cert.name}</span>
-                    <span className="text-[10px] text-gray-400"> — {cert.issuer}</span>
+                    <span className="text-[10px] text-gray-400">  -  {cert.issuer}</span>
                   </div>
                   <span className="text-[9px] text-gray-400">{cert.date}</span>
                 </div>

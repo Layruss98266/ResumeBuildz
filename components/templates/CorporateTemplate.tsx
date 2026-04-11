@@ -33,7 +33,7 @@ export default function CorporateTemplate({ data, primaryColor }: TemplateProps)
                 {exp.highlights.length > 0 && (
                   <ul className="mt-1 space-y-0.5">
                     {exp.highlights.map((h, i) => (
-                      <li key={i} className="text-[11px] text-gray-700 pl-3 relative before:content-['–'] before:absolute before:left-0 before:text-gray-400">
+                      <li key={i} className="text-[11px] text-gray-700 pl-3 relative before:content-['-'] before:absolute before:left-0 before:text-gray-400">
                         {formatBullet(h)}
                       </li>
                     ))}
@@ -61,7 +61,7 @@ export default function CorporateTemplate({ data, primaryColor }: TemplateProps)
                 {edu.highlights.length > 0 && (
                   <ul className="mt-1 space-y-0.5">
                     {edu.highlights.map((h, i) => (
-                      <li key={i} className="text-[11px] text-gray-700 pl-3 relative before:content-['–'] before:absolute before:left-0 before:text-gray-400">
+                      <li key={i} className="text-[11px] text-gray-700 pl-3 relative before:content-['-'] before:absolute before:left-0 before:text-gray-400">
                         {formatBullet(h)}
                       </li>
                     ))}
@@ -107,7 +107,7 @@ export default function CorporateTemplate({ data, primaryColor }: TemplateProps)
                 {proj.highlights.length > 0 && (
                   <ul className="mt-1 space-y-0.5">
                     {proj.highlights.map((h, i) => (
-                      <li key={i} className="text-[11px] text-gray-700 pl-3 relative before:content-['–'] before:absolute before:left-0 before:text-gray-400">
+                      <li key={i} className="text-[11px] text-gray-700 pl-3 relative before:content-['-'] before:absolute before:left-0 before:text-gray-400">
                         {formatBullet(h)}
                       </li>
                     ))}
@@ -128,7 +128,7 @@ export default function CorporateTemplate({ data, primaryColor }: TemplateProps)
               <div key={cert.id} className="mb-1 flex justify-between">
                 <div>
                   <span className="text-[11px] font-semibold">{cert.name}</span>
-                  <span className="text-[11px] text-gray-600"> — {cert.issuer}</span>
+                  <span className="text-[11px] text-gray-600">  -  {cert.issuer}</span>
                 </div>
                 <span className="text-[10px] text-gray-500">{cert.date}</span>
               </div>

@@ -83,7 +83,7 @@ function SortableProjectEntry({ project, onUpdate, onRemove }: {
             </div>
           </div>
           <div>
-            <Label className="text-sm">Key Points (one per line — bullets added automatically)</Label>
+            <Label className="text-sm">Key Points (one per line  -  bullets added automatically)</Label>
             <RichTextarea
               placeholder="Built a full-stack e-commerce platform&#10;Implemented payment processing with Stripe"
               value={project.highlights.join('\n')}

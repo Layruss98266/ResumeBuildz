@@ -92,7 +92,7 @@ export default function CompactTemplate({ data, primaryColor }: TemplateProps) {
             {certifications.map((cert) => (
               <div key={cert.id} className="text-[9px] mb-0.5">
                 <span className="font-semibold">{cert.name}</span>
-                {cert.issuer && <span className="text-gray-500"> — {cert.issuer}</span>}
+                {cert.issuer && <span className="text-gray-500">  -  {cert.issuer}</span>}
                 {cert.date && <span className="text-gray-400 text-[8px]"> ({cert.date})</span>}
               </div>
             ))}

@@ -139,7 +139,7 @@ export default function CreativeTemplate({ data, primaryColor }: TemplateProps) 
             <div className="space-y-1">
               {certifications.map((cert) => (
                 <div key={cert.id} className="flex justify-between text-[11px] pl-4">
-                  <span className="font-medium">{cert.name} — <span className="text-gray-500">{cert.issuer}</span></span>
+                  <span className="font-medium">{cert.name}  -  <span className="text-gray-500">{cert.issuer}</span></span>
                   <span className="text-[9px] px-2 py-0.5 rounded-full" style={{ backgroundColor: `${primaryColor}15`, color: primaryColor }}>{cert.date}</span>
                 </div>
               ))}
@@ -157,7 +157,7 @@ export default function CreativeTemplate({ data, primaryColor }: TemplateProps) 
             <div className="flex flex-wrap gap-2 pl-4">
               {languages.map((lang) => (
                 <span key={lang.id} className="text-[10px] px-3 py-1 rounded-full text-white" style={{ backgroundColor: primaryColor }}>
-                  {lang.name}{lang.proficiency ? ` — ${lang.proficiency}` : ''}
+                  {lang.name}{lang.proficiency ? `  -  ${lang.proficiency}` : ''}
                 </span>
               ))}
             </div>

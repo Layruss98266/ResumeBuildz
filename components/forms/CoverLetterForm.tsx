@@ -46,7 +46,7 @@ export default function CoverLetterForm() {
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',
           messages: [
-            { role: 'system', content: 'Write a professional cover letter. Be concise (250-350 words). No placeholders — use the provided details. Return only the letter text.' },
+            { role: 'system', content: 'Write a professional cover letter. Be concise (250-350 words). No placeholders  -  use the provided details. Return only the letter text.' },
             { role: 'user', content: `Write a cover letter for ${jobTitle || 'a role'} at ${company || 'a company'}.\n\nCandidate info:\n${context}` },
           ],
           max_tokens: 800, temperature: 0.7,

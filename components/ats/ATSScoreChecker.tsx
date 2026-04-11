@@ -177,7 +177,7 @@ export default function ATSScoreChecker() {
       <section>
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
           <Target className="h-4 w-4" /> Job Description Match
-          <HelpTip text="Paste a job description to see which keywords appear in your resume. Aim for 70%+ match. Missing keywords are shown in red — add them to your Skills or Experience sections." />
+          <HelpTip text="Paste a job description to see which keywords appear in your resume. Aim for 70%+ match. Missing keywords are shown in red  -  add them to your Skills or Experience sections." />
         </h3>
 
         <div className="space-y-2">

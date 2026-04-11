@@ -30,13 +30,13 @@ export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
               <div key={exp.id} className="mb-4">
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-[11.5px] font-semibold text-gray-900">{exp.position}</h3>
-                  <span className="text-[9px] text-gray-400 shrink-0 ml-2 tracking-wide">{exp.startDate} — {exp.current ? 'Present' : exp.endDate}</span>
+                  <span className="text-[9px] text-gray-400 shrink-0 ml-2 tracking-wide">{exp.startDate}  -  {exp.current ? 'Present' : exp.endDate}</span>
                 </div>
                 <p className="text-[10px] mt-0.5" style={{ color: primaryColor }}>{exp.company}{exp.location ? `  ·  ${exp.location}` : ''}</p>
                 {exp.highlights.length > 0 && (
                   <ul className="mt-2 space-y-1">
                     {exp.highlights.map((h, i) => (
-                      <li key={i} className="text-[10px] text-gray-600 pl-4 relative before:content-['—'] before:absolute before:left-0 before:text-gray-300">
+                      <li key={i} className="text-[10px] text-gray-600 pl-4 relative before:content-[' - '] before:absolute before:left-0 before:text-gray-300">
                         {formatBullet(h)}
                       </li>
                     ))}
@@ -55,13 +55,13 @@ export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
               <div key={edu.id} className="mb-3">
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-[11px] font-semibold text-gray-900">{edu.institution}</h3>
-                  <span className="text-[9px] text-gray-400 shrink-0 ml-2">{edu.startDate} — {edu.endDate}</span>
+                  <span className="text-[9px] text-gray-400 shrink-0 ml-2">{edu.startDate}  -  {edu.endDate}</span>
                 </div>
                 <p className="text-[10px] text-gray-600">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}{edu.gpa ? `  ·  GPA: ${edu.gpa}` : ''}</p>
                 {edu.highlights.length > 0 && (
                   <ul className="mt-1 space-y-0.5">
                     {edu.highlights.map((h, i) => (
-                      <li key={i} className="text-[10px] text-gray-500 pl-4 relative before:content-['—'] before:absolute before:left-0 before:text-gray-300">{formatBullet(h)}</li>
+                      <li key={i} className="text-[10px] text-gray-500 pl-4 relative before:content-[' - '] before:absolute before:left-0 before:text-gray-300">{formatBullet(h)}</li>
                     ))}
                   </ul>
                 )}
@@ -99,7 +99,7 @@ export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
                 {proj.highlights.length > 0 && (
                   <ul className="mt-1 space-y-0.5">
                     {proj.highlights.map((h, i) => (
-                      <li key={i} className="text-[10px] text-gray-600 pl-4 relative before:content-['—'] before:absolute before:left-0 before:text-gray-300">{formatBullet(h)}</li>
+                      <li key={i} className="text-[10px] text-gray-600 pl-4 relative before:content-[' - '] before:absolute before:left-0 before:text-gray-300">{formatBullet(h)}</li>
                     ))}
                   </ul>
                 )}
@@ -116,7 +116,7 @@ export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
               {certifications.map((cert) => (
                 <div key={cert.id} className="flex items-baseline gap-2 text-[10px]">
                   <span className="text-gray-800 font-medium">{cert.name}</span>
-                  {cert.issuer && <span className="text-gray-400">—</span>}
+                  {cert.issuer && <span className="text-gray-400"> - </span>}
                   {cert.issuer && <span className="text-gray-500">{cert.issuer}</span>}
                   {cert.date && <span className="text-gray-400 text-[9px]">({cert.date})</span>}
                 </div>

@@ -124,7 +124,7 @@ export default function ProfessionalTemplate({ data, primaryColor }: TemplatePro
             <div className="ml-4 space-y-1">
               {certifications.map((cert) => (
                 <div key={cert.id} className="flex justify-between text-[11px]">
-                  <span><strong>{cert.name}</strong> — {cert.issuer}</span>
+                  <span><strong>{cert.name}</strong>  -  {cert.issuer}</span>
                   <span className="text-gray-500">{cert.date}</span>
                 </div>
               ))}
@@ -142,7 +142,7 @@ export default function ProfessionalTemplate({ data, primaryColor }: TemplatePro
             <div className="ml-4 flex flex-wrap gap-3">
               {languages.map((lang) => (
                 <span key={lang.id} className="text-[11px] px-2 py-0.5 rounded border border-gray-200">
-                  {lang.name}{lang.proficiency ? ` — ${lang.proficiency}` : ''}
+                  {lang.name}{lang.proficiency ? `  -  ${lang.proficiency}` : ''}
                 </span>
               ))}
             </div>

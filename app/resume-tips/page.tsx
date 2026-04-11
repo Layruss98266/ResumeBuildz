@@ -97,10 +97,10 @@ export default function ResumeTipsPage() {
               Expert Advice
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up delay-100">
-              Resume Writing Tips
+              Resume Writing Tips That Actually Work
             </h1>
             <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto animate-fade-in-up delay-200">
-              Expert advice to make your resume stand out and land more interviews.
+              Recruiters spend about 6 seconds scanning your resume. Here's how to make every word count and land more interviews.
             </p>
           </div>
         </section>
@@ -157,9 +157,9 @@ export default function ResumeTipsPage() {
         {/* Action Verbs */}
         <section className="bg-gray-50 py-16 md:py-20">
           <div className="max-w-6xl mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">Power Action Verbs</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">40 Action Verbs That Grab Attention</h2>
             <p className="text-gray-500 text-center mb-12 max-w-2xl mx-auto">
-              Start your bullet points with these strong action verbs to make your experience more impactful.
+              Weak verbs kill resumes. Replace "responsible for" and "helped with" by starting every bullet point with one of these.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {Object.entries(actionVerbs).map(([category, verbs], i) => (
@@ -181,9 +181,9 @@ export default function ResumeTipsPage() {
         {/* Quantifying Achievements */}
         <section className="bg-white py-16 md:py-20">
           <div className="max-w-4xl mx-auto px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">Quantifying Your Achievements</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">Before and After: Weak vs. Strong Bullet Points</h2>
             <p className="text-gray-500 text-center mb-12 max-w-2xl mx-auto">
-              Numbers make your accomplishments concrete and memorable. Transform vague statements into powerful proof.
+              Numbers make your resume memorable. A recruiter won't remember "improved sales" but they'll remember "$2.4M revenue growth." Here are real before-and-after examples.
             </p>
             <div className="space-y-4">
               {[
@@ -304,7 +304,7 @@ export default function ResumeTipsPage() {
               Start Building Your Resume
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-              Put these tips into practice with ResumeForge&apos;s ATS-optimized templates and real-time feedback.
+              Put these tips into action. Pick one of our <Link href="/templates" className="text-blue-400 hover:underline">20 ATS-tested templates</Link>, use the AI to rewrite weak bullet points, and run the <Link href="/ats-guide" className="text-blue-400 hover:underline">ATS checker</Link> before you apply.
             </p>
             <Link
               href="/builder"

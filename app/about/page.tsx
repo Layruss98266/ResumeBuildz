@@ -58,7 +58,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">About ResumeForge</h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in-up delay-100">
-            A free, open-source resume builder designed to help everyone create professional, ATS-optimized resumes.
+            A free, open-source resume builder. No paywalls, no accounts, no data collection. Just a tool that helps you build a resume that actually gets past ATS.
           </p>
         </div>
       </section>
@@ -70,7 +70,7 @@ export default function AboutPage() {
             <Heart className="h-10 w-10 text-blue-400 mx-auto mb-6 animate-fade-in" />
             <h2 className="text-3xl font-bold text-gray-900 mb-6 animate-fade-in-up delay-100">Our Mission</h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Job seekers deserve access to professional resume tools without paywalls, sign-up barriers, or privacy trade-offs. ResumeForge was built to provide exactly that -- a completely free, fully private resume builder that runs entirely in your browser.
+              Most resume builders charge $20-40/month, require your email, and store your personal data on their servers. That felt wrong. ResumeForge exists because job seekers shouldn't have to pay or surrender their privacy just to write a decent resume. Everything runs in your browser -- we literally can't see your data.
             </p>
             <div className="grid sm:grid-cols-3 gap-6 mt-10">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 animate-fade-in-up delay-100">
@@ -104,7 +104,7 @@ export default function AboutPage() {
             <h3 className="text-xl font-bold text-gray-900 mb-1">Surya L</h3>
             <p className="text-gray-600 mb-4">Full-Stack Developer</p>
             <p className="text-gray-600 text-sm mb-6">
-              Passionate about building tools that make professional opportunities more accessible. ResumeForge is built with the belief that everyone deserves a great resume.
+              I built ResumeForge because I was frustrated with existing resume tools -- they either cost too much, required sign-ups, or uploaded my data to unknown servers. So I made the tool I wished existed: free, private, and actually good.
             </p>
             <a
               href="https://github.com/Surya8991"

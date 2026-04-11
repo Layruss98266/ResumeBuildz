@@ -147,7 +147,7 @@ export default function AISuggestions() {
             AI features require your own Groq API key. No key is provided with this app.<br/><br/>
             1. Visit <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" className="text-primary underline">console.groq.com/keys</a> and sign up (free)<br/>
             2. Click &quot;Create API Key&quot; and copy it<br/>
-            3. Paste it below — stored only in your browser, never on any server
+            3. Paste it below  -  stored only in your browser, never on any server
           </p>
           <div className="flex gap-2">
             <input

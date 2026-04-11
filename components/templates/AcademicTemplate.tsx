@@ -159,7 +159,7 @@ export default function AcademicTemplate({ data, primaryColor }: TemplateProps) 
             <div className="flex flex-wrap gap-x-6 gap-y-1">
               {languages.map((lang) => (
                 <span key={lang.id} className="text-[11px]" style={{ fontFamily: 'Georgia, serif' }}>
-                  <strong>{lang.name}</strong>{lang.proficiency ? ` — ${lang.proficiency}` : ''}
+                  <strong>{lang.name}</strong>{lang.proficiency ? `  -  ${lang.proficiency}` : ''}
                 </span>
               ))}
             </div>

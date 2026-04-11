@@ -35,7 +35,7 @@ export default function TimelineTemplate({ data, primaryColor }: TemplateProps) 
                   </div>
                   <div className="flex justify-between items-baseline mt-0.5">
                     <p className="text-[11px] text-gray-600">{exp.company}{exp.location ? `, ${exp.location}` : ''}</p>
-                    <span className="text-[10px] font-medium shrink-0 ml-3" style={{ color: primaryColor }}>{exp.startDate} — {exp.current ? 'Present' : exp.endDate}</span>
+                    <span className="text-[10px] font-medium shrink-0 ml-3" style={{ color: primaryColor }}>{exp.startDate}  -  {exp.current ? 'Present' : exp.endDate}</span>
                   </div>
                   {exp.highlights.length > 0 && (
                     <ul className="mt-1.5 space-y-0.5">
@@ -68,7 +68,7 @@ export default function TimelineTemplate({ data, primaryColor }: TemplateProps) 
                   <h3 className="text-[12px] font-bold text-gray-900">{edu.degree}{edu.field ? ` in ${edu.field}` : ''}</h3>
                   <div className="flex justify-between items-baseline mt-0.5">
                     <p className="text-[11px] text-gray-600">{edu.institution}{edu.location ? `, ${edu.location}` : ''}</p>
-                    <span className="text-[10px] font-medium shrink-0 ml-3" style={{ color: primaryColor }}>{edu.startDate} — {edu.endDate}</span>
+                    <span className="text-[10px] font-medium shrink-0 ml-3" style={{ color: primaryColor }}>{edu.startDate}  -  {edu.endDate}</span>
                   </div>
                   {edu.gpa && <p className="text-[10px] text-gray-500 mt-0.5">GPA: {edu.gpa}</p>}
                   {edu.highlights.length > 0 && (
@@ -118,7 +118,7 @@ export default function TimelineTemplate({ data, primaryColor }: TemplateProps) 
                     <h3 className="text-[12px] font-bold text-gray-900">{proj.name}</h3>
                     {proj.startDate && (
                       <span className="text-[10px] font-medium shrink-0 ml-3" style={{ color: primaryColor }}>
-                        {proj.startDate}{proj.endDate ? ` — ${proj.endDate}` : ''}
+                        {proj.startDate}{proj.endDate ? `  -  ${proj.endDate}` : ''}
                       </span>
                     )}
                   </div>
@@ -150,7 +150,7 @@ export default function TimelineTemplate({ data, primaryColor }: TemplateProps) 
               <div key={cert.id} className="mb-1.5 flex justify-between">
                 <div>
                   <span className="text-[11px] font-semibold">{cert.name}</span>
-                  <span className="text-[11px] text-gray-600"> — {cert.issuer}</span>
+                  <span className="text-[11px] text-gray-600">  -  {cert.issuer}</span>
                 </div>
                 <span className="text-[10px] font-medium" style={{ color: primaryColor }}>{cert.date}</span>
               </div>
@@ -167,7 +167,7 @@ export default function TimelineTemplate({ data, primaryColor }: TemplateProps) 
             <div className="flex flex-wrap gap-x-6 gap-y-1">
               {languages.map((lang) => (
                 <span key={lang.id} className="text-[11px]">
-                  <strong>{lang.name}</strong>{lang.proficiency ? ` — ${lang.proficiency}` : ''}
+                  <strong>{lang.name}</strong>{lang.proficiency ? `  -  ${lang.proficiency}` : ''}
                 </span>
               ))}
             </div>

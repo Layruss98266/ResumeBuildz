@@ -8,7 +8,7 @@ import SiteFooter from '@/components/SiteFooter';
 const sections = [
   {
     title: 'Data Collection',
-    content: "We don't collect any data. Period. ResumeForge is a fully client-side application that runs entirely in your browser. We have no servers collecting your information, no databases storing your data, and no analytics tracking your behavior.",
+    content: "We don't collect any data. Not some data -- zero data. ResumeForge runs entirely in your browser. There are no servers storing your information, no databases with your resume, and no analytics tracking what you do. This isn't a marketing claim; it's how the app is built.",
   },
   {
     title: 'Local Storage',
@@ -16,7 +16,7 @@ const sections = [
   },
   {
     title: 'Third-Party Services',
-    content: 'ResumeForge offers an optional AI-powered feature that uses the Groq API. This feature requires your own API key, which you obtain directly from Groq. When you use this feature, your resume data is sent directly from your browser to Groq\'s servers — it never passes through our servers. We do not have access to your API key or the data you send to Groq. Please review Groq\'s privacy policy for information about how they handle your data.',
+    content: 'ResumeForge offers an optional AI-powered feature that uses the Groq API. This feature requires your own API key, which you obtain directly from Groq. When you use this feature, your resume data is sent directly from your browser to Groq\'s servers  -  it never passes through our servers. We do not have access to your API key or the data you send to Groq. Please review Groq\'s privacy policy for information about how they handle your data.',
   },
   {
     title: 'Cookies',
@@ -24,7 +24,7 @@ const sections = [
   },
   {
     title: 'Analytics',
-    content: "We don't track you. There are no analytics scripts, no pixel trackers, no heatmaps, and no session recordings. We have no idea how many people use ResumeForge, and we're fine with that.",
+    content: "We don't track you. No analytics scripts, no pixel trackers, no heatmaps, no session recordings. We genuinely don't know how many people use ResumeForge, and we're fine with that.",
   },
   {
     title: 'Data Security',

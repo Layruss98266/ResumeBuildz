@@ -35,7 +35,7 @@ export default function TechTemplate({ data, primaryColor }: TemplateProps) {
               <div key={exp.id} className="mb-3.5">
                 <div className="flex justify-between items-baseline">
                   <h3 className="text-[11px] font-bold text-gray-900">{exp.position}</h3>
-                  <span className="text-[9px] font-mono shrink-0 ml-2" style={{ color: primaryColor }}>{exp.startDate} — {exp.current ? 'Present' : exp.endDate}</span>
+                  <span className="text-[9px] font-mono shrink-0 ml-2" style={{ color: primaryColor }}>{exp.startDate}  -  {exp.current ? 'Present' : exp.endDate}</span>
                 </div>
                 <p className="text-[10px] text-gray-500 font-medium">{exp.company}{exp.location ? ` · ${exp.location}` : ''}</p>
                 {exp.highlights.length > 0 && (

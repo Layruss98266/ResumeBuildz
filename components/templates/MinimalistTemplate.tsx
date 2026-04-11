@@ -23,14 +23,14 @@ export default function MinimalistTemplate({ data, primaryColor }: TemplateProps
                 <div className="flex justify-between">
                   <div>
                     <h3 className="text-[12px] font-medium text-gray-900">{exp.position}</h3>
-                    <p className="text-[10px] text-gray-500">{exp.company}{exp.location ? ` — ${exp.location}` : ''}</p>
+                    <p className="text-[10px] text-gray-500">{exp.company}{exp.location ? `  -  ${exp.location}` : ''}</p>
                   </div>
-                  <span className="text-[10px] text-gray-400 whitespace-nowrap">{exp.startDate} — {exp.current ? 'Present' : exp.endDate}</span>
+                  <span className="text-[10px] text-gray-400 whitespace-nowrap">{exp.startDate}  -  {exp.current ? 'Present' : exp.endDate}</span>
                 </div>
                 {exp.highlights.length > 0 && (
                   <ul className="mt-2 space-y-1">
                     {exp.highlights.map((h, i) => (
-                      <li key={i} className="text-[11px] text-gray-600 pl-3 relative before:content-['—'] before:absolute before:left-0 before:text-gray-300 before:text-[10px]">
+                      <li key={i} className="text-[11px] text-gray-600 pl-3 relative before:content-[' - '] before:absolute before:left-0 before:text-gray-300 before:text-[10px]">
                         {formatBullet(h)}
                       </li>
                     ))}
@@ -52,7 +52,7 @@ export default function MinimalistTemplate({ data, primaryColor }: TemplateProps
                     <h3 className="text-[12px] font-medium text-gray-900">{edu.degree}{edu.field ? `, ${edu.field}` : ''}</h3>
                     <p className="text-[10px] text-gray-500">{edu.institution}</p>
                   </div>
-                  <span className="text-[10px] text-gray-400">{edu.startDate} — {edu.endDate}</span>
+                  <span className="text-[10px] text-gray-400">{edu.startDate}  -  {edu.endDate}</span>
                 </div>
                 {edu.gpa && <p className="text-[10px] text-gray-400 mt-0.5">{edu.gpa}</p>}
               </div>
@@ -88,7 +88,7 @@ export default function MinimalistTemplate({ data, primaryColor }: TemplateProps
                 {proj.highlights.length > 0 && (
                   <ul className="mt-1 space-y-0.5">
                     {proj.highlights.map((h, i) => (
-                      <li key={i} className="text-[11px] text-gray-600 pl-3 relative before:content-['—'] before:absolute before:left-0 before:text-gray-300">
+                      <li key={i} className="text-[11px] text-gray-600 pl-3 relative before:content-[' - '] before:absolute before:left-0 before:text-gray-300">
                         {formatBullet(h)}
                       </li>
                     ))}
@@ -105,7 +105,7 @@ export default function MinimalistTemplate({ data, primaryColor }: TemplateProps
             <h2 className="text-[11px] font-medium uppercase tracking-[0.2em] mb-3" style={{ color: primaryColor }}>Certifications</h2>
             {certifications.map((cert) => (
               <div key={cert.id} className="mb-1 text-[10px] text-gray-600">
-                {cert.name} — <span className="text-gray-400">{cert.issuer}, {cert.date}</span>
+                {cert.name}  -  <span className="text-gray-400">{cert.issuer}, {cert.date}</span>
               </div>
             ))}
           </div>

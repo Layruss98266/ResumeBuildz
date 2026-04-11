@@ -40,7 +40,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'Edit Your Resume',
-    description: 'Use the Edit tab to fill in your details — Personal Info, Summary, Experience, Education, Skills, Projects, Certifications, and Languages. The completion bar at the top tracks your progress across 10 criteria. On mobile, swipe left/right to switch between tabs.',
+    description: 'Use the Edit tab to fill in your details  -  Personal Info, Summary, Experience, Education, Skills, Projects, Certifications, and Languages. The completion bar at the top tracks your progress across 10 criteria. On mobile, swipe left/right to switch between tabs.',
     icon: <PenLine className="h-8 w-8" />,
     tip: 'Required fields are marked with a red asterisk (*). A sample resume is pre-loaded to help you get started. On mobile, use the bottom sheet section picker to jump between sections.',
   },
@@ -82,7 +82,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'AI Writing Assistant',
-    description: 'Get AI-powered suggestions for your summary, bullet points, and skills. Requires your own Groq API key (free) — no key is included with the app.',
+    description: 'Get AI-powered suggestions for your summary, bullet points, and skills. Requires your own Groq API key (free)  -  no key is included with the app.',
     icon: <Sparkles className="h-8 w-8" />,
     tip: 'Bring your own key from console.groq.com/keys (free, takes 1 minute). Stored in your browser only.',
   },

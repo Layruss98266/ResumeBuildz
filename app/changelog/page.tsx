@@ -20,12 +20,12 @@ const CHANGELOG: ChangelogEntry[] = [
     date: 'April 11, 2026',
     title: 'Skill Suggestions & Page Animations',
     added: [
-      'Skill suggestions based on job title (from 201-role industry data).',
-      'Page transition animations across all pages (fadeInUp, slideIn, scaleIn).',
-      'Section completion indicators (green/gray dots in dropdown).',
-      'Cover letter auto-fill from Personal Info job title.',
-      'Export loading states with disabled buttons.',
-      'Mobile profile manager in bottom bar.',
+      'Skill suggestions based on your job title -- pulls from data covering 201 roles across 20 industries.',
+      'Smooth page animations throughout the app for a more polished feel.',
+      'Section completion dots so you can see which parts of your resume are done at a glance.',
+      'Cover letter now auto-fills your job title from your personal info.',
+      'Export buttons show loading state so you know when your file is being generated.',
+      'Profile manager now accessible from the bottom bar on mobile devices.',
     ],
     improved: [
       'Improved skill matching accuracy (prefix stripping, quality scoring).',
@@ -38,13 +38,13 @@ const CHANGELOG: ChangelogEntry[] = [
     date: 'April 11, 2026',
     title: 'PDF Import & Multi-Profile Support',
     added: [
-      'PDF import support via pdfjs-dist -- upload existing PDF resumes and extract content automatically.',
-      'Multiple resume profiles -- save up to 10 separate resume versions, each with its own data and template selection.',
-      'Template preview modal with full-size preview before applying a template.',
-      'Drag-and-drop entry reordering within Experience, Education, and Projects sections.',
+      'PDF import -- upload an existing PDF resume and ResumeForge extracts the content automatically.',
+      'Multiple resume profiles -- save up to 10 different resume versions, each with its own data and template.',
+      'Template preview -- see a full-size preview of any template before applying it.',
+      'Drag-and-drop reordering for Experience, Education, and Projects entries.',
     ],
     improved: [
-      'Print CSS polish with color-adjust: exact, proper page-break rules, and consistent spacing across all templates.',
+      'Better print quality -- colors, page breaks, and spacing now look consistent across all 20 templates when printing.',
     ],
   },
   {
@@ -53,9 +53,9 @@ const CHANGELOG: ChangelogEntry[] = [
     title: 'UI Modernization',
     added: [],
     improved: [
-      'Modernized help dialog with icons, card-based layout, and gradient header for a cleaner look.',
-      'Modernized onboarding flow with progress bar, achievement badges, and larger action buttons.',
-      'Updated README with expanded Getting Started instructions and inline changelog.',
+      'Redesigned help dialog -- now uses icons and cards for easier navigation.',
+      'Improved onboarding flow with a progress bar and clearer action buttons.',
+      'Updated documentation with expanded Getting Started instructions.',
     ],
   },
   {
@@ -63,12 +63,12 @@ const CHANGELOG: ChangelogEntry[] = [
     date: 'April 11, 2026',
     title: 'ATS Tools & AI Gap Analysis',
     added: [
-      '12 ATS analysis tools: readability score, formatting checker, active voice detector, industry keywords matcher, section completeness, bullet point analyzer, quantification checker, verb strength analyzer, length optimizer, consistency checker, contact info validator, and file format advisor.',
-      '20 industries with 201 roles and 25-30 keywords each for targeted keyword analysis.',
-      'AI Gap Analysis powered by Groq -- identify missing skills and experience relative to job descriptions.',
-      'HelpTip tooltips on all major sections to guide users through the resume building process.',
-      'Custom section dropdown navigator for quick access to resume sections.',
-      'Smart Matching suggestion triggered on job title input to recommend relevant keywords.',
+      '12 ATS analysis tools -- checks readability, formatting, active voice, keywords, section completeness, bullet points, metrics, verb strength, length, consistency, contact info, and file format.',
+      'Industry keyword database covering 20 industries and 201 roles with 25-30 targeted keywords each.',
+      'AI Gap Analysis -- paste a job description and see what skills and experience you\'re missing.',
+      'Helpful tooltips throughout the app explaining what each section is for.',
+      'Section dropdown navigator so you can jump to any resume section quickly.',
+      'Smart keyword suggestions that appear when you enter your job title.',
       'Clickable contact links (email, phone, LinkedIn, GitHub) in all 20 templates.',
     ],
     improved: [
@@ -120,7 +120,7 @@ export default function ChangelogPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">Changelog</h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in-up delay-100">
-            All notable changes and updates to ResumeForge, documented by version.
+            What's new in ResumeForge. Every feature, fix, and improvement in one place.
           </p>
         </div>
       </section>

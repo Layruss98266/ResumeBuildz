@@ -8,15 +8,15 @@ import SiteFooter from '@/components/SiteFooter';
 const faqItems = [
   {
     question: 'Is ResumeForge free?',
-    answer: 'Yes, ResumeForge is completely free and open source. There are no hidden fees, no premium tiers, and no paywalls. All 20+ templates, the ATS scoring tool, AI suggestions, and every export format are available to everyone at no cost.',
+    answer: 'Yes, 100% free. There are no hidden fees, no "premium" tier, and no paywalls. All 20 templates, the ATS scoring tool, AI writing help, and every export format (PDF, DOCX, HTML) are available to everyone at zero cost.',
   },
   {
     question: 'Do I need to create an account?',
-    answer: 'No, no sign-up or account creation is required. You can start building your resume immediately without providing any personal information, email address, or password. Just open the app and start typing.',
+    answer: 'No. Just open the app and start typing. No email, no password, no account needed. Your data stays in your browser\'s local storage.',
   },
   {
     question: 'Where is my data stored?',
-    answer: "All your data is stored in your browser's localStorage. Nothing is ever sent to our servers because we don't have servers that store user data. Your resume information stays entirely on your device, giving you complete control over your data.",
+    answer: "All your data is stored in your browser's localStorage -- that's storage on your device, not on any server. We don't have servers that store user data. Your resume stays entirely on your machine. See our privacy policy for full details.",
   },
   {
     question: 'How do I transfer my resume to another device?',
@@ -36,7 +36,7 @@ const faqItems = [
   },
   {
     question: 'How does the AI feature work?',
-    answer: "The AI feature uses the Groq API to provide intelligent suggestions for improving your resume content. You'll need your own free Groq API key, which you can obtain from Groq's website. Your data is sent directly from your browser to Groq — it never passes through our servers. The AI can help rewrite bullet points, suggest skills, and optimize your content for ATS systems.",
+    answer: "The AI feature uses the Groq API to provide intelligent suggestions for improving your resume content. You'll need your own free Groq API key, which you can obtain from Groq's website. Your data is sent directly from your browser to Groq  -  it never passes through our servers. The AI can help rewrite bullet points, suggest skills, and optimize your content for ATS systems.",
   },
   {
     question: 'Is my data private?',
@@ -44,11 +44,11 @@ const faqItems = [
   },
   {
     question: 'What is ATS?',
-    answer: 'ATS stands for Applicant Tracking System. It is software used by employers and recruiters to manage job applications. ATS systems scan and parse resumes to filter candidates based on keywords, formatting, and relevance. ResumeForge helps you create resumes that are optimized to pass through these systems successfully.',
+    answer: 'ATS stands for Applicant Tracking System. It\'s software that scans and filters resumes before a recruiter sees them. About 98% of Fortune 500 companies use one. If your resume doesn\'t match enough keywords from the job description, the ATS rejects it automatically. Read our complete ATS guide to learn how to beat it.',
   },
   {
     question: 'How do I get the best ATS score?',
-    answer: 'To maximize your ATS score: use keywords from the job description throughout your resume, stick to standard section headings (Experience, Education, Skills), avoid tables, columns, and graphics that ATS systems struggle to parse, use a clean and simple format, include both spelled-out and abbreviated terms (e.g., "Search Engine Optimization (SEO)"), and use the built-in ATS Score Checker to identify areas for improvement.',
+    answer: 'Here are the key steps: (1) Use exact keywords from the job description, (2) stick to standard headings like "Experience," "Education," and "Skills," (3) avoid tables, columns, and graphics, (4) use a simple, single-column format, (5) include both full terms and acronyms (e.g., "Search Engine Optimization (SEO)"), and (6) run the built-in ATS Score Checker to catch what you missed. Our ATS guide covers each of these in detail.',
   },
   {
     question: 'Can I use this commercially?',
@@ -134,7 +134,7 @@ export default function FAQPage() {
       <section className="bg-white py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Still Have Questions?</h2>
-          <p className="text-gray-600 mb-8">We&apos;re here to help. Reach out to us or start building your resume today.</p>
+          <p className="text-gray-600 mb-8">We're here to help. You can also check our <Link href="/ats-guide" className="text-blue-500 hover:underline">ATS guide</Link> and <Link href="/resume-tips" className="text-blue-500 hover:underline">resume writing tips</Link>, or reach out directly.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/contact" className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-colors">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -113,7 +113,7 @@ function SortableExperienceEntry({ exp, onUpdate, onRemove }: {
 
           {/* Row 5: Achievements */}
           <div>
-            <Label className="text-xs text-muted-foreground">Achievements (one per line — bullets added automatically)</Label>
+            <Label className="text-xs text-muted-foreground">Achievements (one per line  -  bullets added automatically)</Label>
             <div className="mt-1">
               <RichTextarea
                 placeholder="Led a team of 5 engineers to deliver a new feature&#10;Increased system performance by 40%&#10;Mentored 3 junior developers"

@@ -28,7 +28,7 @@ export default function ExecutiveTemplate({ data, primaryColor }: TemplateProps)
                     <p className="text-[11px] font-medium" style={{ color: primaryColor }}>{exp.company}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[10px] text-gray-500">{exp.startDate} — {exp.current ? 'Present' : exp.endDate}</p>
+                    <p className="text-[10px] text-gray-500">{exp.startDate}  -  {exp.current ? 'Present' : exp.endDate}</p>
                     {exp.location && <p className="text-[10px] text-gray-400">{exp.location}</p>}
                   </div>
                 </div>
@@ -60,7 +60,7 @@ export default function ExecutiveTemplate({ data, primaryColor }: TemplateProps)
                   <p className="text-[11px] text-gray-600">{edu.institution}{edu.location ? `, ${edu.location}` : ''}</p>
                   {edu.gpa && <p className="text-[10px] text-gray-400">GPA: {edu.gpa}</p>}
                 </div>
-                <span className="text-[10px] text-gray-400">{edu.startDate} — {edu.endDate}</span>
+                <span className="text-[10px] text-gray-400">{edu.startDate}  -  {edu.endDate}</span>
               </div>
             ))}
           </div>
@@ -119,7 +119,7 @@ export default function ExecutiveTemplate({ data, primaryColor }: TemplateProps)
             <div className="space-y-1">
               {certifications.map((cert) => (
                 <div key={cert.id} className="flex justify-between text-[11px]">
-                  <span className="font-medium">{cert.name} <span className="text-gray-400 font-normal">— {cert.issuer}</span></span>
+                  <span className="font-medium">{cert.name} <span className="text-gray-400 font-normal"> -  {cert.issuer}</span></span>
                   <span className="text-gray-400">{cert.date}</span>
                 </div>
               ))}

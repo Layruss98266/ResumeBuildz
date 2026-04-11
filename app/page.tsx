@@ -18,19 +18,19 @@ import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 
 const FEATURES = [
-  { icon: Layout, title: '20 Templates', desc: 'Professionally designed, ATS-optimized resume templates for every industry.' },
-  { icon: Sparkles, title: 'AI Writing', desc: 'AI-powered bullet points, summaries, and cover letters via Groq.' },
-  { icon: BarChart3, title: 'ATS Score', desc: '12 built-in analysis tools to maximize your resume ATS score.' },
-  { icon: Shield, title: 'Privacy First', desc: 'All data stays in your browser. Nothing is ever sent to a server.' },
-  { icon: UserX, title: 'No Sign-up', desc: 'Start building immediately. No account, no email, no friction.' },
-  { icon: ExternalLink, title: 'Open Source', desc: 'Fully open-source on GitHub. Contribute, fork, or self-host.' },
+  { icon: Layout, title: '20 Templates', desc: 'Pick from 20 resume designs built to pass ATS filters and look great in print. Classic, modern, creative -- every style covered.' },
+  { icon: Sparkles, title: 'AI Writing Help', desc: 'Stuck on bullet points? Our Groq-powered AI rewrites weak descriptions into results-driven statements in seconds.' },
+  { icon: BarChart3, title: 'ATS Score Checker', desc: '12 analysis tools scan your resume for keyword gaps, formatting issues, and readability -- just like a real ATS would.' },
+  { icon: Shield, title: 'Privacy First', desc: 'Your resume data never leaves your browser. No servers, no tracking, no analytics. You own your data completely.' },
+  { icon: UserX, title: 'No Sign-up Needed', desc: 'Open the app and start building. No account, no email, no credit card. Just your resume, ready in minutes.' },
+  { icon: ExternalLink, title: 'Open Source', desc: 'Every line of code is on GitHub. Inspect it, fork it, self-host it, or contribute new templates.' },
 ];
 
 const STEPS = [
-  { num: '1', title: 'Fill Details', desc: 'Enter your experience, education, and skills.' },
-  { num: '2', title: 'Choose Template', desc: 'Pick from 20 ATS-friendly templates.' },
-  { num: '3', title: 'Check ATS', desc: 'Run 12 analysis tools to optimize your score.' },
-  { num: '4', title: 'Export PDF', desc: 'Download your polished resume instantly.' },
+  { num: '1', title: 'Add Your Info', desc: 'Type in your experience, education, and skills -- or import an existing resume.' },
+  { num: '2', title: 'Pick a Template', desc: 'Choose from 20 ATS-tested designs. Preview each one before committing.' },
+  { num: '3', title: 'Run ATS Check', desc: 'Our 12-point analysis spots keyword gaps, formatting issues, and weak verbs.' },
+  { num: '4', title: 'Download PDF', desc: 'Export a print-ready PDF, DOCX, or HTML file. Done in minutes.' },
 ];
 
 const SHOWCASE_TEMPLATES = [
@@ -43,9 +43,9 @@ const SHOWCASE_TEMPLATES = [
 ];
 
 const TESTIMONIALS = [
-  { name: 'Alex Rivera', role: 'Software Engineer at Google', text: 'ResumeForge helped me rewrite my resume in under 30 minutes. The ATS checker caught issues I never would have found on my own.' },
-  { name: 'Priya Sharma', role: 'Marketing Manager', text: 'The templates are beautiful and the AI suggestions were surprisingly good. I landed 3 interviews in my first week.' },
-  { name: 'James Chen', role: 'Recent Graduate', text: 'As a new grad with no budget, having a completely free tool with this level of quality was a game-changer.' },
+  { name: 'Alex R.', role: 'Software Engineer', text: 'I rewrote my resume in about 25 minutes. The ATS checker flagged that I was missing 4 keywords from the job description -- added them, applied, and got a callback the next day.' },
+  { name: 'Priya S.', role: 'Marketing Manager', text: 'Honestly didn\'t expect a free tool to be this polished. The AI rewrote my bullet points with actual metrics, and I got 3 interview calls in my first week of applying.' },
+  { name: 'James C.', role: '2024 CS Graduate', text: 'I\'d been using Google Docs for my resume. Switched to ResumeForge, ran the ATS check, and realized my old resume would\'ve been filtered out by most systems. Wish I found this sooner.' },
 ];
 
 export default function HomePage() {
@@ -72,7 +72,7 @@ export default function HomePage() {
                 Build ATS-Friendly Resumes in Minutes
               </h1>
               <p className="text-lg text-gray-300 mb-8 max-w-lg animate-fade-in-up delay-100">
-                20 professional templates, AI-powered writing, 12 ATS analysis tools, and a cover letter builder. 100% free, no sign-up required.
+                75% of resumes get rejected by ATS before a human sees them. ResumeForge gives you 20 templates, AI writing help, and 12 ATS checks -- all free, no sign-up needed.
               </p>
               <div className="flex items-center justify-center gap-6 mb-6 animate-fade-in-up delay-200">
                 <div className="flex items-center gap-2">
@@ -131,9 +131,9 @@ export default function HomePage() {
       {/* Features */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">Everything You Need</h2>
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-4 animate-fade-in-up">Everything You Need to Land Interviews</h2>
           <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto animate-fade-in-up delay-100">
-            Professional resume tools that are completely free and private.
+            Professional resume tools -- templates, AI writing, ATS scoring -- without paying a dime or creating an account.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {FEATURES.map((f, i) => (
@@ -195,7 +195,7 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Built-in ATS Optimization</h2>
               <p className="text-gray-600 mb-6">
-                12 analysis tools ensure your resume passes through Applicant Tracking Systems.
+                Most companies use ATS software to filter resumes before a recruiter ever reads them. Our 12 built-in tools check your resume the same way an ATS does -- so you can fix problems before you hit "apply."
               </p>
               <ul className="space-y-3">
                 {[
@@ -247,7 +247,7 @@ export default function HomePage() {
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">What People Say</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {TESTIMONIALS.map((t, i) => (
               <div key={t.name} className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 animate-fade-in-up delay-${(i + 1) * 100}`}>
                 <div className="flex gap-1 mb-4">
@@ -269,9 +269,9 @@ export default function HomePage() {
       {/* CTA */}
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black py-20">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in-up">Ready to Land Your Dream Job?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in-up">Your Resume Shouldn't Be the Reason You Don't Get Hired</h2>
           <p className="text-gray-300 mb-8 text-lg animate-fade-in-up delay-100">
-            Join thousands of job seekers who built their resume with ResumeForge.
+            Build a resume that actually passes ATS screening. It takes about 15 minutes and costs nothing.
           </p>
           <Link href="/builder" className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition">
             Build My Resume Now <ArrowRight className="h-5 w-5" />

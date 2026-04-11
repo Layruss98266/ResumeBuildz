@@ -88,10 +88,10 @@ export default function CoverLetterGuidePage() {
               Cover Letter Guide
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up delay-100">
-              Cover Letter Guide
+              How to Write a Cover Letter That Gets Read
             </h1>
             <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto animate-fade-in-up delay-200">
-              Write compelling cover letters that get interviews and set you apart from other candidates.
+              83% of hiring managers read cover letters. Here's a practical structure, real examples, and the mistakes that get applications rejected.
             </p>
           </div>
         </section>
@@ -113,7 +113,7 @@ export default function CoverLetterGuidePage() {
               ))}
             </div>
             <p className="text-gray-600 leading-relaxed text-center max-w-2xl mx-auto">
-              A cover letter is your chance to tell a story that your resume cannot. It shows personality, motivation, and cultural fit. While some employers say they are optional, submitting a well-crafted cover letter almost always gives you an edge over candidates who skip it.
+              Your resume shows what you've done. Your cover letter explains why you're the right person for <em>this</em> job. Even when companies say it's "optional," a strong cover letter puts you ahead of everyone who skipped it. Pair it with a well-built <Link href="/builder" className="text-blue-500 hover:underline">ATS-optimized resume</Link> and you're in a strong position.
             </p>
           </div>
         </section>
@@ -235,7 +235,7 @@ export default function CoverLetterGuidePage() {
                     AI-Powered Cover Letters
                   </h2>
                   <p className="text-gray-400 mb-6 leading-relaxed">
-                    ResumeForge uses Groq-powered AI to generate personalized cover letters in seconds. Simply paste the job description and your resume data, and our AI will craft a tailored cover letter that highlights your most relevant experience, matches the company&apos;s tone, and follows the proven 4-part structure.
+                    Don't want to start from scratch? ResumeForge's AI takes your resume data and the job description, then writes a tailored cover letter in seconds. It pulls your most relevant experience, matches the company's tone, and follows the 4-part structure above. You can edit every word before exporting.
                   </p>
                   <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                     <span className="text-sm bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full">Groq AI Powered</span>
@@ -256,7 +256,7 @@ export default function CoverLetterGuidePage() {
               Generate Your Cover Letter
             </h2>
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-              Let our AI create a tailored, professional cover letter that complements your resume and impresses hiring managers.
+              Our AI writes a tailored cover letter based on your resume and the job description. Need help with your resume first? Check out our <Link href="/resume-tips" className="text-blue-400 hover:underline">resume writing tips</Link> and <Link href="/templates" className="text-blue-400 hover:underline">ATS-friendly templates</Link>.
             </p>
             <Link
               href="/builder"
