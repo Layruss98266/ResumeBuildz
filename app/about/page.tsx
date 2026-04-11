@@ -39,7 +39,15 @@ const STATS = [
 ];
 
 export default function AboutPage() {
-  useEffect(() => { document.title = 'About ResumeForge - Free Open Source Resume Builder'; }, []);
+  useEffect(() => {
+    document.title = 'About ResumeForge - Free Open Source Resume Builder';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'ResumeForge is a free, open-source, privacy-first resume builder. Built with Next.js 16 by Surya L. No data leaves your browser.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'ResumeForge is a free, open-source, privacy-first resume builder. Built with Next.js 16 by Surya L. No data leaves your browser.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'About ResumeForge - Free Open Source Resume Builder');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

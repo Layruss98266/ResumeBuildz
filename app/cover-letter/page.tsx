@@ -66,7 +66,15 @@ const industryTemplates = [
 ];
 
 export default function CoverLetterGuidePage() {
-  useEffect(() => { document.title = 'Cover Letter Guide & Templates | ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = 'Cover Letter Guide & Templates | ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Learn how to write compelling cover letters with our complete guide. Structure, do\'s and don\'ts, and industry templates.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Learn how to write compelling cover letters with our complete guide. Structure, do\'s and don\'ts, and industry templates.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Cover Letter Guide & Templates | ResumeForge');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

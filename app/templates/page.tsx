@@ -33,7 +33,15 @@ const STYLE_TAGS: Record<string, string> = {
 const FILTER_OPTIONS = ['All', 'Classic', 'Modern', 'Creative', 'Minimal', 'Professional'];
 
 export default function TemplatesPage() {
-  useEffect(() => { document.title = '20 ATS-Friendly Resume Templates - ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = '20 ATS-Friendly Resume Templates - ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Browse 20 professionally designed, ATS-optimized resume templates. Classic, Modern, Creative, Tech, and more. All free to use.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Browse 20 professionally designed, ATS-optimized resume templates. Classic, Modern, Creative, Tech, and more. All free to use.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', '20 ATS-Friendly Resume Templates - ResumeForge');
+  }, []);
   const [activeFilter, setActiveFilter] = useState('All');
 
   const filtered =

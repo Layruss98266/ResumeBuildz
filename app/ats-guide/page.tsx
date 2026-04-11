@@ -6,7 +6,15 @@ import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 
 export default function ATSGuidePage() {
-  useEffect(() => { document.title = 'Complete ATS Guide - How to Pass ATS Screening | ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = 'Complete ATS Guide - How to Pass ATS Screening | ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Learn how Applicant Tracking Systems work and how to optimize your resume to pass ATS screening. Complete guide with tips and statistics.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Learn how Applicant Tracking Systems work and how to optimize your resume to pass ATS screening. Complete guide with tips and statistics.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Complete ATS Guide - How to Pass ATS Screening | ResumeForge');
+  }, []);
   return (
     <div className="min-h-screen flex flex-col">
       <SiteNavbar />

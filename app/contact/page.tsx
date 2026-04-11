@@ -6,7 +6,15 @@ import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 
 export default function ContactPage() {
-  useEffect(() => { document.title = 'Contact Us - ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = 'Contact Us - ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Get in touch with the ResumeForge team. Report bugs, request features, or inquire about commercial licensing.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Get in touch with the ResumeForge team. Report bugs, request features, or inquire about commercial licensing.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Contact Us - ResumeForge');
+  }, []);
   const [formData, setFormData] = useState({
     name: '',
     email: '',

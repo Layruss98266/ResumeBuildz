@@ -74,7 +74,15 @@ const industryTips = [
 ];
 
 export default function ResumeTipsPage() {
-  useEffect(() => { document.title = 'Resume Writing Tips & Action Verbs | ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = 'Resume Writing Tips & Action Verbs | ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Expert resume writing tips including action verbs, achievement examples, and industry-specific advice. Improve your resume today.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Expert resume writing tips including action verbs, achievement examples, and industry-specific advice. Improve your resume today.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Resume Writing Tips & Action Verbs | ResumeForge');
+  }, []);
   const [openSection, setOpenSection] = useState<number | null>(0);
 
   return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { useResumeStore } from '@/store/useResumeStore';
 import { downloadDocx } from '@/lib/exportDocx';
@@ -22,6 +22,7 @@ import FontLoader from '@/components/FontLoader';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import OnboardingGuide from '@/components/OnboardingGuide';
 import SectionReorder from '@/components/SectionReorder';
+import WhatsNew from '@/components/WhatsNew';
 import ATSScoreChecker from '@/components/ats/ATSScoreChecker';
 import AISuggestions from '@/components/ats/AISuggestions';
 import CustomSectionForm from '@/components/forms/CustomSectionForm';
@@ -75,7 +76,15 @@ const BASE_SECTIONS = [
 ];
 
 export default function HomePage() {
-  useEffect(() => { document.title = 'Resume Builder - ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = 'Resume Builder - ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Create your resume with 20 ATS-friendly templates, drag-and-drop sections, and AI-powered writing. Export as PDF, DOCX, or HTML.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Create your resume with 20 ATS-friendly templates, drag-and-drop sections, and AI-powered writing. Export as PDF, DOCX, or HTML.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Resume Builder - ResumeForge');
+  }, []);
   const resumeRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'edit' | 'preview' | 'templates' | 'ats' | 'ai'>('edit');
   const [activeSection, setActiveSection] = useState('personalInfo');
@@ -90,6 +99,10 @@ export default function HomePage() {
   const [isExporting, setIsExporting] = useState(false);
   const [exportingType, setExportingType] = useState<string | null>(null);
   const { importData, resetData, addCustomSection, resumeData } = useResumeStore();
+
+  // Welcome back state
+  const [showWelcomeBack, setShowWelcomeBack] = useState(false);
+  const [lastEditTime, setLastEditTime] = useState('');
 
   const sectionFilled: Record<string, boolean> = {
     personalInfo: !!resumeData.personalInfo.fullName,
@@ -119,8 +132,42 @@ export default function HomePage() {
   ].join(' ').split(/\s+/).filter(Boolean).length;
   const estimatedPages = Math.max(1, Math.ceil(wordCount / 400));
 
+  // Resume completion score
+  const completionScore = useMemo(() => {
+    const checks = [
+      resumeData.personalInfo.fullName.length > 0,
+      resumeData.personalInfo.email.length > 0,
+      resumeData.personalInfo.phone.length > 0,
+      resumeData.personalInfo.location.length > 0,
+      resumeData.summary.length > 20,
+      resumeData.experience.length > 0,
+      resumeData.experience.some(e => e.highlights.length > 0),
+      resumeData.education.length > 0,
+      resumeData.skills.length > 0,
+      resumeData.skills.some(s => s.items.length >= 3),
+    ];
+    return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+  }, [resumeData]);
+
   useEffect(() => {
     setMounted(true);
+
+    // Welcome back check
+    try {
+      const lastVisit = localStorage.getItem('resumeforge-last-visit');
+      const hasData = localStorage.getItem('resumeforge-storage');
+      if (lastVisit && hasData) {
+        const elapsed = Date.now() - parseInt(lastVisit, 10);
+        if (elapsed > 60 * 60 * 1000) { // more than 1 hour
+          const date = new Date(parseInt(lastVisit, 10));
+          setLastEditTime(date.toLocaleString());
+          setShowWelcomeBack(true);
+        }
+      }
+      localStorage.setItem('resumeforge-last-visit', Date.now().toString());
+    } catch {
+      // localStorage unavailable
+    }
   }, []);
 
   const handlePrint = useReactToPrint({
@@ -265,6 +312,7 @@ export default function HomePage() {
     <div className="h-screen flex flex-col overflow-hidden">
       <FontLoader />
       <OnboardingGuide />
+      <WhatsNew />
       {/* Navbar */}
       <header className="h-14 border-b border-gray-800 bg-gray-900 shrink-0 sticky top-0 z-30">
         <div className="h-full flex items-center justify-between px-5">
@@ -353,6 +401,26 @@ export default function HomePage() {
         </div>
       </header>
 
+      {/* Completion progress bar */}
+      <div className="h-1 bg-gray-800 shrink-0">
+        <div
+          className={`h-full transition-all duration-500 ${completionScore >= 80 ? 'bg-green-500' : completionScore >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`}
+          style={{ width: `${completionScore}%` }}
+        />
+      </div>
+
+      {/* Welcome back banner */}
+      {showWelcomeBack && (
+        <div className="bg-blue-500/10 border-b border-blue-500/20 px-4 py-2 flex items-center justify-between shrink-0 animate-fade-in">
+          <span className="text-xs text-blue-400">
+            Welcome back! Last edited: {lastEditTime}
+          </span>
+          <button onClick={() => setShowWelcomeBack(false)} className="text-xs text-blue-400 hover:text-blue-300">
+            Dismiss
+          </button>
+        </div>
+      )}
+
       {/* Main content */}
       <div className="flex flex-1 overflow-hidden">
         {/* Desktop Left Panel */}
@@ -394,7 +462,12 @@ export default function HomePage() {
                           <span className="truncate">{current?.label}</span>
                           <ChevronDown className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${showSectionDropdown ? 'rotate-180' : ''}`} />
                         </button>
-                        <p className="text-xs text-muted-foreground">Step {idx + 1} of {FORM_SECTIONS.length}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-muted-foreground">Step {idx + 1} of {FORM_SECTIONS.length}</p>
+                          <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${completionScore >= 80 ? 'bg-green-500/20 text-green-400' : completionScore >= 50 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'}`}>
+                            {completionScore}% complete
+                          </span>
+                        </div>
                       </div>
                       <div className="flex gap-1 shrink-0">
                         {FORM_SECTIONS.map((s, i) => (

@@ -49,7 +49,15 @@ const TESTIMONIALS = [
 ];
 
 export default function HomePage() {
-  useEffect(() => { document.title = 'ResumeForge - Free ATS Resume Builder with 20 Templates & AI'; }, []);
+  useEffect(() => {
+    document.title = 'ResumeForge - Free ATS Resume Builder with 20 Templates & AI';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Build professional, ATS-optimized resumes with 20 free templates, AI writing assistant, and real-time ATS scoring. No sign-up required.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Build professional, ATS-optimized resumes with 20 free templates, AI writing assistant, and real-time ATS scoring. No sign-up required.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'ResumeForge - Free ATS Resume Builder with 20 Templates & AI');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -66,6 +74,25 @@ export default function HomePage() {
               <p className="text-lg text-gray-300 mb-8 max-w-lg animate-fade-in-up delay-100">
                 20 professional templates, AI-powered writing, 12 ATS analysis tools, and a cover letter builder. 100% free, no sign-up required.
               </p>
+              <div className="flex items-center justify-center gap-6 mb-6 animate-fade-in-up delay-200">
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {['bg-blue-400', 'bg-green-400', 'bg-purple-400', 'bg-orange-400', 'bg-pink-400'].map((color, i) => (
+                      <div key={i} className={`h-8 w-8 rounded-full ${color} border-2 border-gray-900 flex items-center justify-center text-white text-xs font-bold`}>
+                        {['S', 'M', 'A', 'R', 'K'][i]}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-left">
+                    <div className="flex items-center gap-1">
+                      {[1,2,3,4,5].map(i => (
+                        <Star key={i} className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-400">Trusted by 1,000+ job seekers</p>
+                  </div>
+                </div>
+              </div>
               <div className="flex flex-wrap gap-4 animate-fade-in-up delay-200">
                 <Link href="/builder" className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2">
                   Build My Resume <ArrowRight className="h-4 w-4" />

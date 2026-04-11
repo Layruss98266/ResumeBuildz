@@ -113,6 +113,17 @@ The following are **out of scope**:
 - Browser-specific vulnerabilities not caused by ResumeForge code.
 - Social engineering attacks.
 
+## Disclosure Timeline
+
+- **Day 0:** Vulnerability report received via email
+- **Day 1-3:** Acknowledgment sent to reporter
+- **Day 7:** Initial assessment and severity classification
+- **Day 30:** Fix developed and tested
+- **Day 45:** Fix deployed to production
+- **Day 90:** Public disclosure (coordinated with reporter)
+
+We commit to responding to all security reports within 72 hours.
+
 ## Updates
 
 This security policy may be updated from time to time. Changes will be reflected in this document with the date of the last update.

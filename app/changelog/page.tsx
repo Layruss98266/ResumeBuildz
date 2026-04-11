@@ -101,7 +101,15 @@ const CHANGELOG: ChangelogEntry[] = [
 ];
 
 export default function ChangelogPage() {
-  useEffect(() => { document.title = 'Changelog - ResumeForge Updates'; }, []);
+  useEffect(() => {
+    document.title = 'Changelog - ResumeForge Updates';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'ResumeForge version history and release notes. See all updates, new features, and improvements.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'ResumeForge version history and release notes. See all updates, new features, and improvements.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Changelog - ResumeForge Updates');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

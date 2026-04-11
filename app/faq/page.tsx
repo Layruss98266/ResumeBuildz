@@ -97,7 +97,15 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export default function FAQPage() {
-  useEffect(() => { document.title = 'FAQ - ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = 'FAQ - ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'Frequently asked questions about ResumeForge. Learn about features, data privacy, export formats, and AI capabilities.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Frequently asked questions about ResumeForge. Learn about features, data privacy, export formats, and AI capabilities.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'FAQ - ResumeForge');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">

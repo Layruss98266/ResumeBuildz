@@ -45,7 +45,15 @@ const sections = [
 ];
 
 export default function PrivacyPage() {
-  useEffect(() => { document.title = 'Privacy Policy - ResumeForge'; }, []);
+  useEffect(() => {
+    document.title = 'Privacy Policy - ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', 'ResumeForge privacy policy. We don\'t collect data, use cookies, or track users. All resume data stays in your browser.');
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'ResumeForge privacy policy. We don\'t collect data, use cookies, or track users. All resume data stays in your browser.');
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Privacy Policy - ResumeForge');
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
