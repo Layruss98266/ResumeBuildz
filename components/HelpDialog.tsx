@@ -294,7 +294,7 @@ export default function HelpDialog() {
 
   return (
     <>
-      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setIsOpen(true)} title="Help & Guide">
+      <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white hover:bg-gray-800" onClick={() => setIsOpen(true)} title="Help & Guide">
         <HelpCircle className="h-4 w-4" />
       </Button>
       {dialog}

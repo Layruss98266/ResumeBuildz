@@ -21,18 +21,46 @@ export default function SkillsForm() {
   const allExistingSkills = resumeData.skills.flatMap((s) => s.items.map((i) => i.toLowerCase()));
 
   const suggestedSkills = useMemo(() => {
-    if (!jobTitle || jobTitle.trim().length < 2) return [];
+    if (!jobTitle || jobTitle.trim().length < 3) return [];
     const title = jobTitle.toLowerCase().trim();
-    const matchedKeywords: string[] = [];
+    // Remove common prefixes to get the core role
+    const coreTitle = title.replace(/^(senior|junior|lead|principal|staff|chief|head of|vp of|director of|associate|intern)\s+/i, '').trim();
+    const titleWords = coreTitle.split(/\s+/).filter(w => w.length > 2);
+
+    // Score each role by match quality
+    const scored: { keywords: string[]; score: number }[] = [];
     for (const industry of INDUSTRIES) {
       for (const role of industry.roles) {
         const roleName = role.role.toLowerCase();
-        if (roleName.includes(title) || title.includes(roleName) || title.split(/\s+/).some(word => word.length > 2 && roleName.includes(word))) {
-          matchedKeywords.push(...role.keywords);
+        const coreRole = roleName.replace(/^(senior|junior|lead|principal|staff|chief|head of|vp of|director of|associate|intern)\s+/i, '').trim();
+
+        // Exact match (highest priority)
+        if (coreRole === coreTitle || roleName === title) {
+          scored.push({ keywords: role.keywords, score: 100 });
+        }
+        // Core role contained in title or vice versa
+        else if (coreRole.includes(coreTitle) || coreTitle.includes(coreRole)) {
+          scored.push({ keywords: role.keywords, score: 80 });
+        }
+        // Significant word overlap (at least 2 matching words or 1 long word)
+        else {
+          const roleWords = coreRole.split(/\s+/).filter(w => w.length > 2);
+          const matchCount = titleWords.filter(tw => roleWords.some(rw => rw === tw || (tw.length > 4 && rw.includes(tw)))).length;
+          if (matchCount >= 2 || (matchCount === 1 && titleWords.length <= 2)) {
+            scored.push({ keywords: role.keywords, score: 40 + matchCount * 15 });
+          }
         }
       }
     }
-    const unique = [...new Set(matchedKeywords)];
+
+    // Sort by score, take best matches
+    scored.sort((a, b) => b.score - a.score);
+    const topKeywords: string[] = [];
+    for (const s of scored.slice(0, 3)) {
+      topKeywords.push(...s.keywords);
+    }
+
+    const unique = [...new Set(topKeywords)];
     return unique
       .filter((kw) => !allExistingSkills.includes(kw.toLowerCase()))
       .slice(0, 20);
