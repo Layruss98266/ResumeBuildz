@@ -231,7 +231,7 @@ export default function HomePage() {
 
   return (
     <ErrorBoundary>
-    <div className="h-screen flex flex-col overflow-hidden dark">
+    <div className="h-screen flex flex-col overflow-hidden">
       <FontLoader />
       <OnboardingGuide />
       {/* Navbar */}
@@ -254,7 +254,7 @@ export default function HomePage() {
 
           {/* Center - Mobile tabs */}
           <div className="flex md:hidden">
-            <div className="flex border border-gray-700 rounded-lg overflow-hidden bg-gray-800">
+            <div className="flex border rounded-lg overflow-hidden bg-muted/50">
               {[
                 { id: 'edit' as const, icon: PenLine, label: 'Edit' },
                 { id: 'preview' as const, icon: Eye, label: 'Preview' },
@@ -266,7 +266,7 @@ export default function HomePage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`px-2 py-1.5 text-[11px] flex items-center gap-1 transition-all ${
-                    activeTab === tab.id ? 'bg-blue-500 text-white' : 'hover:bg-gray-700 text-gray-300'
+                    activeTab === tab.id ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'
                   }`}
                 >
                   <tab.icon className="h-3 w-3" />
@@ -302,20 +302,20 @@ export default function HomePage() {
                   </>
                 )}
               </div>
-              <div className="w-px h-6 bg-gray-700 mx-1" />
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-300 hover:text-white hover:bg-gray-800" onClick={handleImportFile} title="Import Resume (PDF, DOCX, TXT, HTML, MD)">
+              <div className="w-px h-6 bg-gray-600 mx-1" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={handleImportFile} title="Import Resume (PDF, DOCX, TXT, HTML, MD)">
                 <Upload className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-300 hover:text-white hover:bg-gray-800" onClick={handleReset} title="Reset">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={handleReset} title="Reset">
                 <RotateCcw className="h-4 w-4" />
               </Button>
               <ResumeProfileManager />
               <HelpDialog />
             </div>
 
-            <div className="w-px h-6 bg-gray-700 mx-0.5 hidden md:block" />
+            <div className="w-px h-6 bg-gray-600 mx-0.5 hidden md:block" />
 
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-300 hover:text-white hover:bg-gray-800" onClick={toggleDarkMode}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={toggleDarkMode}>
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
           </div>
@@ -590,19 +590,19 @@ export default function HomePage() {
 
               <button
                 onClick={() => setActiveTab(activeTab === 'templates' ? 'edit' : 'templates')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'templates' ? 'bg-blue-500 text-white shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'templates' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
               >
                 <Settings2 className="h-3.5 w-3.5" /> Style
               </button>
               <button
                 onClick={() => setActiveTab(activeTab === 'ats' ? 'edit' : 'ats')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ats' ? 'bg-blue-500 text-white shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ats' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
               >
                 <BarChart3 className="h-3.5 w-3.5" /> ATS
               </button>
               <button
                 onClick={() => setActiveTab(activeTab === 'ai' ? 'edit' : 'ai')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ai' ? 'bg-blue-500 text-white shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ai' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
               >
                 <Sparkles className="h-3.5 w-3.5" /> AI
               </button>
@@ -665,19 +665,19 @@ export default function HomePage() {
       </div>
 
       {/* Footer */}
-      <footer className="h-10 border-t border-gray-800 bg-gray-900 flex items-center justify-between px-5 shrink-0">
-        <a href="/" className="text-xs text-gray-400 hover:text-white hidden sm:inline transition-colors">
+      <footer className="h-10 border-t bg-muted/30 flex items-center justify-between px-5 shrink-0">
+        <a href="/" className="text-xs text-muted-foreground hover:text-foreground hidden sm:inline transition-colors">
           ResumeForge
         </a>
         <div className="flex items-center gap-4 mx-auto md:mx-0">
-          <span className="text-xs text-gray-400 flex items-center gap-1">
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
             Designed with <Heart className="h-3 w-3 text-red-500 fill-red-500" /> by Surya L
           </span>
           <a
             href="https://github.com/Surya8991"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors"
+            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
           >
             <ExternalLink className="h-3.5 w-3.5" /> GitHub
           </a>
