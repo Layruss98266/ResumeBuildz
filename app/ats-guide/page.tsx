@@ -1,85 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-
-const navLinks = [
-  { href: '/home', label: 'Home' },
-  { href: '/templates', label: 'Templates' },
-  { href: '/ats-guide', label: 'ATS Guide' },
-  { href: '/resume-tips', label: 'Resume Tips' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
+import SiteNavbar from '@/components/SiteNavbar';
+import SiteFooter from '@/components/SiteFooter';
 
 export default function ATSGuidePage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
-      <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="text-xl font-bold text-white">
-              Resume<span className="text-blue-400">Forge</span>
-            </Link>
-            <div className="hidden md:flex items-center space-x-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-sm font-medium transition-colors ${
-                    link.href === '/ats-guide'
-                      ? 'text-blue-400'
-                      : 'text-gray-300 hover:text-white'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Link
-                href="/"
-                className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
-              >
-                Build Resume
-              </Link>
-            </div>
-            <button
-              className="md:hidden text-gray-300 hover:text-white"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {mobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-          {mobileMenuOpen && (
-            <div className="md:hidden pb-4 space-y-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="block text-sm text-gray-300 hover:text-white py-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Link
-                href="/"
-                className="block bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg text-center mt-2"
-              >
-                Build Resume
-              </Link>
-            </div>
-          )}
-        </div>
-      </nav>
+      <SiteNavbar />
 
       <main className="flex-1">
         {/* Hero */}
@@ -271,7 +199,7 @@ export default function ATSGuidePage() {
               Use our free ATS score checker to see how your resume performs and get actionable suggestions for improvement.
             </p>
             <Link
-              href="/"
+              href="/builder"
               className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-lg transition-colors text-lg"
             >
               Check ATS Score Now
@@ -280,45 +208,7 @@ export default function ATSGuidePage() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 border-t border-gray-800 py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="text-white font-semibold mb-3">Product</h3>
-              <ul className="space-y-2">
-                <li><Link href="/" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Resume Builder</Link></li>
-                <li><Link href="/templates" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Templates</Link></li>
-                <li><Link href="/ats-guide" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">ATS Guide</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-3">Resources</h3>
-              <ul className="space-y-2">
-                <li><Link href="/resume-tips" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Resume Tips</Link></li>
-                <li><Link href="/cover-letter" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Cover Letters</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-3">Company</h3>
-              <ul className="space-y-2">
-                <li><Link href="/about" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">About</Link></li>
-                <li><Link href="/contact" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Contact</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-white font-semibold mb-3">Legal</h3>
-              <ul className="space-y-2">
-                <li><Link href="#" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
-                <li><Link href="#" className="text-sm text-gray-400 hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center">
-            <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} ResumeForge. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

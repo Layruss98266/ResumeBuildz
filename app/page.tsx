@@ -1,690 +1,260 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { useReactToPrint } from 'react-to-print';
-import { useResumeStore } from '@/store/useResumeStore';
-import { downloadDocx } from '@/lib/exportDocx';
-import { downloadHtml } from '@/lib/exportHtml';
-import { importResumeFromFile, SUPPORTED_IMPORT_FORMATS } from '@/lib/importResume';
-import ResumePreview from '@/components/preview/ResumePreview';
-import HelpDialog from '@/components/HelpDialog';
-import ResumeProfileManager from '@/components/ResumeProfileManager';
-import PersonalInfoForm from '@/components/forms/PersonalInfoForm';
-import SummaryForm from '@/components/forms/SummaryForm';
-import ExperienceForm from '@/components/forms/ExperienceForm';
-import EducationForm from '@/components/forms/EducationForm';
-import SkillsForm from '@/components/forms/SkillsForm';
-import ProjectsForm from '@/components/forms/ProjectsForm';
-import CertificationsForm from '@/components/forms/CertificationsForm';
-import LanguagesForm from '@/components/forms/LanguagesForm';
-import TemplateSelector from '@/components/TemplateSelector';
-import FontLoader from '@/components/FontLoader';
-import ErrorBoundary from '@/components/ErrorBoundary';
-import OnboardingGuide from '@/components/OnboardingGuide';
-import SectionReorder from '@/components/SectionReorder';
-import ATSScoreChecker from '@/components/ats/ATSScoreChecker';
-import AISuggestions from '@/components/ats/AISuggestions';
-import CustomSectionForm from '@/components/forms/CustomSectionForm';
-import CoverLetterForm from '@/components/forms/CoverLetterForm';
-import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
 import {
-  Download,
-  Upload,
-  RotateCcw,
-  Eye,
-  PenLine,
-  Settings2,
-  BarChart3,
-  User,
   FileText,
-  Briefcase,
-  GraduationCap,
-  Wrench,
-  FolderOpen,
-  Award,
-  Globe,
-  Moon,
-  Sun,
-  ChevronLeft,
-  ChevronRight,
-  Maximize2,
-  Minimize2,
-  FileType,
-  Code,
-  ChevronDown,
-  ExternalLink,
-  Heart,
   Sparkles,
-  Plus,
-  Layers,
-  Mail,
+  BarChart3,
+  Shield,
+  UserX,
+  ExternalLink,
+  Layout,
+  CheckCircle,
+  ArrowRight,
+  Star,
 } from 'lucide-react';
+import SiteNavbar from '@/components/SiteNavbar';
+import SiteFooter from '@/components/SiteFooter';
 
-const BASE_SECTIONS = [
-  { id: 'personalInfo', label: 'Personal Info', icon: User },
-  { id: 'summary', label: 'Summary', icon: FileText },
-  { id: 'experience', label: 'Experience', icon: Briefcase },
-  { id: 'education', label: 'Education', icon: GraduationCap },
-  { id: 'skills', label: 'Skills', icon: Wrench },
-  { id: 'projects', label: 'Projects', icon: FolderOpen },
-  { id: 'certifications', label: 'Certifications', icon: Award },
-  { id: 'languages', label: 'Languages', icon: Globe },
-  { id: 'coverLetter', label: 'Cover Letter', icon: Mail },
+const FEATURES = [
+  { icon: Layout, title: '20 Templates', desc: 'Professionally designed, ATS-optimized resume templates for every industry.' },
+  { icon: Sparkles, title: 'AI Writing', desc: 'AI-powered bullet points, summaries, and cover letters via Groq.' },
+  { icon: BarChart3, title: 'ATS Score', desc: '12 built-in analysis tools to maximize your resume ATS score.' },
+  { icon: Shield, title: 'Privacy First', desc: 'All data stays in your browser. Nothing is ever sent to a server.' },
+  { icon: UserX, title: 'No Sign-up', desc: 'Start building immediately. No account, no email, no friction.' },
+  { icon: ExternalLink, title: 'Open Source', desc: 'Fully open-source on GitHub. Contribute, fork, or self-host.' },
+];
+
+const STEPS = [
+  { num: '1', title: 'Fill Details', desc: 'Enter your experience, education, and skills.' },
+  { num: '2', title: 'Choose Template', desc: 'Pick from 20 ATS-friendly templates.' },
+  { num: '3', title: 'Check ATS', desc: 'Run 12 analysis tools to optimize your score.' },
+  { num: '4', title: 'Export PDF', desc: 'Download your polished resume instantly.' },
+];
+
+const SHOWCASE_TEMPLATES = [
+  { name: 'Classic', color: '#1a1a1a' },
+  { name: 'Modern', color: '#2563eb' },
+  { name: 'Creative', color: '#db2777' },
+  { name: 'Tech', color: '#10b981' },
+  { name: 'Executive', color: '#4338ca' },
+  { name: 'Nordic', color: '#64748b' },
+];
+
+const TESTIMONIALS = [
+  { name: 'Alex Rivera', role: 'Software Engineer at Google', text: 'ResumeForge helped me rewrite my resume in under 30 minutes. The ATS checker caught issues I never would have found on my own.' },
+  { name: 'Priya Sharma', role: 'Marketing Manager', text: 'The templates are beautiful and the AI suggestions were surprisingly good. I landed 3 interviews in my first week.' },
+  { name: 'James Chen', role: 'Recent Graduate', text: 'As a new grad with no budget, having a completely free tool with this level of quality was a game-changer.' },
 ];
 
 export default function HomePage() {
-  const resumeRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<'edit' | 'preview' | 'templates' | 'ats' | 'ai'>('edit');
-  const [activeSection, setActiveSection] = useState('personalInfo');
-  const [isDark, setIsDark] = useState(false);
-  const [previewScale, setPreviewScale] = useState(0.8);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [isFullPreview, setIsFullPreview] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [showExportMenu, setShowExportMenu] = useState(false);
-  const [showSectionDropdown, setShowSectionDropdown] = useState(false);
-  const [showReorder, setShowReorder] = useState(false);
-  const { importData, resetData, addCustomSection, resumeData } = useResumeStore();
-
-  // Dynamic sections: base + custom sections
-  const customSections = resumeData.customSections.map(s => ({
-    id: `custom-${s.id}`, label: s.title || 'Custom', icon: Layers,
-  }));
-  const FORM_SECTIONS = [...BASE_SECTIONS, ...customSections];
-
-  // Word count / page estimate
-  const wordCount = [
-    resumeData.summary,
-    ...resumeData.experience.flatMap(e => [e.description, ...e.highlights]),
-    ...resumeData.education.flatMap(e => e.highlights),
-    ...resumeData.skills.flatMap(s => s.items),
-    ...resumeData.projects.flatMap(p => [p.description, ...p.highlights]),
-  ].join(' ').split(/\s+/).filter(Boolean).length;
-  const estimatedPages = Math.max(1, Math.ceil(wordCount / 400));
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handlePrint = useReactToPrint({
-    contentRef: resumeRef,
-    documentTitle: 'Resume',
-  });
-
-  const toggleDarkMode = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle('dark');
-  };
-
-  const handleExportJSON = () => {
-    const data = useResumeStore.getState().resumeData;
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'resume-data.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const [isImporting, setIsImporting] = useState(false);
-
-  const handleImportFile = () => {
-    if (isImporting) return;
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = SUPPORTED_IMPORT_FORMATS;
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) return;
-      setIsImporting(true);
-      try {
-        const result = await importResumeFromFile(file);
-        if (result.success && result.data) {
-          importData(result.data);
-          alert(`Resume imported from ${file.name}! Review the extracted data and make any corrections.`);
-        } else {
-          alert(result.error || 'Failed to import file');
-        }
-      } catch {
-        alert('Failed to import file. Please try a different format.');
-      } finally {
-        setIsImporting(false);
-      }
-    };
-    input.click();
-  };
-
-  const handleExportDocx = async () => {
-    const { resumeData, primaryColor } = useResumeStore.getState();
-    await downloadDocx(resumeData, primaryColor);
-    setShowExportMenu(false);
-  };
-
-  const handleExportHtml = () => {
-    const { resumeData, primaryColor } = useResumeStore.getState();
-    downloadHtml(resumeData, primaryColor);
-    setShowExportMenu(false);
-  };
-
-  const handleReset = () => {
-    if (confirm('Are you sure you want to reset all data? This cannot be undone.')) {
-      resetData();
-    }
-  };
-
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-        e.preventDefault();
-        handlePrint();
-      }
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        handleExportJSON();
-      }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  });
-
-  const handleAddCustomSection = () => {
-    const id = Math.random().toString(36).substring(2, 9);
-    addCustomSection({ id, title: 'New Section', items: [] });
-    setActiveSection(`custom-${id}`);
-  };
-
-  const renderForm = () => {
-    if (activeSection.startsWith('custom-')) {
-      const customId = activeSection.replace('custom-', '');
-      return <CustomSectionForm sectionId={customId} />;
-    }
-    switch (activeSection) {
-      case 'personalInfo': return <PersonalInfoForm />;
-      case 'summary': return <SummaryForm />;
-      case 'experience': return <ExperienceForm />;
-      case 'education': return <EducationForm />;
-      case 'skills': return <SkillsForm />;
-      case 'projects': return <ProjectsForm />;
-      case 'certifications': return <CertificationsForm />;
-      case 'languages': return <LanguagesForm />;
-      case 'coverLetter': return <CoverLetterForm />;
-      default: return <PersonalInfoForm />;
-    }
-  };
-
-  if (!mounted) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-background">
-        <div className="flex flex-col items-center gap-3">
-          <Sparkles className="h-12 w-12 text-primary animate-pulse" />
-          <span className="text-2xl font-bold text-foreground">ResumeForge</span>
-          <span className="text-sm text-muted-foreground">Loading...</span>
-          <span className="text-xs text-muted-foreground/60 mt-1">Built by Surya L</span>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <ErrorBoundary>
-    <div className="h-screen flex flex-col overflow-hidden">
-      <FontLoader />
-      <OnboardingGuide />
-      {/* Navbar */}
-      <header className="h-16 border-b bg-background/95 backdrop-blur-sm shrink-0 sticky top-0 z-30">
-        <div className="h-full flex items-center justify-between px-5">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2.5">
-              <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center">
-                <FileText className="h-4.5 w-4.5 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-lg font-bold tracking-tight leading-none">
-                  <span className="text-primary">Resume</span><span className="text-foreground">Forge</span>
-                </h1>
-                <span className="text-[11px] text-muted-foreground leading-none">ATS-Friendly Resume Builder</span>
+    <div className="min-h-screen flex flex-col">
+      <SiteNavbar />
+
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                Build ATS-Friendly Resumes in Minutes
+              </h1>
+              <p className="text-lg text-gray-300 mb-8 max-w-lg">
+                20 professional templates, AI-powered writing, 12 ATS analysis tools, and a cover letter builder. 100% free, no sign-up required.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link href="/builder" className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold transition flex items-center gap-2">
+                  Build My Resume <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link href="/templates" className="border border-gray-600 hover:border-gray-400 text-white px-6 py-3 rounded-lg font-semibold transition">
+                  View Templates
+                </Link>
               </div>
             </div>
-          </div>
-
-          {/* Center - Mobile tabs */}
-          <div className="flex md:hidden">
-            <div className="flex border rounded-lg overflow-hidden bg-muted/50">
-              {[
-                { id: 'edit' as const, icon: PenLine, label: 'Edit' },
-                { id: 'preview' as const, icon: Eye, label: 'Preview' },
-                { id: 'templates' as const, icon: Settings2, label: 'Style' },
-                { id: 'ats' as const, icon: BarChart3, label: 'ATS' },
-                { id: 'ai' as const, icon: Sparkles, label: 'AI' },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`px-2 py-1.5 text-[11px] flex items-center gap-1 transition-all ${
-                    activeTab === tab.id ? 'bg-primary text-primary-foreground' : 'hover:bg-muted text-muted-foreground'
-                  }`}
-                >
-                  <tab.icon className="h-3 w-3" />
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Right - Actions */}
-          <div className="flex items-center gap-1.5">
-            {/* Desktop actions */}
-            <div className="hidden md:flex items-center gap-1">
-              {/* Download dropdown */}
-              <div className="relative">
-                <Button variant="default" size="sm" onClick={() => setShowExportMenu(!showExportMenu)} className="gap-1.5 shadow-sm">
-                  <Download className="h-3.5 w-3.5" /> Export <ChevronDown className="h-3 w-3 opacity-60" />
-                </Button>
-                {showExportMenu && (
-                  <>
-                    <div className="fixed inset-0 z-40" onClick={() => setShowExportMenu(false)} />
-                    <div className="absolute right-0 top-full mt-1.5 z-50 bg-background border rounded-xl shadow-xl py-1.5 w-48 animate-in fade-in slide-in-from-top-1 duration-150">
-                      <button onClick={() => { handlePrint(); setShowExportMenu(false); }} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <Download className="h-4 w-4 text-muted-foreground" /> PDF <span className="text-[11px] text-emerald-600 font-medium ml-auto">Best for ATS</span>
-                      </button>
-                      <button onClick={handleExportDocx} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <FileType className="h-4 w-4 text-muted-foreground" /> DOCX <span className="text-[11px] text-muted-foreground ml-auto">Word</span>
-                      </button>
-                      <button onClick={handleExportHtml} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <Code className="h-4 w-4 text-muted-foreground" /> HTML <span className="text-[11px] text-muted-foreground ml-auto">Web</span>
-                      </button>
-                    </div>
-                  </>
-                )}
+            <div className="hidden md:flex justify-center">
+              <div className="w-72 h-96 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 flex items-center justify-center">
+                <div className="text-center">
+                  <FileText className="h-16 w-16 text-blue-400 mx-auto mb-4" />
+                  <p className="text-gray-300 text-sm">Resume Preview</p>
+                </div>
               </div>
-              <div className="w-px h-6 bg-border mx-1" />
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleImportFile} title="Import Resume (PDF, DOCX, TXT, HTML, MD)">
-                <Upload className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleReset} title="Reset">
-                <RotateCcw className="h-4 w-4" />
-              </Button>
-              <ResumeProfileManager />
-              <HelpDialog />
             </div>
-
-            <div className="w-px h-6 bg-border mx-0.5 hidden md:block" />
-
-            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={toggleDarkMode}>
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </Button>
           </div>
         </div>
-      </header>
+      </section>
 
-      {/* Main content */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Desktop Left Panel */}
-        <div className={`hidden md:flex flex-col border-r bg-background transition-all duration-200 shrink-0 overflow-hidden ${sidebarCollapsed ? 'w-[52px]' : 'w-[460px]'}`}>
-          {/* Section header - sticky */}
-          <div className="flex items-center border-b bg-muted/30 sticky top-0 z-10 shrink-0">
-            {sidebarCollapsed ? (
-              <div className="flex flex-col gap-0.5 p-1.5 flex-1">
-                {FORM_SECTIONS.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => { setActiveSection(section.id); setSidebarCollapsed(false); }}
-                    className={`flex items-center justify-center p-2 rounded-md transition-all ${
-                      activeSection === section.id
-                        ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'hover:bg-muted text-muted-foreground'
-                    }`}
-                    title={section.label}
-                  >
-                    <section.icon className="h-4 w-4" />
-                  </button>
+      {/* Stats Bar */}
+      <section className="bg-blue-500 py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-white">
+            {[
+              { num: '20+', label: 'Templates' },
+              { num: '201', label: 'Roles' },
+              { num: '12', label: 'ATS Tools' },
+              { num: '100%', label: 'Free' },
+            ].map((s) => (
+              <div key={s.label}>
+                <div className="text-2xl md:text-3xl font-bold">{s.num}</div>
+                <div className="text-blue-100 text-sm">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">Everything You Need</h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Professional resume tools that are completely free and private.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {FEATURES.map((f) => (
+              <div key={f.title} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition">
+                <f.icon className="h-10 w-10 text-blue-400 mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{f.title}</h3>
+                <p className="text-gray-600 text-sm">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">How It Works</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {STEPS.map((step) => (
+              <div key={step.num} className="text-center">
+                <div className="w-14 h-14 bg-blue-500 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
+                  {step.num}
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{step.title}</h3>
+                <p className="text-gray-600 text-sm">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Template Showcase */}
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">Template Showcase</h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            Pick from 20 professionally designed templates, each optimized for ATS.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {SHOWCASE_TEMPLATES.map((t) => (
+              <div key={t.name} className="rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition">
+                <div className="h-40" style={{ backgroundColor: t.color, opacity: 0.85 }} />
+                <div className="p-4 bg-white">
+                  <h3 className="font-semibold text-gray-900">{t.name}</h3>
+                  <Link href="/templates" className="text-blue-400 text-sm hover:underline">
+                    View all templates
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ATS Section */}
+      <section className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Built-in ATS Optimization</h2>
+              <p className="text-gray-600 mb-6">
+                12 analysis tools ensure your resume passes through Applicant Tracking Systems.
+              </p>
+              <ul className="space-y-3">
+                {[
+                  'Readability score analysis',
+                  'Formatting compatibility check',
+                  'Active voice detection',
+                  'Industry keyword matching',
+                  'Section completeness audit',
+                  'Bullet point optimization',
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-blue-400 shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-semibold text-gray-900">ATS Score</h3>
+                <span className="text-3xl font-bold text-blue-500">92%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3 mb-8">
+                <div className="bg-blue-500 h-3 rounded-full" style={{ width: '92%' }} />
+              </div>
+              <div className="space-y-4">
+                {[
+                  { label: 'Keywords', score: 95 },
+                  { label: 'Formatting', score: 88 },
+                  { label: 'Readability', score: 93 },
+                ].map((item) => (
+                  <div key={item.label}>
+                    <div className="flex justify-between text-sm mb-1">
+                      <span className="text-gray-600">{item.label}</span>
+                      <span className="text-gray-900 font-medium">{item.score}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-blue-400 h-2 rounded-full" style={{ width: `${item.score}%` }} />
+                    </div>
+                  </div>
                 ))}
               </div>
-            ) : (
-              <div className="flex-1 flex items-center gap-3 px-4 py-2 relative">
-                {(() => {
-                  const idx = FORM_SECTIONS.findIndex(s => s.id === activeSection);
-                  const current = FORM_SECTIONS[idx];
-                  return (
-                    <>
-                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                        {current && <current.icon className="h-4 w-4 text-primary" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <button
-                          onClick={() => setShowSectionDropdown(!showSectionDropdown)}
-                          className="flex items-center gap-1.5 text-base font-semibold hover:text-primary transition-colors w-full text-left"
-                        >
-                          <span className="truncate">{current?.label}</span>
-                          <ChevronDown className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${showSectionDropdown ? 'rotate-180' : ''}`} />
-                        </button>
-                        <p className="text-xs text-muted-foreground">Step {idx + 1} of {FORM_SECTIONS.length}</p>
-                      </div>
-                      <div className="flex gap-1 shrink-0">
-                        {FORM_SECTIONS.map((s, i) => (
-                          <button
-                            key={s.id}
-                            onClick={() => setActiveSection(s.id)}
-                            className={`h-1.5 rounded-full transition-all ${
-                              i === idx ? 'w-4 bg-primary' : i < idx ? 'w-1.5 bg-primary/40' : 'w-1.5 bg-muted-foreground/20'
-                            }`}
-                            title={s.label}
-                          />
-                        ))}
-                      </div>
-                      {showSectionDropdown && (
-                        <>
-                          <div className="fixed inset-0 z-40" onClick={() => setShowSectionDropdown(false)} />
-                          <div className="absolute left-4 top-full mt-1 z-50 bg-background border rounded-xl shadow-xl py-1 w-64 animate-in fade-in slide-in-from-top-1 duration-150">
-                            {FORM_SECTIONS.map((s, i) => (
-                              <button
-                                key={s.id}
-                                onClick={() => { setActiveSection(s.id); setShowSectionDropdown(false); }}
-                                className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors ${
-                                  activeSection === s.id
-                                    ? 'bg-primary/10 text-primary font-medium'
-                                    : 'hover:bg-muted text-foreground'
-                                }`}
-                              >
-                                <s.icon className={`h-4 w-4 shrink-0 ${activeSection === s.id ? 'text-primary' : 'text-muted-foreground'}`} />
-                                <span className="flex-1 text-left">{s.label}</span>
-                                <span className="text-xs text-muted-foreground">{i + 1}/{FORM_SECTIONS.length}</span>
-                              </button>
-                            ))}
-                          </div>
-                        </>
-                      )}
-                    </>
-                  );
-                })()}
-              </div>
-            )}
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="px-1.5 hover:bg-muted border-l transition-colors shrink-0 self-stretch"
-            >
-              {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-            </button>
-          </div>
-
-          {!sidebarCollapsed && (
-            <ScrollArea className="flex-1 min-h-0">
-              <div className="p-4 pb-8">
-                {showReorder ? (
-                  <div>
-                    <SectionReorder />
-                    <Button variant="outline" size="sm" className="w-full mt-3" onClick={() => setShowReorder(false)}>
-                      Done Reordering
-                    </Button>
-                  </div>
-                ) : (
-                  <>
-                    {renderForm()}
-
-                    {/* Step navigation */}
-                    <div className="mt-6 pt-4 border-t flex items-center justify-between">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          const idx = FORM_SECTIONS.findIndex(s => s.id === activeSection);
-                          if (idx > 0) setActiveSection(FORM_SECTIONS[idx - 1].id);
-                        }}
-                        disabled={FORM_SECTIONS.findIndex(s => s.id === activeSection) === 0}
-                        className="gap-1"
-                      >
-                        <ChevronLeft className="h-4 w-4" /> Previous
-                      </Button>
-                      <span className="text-xs text-muted-foreground font-medium">
-                        {FORM_SECTIONS.findIndex(s => s.id === activeSection) + 1} / {FORM_SECTIONS.length}
-                      </span>
-                      <Button
-                        variant="default"
-                        size="sm"
-                        onClick={() => {
-                          const idx = FORM_SECTIONS.findIndex(s => s.id === activeSection);
-                          if (idx < FORM_SECTIONS.length - 1) setActiveSection(FORM_SECTIONS[idx + 1].id);
-                        }}
-                        disabled={FORM_SECTIONS.findIndex(s => s.id === activeSection) === FORM_SECTIONS.length - 1}
-                        className="gap-1"
-                      >
-                        Next <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </div>
-
-                    <Separator className="my-3" />
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => setShowReorder(true)}
-                        className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
-                      >
-                        <Layers className="h-4 w-4" /> Reorder Sections
-                      </button>
-                      <button
-                        onClick={handleAddCustomSection}
-                        className="text-sm text-primary hover:text-primary/80 flex items-center gap-1.5 transition-colors"
-                      >
-                        <Plus className="h-4 w-4" /> Add Section
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            </ScrollArea>
-          )}
-        </div>
-
-        {/* Mobile view */}
-        <div className="flex-1 md:hidden">
-          {activeTab === 'edit' && (
-            <ScrollArea className="h-full">
-              <div className="p-4 pb-20">
-                {/* Step indicator */}
-                {(() => {
-                  const idx = FORM_SECTIONS.findIndex(s => s.id === activeSection);
-                  const current = FORM_SECTIONS[idx];
-                  return (
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                        {current && <current.icon className="h-4 w-4 text-primary" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold truncate">{current?.label}</p>
-                        <p className="text-[10px] text-muted-foreground">Step {idx + 1} of {FORM_SECTIONS.length}</p>
-                      </div>
-                      <div className="flex gap-1">
-                        {FORM_SECTIONS.map((s, i) => (
-                          <button
-                            key={s.id}
-                            onClick={() => setActiveSection(s.id)}
-                            className={`h-1.5 rounded-full transition-all ${
-                              i === idx ? 'w-4 bg-primary' : i < idx ? 'w-1.5 bg-primary/40' : 'w-1.5 bg-muted-foreground/20'
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {renderForm()}
-
-                {/* Step navigation */}
-                <div className="mt-6 pt-4 border-t flex items-center justify-between">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      const idx = FORM_SECTIONS.findIndex(s => s.id === activeSection);
-                      if (idx > 0) setActiveSection(FORM_SECTIONS[idx - 1].id);
-                    }}
-                    disabled={FORM_SECTIONS.findIndex(s => s.id === activeSection) === 0}
-                    className="gap-1"
-                  >
-                    <ChevronLeft className="h-4 w-4" /> Prev
-                  </Button>
-                  <span className="text-[10px] text-muted-foreground">
-                    {FORM_SECTIONS.findIndex(s => s.id === activeSection) + 1} / {FORM_SECTIONS.length}
-                  </span>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={() => {
-                      const idx = FORM_SECTIONS.findIndex(s => s.id === activeSection);
-                      if (idx < FORM_SECTIONS.length - 1) setActiveSection(FORM_SECTIONS[idx + 1].id);
-                    }}
-                    disabled={FORM_SECTIONS.findIndex(s => s.id === activeSection) === FORM_SECTIONS.length - 1}
-                    className="gap-1"
-                  >
-                    Next <ChevronRight className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </ScrollArea>
-          )}
-          {activeTab === 'preview' && (
-            <div className="h-full overflow-auto bg-gray-100 dark:bg-gray-900 p-4">
-              <div className="flex justify-center">
-                <div style={{ transform: `scale(${previewScale})`, transformOrigin: 'top center' }}>
-                  <ResumePreview ref={resumeRef} />
-                </div>
-              </div>
-            </div>
-          )}
-          {activeTab === 'templates' && (
-            <ScrollArea className="h-full">
-              <div className="p-4"><TemplateSelector /></div>
-            </ScrollArea>
-          )}
-          {activeTab === 'ats' && (
-            <ScrollArea className="h-full">
-              <div className="p-4"><ATSScoreChecker /></div>
-            </ScrollArea>
-          )}
-          {activeTab === 'ai' && (
-            <ScrollArea className="h-full">
-              <div className="p-4"><AISuggestions /></div>
-            </ScrollArea>
-          )}
-        </div>
-
-        {/* Desktop Right Panel - Preview */}
-        <div className={`hidden md:flex flex-col flex-1 min-w-0 ${isFullPreview ? 'absolute inset-0 z-50 bg-background' : ''}`}>
-          {/* Preview toolbar */}
-          <div className="h-11 border-b flex items-center justify-between px-4 shrink-0 bg-muted/30">
-            <div className="flex items-center gap-2">
-              <Eye className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Live Preview</span>
-              <span className="text-xs text-muted-foreground ml-2">~{estimatedPages} page{estimatedPages > 1 ? 's' : ''}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <button onClick={() => setPreviewScale(Math.max(0.3, previewScale - 0.1))} className="text-sm px-2 py-0.5 rounded hover:bg-muted transition-colors">-</button>
-              <span className="text-xs text-muted-foreground w-12 text-center font-mono">{Math.round(previewScale * 100)}%</span>
-              <button onClick={() => setPreviewScale(Math.min(1, previewScale + 0.1))} className="text-sm px-2 py-0.5 rounded hover:bg-muted transition-colors">+</button>
-              <div className="w-px h-4 bg-border mx-1" />
-
-              <button
-                onClick={() => setActiveTab(activeTab === 'templates' ? 'edit' : 'templates')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'templates' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
-              >
-                <Settings2 className="h-3.5 w-3.5" /> Style
-              </button>
-              <button
-                onClick={() => setActiveTab(activeTab === 'ats' ? 'edit' : 'ats')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ats' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
-              >
-                <BarChart3 className="h-3.5 w-3.5" /> ATS
-              </button>
-              <button
-                onClick={() => setActiveTab(activeTab === 'ai' ? 'edit' : 'ai')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ai' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
-              >
-                <Sparkles className="h-3.5 w-3.5" /> AI
-              </button>
-
-              <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setIsFullPreview(!isFullPreview)}>
-                {isFullPreview ? <Minimize2 className="h-3.5 w-3.5" /> : <Maximize2 className="h-3.5 w-3.5" />}
-              </Button>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="flex flex-1 overflow-hidden">
-            <div className="flex-1 min-w-0 overflow-auto bg-gray-100 dark:bg-gray-900 resume-preview-container">
-              <div className="flex justify-center p-4 pb-16">
-                <div style={{ width: `calc(210mm * ${previewScale})`, flexShrink: 0 }}>
-                  <div
-                    className="resume-preview-scaled shadow-xl rounded-sm origin-top-left"
-                    style={{
-                      transform: `scale(${previewScale})`,
-                      width: '210mm',
-                    }}
-                  >
-                    <ResumePreview ref={resumeRef} />
-                  </div>
+      {/* Testimonials */}
+      <section className="bg-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">What People Say</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {TESTIMONIALS.map((t) => (
+              <div key={t.name} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-600 mb-6 text-sm leading-relaxed">{t.text}</p>
+                <div>
+                  <p className="font-semibold text-gray-900">{t.name}</p>
+                  <p className="text-gray-500 text-sm">{t.role}</p>
                 </div>
               </div>
-            </div>
-
-            {(activeTab === 'templates' || activeTab === 'ats' || activeTab === 'ai') && (
-              <div className="w-[300px] xl:w-[340px] border-l overflow-y-auto bg-background shrink-0">
-                <ScrollArea className="h-full">
-                  <div className="p-4">
-                    {activeTab === 'templates' && <TemplateSelector />}
-                    {activeTab === 'ats' && <ATSScoreChecker />}
-                    {activeTab === 'ai' && <AISuggestions />}
-                  </div>
-                </ScrollArea>
-              </div>
-            )}
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Mobile bottom bar */}
-      <div className="md:hidden border-t p-2 flex justify-center gap-1.5 bg-background/95 backdrop-blur-sm">
-        <Button size="sm" onClick={() => handlePrint()} className="gap-1 shadow-sm">
-          <Download className="h-3.5 w-3.5" /> PDF
-        </Button>
-        <Button variant="outline" size="sm" onClick={handleExportDocx} className="gap-1">
-          <FileType className="h-3.5 w-3.5" /> DOCX
-        </Button>
-        <Button variant="outline" size="sm" onClick={handleExportHtml} className="gap-1">
-          <Code className="h-3.5 w-3.5" /> HTML
-        </Button>
-        <Button variant="ghost" size="sm" onClick={handleImportFile} title="Import Resume">
-          <Upload className="h-3.5 w-3.5" />
-        </Button>
-        <Button variant="ghost" size="sm" onClick={handleReset} title="Reset">
-          <RotateCcw className="h-3.5 w-3.5" />
-        </Button>
-      </div>
-
-      {/* Footer */}
-      <footer className="h-10 border-t bg-muted/30 flex items-center justify-between px-5 shrink-0">
-        <span className="text-xs text-muted-foreground hidden sm:inline">
-          ResumeForge - Free ATS-Friendly Resume Builder
-        </span>
-        <div className="flex items-center gap-4 mx-auto md:mx-0">
-          <span className="text-xs text-muted-foreground flex items-center gap-1">
-            Designed with <Heart className="h-3 w-3 text-red-500 fill-red-500" /> by Surya L
-          </span>
-          <a
-            href="https://github.com/Surya8991"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
-          >
-            <ExternalLink className="h-3.5 w-3.5" /> GitHub
-          </a>
+      {/* CTA */}
+      <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black py-20">
+        <div className="max-w-3xl mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Land Your Dream Job?</h2>
+          <p className="text-gray-300 mb-8 text-lg">
+            Join thousands of job seekers who built their resume with ResumeForge.
+          </p>
+          <Link href="/builder" className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition">
+            Build My Resume Now <ArrowRight className="h-5 w-5" />
+          </Link>
         </div>
-      </footer>
+      </section>
 
+      <SiteFooter />
     </div>
-    </ErrorBoundary>
   );
 }

@@ -1,100 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { FileText, Menu, X, ExternalLink, Filter } from 'lucide-react';
+import { FileText, Filter } from 'lucide-react';
 import { useState } from 'react';
 import { TEMPLATES } from '@/types/resume';
-
-const NAV_LINKS = [
-  { href: '/home', label: 'Home' },
-  { href: '/templates', label: 'Templates' },
-  { href: '/about', label: 'About' },
-  { href: '/changelog', label: 'Changelog' },
-];
-
-function Navbar() {
-  const [open, setOpen] = useState(false);
-  return (
-    <nav className="bg-gray-900 border-b border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <Link href="/home" className="flex items-center gap-2">
-            <FileText className="h-6 w-6 text-blue-400" />
-            <span className="text-white font-bold text-xl">ResumeForge</span>
-          </Link>
-          <div className="hidden md:flex items-center gap-6">
-            {NAV_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className="text-gray-300 hover:text-white text-sm transition">
-                {l.label}
-              </Link>
-            ))}
-            <Link href="/" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
-              Build Resume
-            </Link>
-          </div>
-          <button className="md:hidden text-gray-300" onClick={() => setOpen(!open)}>
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-        {open && (
-          <div className="md:hidden pb-4 space-y-2">
-            {NAV_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className="block text-gray-300 hover:text-white px-2 py-1 text-sm">
-                {l.label}
-              </Link>
-            ))}
-            <Link href="/" className="block bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium text-center">
-              Build Resume
-            </Link>
-          </div>
-        )}
-      </div>
-    </nav>
-  );
-}
-
-function Footer() {
-  const columns = [
-    { title: 'Product', links: [{ label: 'Resume Builder', href: '/' }, { label: 'Templates', href: '/templates' }, { label: 'ATS Checker', href: '/' }, { label: 'Cover Letter', href: '/' }] },
-    { title: 'Resources', links: [{ label: 'Changelog', href: '/changelog' }, { label: 'Documentation', href: '/' }, { label: 'Blog', href: '/' }, { label: 'FAQ', href: '/' }] },
-    { title: 'Company', links: [{ label: 'About', href: '/about' }, { label: 'Contact', href: '/' }, { label: 'Careers', href: '/' }] },
-    { title: 'Legal', links: [{ label: 'Privacy', href: '/' }, { label: 'Terms', href: '/' }, { label: 'Cookies', href: '/' }] },
-  ];
-  return (
-    <footer className="bg-gray-900 text-gray-400 pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-          {columns.map((col) => (
-            <div key={col.title}>
-              <h4 className="text-white font-semibold mb-4">{col.title}</h4>
-              <ul className="space-y-2">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <Link href={link.href} className="hover:text-white text-sm transition">
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <FileText className="h-5 w-5 text-blue-400" />
-            <span className="text-white font-semibold">ResumeForge</span>
-          </div>
-          <p className="text-sm">&copy; {new Date().getFullYear()} ResumeForge. All rights reserved.</p>
-          <div className="flex gap-4">
-            <a href="https://github.com/Surya8991" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-              <ExternalLink className="h-5 w-5" />
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
+import SiteNavbar from '@/components/SiteNavbar';
+import SiteFooter from '@/components/SiteFooter';
 
 const STYLE_TAGS: Record<string, string> = {
   classic: 'Classic',
@@ -131,7 +42,7 @@ export default function TemplatesPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <SiteNavbar />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
@@ -188,7 +99,7 @@ export default function TemplatesPage() {
                     </div>
                     <p className="text-gray-600 text-sm mb-4">{t.description}</p>
                     <Link
-                      href="/"
+                      href="/builder"
                       className="block text-center bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition"
                     >
                       Use Template
@@ -201,7 +112,7 @@ export default function TemplatesPage() {
         </div>
       </section>
 
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }
