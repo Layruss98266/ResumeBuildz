@@ -45,6 +45,16 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **Print CSS Optimized** - color-adjust, page-break rules for clean PDF output
 - **PWA Ready** - Web app manifest for installable experience
 
+### Mobile Responsive
+- **Swipeable Tabs** - Swipe left/right between Edit, Preview, Style, ATS, and AI tabs on mobile
+- **Bottom Sheet Section Picker** - Slide-up sheet with icons and completion dots for quick section navigation
+- **Touch-Friendly Drag Handles** - Larger grip areas on Experience, Education, and Projects for easy reordering
+- **Auto-Scaling Preview** - Mobile resume preview automatically scales to fit the viewport
+- **Responsive Sidebar** - Adaptive widths (320px md, 400px lg, 460px xl) for optimal use of screen space
+- **Mobile Action Bar** - Vertical icon+label layout with larger tap targets
+- **Mobile Tab Row** - Full-width, evenly spaced tabs with icon+label below the navbar
+- **Tested on 10 Devices** - Verified on screen widths from 280px to 1440px with no overflow issues
+
 ### Multiple Resume Profiles
 - **Save Up to 10 Profiles** - Keep separate resumes for different job targets
 - **Load, Rename, Delete** - Manage profiles from the header menu
@@ -327,6 +337,20 @@ Found a bug or have a suggestion? [Open an issue](https://github.com/Surya8991/r
 - Cover letter auto-fill from Personal Info job title
 - Export loading states with disabled buttons
 - Mobile profile manager in bottom bar
+- Swipeable tabs on mobile (swipe left/right between Edit/Preview/Style/ATS/AI)
+- Bottom sheet section picker with icons and completion dots
+- Touch-friendly drag handles with larger grip areas on Experience/Education/Projects
+- Mobile resume preview auto-scales to fit viewport
+- Separate mobile tab row below navbar (full width, evenly spaced, icon+label)
+- Responsive sidebar widths (320px md, 400px lg, 460px xl)
+- Improved mobile action bar (vertical icon+label layout, larger tap targets)
+- All mobile overflow issues fixed (tested on 10 devices from 280px to 1440px)
+- Mobile tab bar text visibility fixed (explicit dark colors on dark navbar)
+- HelpTip changed from button to span (fixes hydration nesting error)
+- Completion bar thicker on mobile (h-1.5)
+- Prev/Next buttons larger (h-10 px-4)
+- Smart Matching accordion open by default
+- AI quick actions use flex-wrap instead of grid-cols-3
 - Improved skill matching accuracy (prefix stripping, quality scoring)
 - Fixed Help/Profile button visibility in light mode
 

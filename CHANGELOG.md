@@ -25,6 +25,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - Export loading states with disabled buttons.
 - Mobile profile manager in bottom bar.
 
+### Mobile UX
+
+- Swipeable tabs on mobile (swipe left/right between Edit, Preview, Style, ATS, AI).
+- Bottom sheet section picker with slide-up sheet, icons, and completion dots.
+- Touch-friendly drag handles with larger grip areas on Experience, Education, and Projects.
+- Mobile resume preview auto-scales to fit viewport.
+- Separate mobile tab row below navbar (full width, evenly spaced, icon+label).
+- Responsive sidebar widths (320px md, 400px lg, 460px xl).
+- Improved mobile action bar (vertical icon+label layout, larger tap targets).
+- All mobile overflow issues fixed (tested on 10 devices from 280px to 1440px).
+
 ### Improved
 
 - Skill matching accuracy (prefix stripping, quality scoring).
@@ -34,6 +45,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - Cover letter auto-fill from Personal Info.
 - Export loading states with disabled buttons.
 - Mobile profile manager in bottom bar.
+- Mobile tab bar text visibility (explicit dark colors on dark navbar).
+- HelpTip changed from button to span (fixes hydration nesting error).
+- Completion bar thicker on mobile (h-1.5).
+- Prev/Next buttons larger (h-10 px-4).
+- Bottom bar labels bumped to text-xs.
+- Smart Matching accordion open by default.
+- AI quick actions use flex-wrap instead of grid-cols-3.
 
 ---
 

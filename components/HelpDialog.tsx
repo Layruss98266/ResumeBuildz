@@ -96,7 +96,7 @@ export default function HelpDialog() {
                 <li><strong className="text-foreground">Check ATS score</strong> — Click &quot;ATS&quot; to analyze compatibility, readability, formatting, and match keywords from a job description. Expand &quot;Enhanced Analysis&quot; for readability scoring, resume length check, date consistency, and active voice detection. Use &quot;Smart Matching&quot; for industry-specific keywords and multi-JD comparison.</li>
                 <li><strong className="text-foreground">Use AI suggestions</strong> — Click &quot;AI&quot; to generate summaries, bullet points, and skills (bring your own free Groq API key).</li>
                 <li><strong className="text-foreground">Import existing resume</strong> — Upload a PDF, DOCX, TXT, HTML, or MD file to auto-fill the form. PDF import extracts text directly from your document.</li>
-                <li><strong className="text-foreground">Navigate sections</strong> — Use Previous/Next buttons at the bottom, the dropdown navigator, or click any progress dot at the top.</li>
+                <li><strong className="text-foreground">Navigate sections</strong> — Use Previous/Next buttons at the bottom, the dropdown navigator, or click any progress dot at the top. On mobile, swipe left/right to switch between tabs (Edit, Preview, Style, ATS, AI) and use the bottom sheet section picker for quick navigation.</li>
                 <li><strong className="text-foreground">Manage profiles</strong> — Save up to 10 resume profiles from the header menu. Load, rename, or delete profiles to target different jobs.</li>
                 <li><strong className="text-foreground">Download</strong> — Export as PDF (best for ATS), DOCX, HTML, or JSON.</li>
                 <li><strong className="text-foreground">What&apos;s New</strong> — A popup notification shows the latest features whenever a new version is released.</li>
@@ -274,7 +274,7 @@ export default function HelpDialog() {
                 <div><strong className="text-foreground">How do I transfer my resume to another device?</strong> Export as JSON, then import the JSON file on the other device.</div>
                 <div><strong className="text-foreground">Why is the preview blank?</strong> Fill in at least your name and one section. The preview updates in real-time.</div>
                 <div><strong className="text-foreground">Can I have multiple resumes?</strong> Yes! Use the Resume Profiles feature in the header menu to save up to 10 separate profiles. Each stores its own data, template, and accent color.</div>
-                <div><strong className="text-foreground">How do I navigate between sections?</strong> Use the Previous/Next buttons at the bottom of each form, or click any progress dot at the top.</div>
+                <div><strong className="text-foreground">How do I navigate between sections?</strong> Use the Previous/Next buttons at the bottom of each form, or click any progress dot at the top. On mobile, swipe between tabs and tap the section picker at the bottom to open a slide-up sheet with icons and completion dots.</div>
                 <div><strong className="text-foreground">Is this free?</strong> Yes, completely free. AI features require your own Groq API key (also free at console.groq.com).</div>
               </div>
             </CardContent>

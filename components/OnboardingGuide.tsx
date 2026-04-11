@@ -40,9 +40,9 @@ const STEPS: Step[] = [
   },
   {
     title: 'Edit Your Resume',
-    description: 'Use the Edit tab to fill in your details — Personal Info, Summary, Experience, Education, Skills, Projects, Certifications, and Languages. The completion bar at the top tracks your progress across 10 criteria.',
+    description: 'Use the Edit tab to fill in your details — Personal Info, Summary, Experience, Education, Skills, Projects, Certifications, and Languages. The completion bar at the top tracks your progress across 10 criteria. On mobile, swipe left/right to switch between tabs.',
     icon: <PenLine className="h-8 w-8" />,
-    tip: 'Required fields are marked with a red asterisk (*). A sample resume is pre-loaded to help you get started.',
+    tip: 'Required fields are marked with a red asterisk (*). A sample resume is pre-loaded to help you get started. On mobile, use the bottom sheet section picker to jump between sections.',
   },
   {
     title: 'Upload a Photo',
@@ -52,7 +52,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'Live Preview',
-    description: 'See your resume update in real-time as you type. Use the zoom controls to adjust the preview size.',
+    description: 'See your resume update in real-time as you type. Use the zoom controls to adjust the preview size. On mobile, the preview auto-scales to fit your screen.',
     icon: <Eye className="h-8 w-8" />,
     tip: 'The preview shows an estimated page count. Use Ctrl+P to quickly export as PDF.',
   },
@@ -64,7 +64,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'Custom Sections & Reordering',
-    description: 'Add custom sections like Volunteer Work, Publications, or Awards. Drag and drop to reorder sections and individual entries within Experience, Education, and Projects. In the Skills section, you will see intelligent suggestions based on your job title.',
+    description: 'Add custom sections like Volunteer Work, Publications, or Awards. Drag and drop to reorder sections and individual entries within Experience, Education, and Projects. On mobile, drag handles are larger for easier touch interaction. In the Skills section, you will see intelligent suggestions based on your job title.',
     icon: <Layers className="h-8 w-8" />,
     tip: 'Click "Add Section" in the sidebar, and "Reorder Sections" at the bottom of any form.',
   },

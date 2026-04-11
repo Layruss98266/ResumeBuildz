@@ -151,7 +151,37 @@ Before submitting a PR, please verify:
    - Desktop (1440px+)
    - Tablet (768px)
    - Mobile (375px)
-5. **Test PDF export** if your changes affect templates or the print layout.
+5. **Test on mobile** (see the Testing on Mobile section below).
+6. **Test PDF export** if your changes affect templates or the print layout.
+
+## Testing on Mobile
+
+ResumeForge must work correctly across a range of mobile devices. Before submitting any PR that touches layout, tabs, navigation, or responsive styles, verify your changes at the following 10 breakpoints:
+
+| Width | Device class |
+|-------|-------------|
+| 280px | Smallest phones (Galaxy Fold) |
+| 320px | Small phones (iPhone SE) |
+| 360px | Mid-range Android phones |
+| 375px | iPhone 12 mini / iPhone SE 2 |
+| 390px | iPhone 14 |
+| 412px | Pixel 7 |
+| 428px | iPhone 14 Pro Max |
+| 768px | Tablet portrait (iPad mini) |
+| 1024px | Tablet landscape (iPad) |
+| 1440px | Desktop |
+
+Key things to verify on mobile:
+
+- **No horizontal overflow** -- nothing should scroll sideways at any breakpoint.
+- **Swipeable tabs** work correctly (swipe left/right between Edit, Preview, Style, ATS, AI).
+- **Bottom sheet section picker** opens and closes cleanly.
+- **Touch drag handles** on Experience, Education, and Projects are large enough to grab.
+- **Resume preview** scales to fit the viewport without clipping.
+- **Mobile action bar** icons and labels are legible and tappable.
+- **Tab row below navbar** is evenly spaced and text is visible against the dark background.
+
+Use Chrome DevTools device toolbar or a physical device to test these breakpoints.
 
 ## Questions?
 

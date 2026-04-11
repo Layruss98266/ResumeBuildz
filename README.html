@@ -212,6 +212,18 @@
     <li><strong>Dark/Light Mode</strong> &mdash; Theme toggle for comfortable editing</li>
   </ul>
 
+  <h3>Mobile Responsive</h3>
+  <ul>
+    <li><strong>Swipeable Tabs</strong> &mdash; Swipe left/right between Edit, Preview, Style, ATS, and AI tabs on mobile</li>
+    <li><strong>Bottom Sheet Section Picker</strong> &mdash; Slide-up sheet with icons and completion dots for quick section navigation</li>
+    <li><strong>Touch-Friendly Drag Handles</strong> &mdash; Larger grip areas on Experience, Education, and Projects for easy reordering</li>
+    <li><strong>Auto-Scaling Preview</strong> &mdash; Mobile resume preview automatically scales to fit the viewport</li>
+    <li><strong>Responsive Sidebar</strong> &mdash; Adaptive widths (320px md, 400px lg, 460px xl) for optimal use of screen space</li>
+    <li><strong>Mobile Action Bar</strong> &mdash; Vertical icon+label layout with larger tap targets</li>
+    <li><strong>Mobile Tab Row</strong> &mdash; Full-width, evenly spaced tabs with icon+label below the navbar</li>
+    <li><strong>Tested on 10 Devices</strong> &mdash; Verified on screen widths from 280px to 1440px with no overflow issues</li>
+  </ul>
+
   <h3>Multiple Resume Profiles</h3>
   <ul>
     <li><strong>Save Up to 10 Profiles</strong> &mdash; Keep separate resumes for different job targets</li>
@@ -489,6 +501,20 @@ localStorage.clear(); location.reload();</code></pre>
     <li>Export loading states with disabled buttons</li>
     <li>Mobile profile manager in bottom bar</li>
     <li>Improved skill matching accuracy (prefix stripping, quality scoring)</li>
+    <li>Swipeable tabs on mobile (swipe left/right between Edit/Preview/Style/ATS/AI)</li>
+    <li>Bottom sheet section picker with icons and completion dots</li>
+    <li>Touch-friendly drag handles with larger grip areas on Experience/Education/Projects</li>
+    <li>Mobile resume preview auto-scales to fit viewport</li>
+    <li>Separate mobile tab row below navbar (full width, evenly spaced, icon+label)</li>
+    <li>Responsive sidebar widths (320px md, 400px lg, 460px xl)</li>
+    <li>Improved mobile action bar (vertical icon+label layout, larger tap targets)</li>
+    <li>All mobile overflow issues fixed (tested on 10 devices from 280px to 1440px)</li>
+    <li>Mobile tab bar text visibility fixed (explicit dark colors on dark navbar)</li>
+    <li>HelpTip changed from button to span (fixes hydration nesting error)</li>
+    <li>Completion bar thicker on mobile (h-1.5)</li>
+    <li>Prev/Next buttons larger (h-10 px-4)</li>
+    <li>Smart Matching accordion open by default</li>
+    <li>AI quick actions use flex-wrap instead of grid-cols-3</li>
     <li>Fixed Help/Profile button visibility in light mode</li>
   </ul>
   <h3>v1.3.0</h3>
