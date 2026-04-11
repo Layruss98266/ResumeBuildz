@@ -231,7 +231,7 @@ export default function HomePage() {
 
   return (
     <ErrorBoundary>
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden dark">
       <FontLoader />
       <OnboardingGuide />
       {/* Navbar */}
@@ -590,19 +590,19 @@ export default function HomePage() {
 
               <button
                 onClick={() => setActiveTab(activeTab === 'templates' ? 'edit' : 'templates')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'templates' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'templates' ? 'bg-blue-500 text-white shadow-sm' : 'hover:bg-muted'}`}
               >
                 <Settings2 className="h-3.5 w-3.5" /> Style
               </button>
               <button
                 onClick={() => setActiveTab(activeTab === 'ats' ? 'edit' : 'ats')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ats' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ats' ? 'bg-blue-500 text-white shadow-sm' : 'hover:bg-muted'}`}
               >
                 <BarChart3 className="h-3.5 w-3.5" /> ATS
               </button>
               <button
                 onClick={() => setActiveTab(activeTab === 'ai' ? 'edit' : 'ai')}
-                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ai' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ai' ? 'bg-blue-500 text-white shadow-sm' : 'hover:bg-muted'}`}
               >
                 <Sparkles className="h-3.5 w-3.5" /> AI
               </button>
