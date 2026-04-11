@@ -55,8 +55,6 @@ import {
   FileType,
   Code,
   ChevronDown,
-  ExternalLink,
-  Heart,
   Sparkles,
   Plus,
   Layers,
@@ -775,21 +773,16 @@ export default function HomePage() {
       </div>
 
       {/* Footer */}
-      <footer className="h-10 border-t bg-muted/30 flex items-center justify-between px-5 shrink-0">
-        <a href="/" className="text-xs text-muted-foreground hover:text-foreground hidden sm:inline transition-colors">
+      <footer className="h-10 border-t border-gray-800 bg-gray-900 flex items-center justify-between px-5 shrink-0">
+        <a href="/" className="text-xs text-gray-400 hover:text-white hidden sm:inline transition-colors">
           ResumeForge
         </a>
         <div className="flex items-center gap-4 mx-auto md:mx-0">
-          <span className="text-xs text-muted-foreground flex items-center gap-1">
-            Designed with <Heart className="h-3 w-3 text-red-500 fill-red-500" /> by Surya L
+          <span className="text-xs text-gray-400 flex items-center gap-1">
+            Designed with <span className="text-red-500">&#10084;</span> by Surya L &copy; {new Date().getFullYear()}
           </span>
-          <a
-            href="https://github.com/Surya8991"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
-          >
-            <ExternalLink className="h-3.5 w-3.5" /> GitHub
+          <a href="https://github.com/Surya8991" target="_blank" rel="noopener noreferrer" className="text-xs text-gray-400 hover:text-white flex items-center gap-1 transition-colors">
+            GitHub
           </a>
         </div>
       </footer>

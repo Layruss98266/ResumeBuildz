@@ -13,7 +13,7 @@ export function HelpTip({ text, className = '' }: HelpTipProps) {
   const [show, setShow] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [pos, setPos] = useState({ x: 0, y: 0 });
-  const btnRef = useRef<HTMLButtonElement>(null);
+  const btnRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -50,17 +50,19 @@ export function HelpTip({ text, className = '' }: HelpTipProps) {
 
   return (
     <span className={`inline-flex ${className}`}>
-      <button
+      <span
         ref={btnRef}
+        role="button"
+        tabIndex={0}
         onClick={(e) => { e.stopPropagation(); e.preventDefault(); handleShow(); }}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); e.preventDefault(); handleShow(); } }}
         onMouseEnter={handleShow}
         onMouseLeave={() => setShow(false)}
-        className="h-5 w-5 rounded-full bg-background border border-border text-foreground flex items-center justify-center hover:bg-muted transition-colors shadow-sm"
+        className="h-5 w-5 rounded-full bg-background border border-border text-foreground inline-flex items-center justify-center hover:bg-muted transition-colors shadow-sm cursor-pointer"
         aria-label="Help"
-        type="button"
       >
         <HelpCircle className="h-3 w-3" />
-      </button>
+      </span>
       {tooltip}
     </span>
   );
