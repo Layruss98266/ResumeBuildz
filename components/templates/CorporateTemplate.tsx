@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function CorporateTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -173,12 +173,12 @@ export default function CorporateTemplate({ data, primaryColor }: TemplateProps)
           </div>
         </div>
         <div className="flex flex-wrap gap-x-2 mt-3 text-[10px] text-gray-500">
-          {personalInfo.email && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}>{personalInfo.email}</span>}
-          {personalInfo.phone && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}>{personalInfo.phone}</span>}
+          {personalInfo.email && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}><a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a></span>}
+          {personalInfo.phone && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}><a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a></span>}
           {personalInfo.location && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}>{personalInfo.location}</span>}
-          {personalInfo.linkedin && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}>{personalInfo.linkedin}</span>}
-          {personalInfo.website && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}>{personalInfo.website}</span>}
-          {personalInfo.github && <span>{personalInfo.github}</span>}
+          {personalInfo.linkedin && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}><a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a></span>}
+          {personalInfo.website && <span className="border-r pr-2" style={{ borderColor: `${primaryColor}30` }}><a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a></span>}
+          {personalInfo.github && <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a>}
         </div>
       </div>
 

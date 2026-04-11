@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function ClassicTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -165,12 +165,12 @@ export default function ClassicTemplate({ data, primaryColor }: TemplateProps) {
         </h1>
         {personalInfo.jobTitle && <p className="text-[13px] text-gray-600 mt-0.5">{personalInfo.jobTitle}</p>}
         <div className="flex flex-wrap justify-center gap-x-3 mt-1.5 text-[10px] text-gray-600">
-          {personalInfo.email && <span>{personalInfo.email}</span>}
-          {personalInfo.phone && <span>| {personalInfo.phone}</span>}
+          {personalInfo.email && <span><a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a></span>}
+          {personalInfo.phone && <span>| <a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a></span>}
           {personalInfo.location && <span>| {personalInfo.location}</span>}
-          {personalInfo.linkedin && <span>| {personalInfo.linkedin}</span>}
-          {personalInfo.website && <span>| {personalInfo.website}</span>}
-          {personalInfo.github && <span>| {personalInfo.github}</span>}
+          {personalInfo.linkedin && <span>| <a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a></span>}
+          {personalInfo.website && <span>| <a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a></span>}
+          {personalInfo.github && <span>| <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a></span>}
         </div>
       </div>
 

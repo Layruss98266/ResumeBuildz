@@ -57,7 +57,7 @@ export default function TemplateSelector() {
                   )}
                 </div>
                 <div className="px-1.5 py-1 bg-muted/50">
-                  <span className={`text-[11px] font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>{t.label}</span>
+                  <span className={`text-xs font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>{t.label}</span>
                 </div>
               </button>
             );
@@ -88,7 +88,7 @@ export default function TemplateSelector() {
               onChange={(e) => setPrimaryColor(e.target.value)}
               className="absolute inset-0 opacity-0 cursor-pointer"
             />
-            <span className="text-[9px] text-muted-foreground">+</span>
+            <span className="text-xs text-muted-foreground">+</span>
           </label>
         </div>
       </section>
@@ -118,7 +118,7 @@ export default function TemplateSelector() {
                   {font.label}
                 </span>
                 <span
-                  className="text-[9px] text-muted-foreground block mt-0.5"
+                  className="text-[10px] text-muted-foreground block mt-0.5"
                   style={{ fontFamily: font.value }}
                 >
                   Aa Bb 123

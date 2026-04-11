@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -154,12 +154,12 @@ export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
         </h1>
         {personalInfo.jobTitle && <p className="text-[11px] text-gray-500 tracking-[0.1em] mt-1">{personalInfo.jobTitle}</p>}
         <div className="flex flex-wrap justify-center gap-x-4 mt-3 text-[9px] text-gray-400 tracking-wide">
-          {personalInfo.email && <span>{personalInfo.email}</span>}
-          {personalInfo.phone && <span>{personalInfo.phone}</span>}
+          {personalInfo.email && <a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a>}
+          {personalInfo.phone && <a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a>}
           {personalInfo.location && <span>{personalInfo.location}</span>}
-          {personalInfo.linkedin && <span>{personalInfo.linkedin}</span>}
-          {personalInfo.github && <span>{personalInfo.github}</span>}
-          {personalInfo.website && <span>{personalInfo.website}</span>}
+          {personalInfo.linkedin && <a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a>}
+          {personalInfo.github && <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a>}
+          {personalInfo.website && <a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a>}
         </div>
       </div>
 

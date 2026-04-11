@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function FederalTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -185,11 +185,19 @@ export default function FederalTemplate({ data, primaryColor }: TemplateProps) {
           )}
           <div className="mt-2 text-[10px] text-black space-y-0.5">
             <p>
-              {[personalInfo.email, personalInfo.phone, personalInfo.location].filter(Boolean).join(' | ')}
+              {personalInfo.email && <a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a>}
+              {personalInfo.email && personalInfo.phone && ' | '}
+              {personalInfo.phone && <a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a>}
+              {(personalInfo.email || personalInfo.phone) && personalInfo.location && ' | '}
+              {personalInfo.location && <span>{personalInfo.location}</span>}
             </p>
             {(personalInfo.linkedin || personalInfo.website || personalInfo.github) && (
               <p>
-                {[personalInfo.linkedin, personalInfo.website, personalInfo.github].filter(Boolean).join(' | ')}
+                {personalInfo.linkedin && <a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a>}
+                {personalInfo.linkedin && personalInfo.website && ' | '}
+                {personalInfo.website && <a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a>}
+                {(personalInfo.linkedin || personalInfo.website) && personalInfo.github && ' | '}
+                {personalInfo.github && <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a>}
               </p>
             )}
           </div>

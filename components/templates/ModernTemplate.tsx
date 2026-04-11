@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function ModernTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -150,12 +150,12 @@ export default function ModernTemplate({ data, primaryColor }: TemplateProps) {
         <div className="mb-6">
           <h2 className="text-[12px] font-bold uppercase tracking-wider mb-2 text-white">Contact</h2>
           <div className="space-y-1.5 text-[10px] text-white/90">
-            {personalInfo.email && <p>{personalInfo.email}</p>}
-            {personalInfo.phone && <p>{personalInfo.phone}</p>}
+            {personalInfo.email && <p><a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a></p>}
+            {personalInfo.phone && <p><a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a></p>}
             {personalInfo.location && <p>{personalInfo.location}</p>}
-            {personalInfo.linkedin && <p>{personalInfo.linkedin}</p>}
-            {personalInfo.website && <p>{personalInfo.website}</p>}
-            {personalInfo.github && <p>{personalInfo.github}</p>}
+            {personalInfo.linkedin && <p><a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a></p>}
+            {personalInfo.website && <p><a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a></p>}
+            {personalInfo.github && <p><a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a></p>}
           </div>
         </div>
 

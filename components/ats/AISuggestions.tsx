@@ -140,8 +140,8 @@ export default function AISuggestions() {
       {/* API Key setup */}
       {showKeyInput ? (
         <Card className="p-3 space-y-2">
-          <p className="text-xs font-medium text-foreground mb-1">Bring Your Own API Key (free)</p>
-          <p className="text-[10px] text-muted-foreground leading-relaxed">
+          <p className="text-sm font-medium text-foreground mb-1">Bring Your Own API Key (free)</p>
+          <p className="text-xs text-muted-foreground leading-relaxed">
             AI features require your own Groq API key. No key is provided with this app.<br/><br/>
             1. Visit <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" className="text-primary underline">console.groq.com/keys</a> and sign up (free)<br/>
             2. Click &quot;Create API Key&quot; and copy it<br/>
@@ -151,7 +151,7 @@ export default function AISuggestions() {
             <input
               type="password"
               placeholder="gsk_..."
-              className="flex-1 text-xs px-2 py-1.5 border rounded-md bg-background"
+              className="flex-1 text-sm px-2.5 py-1.5 border rounded-md bg-background"
               onChange={(e) => setApiKey(e.target.value)}
               value={apiKey}
             />
@@ -162,8 +162,8 @@ export default function AISuggestions() {
         </Card>
       ) : (
         <div className="flex items-center justify-between">
-          <span className="text-[10px] text-muted-foreground">Your Groq API key is active</span>
-          <button onClick={() => setShowKeyInput(true)} className="text-[10px] text-muted-foreground hover:text-foreground underline">
+          <span className="text-xs text-muted-foreground">Your Groq API key is active</span>
+          <button onClick={() => setShowKeyInput(true)} className="text-xs text-muted-foreground hover:text-foreground underline">
             Change key
           </button>
         </div>
@@ -173,7 +173,7 @@ export default function AISuggestions() {
       <div className="grid grid-cols-3 gap-1.5">
         <Button
           variant="outline" size="sm"
-          className="text-[10px] h-8"
+          className="text-xs h-9"
           onClick={() => generate('summary')}
           disabled={loading}
         >
@@ -181,7 +181,7 @@ export default function AISuggestions() {
         </Button>
         <Button
           variant="outline" size="sm"
-          className="text-[10px] h-8"
+          className="text-xs h-9"
           onClick={() => generate('bullets')}
           disabled={loading}
         >
@@ -189,7 +189,7 @@ export default function AISuggestions() {
         </Button>
         <Button
           variant="outline" size="sm"
-          className="text-[10px] h-8"
+          className="text-xs h-9"
           onClick={() => generate('skills')}
           disabled={loading}
         >
@@ -199,18 +199,18 @@ export default function AISuggestions() {
 
       {/* Custom prompt */}
       <div className="space-y-1.5">
-        <Label className="text-[10px] text-muted-foreground">Custom prompt</Label>
+        <Label className="text-xs text-muted-foreground">Custom prompt</Label>
         <div className="flex gap-1.5">
           <Textarea
             placeholder="e.g., Rewrite my summary for a product manager role..."
             value={customPrompt}
             onChange={(e) => setCustomPrompt(e.target.value)}
-            className="text-xs min-h-[60px] resize-none"
+            className="text-sm min-h-[60px] resize-none"
           />
         </div>
         <Button
           variant="outline" size="sm"
-          className="w-full text-xs"
+          className="w-full text-sm"
           onClick={() => generate('custom')}
           disabled={loading || !customPrompt.trim()}
         >
@@ -236,8 +236,8 @@ export default function AISuggestions() {
           >
             {copied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5 text-muted-foreground" />}
           </button>
-          <pre className="text-xs text-foreground whitespace-pre-wrap pr-8 leading-relaxed font-sans">{result}</pre>
-          <p className="text-[9px] text-muted-foreground mt-2 pt-2 border-t">
+          <pre className="text-sm text-foreground whitespace-pre-wrap pr-8 leading-relaxed font-sans">{result}</pre>
+          <p className="text-xs text-muted-foreground mt-2 pt-2 border-t">
             Copy this text and paste it into the relevant section of your resume.
           </p>
         </Card>

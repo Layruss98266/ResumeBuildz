@@ -43,6 +43,16 @@ export function formatBullet(text: string): string {
   return text.replace(/^[•\-\*]\s*/, '');
 }
 
+/**
+ * Ensure a URL has a protocol prefix.
+ * If it already starts with http:// or https://, return as-is.
+ * Otherwise prepend https://.
+ */
+export function ensureUrl(url: string): string {
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
 export function ContactSeparator({ color }: { color: string }) {
   return <span style={{ color, opacity: 0.5 }} className="mx-1.5">|</span>;
 }

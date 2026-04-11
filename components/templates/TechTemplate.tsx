@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function TechTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -175,12 +175,12 @@ export default function TechTemplate({ data, primaryColor }: TemplateProps) {
 
         {/* Contact */}
         <div className="mb-5 space-y-1.5 text-[9px]">
-          {personalInfo.email && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>@</span> {personalInfo.email}</div>}
-          {personalInfo.phone && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>#</span> {personalInfo.phone}</div>}
+          {personalInfo.email && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>@</span> <a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a></div>}
+          {personalInfo.phone && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>#</span> <a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a></div>}
           {personalInfo.location && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>~</span> {personalInfo.location}</div>}
-          {personalInfo.linkedin && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>in</span> {personalInfo.linkedin}</div>}
-          {personalInfo.github && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>gh</span> {personalInfo.github}</div>}
-          {personalInfo.website && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>www</span> {personalInfo.website}</div>}
+          {personalInfo.linkedin && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>in</span> <a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a></div>}
+          {personalInfo.github && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>gh</span> <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a></div>}
+          {personalInfo.website && <div className="text-white/80"><span className="font-mono" style={{ color: primaryColor }}>www</span> <a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a></div>}
         </div>
 
         <div className="h-px bg-white/10 my-3" />

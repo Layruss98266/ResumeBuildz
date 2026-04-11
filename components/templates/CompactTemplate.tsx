@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function CompactTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -130,12 +130,12 @@ export default function CompactTemplate({ data, primaryColor }: TemplateProps) {
           </div>
         </div>
         <div className="flex flex-wrap gap-x-2 mt-1 text-[8px] text-gray-500">
-          {personalInfo.email && <span>{personalInfo.email}</span>}
-          {personalInfo.phone && <span>| {personalInfo.phone}</span>}
+          {personalInfo.email && <span><a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a></span>}
+          {personalInfo.phone && <span>| <a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a></span>}
           {personalInfo.location && <span>| {personalInfo.location}</span>}
-          {personalInfo.linkedin && <span>| {personalInfo.linkedin}</span>}
-          {personalInfo.github && <span>| {personalInfo.github}</span>}
-          {personalInfo.website && <span>| {personalInfo.website}</span>}
+          {personalInfo.linkedin && <span>| <a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a></span>}
+          {personalInfo.github && <span>| <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a></span>}
+          {personalInfo.website && <span>| <a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a></span>}
         </div>
       </div>
 

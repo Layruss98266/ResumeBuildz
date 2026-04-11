@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function SidebarTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -178,8 +178,8 @@ export default function SidebarTemplate({ data, primaryColor }: TemplateProps) {
             </div>
           </div>
           <div className="flex flex-wrap gap-x-4 gap-y-0.5 mt-3 text-[10px] text-gray-600">
-            {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>{personalInfo.phone}</span>}
+            {personalInfo.email && <a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a>}
+            {personalInfo.phone && <a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a>}
             {personalInfo.location && <span>{personalInfo.location}</span>}
           </div>
         </div>
@@ -194,9 +194,9 @@ export default function SidebarTemplate({ data, primaryColor }: TemplateProps) {
         <div className="mb-5">
           <h2 className="text-[12px] font-bold uppercase tracking-wider mb-2 text-white/90">Links</h2>
           <div className="space-y-1 text-[9px] text-white/80">
-            {personalInfo.linkedin && <p>{personalInfo.linkedin}</p>}
-            {personalInfo.website && <p>{personalInfo.website}</p>}
-            {personalInfo.github && <p>{personalInfo.github}</p>}
+            {personalInfo.linkedin && <p><a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a></p>}
+            {personalInfo.website && <p><a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a></p>}
+            {personalInfo.github && <p><a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a></p>}
           </div>
         </div>
 

@@ -26,7 +26,7 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **Sample Resume** - Pre-loaded sample data so new users see a working example immediately
 - **Error Boundary** - Graceful error recovery with reset option
 - **Step-by-Step Wizard** - Previous/Next navigation between sections with step counter and progress dots
-- **Keyboard Shortcuts** - Ctrl+P for PDF export, Ctrl+S for JSON save
+- **Keyboard Shortcuts** - Ctrl+P for PDF export, Ctrl+S for backup save
 - **Page Estimate** - Shows estimated page count in preview toolbar
 - **Auto-Save** - Data persists in localStorage automatically
 - **Dark/Light Mode** - Theme toggle for comfortable editing
@@ -45,7 +45,7 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **Export as PDF** - Browser print for pixel-perfect output (best for ATS)
 - **Export as DOCX** - Microsoft Word format
 - **Export as HTML** - Web-ready format for online hosting
-- **JSON Import/Export** - Backup and transfer resume data across devices
+- **JSON Backup** - Save and restore resume data via Ctrl+S
 
 ### ATS Optimization
 - **ATS Compatibility Score** - Analyzes resume with 7 checks and actionable feedback
@@ -116,7 +116,7 @@ This generates a static export in the `out/` folder, ready for deployment.
 9. **Write a cover letter** - Use the Cover Letter tab with optional AI generation
 10. **Check ATS score** - Click "ATS" to analyze compatibility and match job descriptions
 11. **Use AI suggestions** - Click "AI" to get AI-powered content improvements
-12. **Download** - Export as PDF, DOCX, HTML, or JSON
+12. **Download** - Export as PDF, DOCX, or HTML
 
 ### AI Features (Bring Your Own Key)
 
@@ -237,7 +237,7 @@ Found a bug or have a suggestion? [Open an issue](https://github.com/Surya8991/r
 - Rich text toolbar (bold, italic, bullets, dividers)
 - Step-by-step wizard navigation (Previous/Next with progress dots)
 - Multi-format import (DOCX, TXT, HTML, MD) with AI parsing
-- Multi-format export (PDF, DOCX, HTML, JSON)
+- Multi-format export (PDF, DOCX, HTML)
 - 12 Google Fonts with lazy loading
 - Typography, spacing, and color customization
 - 11-step interactive onboarding guide

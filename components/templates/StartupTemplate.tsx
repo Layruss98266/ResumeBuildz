@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function StartupTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -230,24 +230,24 @@ export default function StartupTemplate({ data, primaryColor }: TemplateProps) {
           </div>
           <div className="flex flex-wrap gap-x-3 gap-y-1 mt-4">
             {personalInfo.email && (
-              <span className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600">{personalInfo.email}</span>
+              <a href={`mailto:${personalInfo.email}`} className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600 hover:underline">{personalInfo.email}</a>
             )}
             {personalInfo.phone && (
-              <span className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600">{personalInfo.phone}</span>
+              <a href={`tel:${personalInfo.phone}`} className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600 hover:underline">{personalInfo.phone}</a>
             )}
             {personalInfo.location && (
               <span className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600">{personalInfo.location}</span>
             )}
             {personalInfo.linkedin && (
-              <span className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600">{personalInfo.linkedin}</span>
+              <a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600 hover:underline">{personalInfo.linkedin}</a>
             )}
             {personalInfo.website && (
-              <span className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600">{personalInfo.website}</span>
+              <a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="text-[9px] px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600 hover:underline">{personalInfo.website}</a>
             )}
             {personalInfo.github && (
-              <span className="text-[9px] px-2.5 py-1 rounded-lg font-mono text-gray-600" style={{ backgroundColor: `${primaryColor}10` }}>
+              <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="text-[9px] px-2.5 py-1 rounded-lg font-mono text-gray-600 hover:underline" style={{ backgroundColor: `${primaryColor}10` }}>
                 {personalInfo.github}
-              </span>
+              </a>
             )}
           </div>
         </div>

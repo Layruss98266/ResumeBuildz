@@ -1,6 +1,6 @@
 'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
 export default function MonochromeTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -204,12 +204,12 @@ export default function MonochromeTemplate({ data, primaryColor }: TemplateProps
             </div>
           </div>
           <div className="mt-4 pt-4 border-t border-black border-b pb-4 flex flex-wrap gap-x-5 gap-y-0.5 text-[9px] text-gray-600" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-            {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>{personalInfo.phone}</span>}
+            {personalInfo.email && <a href={`mailto:${personalInfo.email}`} className="hover:underline">{personalInfo.email}</a>}
+            {personalInfo.phone && <a href={`tel:${personalInfo.phone}`} className="hover:underline">{personalInfo.phone}</a>}
             {personalInfo.location && <span>{personalInfo.location}</span>}
-            {personalInfo.linkedin && <span>{personalInfo.linkedin}</span>}
-            {personalInfo.website && <span>{personalInfo.website}</span>}
-            {personalInfo.github && <span>{personalInfo.github}</span>}
+            {personalInfo.linkedin && <a href={ensureUrl(personalInfo.linkedin)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.linkedin}</a>}
+            {personalInfo.website && <a href={ensureUrl(personalInfo.website)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.website}</a>}
+            {personalInfo.github && <a href={ensureUrl(personalInfo.github)} target="_blank" rel="noopener noreferrer" className="hover:underline">{personalInfo.github}</a>}
           </div>
         </div>
 

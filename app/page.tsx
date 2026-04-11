@@ -30,7 +30,6 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import {
   Download,
-  FileJson,
   Upload,
   RotateCcw,
   Eye,
@@ -234,19 +233,19 @@ export default function HomePage() {
       <FontLoader />
       <OnboardingGuide />
       {/* Navbar */}
-      <header className="h-14 border-b bg-background/95 backdrop-blur-sm shrink-0 sticky top-0 z-30">
-        <div className="h-full flex items-center justify-between px-4">
+      <header className="h-16 border-b bg-background/95 backdrop-blur-sm shrink-0 sticky top-0 z-30">
+        <div className="h-full flex items-center justify-between px-5">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <FileText className="h-4 w-4 text-primary-foreground" />
+            <div className="flex items-center gap-2.5">
+              <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center">
+                <FileText className="h-4.5 w-4.5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-base font-bold tracking-tight leading-none">
+                <h1 className="text-lg font-bold tracking-tight leading-none">
                   <span className="text-primary">Resume</span><span className="text-foreground">Forge</span>
                 </h1>
-                <span className="text-[9px] text-muted-foreground leading-none">ATS-Friendly Resume Builder</span>
+                <span className="text-[11px] text-muted-foreground leading-none">ATS-Friendly Resume Builder</span>
               </div>
             </div>
           </div>
@@ -289,17 +288,13 @@ export default function HomePage() {
                     <div className="fixed inset-0 z-40" onClick={() => setShowExportMenu(false)} />
                     <div className="absolute right-0 top-full mt-1.5 z-50 bg-background border rounded-xl shadow-xl py-1.5 w-48 animate-in fade-in slide-in-from-top-1 duration-150">
                       <button onClick={() => { handlePrint(); setShowExportMenu(false); }} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <Download className="h-4 w-4 text-muted-foreground" /> PDF <span className="text-[10px] text-emerald-600 font-medium ml-auto">Best for ATS</span>
+                        <Download className="h-4 w-4 text-muted-foreground" /> PDF <span className="text-[11px] text-emerald-600 font-medium ml-auto">Best for ATS</span>
                       </button>
                       <button onClick={handleExportDocx} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <FileType className="h-4 w-4 text-muted-foreground" /> DOCX <span className="text-[10px] text-muted-foreground ml-auto">Word</span>
+                        <FileType className="h-4 w-4 text-muted-foreground" /> DOCX <span className="text-[11px] text-muted-foreground ml-auto">Word</span>
                       </button>
                       <button onClick={handleExportHtml} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <Code className="h-4 w-4 text-muted-foreground" /> HTML <span className="text-[10px] text-muted-foreground ml-auto">Web</span>
-                      </button>
-                      <div className="border-t my-1.5 mx-2" />
-                      <button onClick={() => { handleExportJSON(); setShowExportMenu(false); }} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <FileJson className="h-4 w-4 text-muted-foreground" /> JSON <span className="text-[10px] text-muted-foreground ml-auto">Data</span>
+                        <Code className="h-4 w-4 text-muted-foreground" /> HTML <span className="text-[11px] text-muted-foreground ml-auto">Web</span>
                       </button>
                     </div>
                   </>
@@ -358,8 +353,8 @@ export default function HomePage() {
                         {current && <current.icon className="h-4 w-4 text-primary" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold truncate">{current?.label}</p>
-                        <p className="text-[10px] text-muted-foreground">Step {idx + 1} of {FORM_SECTIONS.length}</p>
+                        <p className="text-base font-semibold truncate">{current?.label}</p>
+                        <p className="text-xs text-muted-foreground">Step {idx + 1} of {FORM_SECTIONS.length}</p>
                       </div>
                       <div className="flex gap-1 shrink-0">
                         {FORM_SECTIONS.map((s, i) => (
@@ -414,7 +409,7 @@ export default function HomePage() {
                       >
                         <ChevronLeft className="h-4 w-4" /> Previous
                       </Button>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-xs text-muted-foreground font-medium">
                         {FORM_SECTIONS.findIndex(s => s.id === activeSection) + 1} / {FORM_SECTIONS.length}
                       </span>
                       <Button
@@ -435,15 +430,15 @@ export default function HomePage() {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => setShowReorder(true)}
-                        className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
+                        className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
                       >
-                        <Layers className="h-3.5 w-3.5" /> Reorder Sections
+                        <Layers className="h-4 w-4" /> Reorder Sections
                       </button>
                       <button
                         onClick={handleAddCustomSection}
-                        className="text-xs text-primary hover:text-primary/80 flex items-center gap-1.5 transition-colors"
+                        className="text-sm text-primary hover:text-primary/80 flex items-center gap-1.5 transition-colors"
                       >
-                        <Plus className="h-3.5 w-3.5" /> Add Section
+                        <Plus className="h-4 w-4" /> Add Section
                       </button>
                     </div>
                   </>
@@ -550,35 +545,35 @@ export default function HomePage() {
         {/* Desktop Right Panel - Preview */}
         <div className={`hidden md:flex flex-col flex-1 min-w-0 ${isFullPreview ? 'absolute inset-0 z-50 bg-background' : ''}`}>
           {/* Preview toolbar */}
-          <div className="h-10 border-b flex items-center justify-between px-3 shrink-0 bg-muted/30">
+          <div className="h-11 border-b flex items-center justify-between px-4 shrink-0 bg-muted/30">
             <div className="flex items-center gap-2">
-              <Eye className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-xs font-medium">Live Preview</span>
-              <span className="text-[10px] text-muted-foreground ml-2">~{estimatedPages} page{estimatedPages > 1 ? 's' : ''}</span>
+              <Eye className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium">Live Preview</span>
+              <span className="text-xs text-muted-foreground ml-2">~{estimatedPages} page{estimatedPages > 1 ? 's' : ''}</span>
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={() => setPreviewScale(Math.max(0.3, previewScale - 0.1))} className="text-xs px-2 py-0.5 rounded hover:bg-muted transition-colors">-</button>
+              <button onClick={() => setPreviewScale(Math.max(0.3, previewScale - 0.1))} className="text-sm px-2 py-0.5 rounded hover:bg-muted transition-colors">-</button>
               <span className="text-xs text-muted-foreground w-12 text-center font-mono">{Math.round(previewScale * 100)}%</span>
-              <button onClick={() => setPreviewScale(Math.min(1, previewScale + 0.1))} className="text-xs px-2 py-0.5 rounded hover:bg-muted transition-colors">+</button>
+              <button onClick={() => setPreviewScale(Math.min(1, previewScale + 0.1))} className="text-sm px-2 py-0.5 rounded hover:bg-muted transition-colors">+</button>
               <div className="w-px h-4 bg-border mx-1" />
 
               <button
                 onClick={() => setActiveTab(activeTab === 'templates' ? 'edit' : 'templates')}
-                className={`text-xs px-2.5 py-1 rounded-md flex items-center gap-1 font-medium transition-all ${activeTab === 'templates' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'templates' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
               >
-                <Settings2 className="h-3 w-3" /> Style
+                <Settings2 className="h-3.5 w-3.5" /> Style
               </button>
               <button
                 onClick={() => setActiveTab(activeTab === 'ats' ? 'edit' : 'ats')}
-                className={`text-xs px-2.5 py-1 rounded-md flex items-center gap-1 font-medium transition-all ${activeTab === 'ats' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ats' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
               >
-                <BarChart3 className="h-3 w-3" /> ATS
+                <BarChart3 className="h-3.5 w-3.5" /> ATS
               </button>
               <button
                 onClick={() => setActiveTab(activeTab === 'ai' ? 'edit' : 'ai')}
-                className={`text-xs px-2.5 py-1 rounded-md flex items-center gap-1 font-medium transition-all ${activeTab === 'ai' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
+                className={`text-sm px-3 py-1.5 rounded-md flex items-center gap-1.5 font-medium transition-all ${activeTab === 'ai' ? 'bg-primary text-primary-foreground shadow-sm' : 'hover:bg-muted'}`}
               >
-                <Sparkles className="h-3 w-3" /> AI
+                <Sparkles className="h-3.5 w-3.5" /> AI
               </button>
 
               <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setIsFullPreview(!isFullPreview)}>
@@ -590,11 +585,16 @@ export default function HomePage() {
           <div className="flex flex-1 overflow-hidden">
             <div className="flex-1 min-w-0 overflow-auto bg-gray-100 dark:bg-gray-900 resume-preview-container">
               <div className="flex justify-center p-4 pb-16">
-                <div
-                  className="resume-preview-scaled shadow-xl rounded-sm origin-top"
-                  style={{ transform: `scale(${previewScale})` }}
-                >
-                  <ResumePreview ref={resumeRef} />
+                <div style={{ width: `calc(210mm * ${previewScale})`, flexShrink: 0 }}>
+                  <div
+                    className="resume-preview-scaled shadow-xl rounded-sm origin-top-left"
+                    style={{
+                      transform: `scale(${previewScale})`,
+                      width: '210mm',
+                    }}
+                  >
+                    <ResumePreview ref={resumeRef} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -634,24 +634,25 @@ export default function HomePage() {
       </div>
 
       {/* Footer */}
-      <footer className="h-7 border-t bg-muted/30 flex items-center justify-between px-4 shrink-0">
-        <span className="text-[10px] text-muted-foreground hidden sm:inline">
+      <footer className="h-10 border-t bg-muted/30 flex items-center justify-between px-5 shrink-0">
+        <span className="text-xs text-muted-foreground hidden sm:inline">
           ResumeForge - Free ATS-Friendly Resume Builder
         </span>
-        <div className="flex items-center gap-3 mx-auto md:mx-0">
-          <span className="text-[10px] text-muted-foreground flex items-center gap-1">
-            Designed with <Heart className="h-2.5 w-2.5 text-red-500 fill-red-500" /> by Surya L
+        <div className="flex items-center gap-4 mx-auto md:mx-0">
+          <span className="text-xs text-muted-foreground flex items-center gap-1">
+            Designed with <Heart className="h-3 w-3 text-red-500 fill-red-500" /> by Surya L
           </span>
           <a
             href="https://github.com/Surya8991"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+            className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
           >
-            <ExternalLink className="h-3 w-3" /> GitHub
+            <ExternalLink className="h-3.5 w-3.5" /> GitHub
           </a>
         </div>
       </footer>
+
     </div>
     </ErrorBoundary>
   );

@@ -246,11 +246,11 @@ export default function ATSScoreChecker() {
         <div className="flex justify-center py-3">
           <div className={`w-24 h-24 rounded-full border-4 ${getScoreRing()} flex flex-col items-center justify-center`}>
             <span className={`text-2xl font-bold ${getScoreColor()}`}>{score}</span>
-            <span className="text-[10px] text-muted-foreground">/ {maxScore}</span>
+            <span className="text-xs text-muted-foreground">/ {maxScore}</span>
           </div>
         </div>
 
-        <p className="text-center text-xs text-muted-foreground mb-3">
+        <p className="text-center text-sm text-muted-foreground mb-3">
           {score === 0 ? 'Start filling in your resume to see your ATS score improve.' :
            score >= 80 ? 'Excellent! Your resume is well-optimized for ATS.' :
            score >= 50 ? 'Good start, but there\'s room for improvement.' :
@@ -263,12 +263,12 @@ export default function ATSScoreChecker() {
               {getIcon(check.status)}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-medium">{check.label}</span>
-                  <Badge variant={check.status === 'pass' ? 'default' : check.status === 'warn' ? 'secondary' : 'destructive'} className="text-[9px] px-1 py-0">
+                  <span className="text-sm font-medium">{check.label}</span>
+                  <Badge variant={check.status === 'pass' ? 'default' : check.status === 'warn' ? 'secondary' : 'destructive'} className="text-[10px] px-1.5 py-0">
                     {check.status === 'pass' ? 'Pass' : check.status === 'warn' ? 'Improve' : 'Missing'}
                   </Badge>
                 </div>
-                <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight">{check.message}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{check.message}</p>
               </div>
             </div>
           ))}
@@ -284,12 +284,12 @@ export default function ATSScoreChecker() {
         </h3>
 
         <div className="space-y-2">
-          <Label className="text-xs">Paste a job description to check keyword match</Label>
+          <Label className="text-sm">Paste a job description to check keyword match</Label>
           <Textarea
             placeholder="Paste the job description here to see how well your resume matches..."
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
-            className="min-h-[100px] text-xs resize-none"
+            className="min-h-[100px] text-sm resize-none"
           />
         </div>
 
@@ -301,10 +301,10 @@ export default function ATSScoreChecker() {
                 <span className={`text-lg font-bold ${getMatchColor(keywordResult.matchPercentage)}`}>{keywordResult.matchPercentage}%</span>
               </div>
               <div>
-                <p className="text-xs font-medium">
+                <p className="text-sm font-medium">
                   {keywordResult.foundCount} of {keywordResult.totalCount} keywords matched
                 </p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {keywordResult.matchPercentage >= 70
                     ? 'Great match! Your resume aligns well with this job.'
                     : keywordResult.matchPercentage >= 40
@@ -317,7 +317,7 @@ export default function ATSScoreChecker() {
             {/* Missing keywords */}
             {keywordResult.matches.filter((m) => !m.found).length > 0 && (
               <div>
-                <p className="text-[10px] font-medium text-red-600 mb-1.5 flex items-center gap-1">
+                <p className="text-xs font-medium text-red-600 mb-1.5 flex items-center gap-1">
                   <XCircle className="h-3 w-3" /> Missing Keywords
                 </p>
                 <div className="flex flex-wrap gap-1">
@@ -325,7 +325,7 @@ export default function ATSScoreChecker() {
                     .filter((m) => !m.found)
                     .slice(0, 30)
                     .map((m, i) => (
-                      <span key={i} className="text-[10px] px-1.5 py-0.5 rounded bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400 border border-red-200 dark:border-red-900">
+                      <span key={i} className="text-xs px-1.5 py-0.5 rounded bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400 border border-red-200 dark:border-red-900">
                         {m.keyword}
                       </span>
                     ))}
@@ -336,7 +336,7 @@ export default function ATSScoreChecker() {
             {/* Found keywords */}
             {keywordResult.matches.filter((m) => m.found).length > 0 && (
               <div>
-                <p className="text-[10px] font-medium text-green-600 mb-1.5 flex items-center gap-1">
+                <p className="text-xs font-medium text-green-600 mb-1.5 flex items-center gap-1">
                   <CheckCircle2 className="h-3 w-3" /> Matched Keywords
                 </p>
                 <div className="flex flex-wrap gap-1">
@@ -344,7 +344,7 @@ export default function ATSScoreChecker() {
                     .filter((m) => m.found)
                     .slice(0, 30)
                     .map((m, i) => (
-                      <span key={i} className="text-[10px] px-1.5 py-0.5 rounded bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 border border-green-200 dark:border-green-900">
+                      <span key={i} className="text-xs px-1.5 py-0.5 rounded bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 border border-green-200 dark:border-green-900">
                         {m.keyword}
                       </span>
                     ))}
@@ -358,7 +358,7 @@ export default function ATSScoreChecker() {
           <Card className="mt-3 p-3 bg-muted/30 border-dashed">
             <div className="flex items-start gap-2">
               <Sparkles className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
-              <p className="text-[10px] text-muted-foreground leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 Paste a job description above to see which keywords from the listing appear in your resume.
                 Tailoring your resume to each job posting can significantly improve your ATS score.
               </p>
@@ -371,8 +371,8 @@ export default function ATSScoreChecker() {
 
       {/* Tips */}
       <Card className="p-3 bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-900">
-        <h4 className="text-xs font-semibold mb-1.5">ATS Tips</h4>
-        <ul className="text-[10px] text-muted-foreground space-y-0.5">
+        <h4 className="text-sm font-semibold mb-1.5">ATS Tips</h4>
+        <ul className="text-xs text-muted-foreground space-y-0.5">
           <li>Use standard section headings (Experience, Education, Skills)</li>
           <li>Avoid tables, columns, images, and headers/footers in PDF</li>
           <li>Use keywords from the job description</li>

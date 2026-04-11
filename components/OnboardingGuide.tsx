@@ -86,15 +86,15 @@ const STEPS: Step[] = [
   },
   {
     title: 'Import & Export',
-    description: 'Import existing resumes from DOCX, TXT, MD, or JSON files. Export as PDF (best for ATS), DOCX, HTML, or JSON.',
+    description: 'Import existing resumes from DOCX, TXT, HTML, or MD files. Export as PDF (best for ATS), DOCX, or HTML.',
     icon: <div className="flex gap-2"><Upload className="h-8 w-8" /><Download className="h-8 w-8" /></div>,
-    tip: 'Use JSON export to backup your resume and transfer it between devices.',
+    tip: 'Use Ctrl+S to save a JSON backup of your resume data.',
   },
   {
     title: 'You\'re All Set!',
     description: 'Start editing the sample resume or clear it and start fresh. Your data auto-saves to your browser. Happy job hunting!',
     icon: <span className="text-4xl">🎉</span>,
-    tip: 'Keyboard shortcuts: Ctrl+S to save JSON, Ctrl+P to print PDF.',
+    tip: 'Keyboard shortcuts: Ctrl+P to print PDF, Ctrl+S to save backup.',
   },
 ];
 

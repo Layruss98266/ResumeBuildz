@@ -124,7 +124,7 @@ export default function HelpDialog() {
               <div><strong className="text-foreground">PDF Export:</strong> Best for ATS. Uses browser print for pixel-perfect output.</div>
               <div><strong className="text-foreground">DOCX Export:</strong> Microsoft Word format. Use when employers require .docx.</div>
               <div><strong className="text-foreground">HTML Export:</strong> Web-ready format. Can be hosted online as a resume page.</div>
-              <div><strong className="text-foreground">JSON Export:</strong> Save your resume data. Import on any device to restore.</div>
+              <div><strong className="text-foreground">Backup:</strong> Press Ctrl+S to save your resume data as JSON for backup.</div>
             </div>
           </section>
 
@@ -143,7 +143,7 @@ export default function HelpDialog() {
             <h3 className="font-semibold text-base mb-2">Keyboard Shortcuts</h3>
             <div className="grid grid-cols-2 gap-1.5 text-xs text-muted-foreground">
               <div><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">Ctrl+P</kbd> Export as PDF</div>
-              <div><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">Ctrl+S</kbd> Save as JSON</div>
+              <div><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">Ctrl+S</kbd> Save backup</div>
               <div><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">Ctrl+B</kbd> Bold text (in editor)</div>
               <div><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">Ctrl+I</kbd> Italic text (in editor)</div>
               <div><kbd className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">Esc</kbd> Close dialogs</div>
