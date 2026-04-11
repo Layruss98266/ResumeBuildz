@@ -40,7 +40,7 @@ const STEPS: Step[] = [
   },
   {
     title: 'Edit Your Resume',
-    description: 'Use the Edit tab to fill in your details — Personal Info, Summary, Experience, Education, Skills, Projects, Certifications, and Languages.',
+    description: 'Use the Edit tab to fill in your details — Personal Info, Summary, Experience, Education, Skills, Projects, Certifications, and Languages. The completion bar at the top tracks your progress across 10 criteria.',
     icon: <PenLine className="h-8 w-8" />,
     tip: 'Required fields are marked with a red asterisk (*). A sample resume is pre-loaded to help you get started.',
   },
@@ -58,13 +58,13 @@ const STEPS: Step[] = [
   },
   {
     title: '20 Templates & Styling',
-    description: 'Choose from 20 unique templates in the Style panel. Click the eye icon to preview full-size before selecting. Customize fonts, colors, spacing, and margins to match your style.',
+    description: 'Choose from 20 unique templates in the Style panel. Click the eye icon to see a full-size preview in the template preview modal before selecting. Customize fonts, colors, spacing, and margins to match your style.',
     icon: <Settings2 className="h-8 w-8" />,
     tip: 'Try the "Compact" preset to fit more content on one page, or "Comfortable" for better readability.',
   },
   {
     title: 'Custom Sections & Reordering',
-    description: 'Add custom sections like Volunteer Work, Publications, or Awards. Drag and drop to reorder sections and individual entries within Experience, Education, and Projects.',
+    description: 'Add custom sections like Volunteer Work, Publications, or Awards. Drag and drop to reorder sections and individual entries within Experience, Education, and Projects. In the Skills section, you will see intelligent suggestions based on your job title.',
     icon: <Layers className="h-8 w-8" />,
     tip: 'Click "Add Section" in the sidebar, and "Reorder Sections" at the bottom of any form.',
   },

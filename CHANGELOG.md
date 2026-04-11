@@ -10,7 +10,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Added
 
-- Skill suggestions based on job title (from 201-role industry data).
+- Resume completion percentage bar (10 criteria, color-coded red/yellow/green).
+- Welcome back indicator for returning users (>1hr gap detection).
+- What's New v1.4.0 popup (version-tracked, bottom-right notification).
+- Skill suggestions based on job title (fuzzy matching against 201 roles).
+- Social proof section in landing page hero (avatars, stars, trust indicator).
+- Per-page OG meta descriptions for all 11 pages.
+- GitHub Actions CI/CD pipeline (TypeScript check + build on push/PR).
+- Vercel security headers (X-Frame-Options, X-XSS-Protection, etc.).
+- SECURITY.md vulnerability disclosure timeline (72hr response, 90-day process).
 - Page transition animations across all pages (fadeInUp, slideIn, scaleIn).
 - Section completion indicators (green/gray dots in dropdown).
 - Cover letter auto-fill from Personal Info job title.
@@ -19,9 +27,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Improved
 
-- Improved skill matching accuracy (prefix stripping, quality scoring).
-- Fixed Help/Profile button visibility in light mode.
-- Comprehensive monetization plan document.
+- Skill matching accuracy (prefix stripping, quality scoring).
+- Help and Profile button visibility in light mode.
+- Page transition animations across all pages.
+- Section completion indicators in section dropdown.
+- Cover letter auto-fill from Personal Info.
+- Export loading states with disabled buttons.
+- Mobile profile manager in bottom bar.
 
 ---
 

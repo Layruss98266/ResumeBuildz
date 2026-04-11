@@ -35,6 +35,9 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **Dark/Light Mode** - Theme toggle for comfortable editing
 - **Smart Matching** - Suggests relevant job keywords when a job title is entered
 - **Skill Suggestions** - Intelligent skill suggestions based on job title, drawn from 201-role industry data with prefix stripping and quality scoring
+- **Resume Completion Bar** - Color-coded progress bar tracking 10 completion criteria (red <40%, yellow 40-70%, green >70%)
+- **Welcome Back Indicator** - Shows last edit time for returning users after >1 hour gap
+- **What's New Popup** - Version-tracked changelog notification for updates (bottom-right, dismissible)
 - **Page Animations** - Smooth page transition animations across all pages (fadeInUp, slideIn, scaleIn)
 - **Section Completion Indicators** - Green/gray dots in dropdown show which sections are complete
 - **Export Loading States** - Visual loading states with disabled buttons during PDF/DOCX/HTML export
@@ -82,12 +85,20 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **AI Gap Analysis** - Uses Groq AI to suggest how to naturally add missing keywords (requires API key)
 - **AI Writing Assistant** - Generate professional summaries, bullet points, skills, and custom prompts
 
+### Landing Page
+- **Social Proof** - Hero section with user avatars, star ratings, and "Trusted by 1,000+" indicator
+
 ### SEO & Performance
 - **Open Graph Tags** - Optimized for LinkedIn, Twitter, Facebook sharing
+- **Per-Page OG Meta** - Unique Open Graph titles and descriptions for each of the 11 pages
 - **Twitter Cards** - Large image card for social sharing
 - **JSON-LD Schema** - WebApplication structured data for search engines
 - **PWA Manifest** - Installable web app with icons and theme color
 - **Lazy Font Loading** - Only the selected Google Font is loaded
+- **GitHub Actions CI/CD** - Automated TypeScript checking and build verification on every push and pull request
+
+### Security
+- **Vercel Security Headers** - X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy configured via vercel.json
 
 ## Tech Stack
 
@@ -302,7 +313,15 @@ Found a bug or have a suggestion? [Open an issue](https://github.com/Surya8991/r
 ## Changelog
 
 ### v1.4.0
-- Skill suggestions based on job title (from 201-role industry data)
+- Resume completion percentage bar (10 criteria, color-coded red/yellow/green)
+- Welcome back indicator for returning users (>1hr gap detection)
+- What's New v1.4.0 popup (version-tracked, bottom-right notification)
+- Skill suggestions based on job title (fuzzy matching against 201 roles)
+- Social proof section in landing page hero (avatars, stars, trust indicator)
+- Per-page OG meta descriptions for all 11 pages
+- GitHub Actions CI/CD pipeline (TypeScript check + build on push/PR)
+- Vercel security headers (X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy)
+- SECURITY.md vulnerability disclosure timeline (72hr response, 90-day process)
 - Page transition animations across all pages (fadeInUp, slideIn, scaleIn)
 - Section completion indicators (green/gray dots in dropdown)
 - Cover letter auto-fill from Personal Info job title
@@ -310,7 +329,6 @@ Found a bug or have a suggestion? [Open an issue](https://github.com/Surya8991/r
 - Mobile profile manager in bottom bar
 - Improved skill matching accuracy (prefix stripping, quality scoring)
 - Fixed Help/Profile button visibility in light mode
-- Comprehensive monetization plan document
 
 ### v1.3.0
 - PDF import support (pdfjs-dist for client-side PDF text extraction)

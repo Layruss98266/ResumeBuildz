@@ -198,6 +198,14 @@
     <li><strong>HelpTip Tooltips</strong> &mdash; (?) tooltips on all major sections for contextual guidance</li>
     <li><strong>Step-by-Step Wizard</strong> &mdash; Previous/Next navigation with dropdown section navigator and progress dots</li>
     <li><strong>Smart Matching</strong> &mdash; Suggests relevant job keywords when a job title is entered</li>
+    <li><strong>Skill Suggestions</strong> &mdash; Intelligent skill suggestions based on job title, drawn from 201-role industry data with prefix stripping and quality scoring</li>
+    <li><strong>Resume Completion Bar</strong> &mdash; Color-coded progress bar tracking 10 completion criteria (red &lt;40%, yellow 40&ndash;70%, green &gt;70%)</li>
+    <li><strong>Welcome Back Indicator</strong> &mdash; Shows last edit time for returning users after &gt;1 hour gap</li>
+    <li><strong>What&rsquo;s New Popup</strong> &mdash; Version-tracked changelog notification for updates (bottom-right, dismissible)</li>
+    <li><strong>Page Animations</strong> &mdash; Smooth page transition animations across all pages (fadeInUp, slideIn, scaleIn)</li>
+    <li><strong>Section Completion Indicators</strong> &mdash; Green/gray dots in dropdown show which sections are complete</li>
+    <li><strong>Export Loading States</strong> &mdash; Visual loading states with disabled buttons during PDF/DOCX/HTML export</li>
+    <li><strong>Cover Letter Auto-Fill</strong> &mdash; Cover letter auto-populates job title from Personal Info</li>
     <li><strong>Print CSS Optimized</strong> &mdash; color-adjust, page-break rules for clean PDF output</li>
     <li><strong>Keyboard Shortcuts</strong> &mdash; Ctrl+P for PDF export, Ctrl+S for backup save</li>
     <li><strong>Auto-Save</strong> &mdash; Data persists in localStorage automatically</li>
@@ -209,6 +217,7 @@
     <li><strong>Save Up to 10 Profiles</strong> &mdash; Keep separate resumes for different job targets</li>
     <li><strong>Load, Rename, Delete</strong> &mdash; Manage profiles from the header menu</li>
     <li><strong>Per-Profile Settings</strong> &mdash; Each profile stores resume data, selected template, and accent color</li>
+    <li><strong>Mobile Profile Manager</strong> &mdash; Access profile switching from the bottom bar on mobile devices</li>
   </ul>
 
   <h3>Template &amp; Customization</h3>
@@ -249,6 +258,27 @@
     <li><strong>Keyword Auto-Insert</strong> &mdash; Classifies missing keywords by target section (Skills/Experience/Summary)</li>
     <li><strong>AI Gap Analysis</strong> &mdash; Uses Groq AI to suggest how to naturally add missing keywords (requires API key)</li>
     <li><strong>AI Writing Assistant</strong> &mdash; Generate professional summaries, bullet points, skills, and custom prompts</li>
+  </ul>
+
+  <h3>Landing Page</h3>
+  <ul>
+    <li><strong>Social Proof</strong> &mdash; Hero section with user avatars, star ratings, and &ldquo;Trusted by 1,000+&rdquo; indicator</li>
+  </ul>
+
+  <h3>SEO &amp; Performance</h3>
+  <ul>
+    <li><strong>Open Graph Tags</strong> &mdash; Optimized for LinkedIn, Twitter, Facebook sharing</li>
+    <li><strong>Per-Page OG Meta</strong> &mdash; Unique Open Graph titles and descriptions for each of the 11 pages</li>
+    <li><strong>Twitter Cards</strong> &mdash; Large image card for social sharing</li>
+    <li><strong>JSON-LD Schema</strong> &mdash; WebApplication structured data for search engines</li>
+    <li><strong>PWA Manifest</strong> &mdash; Installable web app with icons and theme color</li>
+    <li><strong>Lazy Font Loading</strong> &mdash; Only the selected Google Font is loaded</li>
+    <li><strong>GitHub Actions CI/CD</strong> &mdash; Automated TypeScript checking and build verification on every push and pull request</li>
+  </ul>
+
+  <h3>Security</h3>
+  <ul>
+    <li><strong>Vercel Security Headers</strong> &mdash; X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy configured via vercel.json</li>
   </ul>
 
   <h2>Tech Stack</h2>
@@ -442,6 +472,25 @@ localStorage.clear(); location.reload();</code></pre>
   <p>Or click the <strong>Reset</strong> button in the app header to clear resume data only.</p>
 
   <h2>Changelog</h2>
+  <h3>v1.4.0</h3>
+  <ul>
+    <li>Resume completion percentage bar (10 criteria, color-coded red/yellow/green)</li>
+    <li>Welcome back indicator for returning users (&gt;1hr gap detection)</li>
+    <li>What&rsquo;s New v1.4.0 popup (version-tracked, bottom-right notification)</li>
+    <li>Skill suggestions based on job title (fuzzy matching against 201 roles)</li>
+    <li>Social proof section in landing page hero (avatars, stars, trust indicator)</li>
+    <li>Per-page OG meta descriptions for all 11 pages</li>
+    <li>GitHub Actions CI/CD pipeline (TypeScript check + build on push/PR)</li>
+    <li>Vercel security headers (X-Frame-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy)</li>
+    <li>SECURITY.md vulnerability disclosure timeline (72hr response, 90-day process)</li>
+    <li>Page transition animations across all pages (fadeInUp, slideIn, scaleIn)</li>
+    <li>Section completion indicators (green/gray dots in dropdown)</li>
+    <li>Cover letter auto-fill from Personal Info job title</li>
+    <li>Export loading states with disabled buttons</li>
+    <li>Mobile profile manager in bottom bar</li>
+    <li>Improved skill matching accuracy (prefix stripping, quality scoring)</li>
+    <li>Fixed Help/Profile button visibility in light mode</li>
+  </ul>
   <h3>v1.3.0</h3>
   <ul>
     <li>PDF import support (pdfjs-dist for client-side PDF text extraction)</li>

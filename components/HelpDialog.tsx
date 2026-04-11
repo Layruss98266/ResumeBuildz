@@ -86,7 +86,7 @@ export default function HelpDialog() {
                 <h3 className="font-semibold text-base">Getting Started</h3>
               </div>
               <ol className="list-decimal list-inside space-y-1.5 text-muted-foreground">
-                <li><strong className="text-foreground">Edit the sample resume</strong> — Replace the pre-loaded sample with your own details, or click Reset to start blank.</li>
+                <li><strong className="text-foreground">Edit the sample resume</strong> — Replace the pre-loaded sample with your own details, or click Reset to start blank. The completion bar at the top shows your resume progress with color-coded feedback.</li>
                 <li><strong className="text-foreground">Upload a photo</strong> — Add an optional profile photo in Personal Info (max 2MB).</li>
                 <li><strong className="text-foreground">Choose a template</strong> — Click &quot;Style&quot; to browse 20 ATS-friendly designs. Use the eye icon to preview full-size before selecting.</li>
                 <li><strong className="text-foreground">Customize appearance</strong> — Adjust font, accent color, font size, line spacing, and margins.</li>
@@ -95,10 +95,11 @@ export default function HelpDialog() {
                 <li><strong className="text-foreground">Write a cover letter</strong> — Use the Cover Letter tab with optional AI generation.</li>
                 <li><strong className="text-foreground">Check ATS score</strong> — Click &quot;ATS&quot; to analyze compatibility, readability, formatting, and match keywords from a job description. Expand &quot;Enhanced Analysis&quot; for readability scoring, resume length check, date consistency, and active voice detection. Use &quot;Smart Matching&quot; for industry-specific keywords and multi-JD comparison.</li>
                 <li><strong className="text-foreground">Use AI suggestions</strong> — Click &quot;AI&quot; to generate summaries, bullet points, and skills (bring your own free Groq API key).</li>
-                <li><strong className="text-foreground">Import existing resume</strong> — Upload a PDF, DOCX, TXT, HTML, or MD file to auto-fill the form.</li>
+                <li><strong className="text-foreground">Import existing resume</strong> — Upload a PDF, DOCX, TXT, HTML, or MD file to auto-fill the form. PDF import extracts text directly from your document.</li>
                 <li><strong className="text-foreground">Navigate sections</strong> — Use Previous/Next buttons at the bottom, the dropdown navigator, or click any progress dot at the top.</li>
                 <li><strong className="text-foreground">Manage profiles</strong> — Save up to 10 resume profiles from the header menu. Load, rename, or delete profiles to target different jobs.</li>
                 <li><strong className="text-foreground">Download</strong> — Export as PDF (best for ATS), DOCX, HTML, or JSON.</li>
+                <li><strong className="text-foreground">What&apos;s New</strong> — A popup notification shows the latest features whenever a new version is released.</li>
               </ol>
             </CardContent>
           </Card>
@@ -117,7 +118,7 @@ export default function HelpDialog() {
                 <div><strong className="text-foreground">Summary:</strong> 2-4 sentence professional overview. Use the rich text toolbar for bold/italic.</div>
                 <div><strong className="text-foreground">Experience:</strong> Work positions with bullet points. Rich text toolbar available (Ctrl+B for bold, Ctrl+I for italic).</div>
                 <div><strong className="text-foreground">Education:</strong> Degrees, institutions, dates, GPA, and achievements.</div>
-                <div><strong className="text-foreground">Skills:</strong> Organize by category (e.g., Programming, Frameworks). Type and press Enter to add.</div>
+                <div><strong className="text-foreground">Skills:</strong> Organize by category (e.g., Programming, Frameworks). Type and press Enter to add. Skill suggestions appear based on your job title, drawn from 201-role industry data.</div>
                 <div><strong className="text-foreground">Projects:</strong> Personal or professional projects with tech stacks. Rich text toolbar available.</div>
                 <div><strong className="text-foreground">Certifications:</strong> Professional certifications with issuer, date, and credential ID.</div>
                 <div><strong className="text-foreground">Languages:</strong> Spoken languages with proficiency levels (Native to Basic).</div>
