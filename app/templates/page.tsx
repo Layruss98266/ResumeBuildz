@@ -1,8 +1,8 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FileText, Filter } from 'lucide-react';
-import { useState } from 'react';
 import { TEMPLATES } from '@/types/resume';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
@@ -33,6 +33,7 @@ const STYLE_TAGS: Record<string, string> = {
 const FILTER_OPTIONS = ['All', 'Classic', 'Modern', 'Creative', 'Minimal', 'Professional'];
 
 export default function TemplatesPage() {
+  useEffect(() => { document.title = '20 ATS-Friendly Resume Templates - ResumeForge'; }, []);
   const [activeFilter, setActiveFilter] = useState('All');
 
   const filtered =

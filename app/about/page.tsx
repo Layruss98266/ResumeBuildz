@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import {
   ExternalLink,
@@ -38,6 +39,8 @@ const STATS = [
 ];
 
 export default function AboutPage() {
+  useEffect(() => { document.title = 'About ResumeForge - Free Open Source Resume Builder'; }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <SiteNavbar />

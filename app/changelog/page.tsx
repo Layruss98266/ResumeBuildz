@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Zap, Tag } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
@@ -14,6 +15,24 @@ interface ChangelogEntry {
 }
 
 const CHANGELOG: ChangelogEntry[] = [
+  {
+    version: 'v1.4.0',
+    date: 'April 11, 2026',
+    title: 'Skill Suggestions & Page Animations',
+    added: [
+      'Skill suggestions based on job title (from 201-role industry data).',
+      'Page transition animations across all pages (fadeInUp, slideIn, scaleIn).',
+      'Section completion indicators (green/gray dots in dropdown).',
+      'Cover letter auto-fill from Personal Info job title.',
+      'Export loading states with disabled buttons.',
+      'Mobile profile manager in bottom bar.',
+    ],
+    improved: [
+      'Improved skill matching accuracy (prefix stripping, quality scoring).',
+      'Fixed Help/Profile button visibility in light mode.',
+      'Comprehensive monetization plan document.',
+    ],
+  },
   {
     version: 'v1.3.0',
     date: 'April 11, 2026',
@@ -82,6 +101,8 @@ const CHANGELOG: ChangelogEntry[] = [
 ];
 
 export default function ChangelogPage() {
+  useEffect(() => { document.title = 'Changelog - ResumeForge Updates'; }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <SiteNavbar />

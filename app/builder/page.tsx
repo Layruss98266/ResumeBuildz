@@ -75,6 +75,7 @@ const BASE_SECTIONS = [
 ];
 
 export default function HomePage() {
+  useEffect(() => { document.title = 'Resume Builder - ResumeForge'; }, []);
   const resumeRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'edit' | 'preview' | 'templates' | 'ats' | 'ai'>('edit');
   const [activeSection, setActiveSection] = useState('personalInfo');

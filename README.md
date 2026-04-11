@@ -34,6 +34,11 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **Auto-Save** - Data persists in localStorage automatically
 - **Dark/Light Mode** - Theme toggle for comfortable editing
 - **Smart Matching** - Suggests relevant job keywords when a job title is entered
+- **Skill Suggestions** - Intelligent skill suggestions based on job title, drawn from 201-role industry data with prefix stripping and quality scoring
+- **Page Animations** - Smooth page transition animations across all pages (fadeInUp, slideIn, scaleIn)
+- **Section Completion Indicators** - Green/gray dots in dropdown show which sections are complete
+- **Export Loading States** - Visual loading states with disabled buttons during PDF/DOCX/HTML export
+- **Cover Letter Auto-Fill** - Cover letter auto-populates job title from Personal Info
 - **Print CSS Optimized** - color-adjust, page-break rules for clean PDF output
 - **PWA Ready** - Web app manifest for installable experience
 
@@ -41,6 +46,7 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **Save Up to 10 Profiles** - Keep separate resumes for different job targets
 - **Load, Rename, Delete** - Manage profiles from the header menu
 - **Per-Profile Settings** - Each profile stores resume data, selected template, and accent color
+- **Mobile Profile Manager** - Access profile switching from the bottom bar on mobile devices
 
 ### Template & Customization
 - **Template Preview Modal** - Click the eye icon on any template to see a full-size preview before selecting
@@ -294,6 +300,17 @@ Contributions are welcome and appreciated! Whether it's fixing a bug, adding a f
 Found a bug or have a suggestion? [Open an issue](https://github.com/Surya8991/resumeforge/issues) with details about the problem or your idea. Include steps to reproduce for bugs.
 
 ## Changelog
+
+### v1.4.0
+- Skill suggestions based on job title (from 201-role industry data)
+- Page transition animations across all pages (fadeInUp, slideIn, scaleIn)
+- Section completion indicators (green/gray dots in dropdown)
+- Cover letter auto-fill from Personal Info job title
+- Export loading states with disabled buttons
+- Mobile profile manager in bottom bar
+- Improved skill matching accuracy (prefix stripping, quality scoring)
+- Fixed Help/Profile button visibility in light mode
+- Comprehensive monetization plan document
 
 ### v1.3.0
 - PDF import support (pdfjs-dist for client-side PDF text extraction)

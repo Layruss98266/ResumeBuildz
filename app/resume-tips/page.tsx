@@ -1,7 +1,7 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 
@@ -74,6 +74,7 @@ const industryTips = [
 ];
 
 export default function ResumeTipsPage() {
+  useEffect(() => { document.title = 'Resume Writing Tips & Action Verbs | ResumeForge'; }, []);
   const [openSection, setOpenSection] = useState<number | null>(0);
 
   return (

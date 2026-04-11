@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
@@ -44,6 +45,8 @@ const sections = [
 ];
 
 export default function PrivacyPage() {
+  useEffect(() => { document.title = 'Privacy Policy - ResumeForge'; }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <SiteNavbar />

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import {
   FileText,
@@ -48,6 +49,8 @@ const TESTIMONIALS = [
 ];
 
 export default function HomePage() {
+  useEffect(() => { document.title = 'ResumeForge - Free ATS Resume Builder with 20 Templates & AI'; }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <SiteNavbar />
@@ -73,12 +76,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="hidden md:flex justify-center animate-scale-in delay-300">
-              <div className="w-72 h-96 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 flex items-center justify-center">
-                <div className="text-center">
-                  <FileText className="h-16 w-16 text-blue-400 mx-auto mb-4" />
-                  <p className="text-gray-300 text-sm">Resume Preview</p>
-                </div>
-              </div>
+              <img src="/templates/modern.png" alt="Resume template preview" className="rounded-lg shadow-2xl border border-gray-700 max-h-[400px] object-cover object-top" />
             </div>
           </div>
         </div>

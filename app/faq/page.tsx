@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
@@ -97,6 +97,8 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export default function FAQPage() {
+  useEffect(() => { document.title = 'FAQ - ResumeForge'; }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       <SiteNavbar />

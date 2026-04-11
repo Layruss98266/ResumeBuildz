@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.4.0] - 2026-04-11
+
+### Added
+
+- Skill suggestions based on job title (from 201-role industry data).
+- Page transition animations across all pages (fadeInUp, slideIn, scaleIn).
+- Section completion indicators (green/gray dots in dropdown).
+- Cover letter auto-fill from Personal Info job title.
+- Export loading states with disabled buttons.
+- Mobile profile manager in bottom bar.
+
+### Improved
+
+- Improved skill matching accuracy (prefix stripping, quality scoring).
+- Fixed Help/Profile button visibility in light mode.
+- Comprehensive monetization plan document.
+
+---
+
 ## [1.3.0] - 2026-04-11
 
 ### Added

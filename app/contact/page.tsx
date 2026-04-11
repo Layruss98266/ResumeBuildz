@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 
 export default function ContactPage() {
+  useEffect(() => { document.title = 'Contact Us - ResumeForge'; }, []);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
