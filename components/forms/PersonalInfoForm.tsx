@@ -3,7 +3,7 @@
 import { useResumeStore } from '@/store/useResumeStore';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { User, Mail, Phone, MapPin, Link, Globe, Code, Camera, X } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Link, Globe, Code, Camera, X, Zap } from 'lucide-react';
 
 function getValidationError(key: string, value: string): string | null {
   if (!value) return null; // Don't show errors for empty fields (just mark as required)
@@ -99,6 +99,12 @@ export default function PersonalInfoForm() {
                 className={error ? 'border-red-400 focus-visible:ring-red-400' : ''}
               />
               {error && <p className="text-[10px] text-red-500 mt-1">{error}</p>}
+              {key === 'jobTitle' && value && value.length > 3 && (
+                <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-primary">
+                  <Zap className="h-3 w-3" />
+                  <span>Tip: Use <strong>ATS → Smart Matching</strong> to find keywords for &quot;{value}&quot;</span>
+                </div>
+              )}
             </div>
           );
         })}

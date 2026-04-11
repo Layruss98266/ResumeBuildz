@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Sparkles, Copy, Check, AlertCircle, Key } from 'lucide-react';
+import { HelpTip } from '@/components/ui/help-tip';
 
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
@@ -135,6 +136,7 @@ export default function AISuggestions() {
     <div className="space-y-4">
       <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
         <Sparkles className="h-4 w-4" /> AI Writing Assistant
+        <HelpTip text="Generate professional summaries, bullet points, and skills using AI. Requires a free Groq API key. Click Summary, Bullet Points, or Skills for quick suggestions, or write a custom prompt." />
       </h3>
 
       {/* API Key setup */}

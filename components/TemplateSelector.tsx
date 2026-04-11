@@ -8,6 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { Check, RotateCcw } from 'lucide-react';
 import { getTemplateComponent } from '@/components/templates';
 import { FONT_OPTIONS, DEFAULT_STYLE_OPTIONS } from '@/components/templates/TemplateWrapper';
+import { HelpTip } from '@/components/ui/help-tip';
 
 export default function TemplateSelector() {
   const { selectedTemplate, setSelectedTemplate, primaryColor, setPrimaryColor, styleOptions, updateStyleOptions } = useResumeStore();
@@ -16,7 +17,7 @@ export default function TemplateSelector() {
     <div className="space-y-6">
       {/* ---- TEMPLATES ---- */}
       <section>
-        <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider text-muted-foreground">Template</h3>
+        <h3 className="text-sm font-semibold mb-3 uppercase tracking-wider text-muted-foreground flex items-center gap-2">Template <HelpTip text="Choose from 20 ATS-friendly templates. Each template is optimized for different industries and styles. Click to preview instantly." /></h3>
         <div className="grid grid-cols-2 gap-1.5">
           {TEMPLATES.map((t) => {
             const TemplateComponent = getTemplateComponent(t.name);

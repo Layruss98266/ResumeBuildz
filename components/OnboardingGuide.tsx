@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   PenLine,
   Eye,
@@ -74,9 +76,9 @@ const STEPS: Step[] = [
   },
   {
     title: 'ATS Score & JD Matcher',
-    description: 'Check your resume\'s ATS compatibility score. Paste a job description to see which keywords you\'re missing.',
+    description: 'Check your resume\'s ATS compatibility score. Paste a job description to see which keywords you\'re missing. Expand \'Enhanced Analysis\' for readability, resume length, date consistency, and active voice checks. Use \'Smart Matching\' for industry-specific keywords, multi-JD comparison, and AI gap analysis.',
     icon: <BarChart3 className="h-8 w-8" />,
-    tip: 'Aim for 80+ ATS score and 70%+ keyword match for best results.',
+    tip: 'Aim for 80+ ATS score and 60-70 readability. Use Industry Keywords to find role-specific terms across 20 industries.',
   },
   {
     title: 'AI Writing Assistant',
@@ -144,12 +146,20 @@ export default function OnboardingGuide() {
         className="relative bg-background rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Progress bar */}
-        <div className="h-1 bg-muted">
-          <div
-            className="h-full bg-primary transition-all duration-300 ease-out"
-            style={{ width: `${progress}%` }}
-          />
+        {/* Progress bar with label */}
+        <div className="px-6 pt-4 pb-0">
+          <div className="flex items-center justify-between mb-1.5">
+            <Badge variant="secondary" className="text-[10px] font-semibold px-2 py-0.5">
+              Step {step + 1} of {STEPS.length}
+            </Badge>
+            <span className="text-[10px] text-muted-foreground font-medium">{Math.round(progress)}%</span>
+          </div>
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-primary to-primary/70 transition-all duration-300 ease-out rounded-full"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
 
         {/* Close button */}
@@ -162,7 +172,7 @@ export default function OnboardingGuide() {
         </button>
 
         {/* Content */}
-        <div className="px-8 pt-8 pb-6">
+        <div className="px-8 pt-6 pb-6">
           {/* Icon */}
           <div className="flex justify-center mb-5">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
@@ -178,11 +188,13 @@ export default function OnboardingGuide() {
 
           {/* Tip */}
           {current.tip && (
-            <div className="bg-muted/50 rounded-lg px-4 py-2.5 mb-5">
-              <p className="text-[11px] text-muted-foreground text-center">
-                <span className="font-semibold text-foreground">Tip:</span> {current.tip}
-              </p>
-            </div>
+            <Card className="mb-5 border-primary/20 bg-primary/5">
+              <CardContent className="px-4 py-3">
+                <p className="text-[11px] text-muted-foreground text-center">
+                  <span className="font-semibold text-primary">Tip:</span> {current.tip}
+                </p>
+              </CardContent>
+            </Card>
           )}
 
           {/* Step dots */}
@@ -192,7 +204,7 @@ export default function OnboardingGuide() {
                 key={i}
                 onClick={() => setStep(i)}
                 className={`rounded-full transition-all ${
-                  i === step ? 'w-6 h-2 bg-primary' : 'w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                  i === step ? 'w-6 h-2 bg-primary' : i < step ? 'w-2 h-2 bg-primary/40' : 'w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
                 }`}
               />
             ))}
@@ -202,22 +214,18 @@ export default function OnboardingGuide() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
               {!isFirst && (
-                <Button variant="ghost" size="sm" onClick={prev} className="gap-1">
+                <Button variant="outline" size="default" onClick={prev} className="gap-1 h-10 px-4">
                   <ChevronLeft className="h-4 w-4" /> Back
                 </Button>
               )}
               {!isLast && (
-                <Button variant="ghost" size="sm" onClick={close} className="text-muted-foreground text-xs">
-                  Skip
+                <Button variant="ghost" size="default" onClick={close} className="text-muted-foreground text-xs h-10 px-4">
+                  Skip tour
                 </Button>
               )}
             </div>
 
-            <div className="text-[10px] text-muted-foreground">
-              {step + 1} / {STEPS.length}
-            </div>
-
-            <Button size="sm" onClick={next} className="gap-1">
+            <Button size="default" onClick={next} className="gap-1 h-10 px-6 font-semibold">
               {isLast ? 'Get Started' : 'Next'} {!isLast && <ChevronRight className="h-4 w-4" />}
             </Button>
           </div>

@@ -1,207 +1,54 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle2, AlertTriangle, XCircle, Info, Target, Sparkles } from 'lucide-react';
-import { ResumeData } from '@/types/resume';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { CheckCircle2, AlertTriangle, XCircle, Info, Target, Sparkles, BarChart3, FileText, Zap } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { HelpTip } from '@/components/ui/help-tip';
 
-interface ATSCheck {
-  label: string;
-  status: 'pass' | 'warn' | 'fail';
-  message: string;
-}
+// Hooks
+import { useATSScore, type ATSCheck } from './hooks/useATSScore';
+import { useKeywordMatch } from './hooks/useKeywordMatch';
+import { useReadabilityScore } from './hooks/useReadabilityScore';
+import { useFormattingWarnings } from './hooks/useFormattingWarnings';
+import { useActiveVoice } from './hooks/useActiveVoice';
 
-function useATSScore() {
-  const { resumeData } = useResumeStore();
-  const checks: ATSCheck[] = [];
-  let score = 0;
-  const maxScore = 100;
+// Sections
+import SectionScoreBreakdown from './sections/SectionScoreBreakdown';
+import ReadabilityScore from './sections/ReadabilityScore';
+import FormattingWarnings from './sections/FormattingWarnings';
+import IndustryKeywords from './sections/IndustryKeywords';
+import ResumeLengthCheck from './sections/ResumeLengthCheck';
+import DateConsistency from './sections/DateConsistency';
+import ActiveVoiceDetector from './sections/ActiveVoiceDetector';
+import JDComparison from './sections/JDComparison';
+import MultiJDMatching from './sections/MultiJDMatching';
+import KeywordAutoInsert from './sections/KeywordAutoInsert';
 
-  // Contact info completeness (15 pts)
-  const { personalInfo } = resumeData;
-  const contactFields = [personalInfo.fullName, personalInfo.email, personalInfo.phone, personalInfo.location];
-  const contactFilled = contactFields.filter(Boolean).length;
-  if (contactFilled === 4) {
-    checks.push({ label: 'Contact Information', status: 'pass', message: 'All essential contact details provided' });
-    score += 15;
-  } else if (contactFilled >= 2) {
-    checks.push({ label: 'Contact Information', status: 'warn', message: `Missing ${4 - contactFilled} contact field(s). Add name, email, phone, and location.` });
-    score += 8;
-  } else {
-    checks.push({ label: 'Contact Information', status: 'fail', message: 'Missing essential contact information' });
-  }
-
-  // Professional summary (10 pts)
-  if (resumeData.summary.length > 50) {
-    checks.push({ label: 'Professional Summary', status: 'pass', message: 'Good summary length for ATS parsing' });
-    score += 10;
-  } else if (resumeData.summary.length > 0) {
-    checks.push({ label: 'Professional Summary', status: 'warn', message: 'Summary is too short. Aim for 2-4 sentences.' });
-    score += 5;
-  } else {
-    checks.push({ label: 'Professional Summary', status: 'fail', message: 'Add a professional summary to improve ATS matching' });
-  }
-
-  // Work experience (25 pts)
-  if (resumeData.experience.length > 0) {
-    const hasDescriptions = resumeData.experience.every((e) => e.highlights.length > 0);
-    const hasDates = resumeData.experience.every((e) => e.startDate);
-    if (hasDescriptions && hasDates) {
-      checks.push({ label: 'Work Experience', status: 'pass', message: `${resumeData.experience.length} position(s) with descriptions and dates` });
-      score += 25;
-    } else {
-      checks.push({ label: 'Work Experience', status: 'warn', message: 'Add bullet points and dates to all positions' });
-      score += 15;
-    }
-  } else {
-    checks.push({ label: 'Work Experience', status: 'fail', message: 'Add at least one work experience entry' });
-  }
-
-  // Education (15 pts)
-  if (resumeData.education.length > 0) {
-    checks.push({ label: 'Education', status: 'pass', message: 'Education section present' });
-    score += 15;
-  } else {
-    checks.push({ label: 'Education', status: 'warn', message: 'Consider adding education' });
-    score += 5;
-  }
-
-  // Skills (20 pts)
-  if (resumeData.skills.length > 0) {
-    const totalSkills = resumeData.skills.reduce((acc, s) => acc + s.items.length, 0);
-    if (totalSkills >= 5) {
-      checks.push({ label: 'Skills', status: 'pass', message: `${totalSkills} skills across ${resumeData.skills.length} categories` });
-      score += 20;
-    } else {
-      checks.push({ label: 'Skills', status: 'warn', message: 'Add more skills. ATS systems match keywords from job descriptions.' });
-      score += 10;
-    }
-  } else {
-    checks.push({ label: 'Skills', status: 'fail', message: 'Skills section is critical for ATS keyword matching' });
-  }
-
-  // Bullet points with action verbs (10 pts)
-  const actionVerbs = ['led', 'managed', 'developed', 'created', 'implemented', 'designed', 'built', 'launched', 'increased', 'reduced', 'improved', 'achieved', 'delivered', 'collaborated', 'established', 'optimized', 'streamlined', 'spearheaded', 'mentored', 'analyzed'];
-  const allHighlights = resumeData.experience.flatMap((e) => e.highlights);
-  const hasActionVerbs = allHighlights.some((h) => actionVerbs.some((v) => h.toLowerCase().includes(v)));
-  if (allHighlights.length > 0 && hasActionVerbs) {
-    checks.push({ label: 'Action Verbs', status: 'pass', message: 'Bullet points use strong action verbs' });
-    score += 10;
-  } else if (allHighlights.length > 0) {
-    checks.push({ label: 'Action Verbs', status: 'warn', message: 'Start bullet points with action verbs (Led, Developed, Managed, etc.)' });
-    score += 5;
-  }
-
-  // Quantified achievements (5 pts)
-  const hasNumbers = allHighlights.some((h) => /\d+%|\$\d+|\d+\+/.test(h));
-  if (hasNumbers) {
-    checks.push({ label: 'Quantified Results', status: 'pass', message: 'Achievements include measurable results' });
-    score += 5;
-  } else if (allHighlights.length > 0) {
-    checks.push({ label: 'Quantified Results', status: 'warn', message: 'Add numbers/metrics (e.g., "Increased sales by 25%")' });
-  }
-
-  return { score: Math.min(score, maxScore), maxScore, checks };
-}
-
-// ---- Job Description Keyword Matcher ----
-
-const STOP_WORDS = new Set([
-  'a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be', 'been',
-  'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall',
-  'should', 'may', 'might', 'must', 'can', 'could', 'of', 'in', 'to', 'for', 'with',
-  'on', 'at', 'by', 'from', 'as', 'into', 'through', 'during', 'before', 'after',
-  'above', 'below', 'between', 'out', 'off', 'over', 'under', 'again', 'further',
-  'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'each',
-  'every', 'both', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor',
-  'not', 'only', 'own', 'same', 'so', 'than', 'too', 'very', 'just', 'about',
-  'also', 'well', 'up', 'you', 'your', 'we', 'our', 'they', 'their', 'this',
-  'that', 'these', 'those', 'it', 'its', 'i', 'me', 'my', 'myself', 'he', 'him',
-  'his', 'she', 'her', 'who', 'whom', 'which', 'what', 'if', 'while', 'etc',
-  'ability', 'experience', 'work', 'working', 'role', 'team', 'years', 'year',
-  'including', 'strong', 'looking', 'seeking', 'join', 'apply', 'position',
-  'company', 'required', 'preferred', 'qualifications', 'requirements',
-  'responsibilities', 'benefits', 'salary', 'equal', 'opportunity', 'employer',
-]);
-
-function extractKeywords(text: string): string[] {
-  const words = text.toLowerCase().replace(/[^a-z0-9\s\-+#.]/g, ' ').split(/\s+/);
-  const keywords = new Set<string>();
-
-  for (const word of words) {
-    const clean = word.replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
-    if (clean.length >= 2 && !STOP_WORDS.has(clean)) {
-      keywords.add(clean);
-    }
-  }
-
-  // Also extract multi-word phrases (bigrams) for tech terms
-  for (let i = 0; i < words.length - 1; i++) {
-    const bigram = `${words[i]} ${words[i + 1]}`.replace(/[^a-z0-9\s\-+#.]/g, '').trim();
-    if (bigram.length >= 5 && /[a-z]/.test(bigram)) {
-      keywords.add(bigram);
-    }
-  }
-
-  return Array.from(keywords);
-}
-
-function getResumeText(resumeData: ResumeData): string {
-  const parts: string[] = [
-    resumeData.personalInfo.fullName,
-    resumeData.personalInfo.jobTitle,
-    resumeData.summary,
-    ...resumeData.experience.flatMap((e) => [e.position, e.company, e.description, ...e.highlights]),
-    ...resumeData.education.flatMap((e) => [e.institution, e.degree, e.field, ...e.highlights]),
-    ...resumeData.skills.flatMap((s) => [s.category, ...s.items]),
-    ...resumeData.projects.flatMap((p) => [p.name, p.description, ...p.technologies, ...p.highlights]),
-    ...resumeData.certifications.map((c) => `${c.name} ${c.issuer}`),
-    ...resumeData.languages.map((l) => l.name),
-  ];
-  return parts.join(' ').toLowerCase();
-}
-
-interface KeywordMatch {
-  keyword: string;
-  found: boolean;
-}
-
-function useKeywordMatch(jobDescription: string) {
-  const { resumeData } = useResumeStore();
-
-  return useMemo(() => {
-    if (!jobDescription.trim()) return null;
-
-    const jdKeywords = extractKeywords(jobDescription);
-    const resumeText = getResumeText(resumeData);
-
-    const matches: KeywordMatch[] = jdKeywords
-      .filter((kw) => kw.length >= 3) // skip very short
-      .map((keyword) => ({
-        keyword,
-        found: resumeText.includes(keyword),
-      }))
-      // Sort: missing first, then found
-      .sort((a, b) => (a.found === b.found ? 0 : a.found ? 1 : -1));
-
-    const foundCount = matches.filter((m) => m.found).length;
-    const matchPercentage = matches.length > 0 ? Math.round((foundCount / matches.length) * 100) : 0;
-
-    return { matches, foundCount, totalCount: matches.length, matchPercentage };
-  }, [jobDescription, resumeData]);
-}
-
-// ---- Component ----
+// Utils
+import { getResumeText } from './utils/textAnalysis';
+import { callGroqAI, getGroqApiKey } from './utils/groqAI';
 
 export default function ATSScoreChecker() {
-  const { score, maxScore, checks } = useATSScore();
+  const { resumeData } = useResumeStore();
+  const { score, maxScore, checks, sectionScores } = useATSScore();
   const [jobDescription, setJobDescription] = useState('');
   const keywordResult = useKeywordMatch(jobDescription);
+  const readability = useReadabilityScore();
+  const formattingWarnings = useFormattingWarnings();
+  const passiveVoiceFlags = useActiveVoice();
+
+  // AI gap analysis state
+  const [aiGapAnalysis, setAiGapAnalysis] = useState('');
+  const [aiGapLoading, setAiGapLoading] = useState(false);
+
+  const resumeText = getResumeText(resumeData);
 
   const getScoreColor = () => {
     if (score >= 80) return 'text-green-600';
@@ -235,12 +82,29 @@ export default function ATSScoreChecker() {
     return 'border-red-500';
   };
 
+  const handleAIGapAnalysis = async () => {
+    if (!keywordResult || !jobDescription.trim()) return;
+    setAiGapLoading(true);
+    setAiGapAnalysis('');
+    const missing = keywordResult.matches.filter(m => !m.found).map(m => m.keyword).slice(0, 20);
+    const result = await callGroqAI(
+      'You are an ATS optimization expert. Give concise, actionable advice in 3-5 bullet points. No preamble.',
+      `Resume summary: ${resumeData.summary}\n\nJob description keywords missing from resume: ${missing.join(', ')}\n\nSuggest how to naturally incorporate these missing keywords into the resume. Be specific about which section to add them to.`,
+      400,
+      0.7
+    );
+    if (result.success && result.content) setAiGapAnalysis(result.content);
+    else setAiGapAnalysis(result.error || 'Failed to generate analysis');
+    setAiGapLoading(false);
+  };
+
   return (
     <div className="space-y-5">
       {/* ---- ATS Score ---- */}
       <section>
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
           <Info className="h-4 w-4" /> ATS Compatibility Score
+          <HelpTip text="ATS (Applicant Tracking System) scans your resume for keywords, formatting, and structure. Score 80+ means your resume is well-optimized. Each check awards points based on content quality." />
         </h3>
 
         <div className="flex justify-center py-3">
@@ -273,7 +137,39 @@ export default function ATSScoreChecker() {
             </div>
           ))}
         </div>
+
+        {/* Section Score Breakdown */}
+        <div className="mt-4">
+          <SectionScoreBreakdown sectionScores={sectionScores} />
+        </div>
       </section>
+
+      <Separator />
+
+      {/* ---- Enhanced Analysis (Accordion) ---- */}
+      <Accordion>
+        <AccordionItem value="enhanced-analysis">
+          <AccordionTrigger className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" /> Enhanced Analysis
+              <HelpTip text="Readability scoring, resume length, formatting warnings, date consistency, and active voice detection. Expand to see detailed analysis of your resume quality." />
+            </span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-5 pt-2">
+              <ReadabilityScore />
+              <Separator />
+              <ResumeLengthCheck />
+              <Separator />
+              <FormattingWarnings />
+              <Separator />
+              <DateConsistency />
+              <Separator />
+              <ActiveVoiceDetector />
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       <Separator />
 
@@ -281,6 +177,7 @@ export default function ATSScoreChecker() {
       <section>
         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-2">
           <Target className="h-4 w-4" /> Job Description Match
+          <HelpTip text="Paste a job description to see which keywords appear in your resume. Aim for 70%+ match. Missing keywords are shown in red — add them to your Skills or Experience sections." />
         </h3>
 
         <div className="space-y-2">
@@ -314,7 +211,7 @@ export default function ATSScoreChecker() {
               </div>
             </div>
 
-            {/* Missing keywords */}
+            {/* Missing keywords with density */}
             {keywordResult.matches.filter((m) => !m.found).length > 0 && (
               <div>
                 <p className="text-xs font-medium text-red-600 mb-1.5 flex items-center gap-1">
@@ -333,7 +230,7 @@ export default function ATSScoreChecker() {
               </div>
             )}
 
-            {/* Found keywords */}
+            {/* Found keywords with occurrence count */}
             {keywordResult.matches.filter((m) => m.found).length > 0 && (
               <div>
                 <p className="text-xs font-medium text-green-600 mb-1.5 flex items-center gap-1">
@@ -345,12 +242,48 @@ export default function ATSScoreChecker() {
                     .slice(0, 30)
                     .map((m, i) => (
                       <span key={i} className="text-xs px-1.5 py-0.5 rounded bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 border border-green-200 dark:border-green-900">
-                        {m.keyword}
+                        {m.keyword}{m.occurrences > 1 && <span className="ml-1 opacity-70">×{m.occurrences}</span>}
                       </span>
                     ))}
                 </div>
               </div>
             )}
+
+            {/* Keyword Auto-Insert Suggestions */}
+            {keywordResult.matches.filter(m => !m.found).length > 0 && (
+              <>
+                <Separator />
+                <KeywordAutoInsert missingKeywords={keywordResult.matches.filter(m => !m.found).map(m => m.keyword)} />
+              </>
+            )}
+
+            {/* AI Gap Analysis */}
+            {getGroqApiKey() && keywordResult.matches.filter(m => !m.found).length > 0 && (
+              <div className="mt-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-xs gap-1.5"
+                  onClick={handleAIGapAnalysis}
+                  disabled={aiGapLoading}
+                >
+                  <Sparkles className="h-3.5 w-3.5" />
+                  {aiGapLoading ? 'Analyzing...' : 'AI Gap Analysis'}
+                </Button>
+                {aiGapAnalysis && (
+                  <Card className="mt-2 p-3 bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900">
+                    <pre className="text-xs text-foreground whitespace-pre-wrap leading-relaxed font-sans">{aiGapAnalysis}</pre>
+                  </Card>
+                )}
+              </div>
+            )}
+
+            {/* JD Comparison View */}
+            <JDComparison
+              resumeText={resumeText}
+              jobDescription={jobDescription}
+              keywordMatches={keywordResult.matches}
+            />
           </div>
         )}
 
@@ -366,6 +299,30 @@ export default function ATSScoreChecker() {
           </Card>
         )}
       </section>
+
+      <Separator />
+
+      {/* ---- Smart Matching (Accordion) ---- */}
+      <Accordion>
+        <AccordionItem value="smart-matching">
+          <AccordionTrigger className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <Zap className="h-4 w-4" /> Smart Matching
+              <HelpTip text="Search 20 industries and 201 roles to find keywords ATS systems scan for. Save multiple job descriptions to compare match scores across different positions." />
+            </span>
+          </AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-5 pt-2">
+              <IndustryKeywords />
+              <Separator />
+              <MultiJDMatching
+                jobDescription={jobDescription}
+                onLoadJD={(text) => setJobDescription(text)}
+              />
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       <Separator />
 

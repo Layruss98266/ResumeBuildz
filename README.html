@@ -29,9 +29,11 @@
     h2 {
       font-size: 1.5rem;
       margin: 2.5rem 0 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--primary);
-      color: var(--primary);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: #fff;
+      border-bottom: none;
     }
     h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; color: var(--text); }
     p { margin-bottom: 0.75rem; }
@@ -76,12 +78,14 @@
     pre {
       background: #1e293b;
       color: #e2e8f0;
-      padding: 1rem 1.25rem;
-      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
       overflow-x: auto;
       margin: 0.75rem 0 1.25rem;
       font-size: 0.875rem;
-      line-height: 1.6;
+      line-height: 1.7;
+      border: 1px solid #334155;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
     pre code { background: none; padding: 0; color: inherit; }
     .comment { color: #94a3b8; }
@@ -97,17 +101,27 @@
     }
     table {
       width: 100%;
-      border-collapse: collapse;
+      border-collapse: separate;
+      border-spacing: 0;
       margin: 0.75rem 0 1.25rem;
       font-size: 0.9rem;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
     th, td {
       text-align: left;
-      padding: 0.6rem 0.75rem;
-      border: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
     }
-    th { background: var(--bg-section); font-weight: 600; }
+    th {
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      font-weight: 600;
+      color: #fff;
+    }
     tr:nth-child(even) { background: var(--bg-section); }
+    tr:last-child td { border-bottom: none; }
     blockquote {
       border-left: 4px solid var(--primary);
       padding: 0.75rem 1rem;
@@ -120,9 +134,13 @@
     .section-card {
       background: var(--bg-section);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.25rem;
+      border-radius: 12px;
+      padding: 1.5rem;
       margin: 0.75rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .section-card strong {
+      color: var(--primary);
     }
     .two-col {
       display: grid;
@@ -205,6 +223,18 @@
     <li><strong>ATS Compatibility Score</strong> &mdash; Analyzes resume with 7 checks and actionable feedback</li>
     <li><strong>Job Description Matcher</strong> &mdash; Paste a job listing to see keyword match percentage</li>
     <li><strong>Missing/Matched Keywords</strong> &mdash; Color-coded breakdown (red = missing, green = matched)</li>
+    <li><strong>Keyword Density</strong> &mdash; Shows occurrence count for each matched keyword (e.g., &ldquo;React &times;3&rdquo;)</li>
+    <li><strong>Section Score Breakdown</strong> &mdash; Mini progress bars showing points per section (Contact 15/15, Experience 25/25, etc.)</li>
+    <li><strong>Readability Score</strong> &mdash; Flesch-Kincaid readability scoring with interpretation (60&ndash;70 is ideal for resumes)</li>
+    <li><strong>Formatting Warnings</strong> &mdash; Detects ATS-breaking characters, bullet inconsistencies, empty fields</li>
+    <li><strong>Industry Keywords</strong> &mdash; 20 industries with 201 roles, 25&ndash;30 keywords each. Searchable. Shows role-specific keywords in your resume</li>
+    <li><strong>Resume Length Check</strong> &mdash; Word count with zone bar (red &lt;300, green 300&ndash;700, yellow &gt;700)</li>
+    <li><strong>Date Consistency</strong> &mdash; Checks date formats, chronological order, and overlaps</li>
+    <li><strong>Active Voice Detector</strong> &mdash; Flags passive voice in bullet points with active alternatives</li>
+    <li><strong>JD Comparison</strong> &mdash; Shows resume text with matched keywords highlighted</li>
+    <li><strong>Multi-JD Matching</strong> &mdash; Save up to 5 job descriptions, compare match scores in a table</li>
+    <li><strong>Keyword Auto-Insert</strong> &mdash; Classifies missing keywords by target section (Skills/Experience/Summary)</li>
+    <li><strong>AI Gap Analysis</strong> &mdash; Uses Groq AI to suggest how to naturally add missing keywords (requires API key)</li>
     <li><strong>AI Writing Assistant</strong> &mdash; Generate professional summaries, bullet points, skills, and custom prompts</li>
   </ul>
 
@@ -225,10 +255,12 @@
 
   <h2>Getting Started</h2>
 
+  <p>ResumeForge runs entirely in your browser &mdash; there is no backend server, database, or account required. Clone the repository, install dependencies, and you are ready to build resumes locally. All data is persisted in your browser's localStorage so nothing leaves your machine.</p>
+
   <h3>Prerequisites</h3>
   <ul>
-    <li>Node.js 18+</li>
-    <li>npm</li>
+    <li>Node.js 18+ (LTS recommended)</li>
+    <li>npm (comes with Node.js)</li>
   </ul>
 
   <h3>Installation</h3>
@@ -241,11 +273,11 @@ npm install
 
 <span class="comment"># Start the development server</span>
 npm run dev</code></pre>
-  <p>Open <a href="http://localhost:3000">http://localhost:3000</a> in your browser.</p>
+  <p>Open <a href="http://localhost:3000">http://localhost:3000</a> in your browser. A sample resume is pre-loaded so you can explore templates, ATS scoring, and export options right away.</p>
 
   <h3>Build for Production</h3>
   <pre><code>npm run build</code></pre>
-  <p>This generates a static export in the <code>out/</code> folder, ready for deployment.</p>
+  <p>This generates a static export in the <code>out/</code> folder, ready for deployment to any static hosting provider (GitHub Pages, Vercel, Netlify, Cloudflare Pages, etc.).</p>
 
   <h2>How to Use</h2>
   <ol>
@@ -395,6 +427,31 @@ localStorage.clear(); location.reload();</code></pre>
   <p>Or click the <strong>Reset</strong> button in the app header to clear resume data only.</p>
 
   <h2>Changelog</h2>
+  <h3>v1.2.0</h3>
+  <ul>
+    <li>Modernized Help Dialog UI with Card-based sections, gradient header, and section icons</li>
+    <li>Modernized Onboarding Guide with gradient progress bar, step badges, and improved tip styling</li>
+    <li>Improved keyboard shortcut display with realistic keycap-style kbd elements</li>
+    <li>Larger, more touch-friendly navigation buttons in onboarding and help dialogs</li>
+    <li>Completed step dots now show a distinct filled style for better progress visibility</li>
+    <li>Updated README and HTML documentation with expanded Getting Started section</li>
+  </ul>
+  <h3>v1.1.0</h3>
+  <ul>
+    <li>Enhanced ATS panel with 12 new analysis tools:</li>
+    <li>Keyword Density with occurrence counts</li>
+    <li>Section Score Breakdown with mini progress bars</li>
+    <li>Flesch-Kincaid Readability Score</li>
+    <li>Formatting Warnings for ATS-breaking characters</li>
+    <li>Industry Keywords database (20 industries, 201 roles, 25&ndash;30 keywords each)</li>
+    <li>Resume Length Check with visual zone bar</li>
+    <li>Date Consistency checker (format, order, overlaps)</li>
+    <li>Active Voice Detector with suggested alternatives</li>
+    <li>JD Comparison with highlighted keyword matches</li>
+    <li>Multi-JD Matching (save up to 5 JDs, compare scores)</li>
+    <li>Keyword Auto-Insert suggestions by section</li>
+    <li>AI Gap Analysis for natural keyword integration</li>
+  </ul>
   <h3>v1.0.0</h3>
   <ul>
     <li>20 ATS-friendly resume templates</li>

@@ -51,6 +51,18 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 - **ATS Compatibility Score** - Analyzes resume with 7 checks and actionable feedback
 - **Job Description Matcher** - Paste a job listing to see keyword match percentage
 - **Missing/Matched Keywords** - Color-coded breakdown (red = missing, green = matched)
+- **Keyword Density** - Shows occurrence count for each matched keyword (e.g., "React x3")
+- **Section Score Breakdown** - Mini progress bars showing points per section (Contact 15/15, Experience 25/25, etc.)
+- **Readability Score** - Flesch-Kincaid readability scoring with interpretation (60-70 is ideal for resumes)
+- **Formatting Warnings** - Detects ATS-breaking characters, bullet inconsistencies, empty fields
+- **Industry Keywords** - 20 industries with 201 roles, 25-30 keywords each. Searchable. Shows role-specific keywords in your resume
+- **Resume Length Check** - Word count with zone bar (red <300, green 300-700, yellow >700)
+- **Date Consistency** - Checks date formats, chronological order, and overlaps
+- **Active Voice Detector** - Flags passive voice in bullet points with active alternatives
+- **JD Comparison** - Shows resume text with matched keywords highlighted
+- **Multi-JD Matching** - Save up to 5 job descriptions, compare match scores in a table
+- **Keyword Auto-Insert** - Classifies missing keywords by target section (Skills/Experience/Summary)
+- **AI Gap Analysis** - Uses Groq AI to suggest how to naturally add missing keywords (requires API key)
 - **AI Writing Assistant** - Generate professional summaries, bullet points, skills, and custom prompts
 
 ### SEO & Performance
@@ -74,10 +86,12 @@ A fully client-side, professional resume builder with 20 ATS-optimized templates
 
 ## Getting Started
 
+ResumeForge runs entirely in your browser -- there is no backend server, database, or account required. Clone the repository, install dependencies, and you are ready to build resumes locally. All data is persisted in your browser's localStorage so nothing leaves your machine.
+
 ### Prerequisites
 
-- Node.js 18+
-- npm
+- Node.js 18+ (LTS recommended)
+- npm (comes with Node.js)
 
 ### Installation
 
@@ -93,7 +107,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) in your browser. A sample resume is pre-loaded so you can explore templates, ATS scoring, and export options right away.
 
 ### Build for Production
 
@@ -101,7 +115,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 npm run build
 ```
 
-This generates a static export in the `out/` folder, ready for deployment.
+This generates a static export in the `out/` folder, ready for deployment to any static hosting provider (GitHub Pages, Vercel, Netlify, Cloudflare Pages, etc.).
 
 ## How to Use
 
@@ -227,6 +241,29 @@ Found a bug or have a suggestion? [Open an issue](https://github.com/Surya8991/r
 
 ## Changelog
 
+### v1.2.0
+- Modernized Help Dialog UI with Card-based sections, gradient header, and section icons
+- Modernized Onboarding Guide with gradient progress bar, step badges, and improved tip styling
+- Improved keyboard shortcut display with realistic keycap-style kbd elements
+- Larger, more touch-friendly navigation buttons in onboarding and help dialogs
+- Completed step dots now show a distinct filled style for better progress visibility
+- Updated README and HTML documentation with expanded Getting Started section
+
+### v1.1.0
+- Enhanced ATS panel with 12 new analysis tools:
+  - Keyword Density with occurrence counts
+  - Section Score Breakdown with mini progress bars
+  - Flesch-Kincaid Readability Score
+  - Formatting Warnings for ATS-breaking characters
+  - Industry Keywords database (20 industries, 201 roles, 25-30 keywords each)
+  - Resume Length Check with visual zone bar
+  - Date Consistency checker (format, order, overlaps)
+  - Active Voice Detector with suggested alternatives
+  - JD Comparison with highlighted keyword matches
+  - Multi-JD Matching (save up to 5 JDs, compare scores)
+  - Keyword Auto-Insert suggestions by section
+  - AI Gap Analysis for natural keyword integration
+
 ### v1.0.0
 - 20 ATS-friendly resume templates
 - AI Writing Assistant (Groq-powered, BYOK)
@@ -248,6 +285,21 @@ Found a bug or have a suggestion? [Open an issue](https://github.com/Surya8991/r
 - Dark/light mode
 - Error boundary with recovery
 - Static export for GitHub Pages / Vercel / Netlify deployment
+
+### v1.1.0
+- Enhanced ATS panel with 12 new analysis tools:
+  - Keyword Density with occurrence counts
+  - Section Score Breakdown with mini progress bars
+  - Flesch-Kincaid Readability Score
+  - Formatting Warnings for ATS-breaking characters
+  - Industry Keywords database (20 industries, 201 roles, 25-30 keywords each)
+  - Resume Length Check with visual zone bar
+  - Date Consistency checker (format, order, overlaps)
+  - Active Voice Detector with suggested alternatives
+  - JD Comparison with highlighted keyword matches
+  - Multi-JD Matching (save up to 5 JDs, compare scores)
+  - Keyword Auto-Insert suggestions by section
+  - AI Gap Analysis for natural keyword integration
 
 ## Troubleshooting
 

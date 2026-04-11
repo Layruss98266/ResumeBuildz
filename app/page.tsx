@@ -83,6 +83,7 @@ export default function HomePage() {
   const [isFullPreview, setIsFullPreview] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showSectionDropdown, setShowSectionDropdown] = useState(false);
   const [showReorder, setShowReorder] = useState(false);
   const { importData, resetData, addCustomSection, resumeData } = useResumeStore();
 
@@ -343,7 +344,7 @@ export default function HomePage() {
                 ))}
               </div>
             ) : (
-              <div className="flex-1 flex items-center gap-3 px-4 py-2.5">
+              <div className="flex-1 flex items-center gap-3 px-4 py-2 relative">
                 {(() => {
                   const idx = FORM_SECTIONS.findIndex(s => s.id === activeSection);
                   const current = FORM_SECTIONS[idx];
@@ -353,7 +354,13 @@ export default function HomePage() {
                         {current && <current.icon className="h-4 w-4 text-primary" />}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-base font-semibold truncate">{current?.label}</p>
+                        <button
+                          onClick={() => setShowSectionDropdown(!showSectionDropdown)}
+                          className="flex items-center gap-1.5 text-base font-semibold hover:text-primary transition-colors w-full text-left"
+                        >
+                          <span className="truncate">{current?.label}</span>
+                          <ChevronDown className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${showSectionDropdown ? 'rotate-180' : ''}`} />
+                        </button>
                         <p className="text-xs text-muted-foreground">Step {idx + 1} of {FORM_SECTIONS.length}</p>
                       </div>
                       <div className="flex gap-1 shrink-0">
@@ -368,6 +375,28 @@ export default function HomePage() {
                           />
                         ))}
                       </div>
+                      {showSectionDropdown && (
+                        <>
+                          <div className="fixed inset-0 z-40" onClick={() => setShowSectionDropdown(false)} />
+                          <div className="absolute left-4 top-full mt-1 z-50 bg-background border rounded-xl shadow-xl py-1 w-64 animate-in fade-in slide-in-from-top-1 duration-150">
+                            {FORM_SECTIONS.map((s, i) => (
+                              <button
+                                key={s.id}
+                                onClick={() => { setActiveSection(s.id); setShowSectionDropdown(false); }}
+                                className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors ${
+                                  activeSection === s.id
+                                    ? 'bg-primary/10 text-primary font-medium'
+                                    : 'hover:bg-muted text-foreground'
+                                }`}
+                              >
+                                <s.icon className={`h-4 w-4 shrink-0 ${activeSection === s.id ? 'text-primary' : 'text-muted-foreground'}`} />
+                                <span className="flex-1 text-left">{s.label}</span>
+                                <span className="text-xs text-muted-foreground">{i + 1}/{FORM_SECTIONS.length}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </>
+                      )}
                     </>
                   );
                 })()}
