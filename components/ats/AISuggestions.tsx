@@ -8,6 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Sparkles, Copy, Check, AlertCircle, Key } from 'lucide-react';
 import { HelpTip } from '@/components/ui/help-tip';
+import { getUsage, incrementUsage, canUse } from '@/lib/usage';
+import UpgradeModal from '@/components/UpgradeModal';
 
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
@@ -54,6 +56,8 @@ export default function AISuggestions() {
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
   const [customPrompt, setCustomPrompt] = useState('');
+  const [showUpgrade, setShowUpgrade] = useState(false);
+  const [aiRemaining, setAiRemaining] = useState(() => getUsage('ai').remaining);
 
   const saveKey = (key: string) => {
     setApiKey(key);
@@ -62,6 +66,10 @@ export default function AISuggestions() {
   };
 
   const generate = async (type: SuggestionType) => {
+    if (!canUse('ai')) {
+      setShowUpgrade(true);
+      return;
+    }
     if (!apiKey) {
       setShowKeyInput(true);
       return;
@@ -117,9 +125,14 @@ export default function AISuggestions() {
 
       const data = await response.json();
       const content = data.choices?.[0]?.message?.content?.trim();
-      if (content) setResult(content);
-      else setError('No suggestion generated. Try again.');
-    } catch (err) {
+      if (content) {
+        setResult(content);
+        incrementUsage('ai');
+        setAiRemaining(getUsage('ai').remaining);
+      } else {
+        setError('No suggestion generated. Try again.');
+      }
+    } catch {
       setError('Failed to connect to AI service. Check your internet connection.');
     } finally {
       setLoading(false);
@@ -170,6 +183,11 @@ export default function AISuggestions() {
           </button>
         </div>
       )}
+
+      {/* Usage counter */}
+      <p className="text-xs text-muted-foreground">
+        {aiRemaining} free rewrite{aiRemaining !== 1 ? 's' : ''} remaining today
+      </p>
 
       {/* Quick actions */}
       <div className="flex flex-wrap gap-1.5">
@@ -244,6 +262,8 @@ export default function AISuggestions() {
           </p>
         </Card>
       )}
+
+      <UpgradeModal feature="ai" open={showUpgrade} onOpenChange={setShowUpgrade} />
     </div>
   );
 }

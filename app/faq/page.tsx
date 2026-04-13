@@ -134,7 +134,7 @@ export default function FAQPage() {
       <section className="bg-white py-16 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Still Have Questions?</h2>
-          <p className="text-gray-600 mb-8">We're here to help. You can also check our <Link href="/ats-guide" className="text-blue-500 hover:underline">ATS guide</Link> and <Link href="/resume-tips" className="text-blue-500 hover:underline">resume writing tips</Link>, or reach out directly.</p>
+          <p className="text-gray-600 mb-8">We&apos;re here to help. You can also check our <Link href="/ats-guide" className="text-blue-500 hover:underline">ATS guide</Link> and <Link href="/resume-tips" className="text-blue-500 hover:underline">resume writing tips</Link>, or reach out directly.</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link href="/contact" className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-3 rounded-lg font-medium transition-colors">
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -151,6 +151,66 @@ export default function FAQPage() {
           </div>
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Is ResumeForge completely free?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. ResumeForge is 100% free with no sign-up, no credit card, and no hidden fees. All 20 templates, ATS checker, and export features are free forever.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Does ResumeForge store my data?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No. ResumeForge is entirely client-side. Your resume data never leaves your browser and is stored only in your device's localStorage. There are no servers, no tracking, and no analytics.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Do I need to create an account?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No account is needed. Open the builder and start immediately. No email, no password, no credit card required.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What formats can I export my resume in?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "ResumeForge supports PDF export (via browser print), DOCX (Microsoft Word), and HTML. PDF gives the best visual output. DOCX is best for ATS compatibility.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How do the AI features work?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "AI features use the Groq API (Llama 3.3 70B model). You bring your own free Groq API key from console.groq.com — it is stored only in your browser and never sent to any ResumeForge server.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Are the templates ATS-friendly?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. All 20 templates are tested for ATS compatibility with clean formatting, standard section headings, and no graphics or text boxes that confuse resume parsers.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
 
       <SiteFooter />
     </div>

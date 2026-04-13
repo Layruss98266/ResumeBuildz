@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { FileText, Menu, X, ArrowRight } from 'lucide-react';
+import { FileText, Menu, X, ArrowRight, LogOut, User } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const NAV_LINKS = [
   { href: '/builder', label: 'Resume Builder' },
@@ -10,12 +11,14 @@ const NAV_LINKS = [
   { href: '/ats-guide', label: 'ATS Guide' },
   { href: '/resume-tips', label: 'Tips' },
   { href: '/about', label: 'About' },
+  { href: '/pricing', label: 'Pricing' },
   { href: '/faq', label: 'FAQ' },
   { href: '/contact', label: 'Contact' },
 ];
 
 export default function SiteNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, profile, signOut, loading } = useAuth();
 
   return (
     <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
@@ -44,14 +47,45 @@ export default function SiteNavbar() {
             ))}
           </div>
 
-          {/* CTA + Mobile toggle */}
+          {/* Auth + CTA + Mobile toggle */}
           <div className="flex items-center gap-2">
-            <Link
-              href="/builder"
-              className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
-            >
-              Build Resume <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            {!loading && (
+              user ? (
+                <>
+                  <span className="hidden lg:inline text-sm text-gray-400 truncate max-w-[140px]">
+                    {profile?.full_name || user.email}
+                  </span>
+                  <Link
+                    href="/builder"
+                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    Build Resume <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                  <button
+                    onClick={() => signOut()}
+                    className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-gray-400 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
+                    title="Sign out"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-gray-300 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
+                  >
+                    <User className="h-3.5 w-3.5" /> Sign in
+                  </Link>
+                  <Link
+                    href="/builder"
+                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    Build Resume <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </>
+              )
+            )}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="md:hidden p-2 text-gray-300 hover:text-white"
@@ -81,6 +115,24 @@ export default function SiteNavbar() {
             >
               Build Resume
             </Link>
+            {!loading && (
+              user ? (
+                <button
+                  onClick={() => { signOut(); setMobileOpen(false); }}
+                  className="block w-full text-center mt-2 px-4 py-2 text-gray-300 text-sm rounded-lg border border-gray-700 hover:bg-gray-800"
+                >
+                  Sign out
+                </button>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-center mt-2 px-4 py-2 text-gray-300 text-sm rounded-lg border border-gray-700 hover:bg-gray-800"
+                >
+                  Sign in
+                </Link>
+              )
+            )}
           </div>
         )}
       </div>

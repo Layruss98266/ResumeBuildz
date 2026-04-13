@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Plus, BarChart3, X, FileText } from 'lucide-react';
 import { extractKeywords, getResumeText } from '../utils/textAnalysis';
@@ -52,7 +51,8 @@ export default function MultiJDMatching({ jobDescription, onLoadJD }: MultiJDMat
 
   // Load saved JDs from localStorage on mount
   useEffect(() => {
-    setSavedJDs(loadSavedJDs());
+    const id = requestAnimationFrame(() => setSavedJDs(loadSavedJDs()));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const saveCurrentJD = useCallback(() => {

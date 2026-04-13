@@ -169,6 +169,43 @@
   -webkit-print-color-adjust: exact;
 }
 
+/* Visual page break indicator in preview (A4 = 297mm height, ~1122px at 96dpi) */
+.resume-preview-paged {
+  position: relative;
+}
+
+.resume-preview-paged .page-break-line {
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  height: 0;
+  border-top: 2px dashed #94a3b8;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.resume-preview-paged .page-break-label {
+  position: absolute;
+  right: -8px;
+  transform: translateY(-50%);
+  background: #94a3b8;
+  color: white;
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: system-ui, sans-serif;
+  pointer-events: none;
+  z-index: 11;
+}
+
+.dark .resume-preview-paged .page-break-line {
+  border-top-color: #64748b;
+}
+
+.dark .resume-preview-paged .page-break-label {
+  background: #64748b;
+}
+
 .resume-print > div > div:first-child {
   page-break-inside: auto;
 }

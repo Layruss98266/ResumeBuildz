@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import {
   HelpCircle,
@@ -12,7 +11,6 @@ import {
   RotateCcw,
   Rocket,
   FileText,
-  Layout,
   ArrowDownUp,
   Sparkles,
   Keyboard,
@@ -27,7 +25,8 @@ export default function HelpDialog() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const close = useCallback(() => setIsOpen(false), []);

@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, useId, useMemo } from 'react';
+import { createElement, forwardRef, useId, useMemo, useState, useCallback } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
 import { getTemplateComponent } from '@/components/templates';
 import { DEFAULT_STYLE_OPTIONS, FONT_OPTIONS } from '@/components/templates/TemplateWrapper';
@@ -52,16 +52,53 @@ const ResumePreview = forwardRef<HTMLDivElement>((_, ref) => {
     return rules.join('\n');
   }, [scopeId, fontChanged, safeFont, lineChanged, safeLineHeight, marginChanged, safeMargin, spacingChanged, safeSpacing]);
 
+  // A4 page height in px (297mm at 96dpi ≈ 1122px), adjusted for zoom/fontSize scale
+  const pageHeightPx = 1122;
+  const [pageBreaks, setPageBreaks] = useState<number[]>([]);
+  const innerRef = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    // Measure actual content height and calculate page breaks
+    const measure = () => {
+      const h = node.scrollHeight;
+      const breaks: number[] = [];
+      let y = pageHeightPx;
+      while (y < h) {
+        breaks.push(y);
+        y += pageHeightPx;
+      }
+      setPageBreaks(breaks);
+    };
+    // Measure after render settles
+    const id = requestAnimationFrame(measure);
+    const observer = new ResizeObserver(measure);
+    observer.observe(node);
+    return () => { cancelAnimationFrame(id); observer.disconnect(); };
+  }, [pageHeightPx]);
+
+  // Merge refs
+  const setRefs = useCallback((node: HTMLDivElement | null) => {
+    innerRef(node);
+    if (typeof ref === 'function') ref(node);
+    else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+  }, [ref, innerRef]);
+
   return (
     <div
-      ref={ref}
-      className={`resume-print rp-${scopeId}`}
+      ref={setRefs}
+      className={`resume-print rp-${scopeId} resume-preview-paged`}
       style={{
         zoom: sizeScale !== 1 ? sizeScale : undefined,
+        position: 'relative',
       }}
     >
       {overrideCSS && <style dangerouslySetInnerHTML={{ __html: overrideCSS }} />}
-      <TemplateComponent data={resumeData} primaryColor={primaryColor} styleOptions={styleOptions} />
+      {createElement(TemplateComponent, { data: resumeData, primaryColor, styleOptions })}
+      {pageBreaks.map((y, i) => (
+        <div key={i}>
+          <div className="page-break-line" style={{ top: y }} />
+          <div className="page-break-label" style={{ top: y }}>Page {i + 2}</div>
+        </div>
+      ))}
     </div>
   );
 });

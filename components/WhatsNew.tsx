@@ -18,11 +18,14 @@ export default function WhatsNew() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    const savedVersion = localStorage.getItem('resumeforge-version');
-    if (savedVersion !== APP_VERSION) {
-      setShow(true);
-    }
+    const id = requestAnimationFrame(() => {
+      setMounted(true);
+      const savedVersion = localStorage.getItem('resumeforge-version');
+      if (savedVersion !== APP_VERSION) {
+        setShow(true);
+      }
+    });
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const handleDismiss = () => {

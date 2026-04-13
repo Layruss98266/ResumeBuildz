@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FileText, Filter } from 'lucide-react';
+import { Filter } from 'lucide-react';
 import { TEMPLATES } from '@/types/resume';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';

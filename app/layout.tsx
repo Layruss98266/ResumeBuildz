@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://surya8991.github.io/resumeforge";
+const siteUrl = "https://resume-forge-orcin.vercel.app";
 
 export const metadata: Metadata = {
   title: "ResumeForge by Surya L - Free ATS-Friendly Resume Generator",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_IN",
     url: siteUrl,
     siteName: "ResumeForge",
     title: "ResumeForge - Free ATS Resume Builder with 20 Templates & AI",
@@ -87,31 +87,39 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: "ResumeForge",
-              url: siteUrl,
-              description: "Free ATS-friendly resume builder with 20 templates, AI writing assistant, and cover letter builder.",
-              applicationCategory: "BusinessApplication",
-              operatingSystem: "All",
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "USD",
-              },
-              author: {
-                "@type": "Person",
-                name: "Surya L",
-                url: "https://github.com/Surya8991",
-              },
-              featureList: [
-                "20 ATS-optimized resume templates",
-                "AI-powered writing assistant",
-                "Cover letter builder",
-                "Job description keyword matcher",
-                "Multi-format export (PDF, DOCX, HTML)",
-                "Resume import (DOCX, TXT, MD, JSON)",
-                "Dark/Light mode",
-                "100% client-side, no data sent to servers",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  name: "ResumeForge",
+                  url: siteUrl,
+                  description: "Free ATS-friendly resume builder with 20 templates, AI writing assistant, and ATS score checker.",
+                },
+                {
+                  "@type": "WebApplication",
+                  name: "ResumeForge",
+                  url: siteUrl,
+                  applicationCategory: "BusinessApplication",
+                  operatingSystem: "Web",
+                  description: "Free ATS-friendly resume builder with 20 templates, Groq AI writing assistant, 12-point ATS score checker, and multi-format export. No sign-up required.",
+                  offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                  },
+                  featureList: [
+                    "20 ATS-friendly resume templates",
+                    "AI-powered writing assistant",
+                    "ATS score checker",
+                    "PDF, DOCX, HTML export",
+                    "Cover letter builder",
+                    "No sign-up required",
+                  ],
+                  author: {
+                    "@type": "Person",
+                    name: "Surya L",
+                    url: "https://github.com/Surya8991",
+                  },
+                },
               ],
             }),
           }}

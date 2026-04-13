@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useResumeStore } from '@/store/useResumeStore';
-import { TEMPLATES, DEFAULT_COLORS, sampleResumeData } from '@/types/resume';
-import { Card } from '@/components/ui/card';
+import { TEMPLATES, DEFAULT_COLORS, sampleResumeData, TemplateName } from '@/types/resume';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Check, RotateCcw, Eye, X } from 'lucide-react';
@@ -269,7 +268,7 @@ export default function TemplateSelector() {
                 <p className="text-xs text-muted-foreground">Preview with your resume data</p>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => { setSelectedTemplate(previewTemplate as any); setPreviewTemplate(null); }} className="text-xs px-3 py-1.5 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/90">
+                <button onClick={() => { setSelectedTemplate(previewTemplate as TemplateName); setPreviewTemplate(null); }} className="text-xs px-3 py-1.5 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/90">
                   Select Template
                 </button>
                 <button onClick={() => setPreviewTemplate(null)} className="p-1.5 rounded-full hover:bg-muted">
@@ -279,7 +278,7 @@ export default function TemplateSelector() {
             </div>
             <div className="overflow-auto p-4 bg-gray-100 dark:bg-gray-900 max-h-[calc(90vh-60px)]">
               <div className="mx-auto" style={{ width: '210mm', transform: 'scale(0.55)', transformOrigin: 'top center', height: 'calc(297mm * 0.55)' }}>
-                {(() => { const TC = getTemplateComponent(previewTemplate as any); return <TC data={resumeData || sampleResumeData} primaryColor={primaryColor} />; })()}
+                {(() => { const TC = getTemplateComponent(previewTemplate as TemplateName); return <TC data={resumeData || sampleResumeData} primaryColor={primaryColor} />; })()}
               </div>
             </div>
           </div>

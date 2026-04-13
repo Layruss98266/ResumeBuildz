@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import {
-  FileText,
   Sparkles,
   BarChart3,
   Shield,
@@ -195,7 +194,7 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Built-in ATS Optimization</h2>
               <p className="text-gray-600 mb-6">
-                Most companies use ATS software to filter resumes before a recruiter ever reads them. Our 12 built-in tools check your resume the same way an ATS does -- so you can fix problems before you hit "apply."
+                Most companies use ATS software to filter resumes before a recruiter ever reads them. Our 12 built-in tools check your resume the same way an ATS does -- so you can fix problems before you hit &quot;apply.&quot;
               </p>
               <ul className="space-y-3">
                 {[
@@ -269,7 +268,7 @@ export default function HomePage() {
       {/* CTA */}
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black py-20">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in-up">Your Resume Shouldn't Be the Reason You Don't Get Hired</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 animate-fade-in-up">Your Resume Shouldn&apos;t Be the Reason You Don&apos;t Get Hired</h2>
           <p className="text-gray-300 mb-8 text-lg animate-fade-in-up delay-100">
             Build a resume that actually passes ATS screening. It takes about 15 minutes and costs nothing.
           </p>

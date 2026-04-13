@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect, useMemo } from 'react';
+import Link from 'next/link';
 import { useReactToPrint } from 'react-to-print';
 import { useResumeStore } from '@/store/useResumeStore';
 import { downloadDocx } from '@/lib/exportDocx';
@@ -25,6 +26,8 @@ import SectionReorder from '@/components/SectionReorder';
 import WhatsNew from '@/components/WhatsNew';
 import ATSScoreChecker from '@/components/ats/ATSScoreChecker';
 import AISuggestions from '@/components/ats/AISuggestions';
+import UpgradeModal from '@/components/UpgradeModal';
+import { getUsage, incrementUsage, canUse } from '@/lib/usage';
 import CustomSectionForm from '@/components/forms/CustomSectionForm';
 import CoverLetterForm from '@/components/forms/CoverLetterForm';
 import { Button } from '@/components/ui/button';
@@ -98,6 +101,8 @@ export default function HomePage() {
   const [exportingType, setExportingType] = useState<string | null>(null);
   const [showMobileSheet, setShowMobileSheet] = useState(false);
   const { importData, resetData, addCustomSection, resumeData } = useResumeStore();
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [pdfRemaining, setPdfRemaining] = useState(() => getUsage('pdf').remaining);
 
   // Touch swipe handler for mobile tabs
   const touchStartX = useRef<number>(0);
@@ -264,9 +269,15 @@ export default function HomePage() {
   };
 
   const handleExportPdf = () => {
+    if (!canUse('pdf')) {
+      setShowUpgradeModal(true);
+      return;
+    }
     setIsExporting(true);
     setExportingType('pdf');
     handlePrint();
+    incrementUsage('pdf');
+    setPdfRemaining(getUsage('pdf').remaining);
     setTimeout(() => { setIsExporting(false); setExportingType(null); }, 500);
   };
 
@@ -281,7 +292,7 @@ export default function HomePage() {
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         e.preventDefault();
-        handlePrint();
+        handleExportPdf();
       }
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
@@ -341,7 +352,7 @@ export default function HomePage() {
         <div className="h-full flex items-center justify-between px-5">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <a href="/" className="flex items-center gap-2.5">
+            <Link href="/" className="flex items-center gap-2.5">
               <div className="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center">
                 <FileText className="h-4 w-4 text-white" />
               </div>
@@ -351,7 +362,7 @@ export default function HomePage() {
                 </h1>
                 <span className="text-[11px] text-gray-400 leading-none">Resume Builder</span>
               </div>
-            </a>
+            </Link>
           </div>
 
           {/* Right - Actions */}
@@ -368,7 +379,7 @@ export default function HomePage() {
                     <div className="fixed inset-0 z-40" onClick={() => setShowExportMenu(false)} />
                     <div className="absolute right-0 top-full mt-1.5 z-50 bg-background border rounded-xl shadow-xl py-1.5 w-48 animate-in fade-in slide-in-from-top-1 duration-150">
                       <button onClick={() => { handleExportPdf(); setShowExportMenu(false); }} disabled={isExporting} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
-                        <Download className="h-4 w-4 text-muted-foreground" /> {exportingType === 'pdf' ? 'Exporting...' : 'PDF'} <span className="text-[11px] text-emerald-600 font-medium ml-auto">Best for ATS</span>
+                        <Download className="h-4 w-4 text-muted-foreground" /> {exportingType === 'pdf' ? 'Exporting...' : 'PDF'} <span className="text-[11px] text-muted-foreground ml-auto">{pdfRemaining} left today</span>
                       </button>
                       <button onClick={handleExportDocx} disabled={isExporting} className="w-full px-3 py-2 text-sm flex items-center gap-2.5 hover:bg-muted text-left rounded-lg mx-0.5 transition-colors" style={{ width: 'calc(100% - 4px)' }}>
                         <FileType className="h-4 w-4 text-muted-foreground" /> {exportingType === 'docx' ? 'Exporting...' : 'DOCX'} <span className="text-[11px] text-muted-foreground ml-auto">Word</span>
@@ -839,9 +850,9 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="h-10 border-t border-gray-800 bg-gray-900 flex items-center justify-between px-5 shrink-0">
-        <a href="/" className="text-xs text-gray-400 hover:text-white hidden sm:inline transition-colors">
+        <Link href="/" className="text-xs text-gray-400 hover:text-white hidden sm:inline transition-colors">
           ResumeForge
-        </a>
+        </Link>
         <div className="flex items-center gap-4 mx-auto md:mx-0">
           <span className="text-xs text-gray-400 flex items-center gap-1">
             Designed with <span className="text-red-500">&#10084;</span> by Surya L &copy; {new Date().getFullYear()}
@@ -852,6 +863,7 @@ export default function HomePage() {
         </div>
       </footer>
 
+      <UpgradeModal feature="pdf" open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
     </div>
     </ErrorBoundary>
   );

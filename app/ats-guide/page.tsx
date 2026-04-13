@@ -30,7 +30,7 @@ export default function ATSGuidePage() {
               How to Beat ATS: The Complete Guide
             </h1>
             <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto animate-fade-in-up delay-200">
-              75% of resumes never reach a human recruiter. Here's how ATS works, why your resume might be getting filtered out, and exactly how to fix it.
+              75% of resumes never reach a human recruiter. Here&apos;s how ATS works, why your resume might be getting filtered out, and exactly how to fix it.
             </p>
           </div>
         </section>
@@ -50,10 +50,10 @@ export default function ATSGuidePage() {
                   An Applicant Tracking System (ATS) is software that companies use to sort through job applications. According to Jobscan, 98% of Fortune 500 companies use one. When you submit your resume online, it almost always goes through an ATS before any human reads it.
                 </p>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  Here's what happens: the ATS scans your resume, pulls out your contact info, job titles, skills, and education, then compares everything against the job description. If your resume doesn't match enough keywords and criteria, it gets filtered out -- and no recruiter ever sees it.
+                  Here&apos;s what happens: the ATS scans your resume, pulls out your contact info, job titles, skills, and education, then compares everything against the job description. If your resume doesn&apos;t match enough keywords and criteria, it gets filtered out -- and no recruiter ever sees it.
                 </p>
                 <p className="text-gray-600 leading-relaxed">
-                  The good news? Once you understand how ATS works, it's not hard to beat. You can check your resume right now with our <Link href="/builder" className="text-blue-500 hover:underline">free ATS score checker</Link>.
+                  The good news? Once you understand how ATS works, it&apos;s not hard to beat. You can check your resume right now with our <Link href="/builder" className="text-blue-500 hover:underline">free ATS score checker</Link>.
                 </p>
               </div>
             </div>
@@ -220,6 +220,58 @@ export default function ATSGuidePage() {
           </div>
         </section>
       </main>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "What is an ATS?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "An Applicant Tracking System (ATS) is software used by companies to automatically scan, filter, and rank resumes before a human recruiter ever sees them. 98% of Fortune 500 companies use ATS software.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Why do 75% of resumes get rejected by ATS?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Most resumes get filtered out because they use complex formatting, missing keywords from the job description, non-standard section headings, or file formats that ATS cannot parse correctly.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "What file format is best for ATS?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "DOCX has the highest ATS compatibility, followed closely by PDF. Never submit resumes as JPG, PNG, or image files — ATS systems cannot read text from images.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How do I make my resume ATS-friendly?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Use standard section headings like Work Experience, Education, and Skills. Mirror keywords from the job description. Avoid tables, text boxes, headers/footers, and graphics. Use a clean single-column layout and submit as PDF or DOCX.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How can I check my resume's ATS score?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "ResumeForge has a free built-in ATS checker with 12 analysis tools including keyword matching, formatting checks, readability scoring, and active voice detection — no sign-up required.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
 
       <SiteFooter />
     </div>

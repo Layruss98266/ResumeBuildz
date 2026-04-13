@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useCallback, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { HelpCircle } from 'lucide-react';
 
@@ -9,13 +9,15 @@ interface HelpTipProps {
   className?: string;
 }
 
+const emptySubscribe = () => () => {};
+const getClientSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export function HelpTip({ text, className = '' }: HelpTipProps) {
   const [show, setShow] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, getClientSnapshot, getServerSnapshot);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const btnRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => { setMounted(true); }, []);
 
   const updatePos = useCallback(() => {
     if (!btnRef.current) return;

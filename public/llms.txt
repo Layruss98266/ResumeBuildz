@@ -1,0 +1,21 @@
+# ResumeForge
+
+ResumeForge is a free, client-side ATS-friendly resume builder built by Surya L.
+
+## What it does
+- 20 ATS-optimized resume templates
+- AI writing assistant powered by Groq (Llama 3.3 70B) — bring your own key
+- 12-point ATS score checker with job description keyword matching
+- Cover letter builder with AI generation
+- Multi-format export: PDF, DOCX, HTML
+- Multi-format import: PDF, DOCX, TXT, HTML, MD
+
+## Key facts
+- 100% free, no sign-up, no tracking
+- All data stored in browser localStorage only
+- Built with Next.js 16, TypeScript, Tailwind CSS, shadcn/ui, Zustand
+- Open source: https://github.com/Surya8991/ResumeForge
+- Live at: https://resume-forge-orcin.vercel.app
+
+## Contact
+Surya L — Suryaraj8147@gmail.com — Bangalore, India

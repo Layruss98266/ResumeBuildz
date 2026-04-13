@@ -20,21 +20,164 @@ async function extractTextFromHtml(file: File): Promise<string> {
   return doc.body?.textContent?.trim() || '';
 }
 
+type PdfItem = { str: string; x: number; y: number; width: number; height: number };
+
 async function extractTextFromPdf(file: File): Promise<string> {
   const pdfjsLib = await import('pdfjs-dist');
-  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   const pages: string[] = [];
+
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const content = await page.getTextContent();
-    const text = content.items
-      .map((item: Record<string, unknown>) => ('str' in item ? (item.str as string) : ''))
-      .join(' ');
-    pages.push(text);
+    const viewport = page.getViewport({ scale: 1 });
+
+    // Extract items with spatial coordinates
+    const items: PdfItem[] = [];
+    for (const item of content.items) {
+      if (!('str' in item) || !(item as Record<string, unknown>).str) continue;
+      const raw = item as Record<string, unknown>;
+      const transform = raw.transform as number[] | undefined;
+      const str = raw.str as string;
+      if (!str.trim()) continue;
+      items.push({
+        str,
+        x: transform ? transform[4] : 0,
+        y: transform ? viewport.height - transform[5] : 0,
+        width: (raw.width as number) || 0,
+        height: (raw.height as number) || 0,
+      });
+    }
+
+    if (items.length === 0) continue;
+
+    // Group items into lines by y-coordinate
+    const avgHeight = items.reduce((s, it) => s + it.height, 0) / items.length || 10;
+    const yTolerance = avgHeight * 0.45;
+    items.sort((a, b) => a.y - b.y || a.x - b.x);
+
+    const lines: PdfItem[][] = [];
+    let currentLine: PdfItem[] = [items[0]];
+    let currentY = items[0].y;
+
+    for (let j = 1; j < items.length; j++) {
+      if (Math.abs(items[j].y - currentY) <= yTolerance) {
+        currentLine.push(items[j]);
+      } else {
+        lines.push(currentLine);
+        currentLine = [items[j]];
+        currentY = items[j].y;
+      }
+    }
+    lines.push(currentLine);
+
+    // Detect column layout by finding a vertical gap where few items cross
+    const columnBoundary = detectColumnBoundary(items, viewport.width);
+
+    if (columnBoundary > 0) {
+      // Multi-column: extract each column as separate text block
+      // Determine which column is the sidebar (narrower one)
+      const leftWidth = columnBoundary;
+      const rightWidth = viewport.width - columnBoundary;
+      const sidebarIsLeft = leftWidth < rightWidth * 0.7;
+
+      const col1Lines: string[] = [];
+      const col2Lines: string[] = [];
+
+      for (const line of lines) {
+        const col1Items = line.filter(it => it.x + it.width / 2 < columnBoundary);
+        const col2Items = line.filter(it => it.x + it.width / 2 >= columnBoundary);
+        if (col1Items.length > 0) {
+          col1Items.sort((a, b) => a.x - b.x);
+          col1Lines.push(joinLineItems(col1Items));
+        }
+        if (col2Items.length > 0) {
+          col2Items.sort((a, b) => a.x - b.x);
+          col2Lines.push(joinLineItems(col2Items));
+        }
+      }
+
+      // Main content first (wider column), then sidebar
+      if (sidebarIsLeft) {
+        pages.push([...col2Lines, '', '---', '', ...col1Lines].join('\n'));
+      } else {
+        pages.push([...col1Lines, '', '---', '', ...col2Lines].join('\n'));
+      }
+    } else {
+      // Single column: join items per line
+      const textLines = lines.map(line => {
+        line.sort((a, b) => a.x - b.x);
+        return joinLineItems(line);
+      });
+      pages.push(textLines.join('\n'));
+    }
   }
+
   return pages.join('\n\n');
+}
+
+/** Detect a column boundary by finding a vertical gap in x-positions where few items exist */
+function detectColumnBoundary(items: PdfItem[], pageWidth: number): number {
+  if (items.length < 20) return 0;
+
+  // Build histogram of x-positions (which x-ranges have items)
+  const bucketSize = 5;
+  const buckets = new Array(Math.ceil(pageWidth / bucketSize)).fill(0);
+  for (const item of items) {
+    const start = Math.floor(item.x / bucketSize);
+    const end = Math.floor((item.x + item.width) / bucketSize);
+    for (let b = start; b <= end && b < buckets.length; b++) {
+      buckets[b]++;
+    }
+  }
+
+  // Find the widest gap in the middle 20%-80% of the page (skip margins)
+  const minBucket = Math.floor(buckets.length * 0.15);
+  const maxBucket = Math.floor(buckets.length * 0.75);
+  let bestGapStart = -1;
+  let bestGapWidth = 0;
+  let gapStart = -1;
+  let gapWidth = 0;
+
+  for (let b = minBucket; b < maxBucket; b++) {
+    if (buckets[b] <= 1) { // Empty or near-empty bucket = gap
+      if (gapStart < 0) gapStart = b;
+      gapWidth = b - gapStart + 1;
+    } else {
+      if (gapWidth > bestGapWidth) {
+        bestGapStart = gapStart;
+        bestGapWidth = gapWidth;
+      }
+      gapStart = -1;
+      gapWidth = 0;
+    }
+  }
+  if (gapWidth > bestGapWidth) {
+    bestGapStart = gapStart;
+    bestGapWidth = gapWidth;
+  }
+
+  // Gap must be at least 3 buckets wide (~15px) to count as column separator
+  if (bestGapWidth >= 3 && bestGapStart > 0) {
+    return (bestGapStart + bestGapWidth / 2) * bucketSize;
+  }
+
+  return 0; // No column boundary found
+}
+
+/** Join text items on the same line with appropriate spacing */
+function joinLineItems(items: PdfItem[]): string {
+  if (items.length === 0) return '';
+  let result = items[0].str;
+  for (let i = 1; i < items.length; i++) {
+    const gap = items[i].x - (items[i - 1].x + items[i - 1].width);
+    if (gap > 15) result += '  ' + items[i].str;
+    else if (gap > 1) result += ' ' + items[i].str;
+    else result += items[i].str;
+  }
+  return result.trim();
 }
 
 async function extractTextFromPlain(file: File): Promise<string> {
@@ -49,12 +192,13 @@ function generateId(): string {
 
 const SECTION_HEADINGS: Record<string, RegExp> = {
   summary: /^(?:\/\/\s*)?(?:summary|profile|profile\s*summary|objective|about|about\s*me|professional\s*summary|career\s*summary|career\s*objective)$/i,
-  experience: /^(?:\/\/\s*)?(?:experience|work\s*experience|work\s*history|employment|employment\s*history|professional\s*experience)$/i,
+  experience: /^(?:\/\/\s*)?(?:experience|work\s*experience|work\s*history|employment|employment\s*history|professional\s*experience|work\s*experience\s*\(?roles?\s*(?:&|and)\s*responsibilities?\)?)$/i,
   education: /^(?:\/\/\s*)?(?:education|academic\s*background|academics|educational\s*background)$/i,
-  skills: /^(?:\/\/\s*)?(?:skills|technical\s*skills|core\s*competencies|competencies|technologies|expertise|key\s*skills)$/i,
+  skills: /^(?:\/\/\s*)?(?:skills|technical\s*skills|core\s*competencies|competencies|technologies|expertise|key\s*skills|technical\s*seo)$/i,
   projects: /^(?:\/\/\s*)?(?:projects|personal\s*projects|portfolio|key\s*projects|selected\s*projects)$/i,
   certifications: /^(?:\/\/\s*)?(?:certifications?|certs?|licenses?\s*(?:&|and)?\s*certifications?|credentials?|professional\s*certifications?)$/i,
   languages: /^(?:\/\/\s*)?(?:languages?|language\s*proficiency|language\s*skills)$/i,
+  contact: /^(?:\/\/\s*)?(?:contact|contact\s*(?:info|information|details))$/i,
 };
 
 const SECTION_LOOSE: Record<string, RegExp> = {
@@ -77,12 +221,15 @@ const DATE_RANGE_RE = /(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|Ma
 const BULLET_RE = /^[•\-\*▸►▪◦‣⁃●○→>]\s+/;
 
 function detectSection(line: string): string | null {
-  const cleaned = line.replace(/[:\-–—|\/\/]/g, '').trim();
-  if (cleaned.length > 50) return null;
+  // Normalize separators: strip symbols, decorators, pipes, dashes, etc.
+  const cleaned = line.replace(/[:\-–—|\/\/◇⋄►▸▪●○•■□★☆※#~=_><]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (cleaned.length === 0 || cleaned.length > 60) return null;
+  // Strict match on common headings
   for (const [section, re] of Object.entries(SECTION_HEADINGS)) {
     if (re.test(cleaned)) return section;
   }
-  if (cleaned.length < 35) {
+  // Loose match for shorter strings
+  if (cleaned.length < 40) {
     for (const [section, re] of Object.entries(SECTION_LOOSE)) {
       if (re.test(cleaned)) return section;
     }
@@ -94,17 +241,24 @@ function cleanBullet(line: string): string {
   return line.replace(BULLET_RE, '').trim();
 }
 
+const CURRENT_RE = /\b(present|current|now|ongoing|to\s*date)\b/i;
+
 function parseDateRange(text: string): { start: string; end: string; current: boolean } {
   const match = text.match(DATE_RANGE_RE);
   if (match) {
     const parts = match[0].split(/\s*[-–—]+\s*/);
     return {
       start: parts[0]?.trim() || '',
-      end: /present|current|now|ongoing/i.test(parts[parts.length - 1]) ? '' : parts[parts.length - 1]?.trim() || '',
-      current: /present|current|now|ongoing/i.test(parts[parts.length - 1] || ''),
+      end: CURRENT_RE.test(parts[parts.length - 1] || '') ? '' : parts[parts.length - 1]?.trim() || '',
+      current: CURRENT_RE.test(parts[parts.length - 1] || ''),
     };
   }
-  return { start: '', end: '', current: false };
+  // Fallback: try to find standalone year or "Month Year"
+  const singleDate = text.match(/(?:(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+)?\d{4}/i);
+  if (singleDate) {
+    return { start: singleDate[0].trim(), end: '', current: CURRENT_RE.test(text) };
+  }
+  return { start: '', end: '', current: CURRENT_RE.test(text) };
 }
 
 function mergeParagraphLines(lines: string[]): string[] {
@@ -165,8 +319,9 @@ function parseResumeText(rawText: string): ResumeData {
   const headerText = headerLines.join(' ');
 
   for (const line of headerLines) {
-    const c = line.replace(/[#@◇⋄|]/g, '').trim();
-    if (c.length >= 3 && c.length < 50 && !EMAIL_RE.test(c) && !PHONE_RE.test(c) && !LINKEDIN_RE.test(c) && !GITHUB_RE.test(c) && !/^\+?\d/.test(c) && !/^www\b/i.test(c)) {
+    const c = line.replace(/[#◇⋄|]/g, '').trim();
+    // Check original line for @ (email), not cleaned version
+    if (c.length >= 2 && c.length < 50 && !EMAIL_RE.test(line) && !PHONE_RE.test(line) && !LINKEDIN_RE.test(line) && !GITHUB_RE.test(line) && !/^\+?\d/.test(c) && !/^www\b/i.test(c) && !/@/.test(line) && !/^---$/.test(c)) {
       data.personalInfo.fullName = c; break;
     }
   }
@@ -183,12 +338,29 @@ function parseResumeText(rawText: string): ResumeData {
   const gh = headerText.match(GITHUB_RE); if (gh) data.personalInfo.github = gh[0];
   const loc = headerText.match(LOCATION_RE); if (loc) data.personalInfo.location = loc[1];
 
-  // Sections
+  // Sections — skip '---' separator (used to separate main content from sidebar in multi-column PDFs)
   const sections: Record<string, string[]> = {};
   let currentSection: string | null = null;
   for (const line of lines) {
+    if (line === '---') { currentSection = null; continue; }
     const section = detectSection(line);
-    if (section) { currentSection = section; if (!sections[currentSection]) sections[currentSection] = []; }
+    if (section) {
+      if (section === 'contact') {
+        // Contact section: scan for email/phone/links not yet found
+        currentSection = '__contact__';
+        continue;
+      }
+      currentSection = section;
+      if (!sections[currentSection]) sections[currentSection] = [];
+    }
+    else if (currentSection === '__contact__') {
+      // Extract contact info from sidebar contact section
+      if (!data.personalInfo.email) { const m = line.match(EMAIL_RE); if (m) data.personalInfo.email = m[0]; }
+      if (!data.personalInfo.phone) { const m = line.match(PHONE_RE); if (m) data.personalInfo.phone = m[1].trim(); }
+      if (!data.personalInfo.linkedin) { const m = line.match(LINKEDIN_RE); if (m) data.personalInfo.linkedin = m[0]; }
+      if (!data.personalInfo.github) { const m = line.match(GITHUB_RE); if (m) data.personalInfo.github = m[0]; }
+      if (!data.personalInfo.location) { const m = line.match(LOCATION_RE); if (m) data.personalInfo.location = m[1]; }
+    }
     else if (currentSection) { sections[currentSection].push(line); }
   }
 

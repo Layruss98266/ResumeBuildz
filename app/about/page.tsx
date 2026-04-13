@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 import {
   ExternalLink,
   Heart,
@@ -70,7 +69,7 @@ export default function AboutPage() {
             <Heart className="h-10 w-10 text-blue-400 mx-auto mb-6 animate-fade-in" />
             <h2 className="text-3xl font-bold text-gray-900 mb-6 animate-fade-in-up delay-100">Our Mission</h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Most resume builders charge $20-40/month, require your email, and store your personal data on their servers. That felt wrong. ResumeForge exists because job seekers shouldn't have to pay or surrender their privacy just to write a decent resume. Everything runs in your browser -- we literally can't see your data.
+              Most resume builders charge $20-40/month, require your email, and store your personal data on their servers. That felt wrong. ResumeForge exists because job seekers shouldn&apos;t have to pay or surrender their privacy just to write a decent resume. Everything runs in your browser -- we literally can&apos;t see your data.
             </p>
             <div className="grid sm:grid-cols-3 gap-6 mt-10">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 animate-fade-in-up delay-100">

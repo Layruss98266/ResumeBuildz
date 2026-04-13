@@ -66,9 +66,9 @@ export function useActiveVoice(): PassiveVoiceFlag[] {
 
       // Check known passive phrases first
       for (const { pattern, suggestion } of PASSIVE_PHRASES) {
-        pattern.lastIndex = 0;
+        const phraseRegex = new RegExp(pattern.source, pattern.flags);
         let phraseMatch: RegExpExecArray | null;
-        while ((phraseMatch = pattern.exec(highlight)) !== null) {
+        while ((phraseMatch = phraseRegex.exec(highlight)) !== null) {
           // Avoid duplicate flags for the same match region
           const alreadyFlagged = flags.some(
             (f) => f.text === highlight && f.match === phraseMatch![0]
@@ -85,9 +85,9 @@ export function useActiveVoice(): PassiveVoiceFlag[] {
 
       // Check generic passive voice patterns
       for (const pattern of PASSIVE_PATTERNS) {
-        pattern.lastIndex = 0;
+        const genericRegex = new RegExp(pattern.source, pattern.flags);
         let regexMatch: RegExpExecArray | null;
-        while ((regexMatch = pattern.exec(highlight)) !== null) {
+        while ((regexMatch = genericRegex.exec(highlight)) !== null) {
           const matchedText = regexMatch[0];
           // Skip if this match overlaps with a phrase already flagged
           const alreadyFlagged = flags.some(

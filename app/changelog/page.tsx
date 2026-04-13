@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { Plus, Zap, Tag } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
@@ -120,7 +119,7 @@ export default function ChangelogPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">Changelog</h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in-up delay-100">
-            What's new in ResumeForge. Every feature, fix, and improvement in one place.
+            What&apos;s new in ResumeForge. Every feature, fix, and improvement in one place.
           </p>
         </div>
       </section>

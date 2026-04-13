@@ -18,7 +18,8 @@ export default function ResumeProfileManager() {
   const { savedProfiles, saveProfile, loadProfile, deleteProfile, renameProfile } = useResumeStore();
 
   useEffect(() => {
-    setMounted(true);
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
   }, []);
 
   const close = useCallback(() => {

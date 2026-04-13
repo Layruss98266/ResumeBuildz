@@ -106,12 +106,12 @@ export default function OnboardingGuide() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const id = requestAnimationFrame(() => setMounted(true));
     const done = localStorage.getItem(STORAGE_KEY);
     if (!done) {
       // Small delay so the app renders first
       const timer = setTimeout(() => setShow(true), 1500);
-      return () => clearTimeout(timer);
+      return () => { cancelAnimationFrame(id); clearTimeout(timer); };
     }
   }, []);
 
