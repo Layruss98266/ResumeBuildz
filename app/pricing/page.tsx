@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Check, X, Crown, Sparkles, FileDown, BarChart3, Layout, Zap, HelpCircle } from 'lucide-react';
+import { Check, X, Crown, Sparkles, FileDown, BarChart3, Layout, Zap, HelpCircle, Mail } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { FREE_LIMITS } from '@/lib/usage';
@@ -284,6 +284,9 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Waitlist */}
+      <WaitlistSection />
+
       {/* CTA */}
       <section className="py-16 md:py-20 bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -304,5 +307,60 @@ export default function PricingPage() {
 
       <SiteFooter />
     </div>
+  );
+}
+
+function WaitlistSection() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    // Store in localStorage for now — replace with Supabase/email service later
+    try {
+      const existing = JSON.parse(localStorage.getItem('resumeforge-waitlist') || '[]');
+      if (!existing.includes(email)) {
+        existing.push(email);
+        localStorage.setItem('resumeforge-waitlist', JSON.stringify(existing));
+      }
+    } catch { /* ignore */ }
+    setSubmitted(true);
+  };
+
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-blue-50 text-blue-500 mb-4">
+          <Mail className="h-6 w-6" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Get notified when Pro launches</h2>
+        <p className="text-gray-500 text-sm mb-6">
+          Join the waitlist and be the first to know when paid plans go live. No spam, just one email.
+        </p>
+        {submitted ? (
+          <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+            <p className="text-green-700 font-medium text-sm">You&apos;re on the list! We&apos;ll notify you at {email}.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex gap-2 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 bg-blue-500 text-white rounded-xl text-sm font-semibold hover:bg-blue-600 transition-colors shrink-0"
+            >
+              Join Waitlist
+            </button>
+          </form>
+        )}
+      </div>
+    </section>
   );
 }

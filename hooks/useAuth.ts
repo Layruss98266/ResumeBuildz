@@ -37,6 +37,8 @@ export function useAuth() {
       setUser(user);
       if (user) fetchProfile(user.id);
       setLoading(false);
+    }).catch(() => {
+      setLoading(false);
     });
 
     const {

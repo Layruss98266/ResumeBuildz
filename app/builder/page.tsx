@@ -28,6 +28,8 @@ import ATSScoreChecker from '@/components/ats/ATSScoreChecker';
 import AISuggestions from '@/components/ats/AISuggestions';
 import UpgradeModal from '@/components/UpgradeModal';
 import { getUsage, incrementUsage, canUse } from '@/lib/usage';
+import { useToast } from '@/components/Toast';
+import { useAuth } from '@/hooks/useAuth';
 import CustomSectionForm from '@/components/forms/CustomSectionForm';
 import CoverLetterForm from '@/components/forms/CoverLetterForm';
 import { Button } from '@/components/ui/button';
@@ -103,6 +105,8 @@ export default function HomePage() {
   const { importData, resetData, addCustomSection, resumeData } = useResumeStore();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [pdfRemaining, setPdfRemaining] = useState(() => getUsage('pdf').remaining);
+  const { showToast } = useToast();
+  const { user, profile, isPro } = useAuth();
 
   // Touch swipe handler for mobile tabs
   const touchStartX = useRef<number>(0);
@@ -191,12 +195,33 @@ export default function HomePage() {
           setLastEditTime(date.toLocaleString());
           setShowWelcomeBack(true);
         }
+      } else if (!lastVisit) {
+        // First-time visitor
+        setTimeout(() => showToast('Welcome! Start by filling in your info on the left.', 'info', 5000), 1500);
       }
       localStorage.setItem('resumeforge-last-visit', Date.now().toString());
     } catch {
       // localStorage unavailable
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Auth-aware toasts
+  useEffect(() => {
+    if (!mounted) return;
+    if (user && profile) {
+      if (isPro()) {
+        showToast(`Welcome back, ${profile.full_name || 'Pro member'}! Unlimited access active.`, 'pro', 4000);
+      } else {
+        const pdfLeft = getUsage('pdf').remaining;
+        const aiLeft = getUsage('ai').remaining;
+        if (pdfLeft === 0 || aiLeft === 0) {
+          showToast('Daily free limit reached. Upgrade to Pro for unlimited access.', 'warning', 5000);
+        }
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, profile, mounted]);
 
   const handlePrint = useReactToPrint({
     contentRef: resumeRef,
@@ -277,7 +302,13 @@ export default function HomePage() {
     setExportingType('pdf');
     handlePrint();
     incrementUsage('pdf');
-    setPdfRemaining(getUsage('pdf').remaining);
+    const remaining = getUsage('pdf').remaining;
+    setPdfRemaining(remaining);
+    if (remaining > 0) {
+      showToast(`PDF exported! ${remaining} free export${remaining !== 1 ? 's' : ''} left today.`, 'success');
+    } else {
+      showToast('Last free PDF export used today. Upgrade for unlimited.', 'warning', 5000);
+    }
     setTimeout(() => { setIsExporting(false); setExportingType(null); }, 500);
   };
 

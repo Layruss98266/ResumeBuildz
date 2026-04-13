@@ -10,6 +10,7 @@ import { Sparkles, Copy, Check, AlertCircle, Key } from 'lucide-react';
 import { HelpTip } from '@/components/ui/help-tip';
 import { getUsage, incrementUsage, canUse } from '@/lib/usage';
 import UpgradeModal from '@/components/UpgradeModal';
+import { useToast } from '@/components/Toast';
 
 const GROQ_MODEL = 'llama-3.3-70b-versatile';
 
@@ -46,6 +47,7 @@ const PROMPTS: Record<SuggestionType, string> = {
 
 export default function AISuggestions() {
   const { resumeData } = useResumeStore();
+  const { showToast } = useToast();
   const [apiKey, setApiKey] = useState(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('groq-api-key') || '';
     return '';
@@ -128,7 +130,13 @@ export default function AISuggestions() {
       if (content) {
         setResult(content);
         incrementUsage('ai');
-        setAiRemaining(getUsage('ai').remaining);
+        const remaining = getUsage('ai').remaining;
+        setAiRemaining(remaining);
+        if (remaining === 0) {
+          showToast('Last free AI rewrite used today. Upgrade for unlimited.', 'warning', 5000);
+        } else {
+          showToast('AI suggestion generated! Copy it to your resume.', 'success');
+        }
       } else {
         setError('No suggestion generated. Try again.');
       }
