@@ -60,7 +60,7 @@ export default function SiteNavbar() {
           </div>
 
           {/* Auth + CTA + Mobile toggle */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             {!loading && (
               user ? (
                 <>
@@ -70,16 +70,16 @@ export default function SiteNavbar() {
                   >
                     Build Resume <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
-                  {/* Profile dropdown */}
-                  <div className="relative hidden sm:block" ref={profileRef}>
+                  {/* Profile dropdown — visible on all screens */}
+                  <div className="relative" ref={profileRef}>
                     <button
                       onClick={() => setProfileOpen(!profileOpen)}
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 text-gray-300 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
+                      className="flex items-center gap-1.5 px-2 py-1.5 text-gray-300 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
                     >
                       <div className="h-7 w-7 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
                         {(profile?.full_name?.[0] || user.email?.[0] || 'U').toUpperCase()}
                       </div>
-                      <ChevronDown className={`h-3 w-3 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`h-3 w-3 transition-transform hidden sm:block ${profileOpen ? 'rotate-180' : ''}`} />
                     </button>
                     {profileOpen && (
                       <>
@@ -95,6 +95,13 @@ export default function SiteNavbar() {
                             )}
                           </div>
                           <div className="py-1">
+                            <Link
+                              href="/builder"
+                              onClick={() => setProfileOpen(false)}
+                              className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors sm:hidden"
+                            >
+                              <ArrowRight className="h-3.5 w-3.5" /> Build Resume
+                            </Link>
                             <Link
                               href="/pricing"
                               onClick={() => setProfileOpen(false)}
@@ -136,9 +143,9 @@ export default function SiteNavbar() {
                 <>
                   <Link
                     href="/login"
-                    className="hidden sm:flex items-center gap-1.5 px-3 py-2 text-gray-300 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2 text-gray-300 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
                   >
-                    <User className="h-3.5 w-3.5" /> Sign in
+                    <User className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Sign in</span>
                   </Link>
                   <Link
                     href="/builder"

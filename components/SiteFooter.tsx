@@ -24,6 +24,7 @@ export default function SiteFooter() {
               <Link href="/ats-guide" className="block hover:text-white transition-colors">ATS Guide</Link>
               <Link href="/resume-tips" className="block hover:text-white transition-colors">Resume Tips</Link>
               <Link href="/faq" className="block hover:text-white transition-colors">FAQ</Link>
+              <Link href="/login" className="block hover:text-white transition-colors">Sign In</Link>
             </div>
           </div>
           <div>
@@ -33,6 +34,9 @@ export default function SiteFooter() {
               <Link href="/contact" className="block hover:text-white transition-colors">Contact</Link>
               <a href="https://github.com/Surya8991/resumeforge" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-white transition-colors">
                 GitHub <ExternalLink className="h-3 w-3" />
+              </a>
+              <a href="https://linkedin.com/in/surya-l" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-white transition-colors">
+                LinkedIn <ExternalLink className="h-3 w-3" />
               </a>
             </div>
           </div>

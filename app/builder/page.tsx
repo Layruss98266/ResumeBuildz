@@ -384,13 +384,16 @@ export default function HomePage() {
       {/* Navbar */}
       <header className="h-14 border-b border-gray-800 bg-gray-900 shrink-0 sticky top-0 z-30">
         <div className="h-full flex items-center justify-between px-5">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
+          {/* Logo + Back */}
+          <div className="flex items-center gap-2">
+            <Link href="/" className="p-1.5 text-gray-400 hover:text-white rounded-md hover:bg-gray-800 transition-colors" title="Back to home">
+              <ChevronLeft className="h-4 w-4" />
+            </Link>
             <Link href="/" className="flex items-center gap-2.5">
               <div className="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center">
                 <FileText className="h-4 w-4 text-white" />
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <h1 className="text-lg font-bold tracking-tight leading-none text-white">
                   Resume<span className="text-blue-400">Forge</span>
                 </h1>
@@ -401,11 +404,11 @@ export default function HomePage() {
 
           {/* Center - User info */}
           {user && (
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800/50">
-              <div className="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800/50">
+              <div className="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
                 {(profile?.full_name?.[0] || user.email?.[0] || 'U').toUpperCase()}
               </div>
-              <span className="text-sm text-gray-300 truncate max-w-[120px]">
+              <span className="text-sm text-gray-300 truncate max-w-[120px] hidden sm:inline">
                 {profile?.full_name || user.email?.split('@')[0]}
               </span>
             </div>
