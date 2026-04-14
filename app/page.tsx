@@ -22,7 +22,7 @@ const FEATURES = [
   { icon: Layout, title: '20 Templates', desc: 'Pick from 20 resume designs built to pass ATS filters and look great in print. Classic, modern, creative. Every style covered.' },
   { icon: Sparkles, title: 'AI Writing Help', desc: 'Stuck on bullet points? Our Groq-powered AI rewrites weak descriptions into results-driven statements in seconds.' },
   { icon: BarChart3, title: 'ATS Score Checker', desc: '12 analysis tools scan your resume for keyword gaps, formatting issues, and readability, just like a real ATS would.' },
-  { icon: Shield, title: 'Privacy First', desc: 'Your resume data never leaves your browser. No servers, no tracking, no analytics. You own your data completely.' },
+  { icon: Shield, title: 'Privacy First', desc: 'Your resume data stays in your browser localStorage. We use cookieless privacy-friendly analytics only (no personal tracking).' },
   { icon: UserX, title: 'No Sign-up Needed', desc: 'Start building immediately. No account required. Sign in optionally to unlock Pro features.' },
   { icon: ExternalLink, title: 'Open Source', desc: 'Every line of code is on GitHub. Inspect it, fork it, self-host it, or contribute new templates.' },
 ];
@@ -183,11 +183,19 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {SHOWCASE_TEMPLATES.map((t, i) => (
               <div key={t.name} className={`rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition animate-scale-in delay-${Math.min((i + 1) * 100, 500)}`}>
-                <div className="h-40" style={{ backgroundColor: t.color, opacity: 0.85 }} />
-                <div className="p-4 bg-white">
+                <div className="relative h-56 bg-gray-100 overflow-hidden">
+                  <Image
+                    src={`/templates/${t.name.toLowerCase()}.png`}
+                    alt={`${t.name} template preview`}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="object-cover object-top"
+                  />
+                </div>
+                <div className="p-4 bg-white flex items-center justify-between">
                   <h3 className="font-semibold text-gray-900">{t.name}</h3>
                   <Link href="/templates" className="text-blue-400 text-sm hover:underline">
-                    View all templates
+                    View all
                   </Link>
                 </div>
               </div>

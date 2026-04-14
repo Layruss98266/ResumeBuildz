@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.7.0] - 2026-04-14
+
+### Added
+
+- **Vercel Web Analytics** (cookieless, GDPR safe, free on Hobby plan) replaces the planned Plausible integration.
+- **README** alternatives section listing 3 free analytics options (Cloudflare Web Analytics, Umami Cloud, PostHog).
+
+### Changed
+
+- **Privacy Policy** completely rewritten for legal compliance with the new analytics, Supabase auth, and waitlist email storage. Old wording incorrectly claimed "zero data collection."
+- **Terms of Use** Section 3 updated to accurately describe data handling.
+- **Homepage Privacy First** card no longer claims "no analytics."
+- **About page Mission** statement updated. Stats updated from "0 data sent" to "Free to start" and "Open Source." Tech stack item "Client-side Only" relabeled "Client-side First."
+- **Template Showcase** on homepage now uses real template thumbnail PNGs instead of solid color blocks.
+- **Navbar** removed "Resume Builder" from main nav links and added `whitespace-nowrap` to all items. Fixes overflow at 1024px laptop widths.
+- **Contact form** now opens user's email client with a pre-filled mailto link instead of pretending to send (no backend yet).
+
+### Page-by-page review fixes
+
+A full top-to-bottom code + live preview review of all 16 pages. Found and fixed:
+- Homepage: 3 issues (Template Showcase, Privacy First card, Build My Resume CTA copy)
+- About page: 5 issues (mission text, stats, tech stack, hero subtitle, Privacy card)
+- Privacy page: 9 sections rewritten for accuracy
+- Terms page: 1 section updated
+- Contact page: form submission now works via mailto
+
+---
+
 ## [1.6.0] - 2026-04-14
 
 ### Added

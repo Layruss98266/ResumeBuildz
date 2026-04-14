@@ -25,6 +25,10 @@ export default function ContactPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // Open user's email client with a pre-filled message (no backend yet)
+    const subject = encodeURIComponent(`[ResumeForge ${formData.subject}] from ${formData.name}`);
+    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`);
+    window.location.href = `mailto:Suryaraj8147@gmail.com?subject=${subject}&body=${body}`;
     setSubmitted(true);
   };
 

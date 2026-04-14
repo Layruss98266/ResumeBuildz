@@ -15,6 +15,30 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.7.0',
+    date: 'April 14, 2026',
+    title: 'Analytics, Privacy Compliance & Page Review',
+    added: [
+      'Vercel Web Analytics (cookieless, GDPR-safe, free on Hobby plan).',
+      'README section listing 3 free analytics alternatives (Cloudflare, Umami, PostHog).',
+      'Login Gateway expanded to all builder CTAs across all pages.',
+      'Paste Import workflow for LinkedIn or any plain text resume.',
+      'Cookie consent banner (GDPR safety net).',
+      'HowTo schema for ATS Guide page (better Google rich results).',
+    ],
+    improved: [
+      'Privacy Policy rewritten for accuracy with new analytics + auth + waitlist.',
+      'Terms of Use Section 3 updated to describe data handling correctly.',
+      'Homepage Privacy First card no longer claims "no analytics".',
+      'About page mission statement, stats, and tech stack updated.',
+      'Template Showcase on homepage now uses real template thumbnails.',
+      'Navbar removed "Resume Builder" link to fix 1024px overflow.',
+      'Navbar items now use whitespace-nowrap to prevent text wrapping.',
+      'Contact form now opens user email client via mailto (no fake submission).',
+      'Removed em dashes and double hyphens from all user-facing copy.',
+    ],
+  },
+  {
     version: 'v1.6.0',
     date: 'April 14, 2026',
     title: 'Undo/Redo, Shortcuts & Polish',

@@ -6,36 +6,44 @@ import SiteFooter from '@/components/SiteFooter';
 
 const sections = [
   {
-    title: 'Data Collection',
-    content: "We don't collect any data. Not some data, zero data. ResumeForge runs entirely in your browser. There are no servers storing your information, no databases with your resume, and no analytics tracking what you do. This isn't a marketing claim; it's how the app is built.",
+    title: 'Resume Data',
+    content: "Your resume content (personal info, experience, education, skills, etc.) is stored in your browser's localStorage on your own device. It never leaves your browser unless you explicitly use the AI feature (see Third-Party Services below) or sign in (see Account Data). You can clear this data anytime through your browser settings or by clicking Reset in the builder.",
   },
   {
-    title: 'Local Storage',
-    content: "ResumeForge uses your browser's localStorage to save your work locally on your device. This includes your resume data (personal information, experience, education, skills, etc.), your API key for AI features (if you choose to use them), and your theme preference (light/dark mode). This data never leaves your browser and is stored only on your device. You can clear this data at any time through your browser settings.",
-  },
-  {
-    title: 'Third-Party Services',
-    content: 'ResumeForge offers an optional AI-powered feature that uses the Groq API. This feature requires your own API key, which you obtain directly from Groq. When you use this feature, your resume data is sent directly from your browser to Groq\'s servers  -  it never passes through our servers. We do not have access to your API key or the data you send to Groq. Please review Groq\'s privacy policy for information about how they handle your data.',
-  },
-  {
-    title: 'Cookies',
-    content: "We don't use cookies. Not first-party cookies, not third-party cookies, not tracking cookies. None.",
+    title: 'Account Data (Optional)',
+    content: "Sign-in is optional. If you create an account via Supabase auth (Google or email/password), we store: your email address, full name (if provided via Google), avatar URL (if provided via Google), and your Pro plan tier. We do NOT store your resume content on our servers. Your resume always lives in your browser.",
   },
   {
     title: 'Analytics',
-    content: "We don't track you. No analytics scripts, no pixel trackers, no heatmaps, no session recordings. We genuinely don't know how many people use ResumeForge, and we're fine with that.",
+    content: "We use Vercel Web Analytics, a privacy-friendly analytics service that does NOT use cookies and does NOT track individual users across sites. It records aggregate page views, top referrers, country, and device type. It does not collect personal information, IP addresses, or session recordings. This helps us understand which features are popular without compromising your privacy.",
+  },
+  {
+    title: 'Cookies',
+    content: "ResumeForge uses minimal cookies. Authentication cookies are set when you sign in (managed by Supabase) so we can recognize your session. We do NOT use tracking cookies, advertising cookies, or third-party marketing cookies. The only first-party cookies are session cookies for auth.",
+  },
+  {
+    title: 'Third-Party Services',
+    content: 'ResumeForge offers an optional AI-powered feature that uses the Groq API. This feature requires your own free API key from console.groq.com. When you use this feature, your resume data is sent directly from your browser to Groq\'s servers — it never passes through our servers. We do not have access to your API key or the data you send to Groq. Please review Groq\'s privacy policy for information about how they handle your data.',
+  },
+  {
+    title: 'Waitlist Emails',
+    content: "If you join our Pro launch waitlist via the pricing page, your email is currently stored in your browser's localStorage only (not on our servers yet). When the Pro plan launches, we will migrate to a proper email service (such as Resend or Supabase). At that point, you will be notified once and your email will be removed if you do not respond.",
   },
   {
     title: 'Data Security',
-    content: 'All your data lives in your browser and is never transmitted to our servers. Since we don\'t collect or store any data, there\'s no risk of a data breach on our end. Your resume information stays on your device, under your control. We recommend keeping your browser updated to the latest version for the best security.',
+    content: 'Your resume content lives in your browser and is never transmitted to our servers. Account data (email, name) is stored by Supabase, which provides industry-standard security including encryption at rest and in transit, regular backups, and SOC 2 compliance. We follow security best practices including HSTS, CSP headers, and OAuth redirect whitelisting.',
+  },
+  {
+    title: 'GDPR & Your Rights',
+    content: 'You have the right to export your data (Profile dropdown → Export My Data) and the right to delete your account (Profile dropdown → Delete Account). Account deletion permanently removes your profile from our database and clears your local resume data. EU users can exercise these rights at any time without contacting support.',
   },
   {
     title: "Children's Privacy",
-    content: 'ResumeForge is not directed at children under the age of 13. We do not knowingly collect personal information from children. Since we don\'t collect any data at all, this is inherently enforced by our architecture.',
+    content: "ResumeForge is not directed at children under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us so we can delete it.",
   },
   {
     title: 'Changes to This Policy',
-    content: 'We may update this privacy policy from time to time. Any changes will be reflected on this page with an updated revision date. Since we don\'t collect your email or any contact information, we cannot notify you of changes directly. We encourage you to review this page periodically.',
+    content: 'We may update this privacy policy from time to time. Any changes will be reflected on this page with an updated revision date. We encourage you to review this page periodically. Significant changes will be announced via the changelog page.',
   },
   {
     title: 'Contact',

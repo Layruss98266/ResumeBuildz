@@ -7,7 +7,6 @@ import { useAuthContext as useAuth } from '@/components/Providers';
 import { useLoginGateway } from '@/components/LoginGateway';
 
 const NAV_LINKS = [
-  { href: '/builder', label: 'Resume Builder' },
   { href: '/templates', label: 'Templates' },
   { href: '/ats-guide', label: 'ATS Guide' },
   { href: '/resume-tips', label: 'Tips' },
@@ -57,26 +56,16 @@ export default function SiteNavbar() {
           </Link>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((link) =>
-              link.href === '/builder' ? (
-                <button
-                  key={link.href}
-                  onClick={() => openGateway('/builder')}
-                  className="text-gray-300 hover:text-white text-sm px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors"
-                >
-                  {link.label}
-                </button>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-gray-300 hover:text-white text-sm px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors"
-                >
-                  {link.label}
-                </Link>
-              )
-            )}
+          <div className="hidden md:flex items-center gap-0.5">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-gray-300 hover:text-white text-sm px-2.5 py-1.5 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           {/* Auth + CTA + Mobile toggle */}
@@ -86,7 +75,7 @@ export default function SiteNavbar() {
                 <>
                   <button
                     onClick={() => openGateway('/builder')}
-                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors whitespace-nowrap"
                   >
                     Build Resume <ArrowRight className="h-3.5 w-3.5" />
                   </button>
@@ -175,13 +164,13 @@ export default function SiteNavbar() {
                 <>
                   <Link
                     href="/login"
-                    className="flex items-center gap-1.5 px-3 py-2 text-gray-300 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2 text-gray-300 hover:text-white text-sm rounded-lg hover:bg-gray-800 transition-colors whitespace-nowrap"
                   >
                     <User className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Sign in</span>
                   </Link>
                   <button
                     onClick={() => openGateway('/builder')}
-                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors"
+                    className="hidden sm:flex items-center gap-1.5 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 transition-colors whitespace-nowrap"
                   >
                     Build Resume <ArrowRight className="h-3.5 w-3.5" />
                   </button>

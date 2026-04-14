@@ -25,7 +25,7 @@ const TECH_STACK = [
   { icon: Layers, name: 'React-PDF', desc: 'Client-side PDF generation' },
   { icon: Zap, name: 'Groq AI', desc: 'AI writing assistance' },
   { icon: Layout, name: 'PWA', desc: 'Offline-capable web app' },
-  { icon: Shield, name: 'Client-side Only', desc: 'No server, no data leaks' },
+  { icon: Shield, name: 'Client-side First', desc: 'Resume data stays in your browser' },
 ];
 
 const STATS = [
@@ -33,8 +33,8 @@ const STATS = [
   { num: '201', label: 'Industry Roles' },
   { num: '12', label: 'ATS Tools' },
   { num: '20', label: 'Industries' },
-  { num: '0', label: 'Data Sent to Servers' },
-  { num: '100%', label: 'Free Forever' },
+  { num: 'Free', label: 'To Start' },
+  { num: 'Open', label: 'Source' },
 ];
 
 export default function AboutPage() {
@@ -57,7 +57,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">About ResumeForge</h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in-up delay-100">
-            A free, open-source resume builder. No paywalls, no accounts, no data collection. Just a tool that helps you build a resume that actually gets past ATS.
+            A free-to-start, open-source resume builder. Privacy-friendly, browser-first, and built to help you write a resume that actually gets past ATS.
           </p>
         </div>
       </section>
@@ -69,13 +69,13 @@ export default function AboutPage() {
             <Heart className="h-10 w-10 text-blue-400 mx-auto mb-6 animate-fade-in" />
             <h2 className="text-3xl font-bold text-gray-900 mb-6 animate-fade-in-up delay-100">Our Mission</h2>
             <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Most resume builders charge $20 to $40 per month, require your email, and store your personal data on their servers. That felt wrong. ResumeForge exists because job seekers shouldn&apos;t have to pay or surrender their privacy just to write a decent resume. Everything runs in your browser. We literally can&apos;t see your data.
+              Most resume builders charge $20 to $40 per month, require your email, and store your personal data on their servers. That felt wrong. ResumeForge exists because job seekers shouldn&apos;t have to pay or surrender their privacy just to write a decent resume. Your resume content runs entirely in your browser. We never see what you type.
             </p>
             <div className="grid sm:grid-cols-3 gap-6 mt-10">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 animate-fade-in-up delay-100">
                 <Shield className="h-8 w-8 text-blue-400 mx-auto mb-3" />
-                <h3 className="font-semibold text-gray-900 mb-1">100% Private</h3>
-                <p className="text-gray-600 text-sm">Your data never leaves your browser. No tracking, no analytics.</p>
+                <h3 className="font-semibold text-gray-900 mb-1">Privacy First</h3>
+                <p className="text-gray-600 text-sm">Resume data stays in your browser. We use cookieless analytics only.</p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 animate-fade-in-up delay-200">
                 <UserX className="h-8 w-8 text-blue-400 mx-auto mb-3" />
