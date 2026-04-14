@@ -15,6 +15,28 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.8.0',
+    date: 'April 14, 2026',
+    title: 'SEO Expansion: 22 Company Guides + 6 Situation Pages',
+    added: [
+      'Company resume guides hub at /resume-for with 22 curated employers (10 global + 12 India).',
+      'Dynamic /resume-for/[company] route with 22 statically generated pages (Google, Amazon, Microsoft, Meta, Apple, Deloitte, McKinsey, Goldman Sachs, JP Morgan, Accenture, TCS, Infosys, Wipro, Flipkart, Zomato, Swiggy, Zoho, BYJU\'S, PhonePe, Razorpay, Freshworks, Ola).',
+      'Each company page includes 15 ATS keywords, 5 insider tips, recommended template, and 4 related guides for cross-linking.',
+      'Fresher Resume Format (/fresher-resume) with 7-section format and 6 rules.',
+      'Campus Placement Resume (/campus-placement-resume) with 10-point checklist for TCS NQT, Infosys InfyTQ, Wipro NTH.',
+      'Naukri.com Resume Tips (/naukri-resume-tips) - 8 tips to 3x recruiter views.',
+      'Resume After Layoff (/resume-after-layoff) with 5-step recovery framework.',
+      'Resume After Career Gap (/resume-after-career-gap) with 6 wording examples.',
+      'Resume for Career Change (/resume-for-career-change) with 5-step pivot framework + 6 common pivots.',
+      'Resources dropdown in navbar exposing all 9 new resource pages on desktop and mobile.',
+      'Sitemap updated to include all 29 new URLs (1 hub + 22 companies + 6 situations).',
+    ],
+    improved: [
+      'SiteNavbar layout: Templates link is now the first item, followed by a Resources dropdown.',
+      'lib/resumeCompanyData.ts ships as fully static data so all 22 company pages prerender at build time (zero runtime cost).',
+    ],
+  },
+  {
     version: 'v1.7.0',
     date: 'April 14, 2026',
     title: 'Analytics, Privacy Compliance & Page Review',

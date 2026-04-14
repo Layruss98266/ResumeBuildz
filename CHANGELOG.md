@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.8.0] - 2026-04-14
+
+### Added
+
+- **22 company resume guides** under `/resume-for/[company]` — 10 global (Google, Amazon, Microsoft, Meta, Apple, Deloitte, McKinsey, Goldman Sachs, JP Morgan, Accenture) + 12 India (TCS, Infosys, Wipro, Flipkart, Zomato, Swiggy, Zoho, BYJU'S, PhonePe, Razorpay, Freshworks, Ola).
+- **`/resume-for` hub page** listing all 22 companies, segmented by Global vs India tier.
+- **`lib/resumeCompanyData.ts`** — single source of truth for all 22 entries (slug, name, tier, industry, hq, hiring focus, 15 ATS keywords, 5 insider tips, recommended template, meta title, meta description). Fully static, no API calls.
+- **6 situation-based static pages**: `/fresher-resume`, `/campus-placement-resume`, `/naukri-resume-tips`, `/resume-after-layoff`, `/resume-after-career-gap`, `/resume-for-career-change`. Each is a hand-written long-form guide with internal links, CTAs, and SEO meta tags.
+- **Resources dropdown in navbar** exposing all 9 new pages on desktop (with icons) and as a collapsible group on mobile.
+- **Dynamic page generation**: `app/resume-for/[company]/page.tsx` uses `generateStaticParams` + `generateMetadata` so all 22 company pages prerender at build time with unique titles and descriptions.
+- **Sitemap expanded** by 29 URLs (1 hub + 22 companies + 6 situations).
+
+### Changed
+
+- **SiteNavbar** restructured: Templates is now the first item, followed by a Resources dropdown, then About / Pricing / FAQ / Contact.
+- All new pages reuse existing `SiteNavbar`, `SiteFooter`, `useLoginGateway` hook, and the dark gradient hero pattern from `/templates` and `/ats-guide`.
+
+---
+
 ## [1.7.0] - 2026-04-14
 
 ### Added

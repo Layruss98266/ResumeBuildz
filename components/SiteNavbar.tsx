@@ -2,24 +2,36 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { FileText, Menu, X, ArrowRight, LogOut, User, ChevronDown, Settings, KeyRound, Crown, Download, Trash2 } from 'lucide-react';
+import { FileText, Menu, X, ArrowRight, LogOut, User, ChevronDown, Settings, KeyRound, Crown, Download, Trash2, BookOpen, Building2, GraduationCap, Briefcase, Lightbulb } from 'lucide-react';
 import { useAuthContext as useAuth } from '@/components/Providers';
 import { useLoginGateway } from '@/components/LoginGateway';
 
 const NAV_LINKS = [
   { href: '/templates', label: 'Templates' },
-  { href: '/ats-guide', label: 'ATS Guide' },
-  { href: '/resume-tips', label: 'Tips' },
   { href: '/about', label: 'About' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/faq', label: 'FAQ' },
   { href: '/contact', label: 'Contact' },
 ];
 
+const RESOURCE_LINKS = [
+  { href: '/resume-for', label: 'Company Guides', desc: '22 top employers', icon: Building2 },
+  { href: '/ats-guide', label: 'ATS Guide', desc: 'Beat the resume scanners', icon: BookOpen },
+  { href: '/resume-tips', label: 'Resume Tips', desc: 'What actually works', icon: Lightbulb },
+  { href: '/fresher-resume', label: 'Fresher Resume', desc: 'Entry-level format', icon: GraduationCap },
+  { href: '/campus-placement-resume', label: 'Campus Placement', desc: 'TCS, Infosys, Wipro', icon: GraduationCap },
+  { href: '/resume-after-layoff', label: 'After Layoff', desc: 'Recover and apply', icon: Briefcase },
+  { href: '/resume-after-career-gap', label: 'After Career Gap', desc: 'Explain and win', icon: Briefcase },
+  { href: '/resume-for-career-change', label: 'Career Change', desc: '5-step pivot guide', icon: Briefcase },
+  { href: '/naukri-resume-tips', label: 'Naukri.com Tips', desc: '3x recruiter views', icon: Lightbulb },
+];
+
 export default function SiteNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+  const resourcesRef = useRef<HTMLDivElement>(null);
   const { user, profile, signOut, loading, isPro, exportUserData, deleteAccount } = useAuth();
   const { openGateway } = useLoginGateway();
 
@@ -35,6 +47,9 @@ export default function SiteNavbar() {
     const handleClickOutside = (e: MouseEvent) => {
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
         setProfileOpen(false);
+      }
+      if (resourcesRef.current && !resourcesRef.current.contains(e.target as Node)) {
+        setResourcesOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -57,7 +72,51 @@ export default function SiteNavbar() {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-0.5">
-            {NAV_LINKS.map((link) => (
+            <Link
+              href="/templates"
+              className="text-gray-300 hover:text-white text-sm px-2.5 py-1.5 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap"
+            >
+              Templates
+            </Link>
+
+            {/* Resources dropdown */}
+            <div className="relative" ref={resourcesRef}>
+              <button
+                onClick={() => setResourcesOpen(!resourcesOpen)}
+                className="flex items-center gap-1 text-gray-300 hover:text-white text-sm px-2.5 py-1.5 rounded-md hover:bg-gray-800 transition-colors whitespace-nowrap"
+              >
+                Resources
+                <ChevronDown className={`h-3 w-3 transition-transform ${resourcesOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {resourcesOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setResourcesOpen(false)} />
+                  <div className="absolute left-0 top-full mt-2 z-50 bg-gray-800 border border-gray-700 rounded-xl shadow-xl py-2 w-72 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {RESOURCE_LINKS.map((link) => {
+                      const Icon = link.icon;
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setResourcesOpen(false)}
+                          className="flex items-start gap-3 px-4 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
+                        >
+                          <div className="h-7 w-7 rounded-md bg-gray-700 flex items-center justify-center shrink-0 mt-0.5">
+                            <Icon className="h-3.5 w-3.5 text-blue-400" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-medium truncate">{link.label}</p>
+                            <p className="text-xs text-gray-500 truncate">{link.desc}</p>
+                          </div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {NAV_LINKS.filter((l) => l.href !== '/templates').map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -211,6 +270,20 @@ export default function SiteNavbar() {
                 </Link>
               )
             )}
+            {/* Resources collapsible group on mobile */}
+            <div className="pt-2 mt-2 border-t border-gray-800">
+              <p className="text-xs text-gray-500 uppercase tracking-wide px-3 mb-1">Resources</p>
+              {RESOURCE_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-gray-300 hover:text-white text-sm px-3 py-2 rounded-md hover:bg-gray-800 transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
             <button
               onClick={() => { setMobileOpen(false); openGateway('/builder'); }}
               className="block w-full text-center mt-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600"

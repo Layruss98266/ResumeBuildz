@@ -1,0 +1,175 @@
+'use client';
+
+import { useEffect } from 'react';
+import Link from 'next/link';
+import { ArrowRight, GraduationCap, CheckCircle2, FileText, Sparkles, Award } from 'lucide-react';
+import SiteNavbar from '@/components/SiteNavbar';
+import SiteFooter from '@/components/SiteFooter';
+import { useLoginGateway } from '@/components/LoginGateway';
+
+const SECTIONS = [
+  {
+    title: '1. Header (Name + Contact)',
+    body: 'Full name, professional email (use firstname.lastname format), one phone number with country code, LinkedIn URL, GitHub URL (if technical), and current city. No photo, no marital status, no date of birth — these are 1990s conventions and modern Indian and global ATS strip them anyway.',
+  },
+  {
+    title: '2. Career Objective (2-3 lines max)',
+    body: 'A short forward-looking statement: who you are, what you can do, and what role you want. Skip the cliché "Hardworking individual seeking growth." Instead: "Final-year B.Tech CSE student with strong fundamentals in DSA and 4 React projects. Seeking a SDE-1 role to apply problem-solving and full-stack skills."',
+  },
+  {
+    title: '3. Education (highest first)',
+    body: 'Degree, institute, year, CGPA or percentage. Include 12th and 10th if you are a fresher — Indian recruiters and TCS / Infosys NQT explicitly require them. Mention any backlog-free record if applicable. List relevant coursework only if highly relevant to the role.',
+  },
+  {
+    title: '4. Technical Skills (categorized)',
+    body: 'Group skills: Languages (Java, Python, JavaScript), Frameworks (React, Spring Boot), Databases (PostgreSQL, MongoDB), Tools (Git, Docker, Postman). Avoid the soft-skills paragraph — recruiters skip it. Be honest; you will be tested.',
+  },
+  {
+    title: '5. Projects (this is where you win)',
+    body: 'For freshers, projects matter more than internships. List 3 projects max. Each one needs: name, tech stack used, 2-3 bullet points, GitHub link, and a one-line outcome ("Used by 80 students in my college club"). Generic CRUD apps lose; real problems solved win.',
+  },
+  {
+    title: '6. Internships and Experience',
+    body: 'List any internship, freelance gig, or part-time job. Format like a normal job entry: company, role, dates, 2-3 quantified bullets. Even unpaid open-source contributions count if you can quantify the impact.',
+  },
+  {
+    title: '7. Achievements and Certifications',
+    body: 'Coding contest ranks (LeetCode, Codeforces, HackerRank), hackathon wins, scholarships, published papers, GitHub stars, certifications (AWS, Google Cloud, NPTEL). Recruiters scan this section to spot outliers.',
+  },
+];
+
+const TIPS = [
+  'One page only. Freshers do not have enough material to justify two pages, and ATS prefers single-page resumes for entry roles.',
+  'Lead bullets with action verbs (Built, Designed, Optimised, Reduced) and end with a number or outcome.',
+  'For Indian campus placements, mention 10th, 12th, and graduation percentages clearly. TCS, Infosys, Wipro all filter on these.',
+  'Use a clean ATS-friendly template. Skip the columns, photos, graphics, and skill bars — they break parsers.',
+  'List a public GitHub URL even if the projects are small. A blank GitHub for a CS fresher is a red flag in 2026.',
+  'For non-IT freshers, replace projects with college events organised, club leadership, or relevant case studies.',
+];
+
+export default function FresherResumePage() {
+  const { openGateway } = useLoginGateway();
+
+  useEffect(() => {
+    document.title = 'Fresher Resume Format 2026 - Free ATS Template & Tips | ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'How to write a fresher resume in 2026. 7-section format, 6 insider tips, ATS-friendly templates, and what TCS, Infosys, Wipro, and Flipkart actually screen for.'
+      );
+    }
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) {
+      ogDesc.setAttribute(
+        'content',
+        'How to write a fresher resume in 2026. 7-section format, 6 insider tips, ATS-friendly templates for campus placements.'
+      );
+    }
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Fresher Resume Format 2026 - Free ATS Template & Tips | ResumeForge');
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <SiteNavbar />
+
+      <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
+            <GraduationCap className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Fresher / Entry-Level
+          </span>
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">
+            Fresher Resume Format 2026
+          </h1>
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in-up delay-100">
+            The exact 7-section format that beats Indian and global ATS for freshers. Built for campus placements, off-campus drives, and TCS NQT / Infosys InfyTQ / Wipro NTH applications.
+          </p>
+        </div>
+      </section>
+
+      <main className="flex-1 bg-white py-14">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <section>
+            <p className="text-gray-700 leading-relaxed text-lg">
+              India produces over 1.5 million engineering graduates every year. The students who get placed first are not always the ones with the highest CGPA — they are the ones with resumes that are easy for recruiters to skim, ATS-clean, and full of evidence of doing real things. Here is the format that consistently wins.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">The 7 Sections of a Winning Fresher Resume</h2>
+            <div className="space-y-5">
+              {SECTIONS.map((section, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl border border-gray-100 p-6">
+                  <h3 className="font-semibold text-gray-900 mb-2">{section.title}</h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">{section.body}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <div className="flex items-center gap-2 mb-5">
+              <Sparkles className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl font-bold text-gray-900">6 fresher resume rules to live by</h2>
+            </div>
+            <ol className="space-y-4">
+              {TIPS.map((tip, i) => (
+                <li key={i} className="flex gap-3 text-gray-700">
+                  <span className="flex-shrink-0 h-7 w-7 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mt-0.5">
+                    {i + 1}
+                  </span>
+                  <span className="text-sm leading-relaxed">{tip}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100">
+            <div className="flex items-center gap-2 mb-4">
+              <Award className="h-5 w-5 text-amber-500" />
+              <h2 className="text-xl font-bold text-gray-900">Sample fresher project bullet</h2>
+            </div>
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <p className="font-semibold text-gray-900 mb-2">Smart Attendance System (React, Node.js, MongoDB)</p>
+              <ul className="text-sm text-gray-700 space-y-2">
+                <li>• Built a face-recognition based attendance system using TensorFlow.js, reducing marking time per class from 8 minutes to 30 seconds.</li>
+                <li>• Designed REST APIs serving 12 endpoints with JWT auth, deployed on Vercel and MongoDB Atlas.</li>
+                <li>• Open sourced on GitHub (110 stars) and adopted by 3 college departments.</li>
+              </ul>
+            </div>
+            <p className="text-xs text-gray-500 mt-3">Notice: tech stack is named, the impact is quantified, and there is verifiable proof (GitHub stars, real adoption).</p>
+          </section>
+
+          <section className="text-center py-8">
+            <Sparkles className="h-8 w-8 text-blue-500 mx-auto mb-3" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Build your fresher resume in 20 minutes</h2>
+            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+              Free to start. ATS-clean templates that pass TCS, Infosys, Wipro internal portals.
+            </p>
+            <button
+              onClick={() => openGateway('/builder')}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2 transition"
+            >
+              Start My Resume <ArrowRight className="h-4 w-4" />
+            </button>
+          </section>
+
+          <section className="border-t border-gray-100 pt-8">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Related guides</h3>
+            <div className="grid sm:grid-cols-2 gap-2 text-sm">
+              <Link href="/campus-placement-resume" className="text-blue-600 hover:underline">→ Campus placement resume</Link>
+              <Link href="/naukri-resume-tips" className="text-blue-600 hover:underline">→ Naukri.com resume tips</Link>
+              <Link href="/resume-for/tcs" className="text-blue-600 hover:underline">→ TCS resume guide</Link>
+              <Link href="/resume-for/infosys" className="text-blue-600 hover:underline">→ Infosys resume guide</Link>
+              <Link href="/ats-guide" className="text-blue-600 hover:underline">→ Complete ATS guide</Link>
+              <Link href="/templates" className="text-blue-600 hover:underline">→ All 20 templates</Link>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <SiteFooter />
+    </div>
+  );
+}

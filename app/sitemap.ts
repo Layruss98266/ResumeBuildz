@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
+import { COMPANIES } from '@/lib/resumeCompanyData';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://resume-forge-orcin.vercel.app';
   const now = new Date();
 
-  return [
+  const staticEntries: MetadataRoute.Sitemap = [
     { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1 },
     { url: `${base}/builder`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${base}/templates`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
@@ -18,5 +19,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${base}/changelog`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
     { url: `${base}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
+
+    // Resources hub + situation pages (PART 3 + 4)
+    { url: `${base}/resume-for`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/fresher-resume`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/campus-placement-resume`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/naukri-resume-tips`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/resume-after-layoff`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/resume-after-career-gap`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/resume-for-career-change`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
   ];
+
+  // PART 2: dynamic company pages (22 entries)
+  const companyEntries: MetadataRoute.Sitemap = COMPANIES.map((c) => ({
+    url: `${base}/resume-for/${c.slug}`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
+  return [...staticEntries, ...companyEntries];
 }

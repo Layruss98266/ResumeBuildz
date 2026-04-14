@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResumeForge Blog Plan — Top 10 High-ROI Articles</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    color: #1f2937;
+    background: #f8fafc;
+    line-height: 1.65;
+  }
+  header {
+    background: linear-gradient(135deg, #1e40af, #6366f1);
+    color: white;
+    padding: 36px;
+    border-radius: 18px;
+    margin-bottom: 32px;
+  }
+  header h1 { margin: 0 0 8px; font-size: 32px; letter-spacing: -0.02em; }
+  header p { margin: 0; opacity: 0.92; }
+  header .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  header .stat {
+    background: rgba(255,255,255,0.15);
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  header .stat .num { font-size: 22px; font-weight: 700; }
+  header .stat .label { font-size: 12px; opacity: 0.88; }
+
+  nav.toc {
+    background: white;
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+    border: 1px solid #e5e7eb;
+  }
+  nav.toc h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 10px; color: #6b7280; }
+  nav.toc ol { margin: 0; padding-left: 22px; columns: 2; }
+  nav.toc a { color: #2563eb; text-decoration: none; font-size: 14px; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  section.article {
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 22px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  section.article h2 {
+    font-size: 22px;
+    margin: 0 0 6px;
+    color: #111827;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  section.article h2 .num {
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  section.article .meta {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  section.article .meta .chip {
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  section.article h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #4b5563;
+    margin: 18px 0 8px;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 14px;
+  }
+  section.article ul, section.article ol { margin: 0; padding-left: 22px; font-size: 14px; }
+  section.article li { margin-bottom: 4px; color: #374151; }
+  section.article code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #be185d;
+  }
+  section.article .keywords {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  section.article .keywords span {
+    background: #f3f4f6;
+    color: #374151;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: ui-monospace, monospace;
+  }
+  section.article .outline {
+    background: #f9fafb;
+    border-left: 3px solid #2563eb;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 8px 0 0;
+    font-size: 13px;
+  }
+  section.article .outline strong { color: #111827; }
+  section.article .competitors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  section.article .competitors div {
+    background: #fafafa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #f3f4f6;
+    font-size: 12px;
+  }
+  section.article .competitors div b { color: #111827; }
+
+  .ranking-section {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 1px solid #10b981;
+    padding: 24px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+  }
+  .ranking-section h2 { color: #047857; margin: 0 0 12px; font-size: 18px; }
+  .ranking-section ul { padding-left: 22px; font-size: 14px; }
+  .ranking-section li { margin-bottom: 6px; color: #065f46; }
+
+  .strategy-block {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  .strategy-block h3 {
+    color: #92400e;
+    margin: 0 0 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .strategy-block p { margin: 0; color: #78350f; font-size: 14px; }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #6b7280;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ResumeForge Blog Plan</h1>
+  <p>Top 10 high-ROI blog articles. Each 1,500–2,000 words. Designed to rank on Google, Bing, AI Overviews, and LLMs.</p>
+  <div class="stats">
+    <div class="stat"><div class="num">10</div><div class="label">Articles</div></div>
+    <div class="stat"><div class="num">~17,500</div><div class="label">Words Total</div></div>
+    <div class="stat"><div class="num">~120k</div><div class="label">Monthly Volume Target</div></div>
+    <div class="stat"><div class="num">25h</div><div class="label">Total Effort</div></div>
+    <div class="stat"><div class="num">2026</div><div class="label">Year Targeted</div></div>
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#strategy">Ranking Strategy (Read First)</a></li>
+    <li><a href="#article-1">1. How to Pass ATS Resume Scanning in 2026</a></li>
+    <li><a href="#article-2">2. 200+ Resume Action Verbs by Category</a></li>
+    <li><a href="#article-3">3. Resume Length: 1 Page vs 2 Pages</a></li>
+    <li><a href="#article-4">4. How to Write a Resume Summary (with Examples)</a></li>
+    <li><a href="#article-5">5. Best Resume Format in 2026</a></li>
+    <li><a href="#article-6">6. How to Quantify Resume Achievements (50+ Examples)</a></li>
+    <li><a href="#article-7">7. Cover Letter vs Resume: Do You Need Both?</a></li>
+    <li><a href="#article-8">8. How to Tailor Your Resume in 10 Minutes</a></li>
+    <li><a href="#article-9">9. Free vs Paid Resume Builders: Honest Comparison</a></li>
+    <li><a href="#article-10">10. AI Resume Builders: Helpful or Harmful?</a></li>
+    <li><a href="#uniform-structure">Uniform Article Structure (Template)</a></li>
+  </ol>
+</nav>
+
+<section id="strategy" class="ranking-section">
+  <h2>Ranking Strategy: How to Rank in 2026 (Google + Bing + AI Overviews + LLMs)</h2>
+  <p style="margin: 0 0 12px; color: #047857;"><strong>Read this before writing any article.</strong> Each article must follow these patterns to compete with Indeed, Zety, ResumeGenius.</p>
+  <ul>
+    <li><b>E-E-A-T signals</b>: Add author bio (Surya L), publish date, last updated date, Reading time, and a "Reviewed by ResumeForge ATS team" line.</li>
+    <li><b>Featured snippet bait</b>: First H2 must answer the primary query directly in 40–60 words. Use a definition or numbered list immediately.</li>
+    <li><b>AI Overview optimization</b>: Include factual claims with original data and statistics. AI summarizers prefer specific numbers over vague language.</li>
+    <li><b>GEO (Generative Engine Optimization)</b>: Cite authoritative sources by name (Jobscan, Glassdoor, BLS, LinkedIn). LLMs like ChatGPT, Perplexity, and Claude weight sources heavily.</li>
+    <li><b>Schema markup</b>: Article + FAQPage + HowTo + BreadcrumbList JSON-LD on every post. Author and datePublished are mandatory.</li>
+    <li><b>People Also Ask harvesting</b>: Each article must include a 5–7 question FAQ section answering literal queries from PAA boxes.</li>
+    <li><b>Internal linking</b>: Every article links to <code>/templates</code>, <code>/builder</code>, <code>/ats-guide</code>, and at least 2 other blog posts. Use descriptive anchor text, not "click here".</li>
+    <li><b>Original visuals</b>: At least 1 custom image, 1 comparison table, 1 example block per post. Stock photos kill rankings.</li>
+    <li><b>Content freshness</b>: Date-stamped updates ("Updated April 2026") signal freshness to Google's freshness ranking signals.</li>
+    <li><b>CTAs</b>: Each article has 1 mid-article inline CTA + 1 final CTA. Both link to <code>/builder</code> with role-relevant copy.</li>
+    <li><b>Topic clusters</b>: All 10 articles link to each other where contextually relevant. Forms a "resume writing" topic cluster.</li>
+    <li><b>Reading time</b>: 1,500–2,000 words = ~7–10 min reading time. Add reading time badge at top.</li>
+  </ul>
+</section>
+
+<div class="strategy-block">
+  <h3>Anti-Plagiarism Discipline</h3>
+  <p>Do NOT paraphrase competitor articles. Read 5 top-ranking pages for inspiration on coverage gaps, then write from scratch using ResumeForge's actual ATS data, real keyword databases, and original examples. Use ResumeForge's 201-role keyword database as proprietary data — competitors don't have this.</p>
+</div>
+
+<!-- ARTICLE 1 -->
+<section id="article-1" class="article">
+  <h2><span class="num">1</span> How to Pass ATS Resume Scanning in 2026: The Complete Guide</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 1,800–2,000</span>
+    <span class="chip">Difficulty: Easy</span>
+    <span class="chip">Priority: Highest</span>
+    <span class="chip">Effort: 3h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>how to pass ATS</code> (33,000/mo, KD: 28)</p>
+
+  <h3>Secondary &amp; Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>how to pass applicant tracking system</span>
+    <span>ATS resume tips 2026</span>
+    <span>get past ATS</span>
+    <span>ATS friendly resume format</span>
+    <span>how do ATS systems work</span>
+    <span>ATS resume keywords list</span>
+    <span>does ATS read PDF</span>
+    <span>best ATS resume template</span>
+    <span>ATS resume score check</span>
+    <span>workday ATS tips</span>
+    <span>greenhouse ATS optimization</span>
+    <span>lever ATS resume</span>
+  </div>
+
+  <h3>Search Intent</h3>
+  <ul>
+    <li>Informational + commercial. User wants to understand ATS AND build a resume that beats it.</li>
+    <li>Strong CTA opportunity for <code>/builder</code> and <code>/ats-guide</code>.</li>
+  </ul>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H1:</strong> How to Pass ATS Resume Scanning in 2026: The Complete Guide<br>
+    <strong>Featured snippet (50 words):</strong> Definition of ATS + the 5 key tactics in one paragraph<br><br>
+    <strong>H2:</strong> What is an Applicant Tracking System? (Quick Answer + Stat)<br>
+    <strong>H2:</strong> Why 75% of Resumes Get Filtered Out (with Sources)<br>
+    <strong>H2:</strong> The 7 ATS Killers You're Probably Doing<br>
+    <em>H3 each:</em> Tables, Headers/Footers, Images, Fancy Fonts, PDF Encoding, Wrong File Type, Missing Keywords<br>
+    <strong>H2:</strong> The 10 Tactics That Get Past ATS in 2026<br>
+    <em>(numbered list with H3 per tactic)</em><br>
+    <strong>H2:</strong> ATS-Friendly File Formats: PDF vs DOCX vs Plain Text (table)<br>
+    <strong>H2:</strong> The Top 5 ATS Systems Used by Companies in 2026<br>
+    <em>H3:</em> Workday, Greenhouse, Lever, iCIMS, Taleo<br>
+    <strong>H2:</strong> Free Tools to Test Your Resume's ATS Score<br>
+    <em>(includes ResumeForge ATS Checker as #1)</em><br>
+    <strong>H2:</strong> Frequently Asked Questions <em>(7 questions, FAQ schema)</em><br>
+    <strong>H2:</strong> Build an ATS-Optimized Resume Free with ResumeForge <em>(final CTA)</em>
+  </div>
+
+  <h3>Reference Competitors (For Coverage Gap Analysis)</h3>
+  <div class="competitors">
+    <div><b>Jobscan</b>: jobscan.co/blog/8-things-you-need-to-know-about-ats</div>
+    <div><b>Indeed</b>: indeed.com/career-advice/resumes-cover-letters/applicant-tracking-system</div>
+    <div><b>Zety</b>: zety.com/blog/applicant-tracking-systems</div>
+    <div><b>ResumeGenius</b>: resumegenius.com/blog/resume-help/ats-resume</div>
+    <div><b>TopResume</b>: topresume.com/career-advice/what-is-an-ats-resume</div>
+  </div>
+
+  <h3>Original Data &amp; Citations</h3>
+  <ul>
+    <li>"75% of resumes filtered" — Jobscan 2024</li>
+    <li>"98% of Fortune 500 use ATS" — Jobscan</li>
+    <li>"6 second resume scan" — Ladders 2024 eye-tracking</li>
+    <li>"250+ applications per posting" — Glassdoor 2024</li>
+    <li>Add an original chart from ResumeForge's own ATS scan data</li>
+  </ul>
+
+  <h3>Schema Markup</h3>
+  <ul>
+    <li>Article schema (mainEntityOfPage, author, datePublished, dateModified)</li>
+    <li>FAQPage schema (7 Q&amp;As)</li>
+    <li>BreadcrumbList</li>
+  </ul>
+
+  <h3>Internal Links Required</h3>
+  <ul>
+    <li><code>/builder</code> — "Run our free 12-point ATS checker"</li>
+    <li><code>/templates</code> — "20 ATS-tested templates"</li>
+    <li><code>/ats-guide</code> — "Read our complete ATS guide"</li>
+    <li><code>/blog/resume-action-verbs</code> — internal cross-link</li>
+    <li><code>/blog/quantify-resume-achievements</code> — internal cross-link</li>
+  </ul>
+
+  <h3>CTAs</h3>
+  <ul>
+    <li><b>Mid-article (after Section 4):</b> "Run a free ATS scan on your resume in 30 seconds — no signup needed."</li>
+    <li><b>Final:</b> "Build an ATS-optimized resume with our 20 ATS-tested templates."</li>
+  </ul>
+</section>
+
+<!-- ARTICLE 2 -->
+<section id="article-2" class="article">
+  <h2><span class="num">2</span> 200+ Resume Action Verbs by Category (with Examples)</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 1,800</span>
+    <span class="chip">Difficulty: Easy</span>
+    <span class="chip">Priority: High</span>
+    <span class="chip">Effort: 2.5h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>resume action verbs</code> (40,000/mo, KD: 22)</p>
+
+  <h3>Secondary &amp; Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>powerful action verbs for resume</span>
+    <span>resume verbs by category</span>
+    <span>strong resume words</span>
+    <span>action words for CV</span>
+    <span>resume verbs instead of managed</span>
+    <span>resume verbs for leadership</span>
+    <span>resume verbs for sales</span>
+    <span>resume action words list pdf</span>
+    <span>verbs to use in resume bullet points</span>
+    <span>best resume verbs 2026</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> Why Action Verbs Matter (40-word direct answer)<br>
+    <strong>H2:</strong> The Anatomy of a Bullet Point: Verb + Action + Result<br>
+    <strong>H2:</strong> Action Verbs for Leadership (30 verbs)<br>
+    <strong>H2:</strong> Action Verbs for Communication (30 verbs)<br>
+    <strong>H2:</strong> Action Verbs for Achievement (30 verbs)<br>
+    <strong>H2:</strong> Action Verbs for Technical/Engineering (30 verbs)<br>
+    <strong>H2:</strong> Action Verbs for Sales/Marketing (30 verbs)<br>
+    <strong>H2:</strong> Action Verbs for Customer-Facing Roles (30 verbs)<br>
+    <strong>H2:</strong> Weak Verbs to Avoid (and What to Use Instead)<br>
+    <strong>H2:</strong> 10 Bullet Point Examples Using These Verbs<br>
+    <strong>H2:</strong> FAQ (5 questions)<br>
+    <strong>H2:</strong> Build Your Resume Free
+  </div>
+
+  <h3>Unique Angle</h3>
+  <ul>
+    <li>Most articles list verbs randomly. Group by ROLE TYPE so users find relevant verbs faster.</li>
+    <li>Include "Don't use this → Use this instead" weak-verb replacement table.</li>
+    <li>Add downloadable PDF (free PDF download is great for backlinks).</li>
+  </ul>
+
+  <h3>Reference Competitors</h3>
+  <div class="competitors">
+    <div><b>Indeed</b>: 195 Action Verbs to Make Your Resume Stand Out</div>
+    <div><b>The Muse</b>: 185 Powerful Action Verbs to Use Now</div>
+    <div><b>Harvard Office of Career Services</b>: Resume Action Verbs (high authority backlink target)</div>
+    <div><b>Zety</b>: 240+ Resume Action Verbs</div>
+  </div>
+
+  <h3>Internal Links</h3>
+  <ul>
+    <li><code>/blog/quantify-resume-achievements</code></li>
+    <li><code>/blog/resume-summary-examples</code></li>
+    <li><code>/builder</code></li>
+  </ul>
+</section>
+
+<!-- ARTICLE 3 -->
+<section id="article-3" class="article">
+  <h2><span class="num">3</span> Resume Length in 2026: 1 Page vs 2 Pages (Definitive Guide)</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 1,500</span>
+    <span class="chip">Difficulty: Easy</span>
+    <span class="chip">Priority: High</span>
+    <span class="chip">Effort: 2h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>how long should a resume be</code> (27,000/mo, KD: 25)</p>
+
+  <h3>Secondary &amp; Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>resume length 2026</span>
+    <span>1 page vs 2 page resume</span>
+    <span>can a resume be 2 pages</span>
+    <span>ideal resume length</span>
+    <span>how many pages resume</span>
+    <span>resume length for entry level</span>
+    <span>resume length for senior</span>
+    <span>resume length for software engineer</span>
+    <span>cv length vs resume length</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> Quick Answer (40 words: 1 page if &lt;5yrs, 2 pages if 5+, never 3)<br>
+    <strong>H2:</strong> The Real Reason Length Matters (recruiter time, ATS truncation)<br>
+    <strong>H2:</strong> When 1 Page Is Right (5 scenarios)<br>
+    <strong>H2:</strong> When 2 Pages Is Right (5 scenarios)<br>
+    <strong>H2:</strong> When You Should NEVER Go Past 2 Pages<br>
+    <strong>H2:</strong> By Career Stage: Recommended Length Table<br>
+    <em>(Entry, Mid, Senior, Executive, Academic CV)</em><br>
+    <strong>H2:</strong> By Industry: Length Conventions (Tech, Finance, Academic, Federal)<br>
+    <strong>H2:</strong> How to Cut a 2-Page Resume to 1 Page (8 tactics)<br>
+    <strong>H2:</strong> How to Expand a 1-Page Resume to 2 Pages (without padding)<br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Free Resume Builder with Live Page Counter
+  </div>
+
+  <h3>Unique Angle</h3>
+  <ul>
+    <li>Reference ResumeForge's built-in page counter and word count feature</li>
+    <li>Show actual screenshots of 1-page and 2-page templates from /templates</li>
+    <li>Cite specific recruiter survey data (CareerBuilder, ResumeGo)</li>
+  </ul>
+
+  <h3>Reference Competitors</h3>
+  <div class="competitors">
+    <div><b>Indeed</b>: How Long Should a Resume Be</div>
+    <div><b>Glassdoor</b>: Resume Length Guide</div>
+    <div><b>Forbes Advisor</b>: Resume Length Best Practices</div>
+    <div><b>ResumeGenius</b>: 1-Page vs 2-Page Resume</div>
+  </div>
+</section>
+
+<!-- ARTICLE 4 -->
+<section id="article-4" class="article">
+  <h2><span class="num">4</span> How to Write a Resume Summary That Gets Interviews (15 Examples)</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 2,000</span>
+    <span class="chip">Difficulty: Medium</span>
+    <span class="chip">Priority: High</span>
+    <span class="chip">Effort: 3h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>resume summary examples</code> (60,000/mo, KD: 32)</p>
+
+  <h3>Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>resume summary statement examples</span>
+    <span>professional summary for resume</span>
+    <span>resume profile summary</span>
+    <span>summary for resume entry level</span>
+    <span>summary for resume career change</span>
+    <span>resume summary vs objective</span>
+    <span>how to write a resume summary</span>
+    <span>resume summary for software engineer</span>
+    <span>resume summary for marketing</span>
+    <span>resume summary no experience</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> What Is a Resume Summary? (40-word definition)<br>
+    <strong>H2:</strong> Resume Summary vs Objective: Which Should You Use in 2026?<br>
+    <strong>H2:</strong> The 4-Part Formula That Works<br>
+    <em>(Job title + years + 1-2 specialties + measurable achievement)</em><br>
+    <strong>H2:</strong> 15 Resume Summary Examples by Career Stage</strong><br>
+    <em>H3 per example: Entry-level, Mid-career, Senior, Career changer, Returning to work</em><br>
+    <strong>H2:</strong> 10 Summary Examples by Industry</strong><br>
+    <em>(Tech, Finance, Marketing, Healthcare, Education, Sales, HR, Operations, Design, Engineering)</em><br>
+    <strong>H2:</strong> Common Mistakes That Kill Your Summary<br>
+    <strong>H2:</strong> How AI Can Help You Write a Better Summary<br>
+    <em>(plug ResumeForge AI rewrites)</em><br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Build Your Resume with AI-Powered Summary Help
+  </div>
+
+  <h3>Unique Angle</h3>
+  <ul>
+    <li>Most articles show 5-10 examples. We show 25 (15 by stage + 10 by industry).</li>
+    <li>Each example shows a "before" weak version and "after" strong version.</li>
+    <li>Mention ResumeForge's AI Writing Assistant (Groq-powered) to demonstrate the feature.</li>
+  </ul>
+
+  <h3>Reference Competitors</h3>
+  <div class="competitors">
+    <div><b>Indeed</b>: 30+ Resume Summary Examples</div>
+    <div><b>Zety</b>: 50+ Resume Summary Examples</div>
+    <div><b>The Muse</b>: How to Write a Resume Summary</div>
+    <div><b>Novoresume</b>: 20+ Resume Summary Examples</div>
+  </div>
+</section>
+
+<!-- ARTICLE 5 -->
+<section id="article-5" class="article">
+  <h2><span class="num">5</span> Best Resume Format in 2026: Chronological vs Functional vs Hybrid</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 1,700</span>
+    <span class="chip">Difficulty: Easy</span>
+    <span class="chip">Priority: High</span>
+    <span class="chip">Effort: 2.5h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>best resume format</code> (22,000/mo, KD: 30)</p>
+
+  <h3>Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>chronological vs functional resume</span>
+    <span>hybrid resume format</span>
+    <span>resume format 2026</span>
+    <span>best resume format for ATS</span>
+    <span>reverse chronological resume</span>
+    <span>functional resume template</span>
+    <span>combination resume format</span>
+    <span>resume format for career changers</span>
+    <span>resume format examples</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> The 3 Resume Formats Explained (40-word answer)<br>
+    <strong>H2:</strong> Format 1: Reverse-Chronological (Most Common)<br>
+    <em>H3:</em> When to use, Pros, Cons, Real example screenshot<br>
+    <strong>H2:</strong> Format 2: Functional / Skills-Based (Use With Caution)<br>
+    <em>H3:</em> When it works, Why ATS struggles with it, Real example<br>
+    <strong>H2:</strong> Format 3: Hybrid / Combination (Best of Both)<br>
+    <strong>H2:</strong> Side-by-Side Comparison Table<br>
+    <strong>H2:</strong> Which Format Is Best for ATS in 2026?<br>
+    <strong>H2:</strong> Choosing by Your Situation (decision tree)<br>
+    <strong>H2:</strong> Where Each Format Falls Apart<br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Try All 3 Formats Free in ResumeForge
+  </div>
+</section>
+
+<!-- ARTICLE 6 -->
+<section id="article-6" class="article">
+  <h2><span class="num">6</span> How to Quantify Resume Achievements (50+ Examples by Role)</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 2,000</span>
+    <span class="chip">Difficulty: Medium</span>
+    <span class="chip">Priority: High</span>
+    <span class="chip">Effort: 3h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>how to quantify resume achievements</code> (12,000/mo, KD: 18)</p>
+
+  <h3>Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>quantifying resume bullets</span>
+    <span>resume metrics examples</span>
+    <span>numbers on resume</span>
+    <span>how to add metrics to resume</span>
+    <span>resume achievements with numbers</span>
+    <span>quantify accomplishments</span>
+    <span>resume bullets with metrics</span>
+    <span>data driven resume</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> Why Quantified Bullets Get Interviews (research-backed)<br>
+    <strong>H2:</strong> The XYZ Formula (Accomplished X, measured by Y, by doing Z)<br>
+    <strong>H2:</strong> Where to Find Numbers When You Don't Think You Have Any<br>
+    <em>(time saved, money saved, people impacted, % improvements, scale, frequency)</em><br>
+    <strong>H2:</strong> 50+ Quantified Bullet Examples by Role<br>
+    <em>H3:</em> Software Engineering (8), Sales (8), Marketing (8), Operations (6), Finance (6), Healthcare (6), Education (5), Retail (5)<br>
+    <strong>H2:</strong> Before/After: Weak vs Quantified Bullet Pairs<br>
+    <strong>H2:</strong> What If You Genuinely Have No Numbers? (alternatives)<br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Get AI to Quantify Your Bullets Free
+  </div>
+</section>
+
+<!-- ARTICLE 7 -->
+<section id="article-7" class="article">
+  <h2><span class="num">7</span> Cover Letter vs Resume: Do You Need Both in 2026?</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 1,600</span>
+    <span class="chip">Difficulty: Easy</span>
+    <span class="chip">Priority: Medium</span>
+    <span class="chip">Effort: 2h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>do you need a cover letter</code> (33,000/mo, KD: 24)</p>
+
+  <h3>Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>are cover letters necessary 2026</span>
+    <span>cover letter vs resume</span>
+    <span>do recruiters read cover letters</span>
+    <span>when is a cover letter required</span>
+    <span>skip cover letter</span>
+    <span>cover letter optional</span>
+    <span>cover letter ROI</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> Quick Answer: 83% of hiring managers read them (cite source)<br>
+    <strong>H2:</strong> What a Resume Does (vs cover letter)<br>
+    <strong>H2:</strong> What a Cover Letter Does (vs resume)<br>
+    <strong>H2:</strong> Side-by-Side Comparison Table<br>
+    <strong>H2:</strong> When You Need a Cover Letter (5 scenarios)<br>
+    <strong>H2:</strong> When You Can Skip It (3 scenarios)<br>
+    <strong>H2:</strong> The Real Cost of Skipping a Cover Letter<br>
+    <strong>H2:</strong> How AI Cover Letter Generators Save Time (plug ResumeForge)<br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Build Both in ResumeForge Free
+  </div>
+</section>
+
+<!-- ARTICLE 8 -->
+<section id="article-8" class="article">
+  <h2><span class="num">8</span> How to Tailor Your Resume in 10 Minutes (Without Starting Over)</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 1,700</span>
+    <span class="chip">Difficulty: Medium</span>
+    <span class="chip">Priority: High</span>
+    <span class="chip">Effort: 2.5h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>how to tailor resume</code> (18,000/mo, KD: 20)</p>
+
+  <h3>Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>tailor resume to job description</span>
+    <span>customize resume for each job</span>
+    <span>resume keyword optimization</span>
+    <span>match resume to job posting</span>
+    <span>how to read a job description for resume</span>
+    <span>resume customization tips</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> Why Tailoring Beats Mass Applying (data: tailored = 3x callbacks)<br>
+    <strong>H2:</strong> The 10-Minute Tailoring Process (step-by-step)<br>
+    <em>H3 per minute: Read JD (1m), Highlight keywords (2m), Update summary (2m), Tweak top 3 bullets (3m), Match skills section (1m), Final ATS scan (1m)</em><br>
+    <strong>H2:</strong> How to Find the Real Keywords in a Job Description<br>
+    <strong>H2:</strong> What to Tailor (and What to Leave Alone)<br>
+    <strong>H2:</strong> Using AI to Tailor Faster<br>
+    <em>(plug ResumeForge JD matcher + AI rewrites)</em><br>
+    <strong>H2:</strong> Common Tailoring Mistakes<br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Tailor Your Resume Free with ResumeForge
+  </div>
+</section>
+
+<!-- ARTICLE 9 -->
+<section id="article-9" class="article">
+  <h2><span class="num">9</span> Free vs Paid Resume Builders 2026: A Brutally Honest Comparison</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 2,000</span>
+    <span class="chip">Difficulty: Medium</span>
+    <span class="chip">Priority: Highest</span>
+    <span class="chip">Effort: 3h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>best free resume builder</code> (33,000/mo, KD: 38)</p>
+
+  <h3>Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>free resume builder no signup</span>
+    <span>free resume builder no credit card</span>
+    <span>resume builder comparison</span>
+    <span>zety vs novoresume</span>
+    <span>resume.io vs zety</span>
+    <span>open source resume builder</span>
+    <span>privacy resume builder</span>
+    <span>resume builder reddit</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> The Free vs Paid Question (TLDR: free is enough for 90% of users)<br>
+    <strong>H2:</strong> The Hidden Cost of "Free" Resume Builders<br>
+    <em>(payment walls at download, watermarks, locked templates, data harvesting)</em><br>
+    <strong>H2:</strong> Comparison Table: 8 Top Builders Side-by-Side<br>
+    <em>(Zety, Resume.io, Novoresume, Indeed, Canva, ResumeGenius, MyPerfectResume, ResumeForge)</em><br>
+    <strong>H2:</strong> Best Free Resume Builder: Our Pick<br>
+    <em>(ResumeForge — own it confidently)</em><br>
+    <strong>H2:</strong> Best Paid Resume Builder: When It's Worth It<br>
+    <strong>H2:</strong> Privacy: What Each Builder Does With Your Data<br>
+    <strong>H2:</strong> Open Source Resume Builders<br>
+    <strong>H2:</strong> What to Look For in a Resume Builder<br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Try ResumeForge Free
+  </div>
+
+  <h3>Unique Angle</h3>
+  <ul>
+    <li>The most honest comparison on the internet — show competitors' weaknesses fairly.</li>
+    <li>Include a real screenshot from each tool's pricing page.</li>
+    <li>Cite actual Trustpilot/Reddit reviews of each.</li>
+  </ul>
+
+  <h3>Reference Competitors</h3>
+  <div class="competitors">
+    <div><b>G2</b>: Best Resume Builders Reviews</div>
+    <div><b>PCMag</b>: Best Online Resume Builders 2026</div>
+    <div><b>Forbes Advisor</b>: Best Free Resume Builders</div>
+    <div><b>NerdWallet</b>: Best Free Resume Builders</div>
+  </div>
+</section>
+
+<!-- ARTICLE 10 -->
+<section id="article-10" class="article">
+  <h2><span class="num">10</span> AI Resume Builders in 2026: Helpful or Harmful? (We Tested 8)</h2>
+  <div class="meta">
+    <span class="chip">Word Count: 2,000</span>
+    <span class="chip">Difficulty: Hard</span>
+    <span class="chip">Priority: Highest</span>
+    <span class="chip">Effort: 4h</span>
+  </div>
+
+  <h3>Primary Keyword</h3>
+  <p><code>AI resume builder</code> (45,000/mo, KD: 42)</p>
+
+  <h3>Long-Tail Keywords</h3>
+  <div class="keywords">
+    <span>best AI resume builder 2026</span>
+    <span>chatgpt resume writer</span>
+    <span>AI resume generator free</span>
+    <span>does AI resume work</span>
+    <span>AI resume writer reviews</span>
+    <span>AI vs human resume writer</span>
+    <span>resume.io ai vs zety ai</span>
+    <span>claude resume builder</span>
+    <span>AI cover letter generator</span>
+  </div>
+
+  <h3>Outline</h3>
+  <div class="outline">
+    <strong>H2:</strong> Should You Use AI to Write Your Resume? (40-word direct answer)<br>
+    <strong>H2:</strong> The 3 Risks of AI-Written Resumes (and How to Avoid Them)<br>
+    <em>(Generic content, hallucinated achievements, ATS detection)</em><br>
+    <strong>H2:</strong> What AI Does Well in Resume Writing<br>
+    <em>(rewriting bullets, summary generation, keyword suggestions, ATS optimization)</em><br>
+    <strong>H2:</strong> What AI Does Badly<br>
+    <em>(generic personality, missing context, hallucinated metrics)</em><br>
+    <strong>H2:</strong> 8 AI Resume Builders Compared (we tested all of them)<br>
+    <em>H3 each: ResumeForge, Rezi, Kickresume, Teal, ChatGPT, Claude, Resume.io, Novoresume</em><br>
+    <em>For each: Strengths, Weaknesses, Pricing, Privacy, Verdict</em><br>
+    <strong>H2:</strong> The Right Way to Use AI for Resume Writing (5 rules)<br>
+    <strong>H2:</strong> Can ATS Detect AI-Written Resumes?<br>
+    <strong>H2:</strong> Privacy: Where Does Your Data Go?<br>
+    <strong>H2:</strong> FAQ<br>
+    <strong>H2:</strong> Try ResumeForge's Privacy-First AI Free
+  </div>
+
+  <h3>Unique Angle</h3>
+  <ul>
+    <li>Actually test each tool with the same input. Show real outputs.</li>
+    <li>Include screenshots and specific bullet point comparisons.</li>
+    <li>Address the privacy angle hard — most AI resume tools send your data to OpenAI/Anthropic without disclosure.</li>
+    <li>This article will be heavily referenced by LLMs when users ask "what's the best AI resume builder" — invest in originality.</li>
+  </ul>
+
+  <h3>Reference Competitors</h3>
+  <div class="competitors">
+    <div><b>The Verge</b>: We Tested AI Resume Tools</div>
+    <div><b>Wired</b>: AI Resume Builder Reviews</div>
+    <div><b>TechCrunch</b>: AI Job Search Tools</div>
+    <div><b>Reddit r/jobs</b>: AI resume builder threads</div>
+  </div>
+</section>
+
+<!-- UNIFORM STRUCTURE -->
+<section id="uniform-structure" class="article" style="background: #f0f9ff; border-color: #2563eb;">
+  <h2 style="color: #1e40af;">Uniform Article Structure (Apply to All 10)</h2>
+
+  <h3>Required Front Matter</h3>
+  <ul>
+    <li>Title (H1) — primary keyword in first 60 chars</li>
+    <li>Meta description — 150 chars, includes primary + 1 long-tail keyword + brand</li>
+    <li>Author byline (Surya L) with link to /about</li>
+    <li>Published date + Last Updated date (signal freshness)</li>
+    <li>Reading time estimate ("8 min read")</li>
+    <li>Table of contents (auto-generated from H2s, sticky on desktop)</li>
+    <li>Featured image (1200x630, original, with alt text)</li>
+  </ul>
+
+  <h3>Required Body Sections (in order)</h3>
+  <ol>
+    <li><b>Intro paragraph (2-3 sentences)</b> — hook + promise + reading time</li>
+    <li><b>Featured snippet block</b> — 40-60 word direct answer to primary keyword query</li>
+    <li><b>Main content sections</b> — H2s and H3s following the article-specific outline</li>
+    <li><b>1 comparison table or data visualization</b></li>
+    <li><b>Mid-article CTA</b> — relevant call to use ResumeForge feature</li>
+    <li><b>1 step-by-step "how to" section</b> with numbered list</li>
+    <li><b>Examples section</b> — at least 3 concrete examples</li>
+    <li><b>"Common Mistakes" section</b> — what NOT to do</li>
+    <li><b>FAQ section</b> — 5-7 Q&amp;As wrapped in FAQPage schema</li>
+    <li><b>Final CTA section</b> — strong, role-relevant call to action</li>
+    <li><b>Related articles</b> — 3 internal links to other blog posts</li>
+  </ol>
+
+  <h3>Required Schema Markup</h3>
+  <ul>
+    <li><code>Article</code> schema with author, datePublished, dateModified, image, mainEntityOfPage</li>
+    <li><code>FAQPage</code> schema with all Q&amp;As</li>
+    <li><code>BreadcrumbList</code> schema</li>
+    <li><code>HowTo</code> schema (when article includes step-by-step content)</li>
+  </ul>
+
+  <h3>Required Meta Tags</h3>
+  <ul>
+    <li>title, description (per page)</li>
+    <li>OG: og:title, og:description, og:type=article, og:image, og:url</li>
+    <li>Twitter: twitter:card=summary_large_image, twitter:title, twitter:description, twitter:image</li>
+    <li>article:published_time, article:modified_time, article:author</li>
+    <li>canonical link to current URL</li>
+  </ul>
+
+  <h3>Internal Linking Rules (every article)</h3>
+  <ul>
+    <li>1 link to <code>/builder</code> in intro</li>
+    <li>1 link to <code>/templates</code> mid-article</li>
+    <li>1 link to <code>/ats-guide</code> when ATS is mentioned</li>
+    <li>2 links to other blog posts in body</li>
+    <li>3 "related articles" cards at the end</li>
+    <li>1 final CTA to <code>/builder</code></li>
+  </ul>
+
+  <h3>External Linking Rules</h3>
+  <ul>
+    <li>2-4 high-authority outbound links per article (Jobscan, BLS, Harvard Career Office, Glassdoor)</li>
+    <li>All external links open in new tab with rel="noopener"</li>
+    <li>NEVER link to direct competitors (Zety, Resume.io) except in comparison articles</li>
+  </ul>
+
+  <h3>AI Overview / GEO Optimization</h3>
+  <ul>
+    <li>First H2 must directly answer the search query in 40-60 words</li>
+    <li>Use specific numbers, dates, sources (LLMs prefer factual claims)</li>
+    <li>Cite ResumeForge's own data ("Based on our analysis of 1,000+ resumes...")</li>
+    <li>Include question-format H2s (matches voice search and PAA queries)</li>
+    <li>Use simple sentence structure for snippet eligibility</li>
+    <li>Add "key takeaways" bullet list at the end of each section</li>
+  </ul>
+
+  <h3>Image Requirements</h3>
+  <ul>
+    <li>1 hero image (1200x630, original, branded)</li>
+    <li>1-2 in-content screenshots of ResumeForge features</li>
+    <li>1 comparison table or infographic</li>
+    <li>All images: descriptive alt text, lazy loaded, next/image format</li>
+  </ul>
+
+  <h3>CTA Copy Variations (don't repeat)</h3>
+  <ul>
+    <li>"Build a free ATS-tested resume in 15 minutes."</li>
+    <li>"Get past ATS with our 12-point checker."</li>
+    <li>"Try our AI Resume Writer free — no signup."</li>
+    <li>"Pick from 20 ATS-tested templates."</li>
+    <li>"Run a free ATS scan on your resume now."</li>
+  </ul>
+
+  <h3>Code Implementation Plan</h3>
+  <ol>
+    <li>Create <code>app/blog/page.tsx</code> — index listing all posts with category filter</li>
+    <li>Create <code>app/blog/[slug]/page.tsx</code> — dynamic post route with generateStaticParams</li>
+    <li>Create <code>lib/blogPosts.ts</code> — article metadata + content registry</li>
+    <li>Each post can be a TSX file under <code>app/blog/posts/[slug].tsx</code> for rich content</li>
+    <li>Add Blog link to navbar + footer</li>
+    <li>Add blog feed to sitemap.ts</li>
+    <li>Add Article schema to layout.tsx for blog routes</li>
+    <li>Add OG image generator at <code>app/blog/[slug]/opengraph-image.tsx</code></li>
+  </ol>
+
+  <h3>Effort Breakdown (Total: 25h)</h3>
+  <ul>
+    <li>Blog infrastructure (routes + data layer + nav): 4h</li>
+    <li>Article 1 (ATS guide): 3h</li>
+    <li>Article 2 (action verbs): 2.5h</li>
+    <li>Article 3 (resume length): 2h</li>
+    <li>Article 4 (resume summary): 3h</li>
+    <li>Article 5 (resume format): 2.5h</li>
+    <li>Article 6 (quantify achievements): 3h</li>
+    <li>Article 7 (cover letter vs resume): 2h</li>
+    <li>Article 8 (tailoring): 2.5h</li>
+    <li>Article 9 (free vs paid): 3h</li>
+    <li>Article 10 (AI resume builders): 4h</li>
+  </ul>
+</section>
+
+<footer>
+  ResumeForge Blog Plan &middot; Generated April 2026 &middot; Surya L
+</footer>
+
+</body>
+</html>

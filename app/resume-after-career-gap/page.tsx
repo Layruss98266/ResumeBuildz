@@ -1,0 +1,143 @@
+'use client';
+
+import { useEffect } from 'react';
+import Link from 'next/link';
+import { ArrowRight, Clock, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
+import SiteNavbar from '@/components/SiteNavbar';
+import SiteFooter from '@/components/SiteFooter';
+import { useLoginGateway } from '@/components/LoginGateway';
+
+const REASONS = [
+  { reason: 'Childcare / parental leave', wording: '"Career break to focus on raising young children. Stayed current via online certifications and freelance projects."' },
+  { reason: 'Health or recovery', wording: '"Took an extended health break in 2024 and have since fully recovered. Returning to full-time work."' },
+  { reason: 'Family caregiving', wording: '"Provided full-time care for an immediate family member through 2024. Resuming career in 2025."' },
+  { reason: 'Travel or relocation', wording: '"Relocated to [city] in mid-2024. Took a planned career break to settle and study."' },
+  { reason: 'Continued education', wording: '"Full-time MBA / MS / certification program. Graduated [date]."' },
+  { reason: 'Sabbatical / personal break', wording: '"Took an intentional 14-month sabbatical to upskill in [domain] and complete [project]."' },
+];
+
+const RULES = [
+  'Be honest, brief, and unapologetic. One factual line is enough — never bury the gap, never over-explain it.',
+  'Use a "Career Break" entry on the resume timeline. Treat it like any other entry with start and end dates.',
+  'Show what you did during the gap: courses, freelance, side projects, volunteering, open source, certifications.',
+  'Update your most recent skills near the top so recruiters see currency, not staleness.',
+  'In the cover letter, address the gap once in one sentence, then move forward. Never apologize.',
+  'For long gaps (2+ years), add a one-line "Returnship interest" note in your summary if applying to formal returnship programs.',
+];
+
+export default function ResumeAfterCareerGapPage() {
+  const { openGateway } = useLoginGateway();
+
+  useEffect(() => {
+    document.title = 'Resume After Career Gap 2026 - How to Explain & Win | ResumeForge';
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute(
+        'content',
+        'How to write a resume after a career gap of any length. Real wording for childcare, health, caregiving, sabbatical. ATS-friendly templates. Updated 2026.'
+      );
+    }
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) {
+      ogDesc.setAttribute(
+        'content',
+        'How to write a resume after a career gap. Real wording, ATS-friendly templates, returnship tips.'
+      );
+    }
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Resume After Career Gap 2026 - How to Explain & Win | ResumeForge');
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <SiteNavbar />
+
+      <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
+            <Clock className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Career Gap Recovery
+          </span>
+          <h1 className="text-3xl md:text-5xl font-bold mb-4 animate-fade-in-up">
+            How to Write a Resume After a Career Gap
+          </h1>
+          <p className="text-gray-300 text-lg max-w-2xl mx-auto animate-fade-in-up delay-100">
+            A career gap is not a deal-breaker. According to LinkedIn&apos;s 2024 Workforce Confidence Index, 62% of professionals have had a non-linear career path. Here is how to address the gap honestly and still get interviews.
+          </p>
+        </div>
+      </section>
+
+      <main className="flex-1 bg-white py-14">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <section>
+            <p className="text-gray-700 leading-relaxed text-lg">
+              The biggest mistake is hiding the gap. Modern ATS systems calculate tenure from start and end dates automatically, and any unexplained year triggers a manual review flag. The candidates who get interviews are the ones who name the gap, normalize it in one line, and immediately pivot to current skills.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">6 ways to phrase a career gap</h2>
+            <p className="text-gray-600 mb-6">Pick the one that matches your situation. Use it as a one-line entry on the resume timeline, exactly as written.</p>
+            <div className="space-y-4">
+              {REASONS.map((r, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                  <p className="text-xs uppercase tracking-wide text-blue-600 font-semibold mb-1">{r.reason}</p>
+                  <p className="text-gray-800 italic">{r.wording}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <h2 className="text-xl font-bold text-gray-900 mb-5">6 rules for resumes with gaps</h2>
+            <ol className="space-y-4">
+              {RULES.map((rule, i) => (
+                <li key={i} className="flex gap-3 text-gray-700">
+                  <CheckCircle2 className="h-5 w-5 text-blue-600 mt-0.5 shrink-0" />
+                  <span className="text-sm leading-relaxed">{rule}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section className="bg-amber-50 rounded-xl p-6 border border-amber-100">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-semibold text-amber-900 mb-2">Returnship programs are real and growing</h3>
+                <p className="text-sm text-amber-900 leading-relaxed">
+                  Companies like Goldman Sachs, IBM, Amazon, Accenture, and TCS now run formal "returnship" programs targeting professionals returning after 2+ year breaks. These programs offer paid 12 to 26 week contracts that often convert to full-time roles. Mentioning interest in returnships explicitly in your summary can route your resume directly into these tracks.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="text-center py-8">
+            <Sparkles className="h-8 w-8 text-blue-500 mx-auto mb-3" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Build a confident return-to-work resume</h2>
+            <p className="text-gray-600 mb-6 max-w-xl mx-auto">
+              Free to start. 20 templates. ATS-clean and gap-friendly.
+            </p>
+            <button
+              onClick={() => openGateway('/builder')}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2 transition"
+            >
+              Start My Resume <ArrowRight className="h-4 w-4" />
+            </button>
+          </section>
+
+          <section className="border-t border-gray-100 pt-8">
+            <h3 className="text-sm font-semibold text-gray-900 mb-3">Related guides</h3>
+            <div className="grid sm:grid-cols-2 gap-2 text-sm">
+              <Link href="/resume-after-layoff" className="text-blue-600 hover:underline">→ Resume after a layoff</Link>
+              <Link href="/resume-for-career-change" className="text-blue-600 hover:underline">→ Resume for career change</Link>
+              <Link href="/resume-tips" className="text-blue-600 hover:underline">→ Resume tips that work</Link>
+              <Link href="/ats-guide" className="text-blue-600 hover:underline">→ Complete ATS guide</Link>
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <SiteFooter />
+    </div>
+  );
+}
