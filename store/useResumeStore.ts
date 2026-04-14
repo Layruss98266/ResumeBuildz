@@ -1,7 +1,57 @@
 'use client';
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
+
+/**
+ * Debounced localStorage wrapper.
+ * Writes are batched and flushed after 1 second of inactivity.
+ * Reduces battery drain on mobile devices and improves typing performance.
+ */
+let writeTimer: ReturnType<typeof setTimeout> | null = null;
+let pendingWrites = new Map<string, string>();
+
+function flushWrites() {
+  if (typeof window === 'undefined') return;
+  for (const [key, value] of pendingWrites) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      // Quota exceeded or storage disabled
+    }
+  }
+  pendingWrites.clear();
+  writeTimer = null;
+}
+
+const debouncedStorage: StateStorage = {
+  getItem: (name) => {
+    if (typeof window === 'undefined') return null;
+    // Check pending writes first to avoid stale reads
+    if (pendingWrites.has(name)) return pendingWrites.get(name) ?? null;
+    return window.localStorage.getItem(name);
+  },
+  setItem: (name, value) => {
+    pendingWrites.set(name, value);
+    if (writeTimer) clearTimeout(writeTimer);
+    writeTimer = setTimeout(flushWrites, 1000);
+  },
+  removeItem: (name) => {
+    pendingWrites.delete(name);
+    if (typeof window === 'undefined') return;
+    try {
+      window.localStorage.removeItem(name);
+    } catch {
+      // ignore
+    }
+  },
+};
+
+// Flush pending writes before page unload to prevent data loss
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', flushWrites);
+  window.addEventListener('pagehide', flushWrites);
+}
 import {
   ResumeData,
   TemplateName,
@@ -90,6 +140,15 @@ interface ResumeStore {
   loadProfile: (id: string) => void;
   deleteProfile: (id: string) => void;
   renameProfile: (id: string, name: string) => void;
+
+  // Undo / Redo
+  history: ResumeData[];
+  historyIndex: number;
+  pushHistory: () => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
 }
 
 interface SavedProfile {
@@ -101,15 +160,19 @@ interface SavedProfile {
   createdAt: number;
 }
 
+const MAX_HISTORY = 50;
+
 export const useResumeStore = create<ResumeStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       resumeData: sampleResumeData,
       selectedTemplate: 'modern',
       primaryColor: '#2563eb',
       activeSection: 'personalInfo',
       styleOptions: DEFAULT_STYLE_OPTIONS,
       savedProfiles: [],
+      history: [],
+      historyIndex: -1,
 
       setSelectedTemplate: (template) => set({ selectedTemplate: template }),
       setPrimaryColor: (color) => set({ primaryColor: color }),
@@ -360,9 +423,48 @@ export const useResumeStore = create<ResumeStore>()(
             p.id === id ? { ...p, name } : p
           ),
         })),
+
+      // Undo/Redo: snapshot-based history
+      pushHistory: () =>
+        set((state) => {
+          const snapshot = JSON.parse(JSON.stringify(state.resumeData));
+          // Drop any "redo" entries when a new edit happens
+          const newHistory = state.history.slice(0, state.historyIndex + 1);
+          newHistory.push(snapshot);
+          // Cap history size
+          while (newHistory.length > MAX_HISTORY) newHistory.shift();
+          return { history: newHistory, historyIndex: newHistory.length - 1 };
+        }),
+      undo: () =>
+        set((state) => {
+          if (state.historyIndex <= 0) return {};
+          const newIndex = state.historyIndex - 1;
+          return {
+            resumeData: JSON.parse(JSON.stringify(state.history[newIndex])),
+            historyIndex: newIndex,
+          };
+        }),
+      redo: () =>
+        set((state) => {
+          if (state.historyIndex >= state.history.length - 1) return {};
+          const newIndex = state.historyIndex + 1;
+          return {
+            resumeData: JSON.parse(JSON.stringify(state.history[newIndex])),
+            historyIndex: newIndex,
+          };
+        }),
+      canUndo: () => get().historyIndex > 0,
+      canRedo: () => get().historyIndex < get().history.length - 1,
     }),
     {
       name: 'resumeforge-storage',
+      storage: createJSONStorage(() => debouncedStorage),
+      // Don't persist history - it should reset between sessions
+      partialize: (state) => {
+        const { history: _h, historyIndex: _i, ...rest } = state;
+        void _h; void _i;
+        return rest;
+      },
     }
   )
 );

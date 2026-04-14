@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Filter } from 'lucide-react';
 import { TEMPLATES } from '@/types/resume';
 import SiteNavbar from '@/components/SiteNavbar';
@@ -113,10 +114,12 @@ export default function TemplatesPage() {
               {filtered.map((t, i) => (
                 <div key={t.name} className={`bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition group animate-scale-in delay-${Math.min((i + 1) * 100, 500)}`}>
                   <div className="h-56 relative bg-gray-100 overflow-hidden">
-                    <img
+                    <Image
                       src={`/templates/${t.name}.png`}
                       alt={`${t.label} template preview`}
-                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <div className="p-5">

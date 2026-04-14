@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Sparkles,
   BarChart3,
@@ -110,7 +111,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="hidden md:flex justify-center animate-scale-in delay-300">
-              <img src="/templates/modern.png" alt="Resume template preview" className="rounded-lg shadow-2xl border border-gray-700 max-h-[400px] object-cover object-top" />
+              <Image src="/templates/modern.png" alt="Resume template preview" width={300} height={400} className="rounded-lg shadow-2xl border border-gray-700 max-h-[400px] object-cover object-top" priority />
             </div>
           </div>
         </div>

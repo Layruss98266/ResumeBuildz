@@ -36,7 +36,7 @@ export default function LanguagesForm() {
 
       {resumeData.languages.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-8">
-          No languages added yet. Click &quot;Add&quot; to get started.
+          No languages added yet. Click &quot;Add&quot; to get started. This section will only appear in your resume preview when you add at least one language.
         </p>
       )}
 

@@ -102,31 +102,52 @@ export default function HomePage() {
   const [isExporting, setIsExporting] = useState(false);
   const [exportingType, setExportingType] = useState<string | null>(null);
   const [showMobileSheet, setShowMobileSheet] = useState(false);
-  const { importData, resetData, addCustomSection, resumeData } = useResumeStore();
+  const { importData, resetData, addCustomSection, resumeData, undo, redo, pushHistory, canUndo, canRedo } = useResumeStore();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [pdfRemaining, setPdfRemaining] = useState(() => getUsage('pdf').remaining);
   const { showToast } = useToast();
-  const { user, profile, isPro } = useAuth();
+  const { user, profile, isPro, isEmailVerified } = useAuth();
 
   // Touch swipe handler for mobile tabs
   const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
   const touchEndX = useRef<number>(0);
+  const touchEndY = useRef<number>(0);
+  const swipeAllowed = useRef<boolean>(true);
   const SWIPE_THRESHOLD = 50;
+  const VERTICAL_TOLERANCE = 30;
+
+  // Don't trigger tab swipe inside form inputs, draggable handles, or scrollable areas
+  const isSwipeBlocked = (target: EventTarget | null): boolean => {
+    if (!(target instanceof Element)) return false;
+    return !!target.closest(
+      'input, textarea, select, button, [contenteditable], [draggable="true"], [data-no-swipe], [role="slider"]'
+    );
+  };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    swipeAllowed.current = !isSwipeBlocked(e.target);
+    if (!swipeAllowed.current) return;
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!swipeAllowed.current) return;
     touchEndX.current = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX.current;
+    touchEndY.current = e.changedTouches[0].clientY;
+    const diffX = touchStartX.current - touchEndX.current;
+    const diffY = Math.abs(touchStartY.current - touchEndY.current);
+    // Skip if the gesture was more vertical than horizontal (likely a scroll)
+    if (diffY > VERTICAL_TOLERANCE) return;
+
     const tabOrder: typeof activeTab[] = ['edit', 'preview', 'templates', 'ats', 'ai'];
     const currentIdx = tabOrder.indexOf(activeTab);
 
-    if (Math.abs(diff) > SWIPE_THRESHOLD) {
-      if (diff > 0 && currentIdx < tabOrder.length - 1) {
+    if (Math.abs(diffX) > SWIPE_THRESHOLD) {
+      if (diffX > 0 && currentIdx < tabOrder.length - 1) {
         setActiveTab(tabOrder[currentIdx + 1]);
-      } else if (diff < 0 && currentIdx > 0) {
+      } else if (diffX < 0 && currentIdx > 0) {
         setActiveTab(tabOrder[currentIdx - 1]);
       }
     }
@@ -260,16 +281,28 @@ export default function HomePage() {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
       setIsImporting(true);
+      // Snapshot current data for rollback
+      const backup = JSON.parse(JSON.stringify(useResumeStore.getState().resumeData));
       try {
         const result = await importResumeFromFile(file);
         if (result.success && result.data) {
-          importData(result.data);
-          showToast(`Resume imported from ${file.name}. Review the extracted data and make corrections.`, 'success', 5000);
+          try {
+            importData(result.data);
+            showToast(`Resume imported from ${file.name}. Review the extracted data and make corrections.`, 'success', 5000);
+          } catch (innerErr) {
+            // Rollback on import data failure
+            importData(backup);
+            const msg = innerErr instanceof Error ? innerErr.message : 'Unknown error';
+            showToast(`Import failed: ${msg}. Previous resume restored.`, 'warning', 6000);
+          }
         } else {
-          showToast(result.error || 'Failed to import file', 'warning', 5000);
+          showToast(result.error || 'Failed to import file. Your existing resume is unchanged.', 'warning', 5000);
         }
-      } catch {
-        showToast('Failed to import file. Please try a different format.', 'warning', 5000);
+      } catch (err) {
+        // Rollback on outer failure too
+        importData(backup);
+        const msg = err instanceof Error ? err.message : 'Unknown error';
+        showToast(`Import failed: ${msg}. Previous resume restored.`, 'warning', 6000);
       } finally {
         setIsImporting(false);
       }
@@ -280,22 +313,33 @@ export default function HomePage() {
   const handleExportDocx = async () => {
     setIsExporting(true);
     setExportingType('docx');
+    setShowExportMenu(false);
     try {
       const { resumeData, primaryColor } = useResumeStore.getState();
       await downloadDocx(resumeData, primaryColor);
+      showToast('DOCX exported successfully.', 'success');
+    } catch {
+      showToast('DOCX export failed. Try again.', 'warning');
     } finally {
-      setTimeout(() => { setIsExporting(false); setExportingType(null); }, 500);
+      setIsExporting(false);
+      setExportingType(null);
     }
-    setShowExportMenu(false);
   };
 
   const handleExportHtml = () => {
     setIsExporting(true);
     setExportingType('html');
-    const { resumeData, primaryColor } = useResumeStore.getState();
-    downloadHtml(resumeData, primaryColor);
-    setTimeout(() => { setIsExporting(false); setExportingType(null); }, 500);
     setShowExportMenu(false);
+    try {
+      const { resumeData, primaryColor } = useResumeStore.getState();
+      downloadHtml(resumeData, primaryColor);
+      showToast('HTML exported successfully.', 'success');
+    } catch {
+      showToast('HTML export failed. Try again.', 'warning');
+    } finally {
+      setIsExporting(false);
+      setExportingType(null);
+    }
   };
 
   const handleExportPdf = () => {
@@ -323,21 +367,72 @@ export default function HomePage() {
     }
   };
 
+  // Debounced history snapshot for undo/redo
+  // Push a snapshot 1.5s after the user stops editing
+  useEffect(() => {
+    const id = setTimeout(() => {
+      pushHistory();
+    }, 1500);
+    return () => clearTimeout(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeData]);
+
   // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Ignore shortcuts when typing in inputs
+      const target = e.target as HTMLElement | null;
+      const inEditableField =
+        target?.tagName === 'INPUT' ||
+        target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT' ||
+        target?.isContentEditable;
+
       if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
         e.preventDefault();
         handleExportPdf();
+        return;
       }
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault();
         handleExportJSON();
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault();
+        handleExportPdf();
+        return;
+      }
+      // Undo / Redo
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key === 'z') {
+        e.preventDefault();
+        if (canUndo()) {
+          undo();
+          showToast('Undo', 'info', 1500);
+        }
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.shiftKey && e.key === 'Z'))) {
+        e.preventDefault();
+        if (canRedo()) {
+          redo();
+          showToast('Redo', 'info', 1500);
+        }
+        return;
+      }
+      // Tab navigation: Ctrl+1..5 (only when not editing)
+      if (!inEditableField && (e.ctrlKey || e.metaKey) && /^[1-5]$/.test(e.key)) {
+        e.preventDefault();
+        const tabs: typeof activeTab[] = ['edit', 'preview', 'templates', 'ats', 'ai'];
+        const idx = parseInt(e.key, 10) - 1;
+        if (tabs[idx]) setActiveTab(tabs[idx]);
+        return;
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleAddCustomSection = () => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -510,6 +605,15 @@ export default function HomePage() {
           style={{ width: `${completionScore}%` }}
         />
       </div>
+
+      {/* Email verification banner */}
+      {user && !isEmailVerified() && (
+        <div className="bg-amber-500/10 border-b border-amber-500/20 px-4 py-2 flex items-center justify-between shrink-0 animate-fade-in">
+          <span className="text-xs text-amber-400">
+            Please verify your email to unlock Pro features. Check your inbox for the confirmation link.
+          </span>
+        </div>
+      )}
 
       {/* Welcome back banner */}
       {showWelcomeBack && (

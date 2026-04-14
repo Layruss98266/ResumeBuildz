@@ -190,35 +190,16 @@ function generateId(): string {
   return Math.random().toString(36).substring(2, 9);
 }
 
-const SECTION_HEADINGS: Record<string, RegExp> = {
-  summary: /^(?:\/\/\s*)?(?:summary|profile|profile\s*summary|objective|about|about\s*me|professional\s*summary|career\s*summary|career\s*objective)$/i,
-  experience: /^(?:\/\/\s*)?(?:experience|work\s*experience|work\s*history|employment|employment\s*history|professional\s*experience|work\s*experience\s*\(?roles?\s*(?:&|and)\s*responsibilities?\)?)$/i,
-  education: /^(?:\/\/\s*)?(?:education|academic\s*background|academics|educational\s*background)$/i,
-  skills: /^(?:\/\/\s*)?(?:skills|technical\s*skills|core\s*competencies|competencies|technologies|expertise|key\s*skills|technical\s*seo)$/i,
-  projects: /^(?:\/\/\s*)?(?:projects|personal\s*projects|portfolio|key\s*projects|selected\s*projects)$/i,
-  certifications: /^(?:\/\/\s*)?(?:certifications?|certs?|licenses?\s*(?:&|and)?\s*certifications?|credentials?|professional\s*certifications?)$/i,
-  languages: /^(?:\/\/\s*)?(?:languages?|language\s*proficiency|language\s*skills)$/i,
-  contact: /^(?:\/\/\s*)?(?:contact|contact\s*(?:info|information|details))$/i,
-};
+import { SECTION_HEADINGS, SECTION_LOOSE, PARSER_PATTERNS } from './parserConfig';
 
-const SECTION_LOOSE: Record<string, RegExp> = {
-  summary: /\b(summary|profile|objective|about)\b/i,
-  experience: /\b(experience|employment|work\s*history)\b/i,
-  education: /\b(education|academic)\b/i,
-  skills: /\b(skills|competencies|technologies|expertise)\b/i,
-  projects: /\b(projects|portfolio)\b/i,
-  certifications: /\b(certifications?|certs?|licenses?|credentials?)\b/i,
-  languages: /\b(languages?)\b/i,
-};
-
-const EMAIL_RE = /[\w.+-]+@[\w-]+\.[\w.-]+/;
-const PHONE_RE = /(\+?\d[\d\s\-().]{7,}\d)/;
-const LINKEDIN_RE = /linkedin\.com\/in\/[\w-]+/i;
-const GITHUB_RE = /github\.com\/[\w-]+/i;
-const LOCATION_RE = /([A-Z][a-z]+(?:\s[A-Z][a-z]+)*,\s*(?:[A-Z][a-z]+|[A-Z]{2,})(?:\s*\d{5,6})?)/;
-const JOB_TITLE_WORDS = /\b(engineer|developer|designer|manager|analyst|consultant|architect|lead|director|specialist|coordinator|intern|student|scientist|administrator|officer|executive|assistant|associate|senior|junior|principal|staff|head|chief|marketing|data|product|seo|digital)\b/i;
-const DATE_RANGE_RE = /(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*\.?\s*\d{4}|\d{1,2}\/\d{2,4}|\d{4})\s*[-–—]+\s*(?:(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\s*\.?\s*\d{4}|\d{1,2}\/\d{2,4}|\d{4}|present|current|now|ongoing)/i;
-const BULLET_RE = /^[•\-\*▸►▪◦‣⁃●○→>]\s+/;
+const EMAIL_RE = PARSER_PATTERNS.email;
+const PHONE_RE = PARSER_PATTERNS.phone;
+const LINKEDIN_RE = PARSER_PATTERNS.linkedin;
+const GITHUB_RE = PARSER_PATTERNS.github;
+const LOCATION_RE = PARSER_PATTERNS.location;
+const JOB_TITLE_WORDS = PARSER_PATTERNS.jobTitle;
+const DATE_RANGE_RE = PARSER_PATTERNS.dateRange;
+const BULLET_RE = PARSER_PATTERNS.bullet;
 
 function detectSection(line: string): string | null {
   // Normalize separators: strip symbols, decorators, pipes, dashes, etc.
