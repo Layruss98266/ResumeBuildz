@@ -123,11 +123,11 @@ export default function EducationForm() {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = resumeData.education.findIndex((e) => e.id === active.id);
-      const newIndex = resumeData.education.findIndex((e) => e.id === over.id);
-      reorderEducation(arrayMove(resumeData.education, oldIndex, newIndex));
-    }
+    if (!over || active.id === over.id) return;
+    const oldIndex = resumeData.education.findIndex((e) => e.id === active.id);
+    const newIndex = resumeData.education.findIndex((e) => e.id === over.id);
+    if (oldIndex < 0 || newIndex < 0) return;
+    reorderEducation(arrayMove(resumeData.education, oldIndex, newIndex));
   };
 
   return (

@@ -164,21 +164,23 @@ export default function HomePage() {
   ].join(' ').split(/\s+/).filter(Boolean).length;
   const estimatedPages = Math.max(1, Math.ceil(wordCount / 400));
 
-  // Resume completion score
+  // Resume completion score (weighted by importance)
   const completionScore = useMemo(() => {
-    const checks = [
-      resumeData.personalInfo.fullName.length > 0,
-      resumeData.personalInfo.email.length > 0,
-      resumeData.personalInfo.phone.length > 0,
-      resumeData.personalInfo.location.length > 0,
-      resumeData.summary.length > 20,
-      resumeData.experience.length > 0,
-      resumeData.experience.some(e => e.highlights.length > 0),
-      resumeData.education.length > 0,
-      resumeData.skills.length > 0,
-      resumeData.skills.some(s => s.items.length >= 3),
+    const checks: Array<{ pass: boolean; weight: number }> = [
+      { pass: resumeData.personalInfo.fullName.length > 0, weight: 15 },
+      { pass: resumeData.personalInfo.email.length > 0, weight: 12 },
+      { pass: resumeData.personalInfo.phone.length > 0, weight: 8 },
+      { pass: resumeData.personalInfo.location.length > 0, weight: 5 },
+      { pass: resumeData.summary.length > 20, weight: 12 },
+      { pass: resumeData.experience.length > 0, weight: 15 },
+      { pass: resumeData.experience.some((e) => e.highlights.length > 0), weight: 10 },
+      { pass: resumeData.education.length > 0, weight: 10 },
+      { pass: resumeData.skills.length > 0, weight: 8 },
+      { pass: resumeData.skills.some((s) => s.items.length >= 3), weight: 5 },
     ];
-    return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+    const total = checks.reduce((sum, c) => sum + c.weight, 0);
+    const earned = checks.reduce((sum, c) => sum + (c.pass ? c.weight : 0), 0);
+    return Math.round((earned / total) * 100);
   }, [resumeData]);
 
   useEffect(() => {
@@ -262,12 +264,12 @@ export default function HomePage() {
         const result = await importResumeFromFile(file);
         if (result.success && result.data) {
           importData(result.data);
-          alert(`Resume imported from ${file.name}! Review the extracted data and make any corrections.`);
+          showToast(`Resume imported from ${file.name}. Review the extracted data and make corrections.`, 'success', 5000);
         } else {
-          alert(result.error || 'Failed to import file');
+          showToast(result.error || 'Failed to import file', 'warning', 5000);
         }
       } catch {
-        alert('Failed to import file. Please try a different format.');
+        showToast('Failed to import file. Please try a different format.', 'warning', 5000);
       } finally {
         setIsImporting(false);
       }

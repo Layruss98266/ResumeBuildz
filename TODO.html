@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResumeForge - Deferred TODO Items</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    color: #1f2937;
+    background: #f9fafb;
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    padding: 32px;
+    border-radius: 16px;
+    margin-bottom: 32px;
+  }
+  header h1 { margin: 0 0 8px; font-size: 32px; }
+  header p { margin: 0; opacity: 0.9; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.15);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .stat .num { font-size: 24px; font-weight: bold; }
+  .stat .label { font-size: 12px; opacity: 0.9; }
+  section {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  h2 {
+    font-size: 20px;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f3f4f6;
+  }
+  h2 .badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .badge-critical { background: #fee2e2; color: #b91c1c; }
+  .badge-high { background: #fef3c7; color: #b45309; }
+  .badge-medium { background: #dbeafe; color: #1e40af; }
+  .badge-low { background: #e0e7ff; color: #4338ca; }
+  .badge-feature { background: #d1fae5; color: #047857; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #4b5563;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  tr:last-child td { border-bottom: none; }
+  td code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #be185d;
+  }
+  .effort {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .effort-xs { background: #d1fae5; color: #047857; }
+  .effort-s { background: #dbeafe; color: #1e40af; }
+  .effort-m { background: #fef3c7; color: #b45309; }
+  .effort-l { background: #fee2e2; color: #b91c1c; }
+  .priority-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .priority-card {
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid;
+  }
+  .p-critical { background: #fef2f2; border-color: #dc2626; }
+  .p-high { background: #fffbeb; border-color: #f59e0b; }
+  .p-medium { background: #eff6ff; border-color: #3b82f6; }
+  .p-low { background: #f5f3ff; border-color: #8b5cf6; }
+  .priority-card h3 { margin: 0 0 6px; font-size: 15px; }
+  .priority-card p { margin: 0; font-size: 13px; color: #6b7280; }
+  .check {
+    color: #16a34a;
+    font-weight: bold;
+  }
+  .x { color: #dc2626; font-weight: bold; }
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #6b7280;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ResumeForge - Deferred TODO Items</h1>
+  <p>Items requiring external services, major architectural changes, or extended development time. Generated from deep code review.</p>
+  <div class="stats">
+    <div class="stat"><div class="num">9</div><div class="label">Just Fixed</div></div>
+    <div class="stat"><div class="num">42</div><div class="label">Deferred Items</div></div>
+    <div class="stat"><div class="num">6</div><div class="label">Critical Bugs</div></div>
+    <div class="stat"><div class="num">15+</div><div class="label">Features Missing</div></div>
+    <div class="stat"><div class="num">~80h</div><div class="label">Total Effort</div></div>
+  </div>
+</header>
+
+<section>
+  <h2>Just Fixed in This Session <span class="badge badge-feature">Done</span></h2>
+  <table>
+    <tr><th>Fix</th><th>File</th></tr>
+    <tr><td><span class="check">&#10003;</span> Photo upload MIME validation (no SVG XSS)</td><td><code>components/forms/PersonalInfoForm.tsx</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> Null/empty array checks in ATS scoring</td><td><code>components/ats/ATSScoreChecker.tsx</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> dragEnd handler validates -1 indices (3 forms)</td><td><code>Experience/Education/Projects Form.tsx</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> alert() replaced with toast for resume import</td><td><code>app/builder/page.tsx</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> AISuggestions: granular error handling (401/429/402)</td><td><code>components/ats/AISuggestions.tsx</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> ResumePreview wrapped in React.memo (perf)</td><td><code>components/preview/ResumePreview.tsx</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> Created lib/validation.ts shared helpers</td><td><code>lib/validation.ts</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> Weighted completion score by importance</td><td><code>app/builder/page.tsx</code></td></tr>
+    <tr><td><span class="check">&#10003;</span> Skills category required indicator</td><td><code>components/forms/SkillsForm.tsx</code></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>1. Critical Bugs Still To Fix <span class="badge badge-critical">Critical</span></h2>
+  <table>
+    <tr><th>Issue</th><th>File</th><th>Effort</th></tr>
+    <tr>
+      <td>Resume data loss on import failure (no rollback)</td>
+      <td><code>lib/importResume.ts:532</code></td>
+      <td><span class="effort effort-m">2h</span></td>
+    </tr>
+    <tr>
+      <td>PDF export blocks main thread (UI freezes 1-3s)</td>
+      <td><code>app/builder/page.tsx:280</code></td>
+      <td><span class="effort effort-l">4h</span></td>
+    </tr>
+    <tr>
+      <td>localStorage writes on every keystroke (battery drain)</td>
+      <td><code>store/useResumeStore.ts:365</code></td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td>Undo/Redo system missing (high frustration on mobile)</td>
+      <td><code>store/useResumeStore.ts</code></td>
+      <td><span class="effort effort-l">4h</span></td>
+    </tr>
+    <tr>
+      <td>Touch swipe conflicts with horizontal scroll, drag-drop</td>
+      <td><code>app/builder/page.tsx:116-133</code></td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td>Builder page is 936 lines (god component)</td>
+      <td><code>app/builder/page.tsx</code></td>
+      <td><span class="effort effort-l">6h</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>2. Security Hardening <span class="badge badge-high">High</span></h2>
+  <table>
+    <tr><th>Issue</th><th>Solution</th><th>Effort</th></tr>
+    <tr>
+      <td>Groq API key in localStorage (XSS theft risk)</td>
+      <td>Move to sessionStorage, or proxy via Supabase Edge Function</td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td>No CORS protection - direct browser fetch to Groq</td>
+      <td>Create <code>supabase/functions/groq-proxy</code> Edge Function</td>
+      <td><span class="effort effort-l">5h</span></td>
+    </tr>
+    <tr>
+      <td>No rate limiting on auth, contact, forgot-password</td>
+      <td>Add Supabase rate limit policies + cooldown UI</td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td>No CSRF tokens on forms</td>
+      <td>Add Next.js form actions or token middleware</td>
+      <td><span class="effort effort-m">2h</span></td>
+    </tr>
+    <tr>
+      <td>Email verification not enforced before Pro access</td>
+      <td>Already gated in <code>isPro()</code>, needs UI prompt for unverified users</td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td>No CSP header (Content-Security-Policy)</td>
+      <td>Add to <code>next.config.ts</code> headers (test for breakage)</td>
+      <td><span class="effort effort-m">2h</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>3. Missing Features (Competitor Parity) <span class="badge badge-feature">Feature</span></h2>
+  <table>
+    <tr><th>Feature</th><th>Why It Matters</th><th>Effort</th></tr>
+    <tr>
+      <td><strong>LinkedIn profile import</strong></td>
+      <td>10x faster onboarding. Indeed and Google Resume Builder have this.</td>
+      <td><span class="effort effort-l">8h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Public share links</strong></td>
+      <td>Viral growth. Supabase RLS + new <code>/r/[slug]</code> route.</td>
+      <td><span class="effort effort-l">5h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Resume version history / diff</strong></td>
+      <td>See changes between saves, rollback, A/B testing.</td>
+      <td><span class="effort effort-l">6h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Real-time keyword highlighting</strong></td>
+      <td>Highlight JD-matched words while typing. Core moat.</td>
+      <td><span class="effort effort-l">5h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Section examples library</strong></td>
+      <td>Role-based bullet examples, one-click insert.</td>
+      <td><span class="effort effort-l">8h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Cover letter templates</strong></td>
+      <td>Multi-section builder, role-specific prompts.</td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td><strong>ATS score history chart</strong></td>
+      <td>Track score progression over time.</td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Cross-device resume sync</strong></td>
+      <td>Save resume to Supabase per user (Pro feature).</td>
+      <td><span class="effort effort-l">6h</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>4. Business / Growth Features <span class="badge badge-feature">Feature</span></h2>
+  <table>
+    <tr><th>Feature</th><th>Status</th><th>Effort</th></tr>
+    <tr>
+      <td><strong>Stripe payment integration</strong> (real Pro billing)</td>
+      <td><span class="x">Missing</span> - all "Coming Soon" buttons</td>
+      <td><span class="effort effort-l">12h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Analytics</strong> (Plausible / PostHog)</td>
+      <td><span class="x">Missing</span> - no tracking, can't measure funnel</td>
+      <td><span class="effort effort-s">2h</span></td>
+    </tr>
+    <tr>
+      <td><strong>A/B testing infrastructure</strong></td>
+      <td><span class="x">Missing</span> - can't optimize CTAs/pricing</td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Referral system</strong></td>
+      <td><span class="x">Missing</span> - no viral loop</td>
+      <td><span class="effort effort-l">8h</span></td>
+    </tr>
+    <tr>
+      <td><strong>NPS / feedback widget</strong></td>
+      <td><span class="x">Missing</span> - no user voice</td>
+      <td><span class="effort effort-m">2h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Email service</strong> for waitlist (currently localStorage)</td>
+      <td><span class="x">Missing</span> - Founder can't reach signups</td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Retargeting pixel</strong> (Facebook, GA)</td>
+      <td><span class="x">Missing</span> - can't remarket</td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td><strong>Cookie consent banner</strong> (GDPR safety net)</td>
+      <td><span class="x">Missing</span> - EU users expect it</td>
+      <td><span class="effort effort-s">2h</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>5. Performance Optimizations <span class="badge badge-medium">Medium</span></h2>
+  <table>
+    <tr><th>Issue</th><th>Fix</th><th>Effort</th></tr>
+    <tr>
+      <td>67 lucide-react icons imported at once in builder (~50KB)</td>
+      <td>Dynamic imports for conditional UI icons</td>
+      <td><span class="effort effort-s">2h</span></td>
+    </tr>
+    <tr>
+      <td>localStorage writes on every keystroke (Zustand persist)</td>
+      <td>Debounce persist middleware (2s inactivity)</td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td>PDF/DOCX export blocks main thread</td>
+      <td>Move to Web Worker</td>
+      <td><span class="effort effort-l">4h</span></td>
+    </tr>
+    <tr>
+      <td>Use next/image instead of regular img tags</td>
+      <td>Replace in <code>app/page.tsx</code> and <code>app/templates/page.tsx</code></td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>6. Code Quality Debt <span class="badge badge-medium">Medium</span></h2>
+  <table>
+    <tr><th>Issue</th><th>Files</th><th>Effort</th></tr>
+    <tr>
+      <td>Builder page god component (936 lines)</td>
+      <td>Split into BuilderLayout, BuilderTabs, ExportMenu, ImportSection, MobileNav</td>
+      <td><span class="effort effort-l">6h</span></td>
+    </tr>
+    <tr>
+      <td>useEffect for meta tags (13 client pages)</td>
+      <td>Convert to server components with Next.js metadata API</td>
+      <td><span class="effort effort-l">8h</span></td>
+    </tr>
+    <tr>
+      <td>Dynamic Tailwind classes (delay-${i})</td>
+      <td>Use static class mapping or CSS variables</td>
+      <td><span class="effort effort-m">3h</span></td>
+    </tr>
+    <tr>
+      <td>ATS scoring logic duplicated</td>
+      <td>Centralize in lib/atsScoring.ts</td>
+      <td><span class="effort effort-m">2h</span></td>
+    </tr>
+    <tr>
+      <td>Resume parser magic regex strings</td>
+      <td>Move to config file for easy updates</td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td>No tests (zero test files)</td>
+      <td>Set up Vitest + tests for usage.ts, importResume.ts</td>
+      <td><span class="effort effort-l">10h</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>7. SEO &amp; Marketing <span class="badge badge-low">Low</span></h2>
+  <table>
+    <tr><th>Issue</th><th>Status</th><th>Effort</th></tr>
+    <tr>
+      <td>Meta tags set via useEffect (invisible to crawlers on SSR)</td>
+      <td><span class="x">Issue</span></td>
+      <td><span class="effort effort-l">8h</span></td>
+    </tr>
+    <tr>
+      <td>BreadcrumbList schema missing</td>
+      <td><span class="x">Missing</span></td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td>HowTo schema for ATS Guide</td>
+      <td><span class="x">Missing</span></td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td>Newsletter signup outside pricing page</td>
+      <td><span class="x">Missing</span></td>
+      <td><span class="effort effort-m">2h</span></td>
+    </tr>
+    <tr>
+      <td>Blog / news section for SEO + repeat visits</td>
+      <td><span class="x">Missing</span></td>
+      <td><span class="effort effort-l">12h</span></td>
+    </tr>
+    <tr>
+      <td>"Review aggregator" badges (G2, Trustpilot)</td>
+      <td><span class="x">Missing</span></td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+  </table>
+</section>
+
+<section>
+  <h2>8. UX Improvements <span class="badge badge-medium">Medium</span></h2>
+  <table>
+    <tr><th>Improvement</th><th>Effort</th></tr>
+    <tr><td>Keyboard shortcuts (Ctrl+S, Ctrl+E, Ctrl+Z, Ctrl+1-9)</td><td><span class="effort effort-m">3h</span></td></tr>
+    <tr><td>Loading states on export (don't clear on timeout)</td><td><span class="effort effort-s">1h</span></td></tr>
+    <tr><td>Specific error messages (not generic "failed")</td><td><span class="effort effort-m">2h</span></td></tr>
+    <tr><td>"Section will appear when filled" hint on empty sections</td><td><span class="effort effort-s">1h</span></td></tr>
+    <tr><td>Better mobile drag handle accessibility</td><td><span class="effort effort-m">3h</span></td></tr>
+    <tr><td>Onboarding tour for first-time users (already exists, polish)</td><td><span class="effort effort-s">2h</span></td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Recommended 4-Week Sprint Plan</h2>
+  <div class="priority-summary">
+    <div class="priority-card p-critical">
+      <h3>Week 1: Stability</h3>
+      <p>Undo/Redo, debounce localStorage, split builder page, error handling polish (~12h)</p>
+    </div>
+    <div class="priority-card p-high">
+      <h3>Week 2: Security</h3>
+      <p>Groq proxy, CSP header, rate limiting, CSRF tokens (~10h)</p>
+    </div>
+    <div class="priority-card p-medium">
+      <h3>Week 3: Growth</h3>
+      <p>Analytics, public share links, LinkedIn import, cookie consent (~15h)</p>
+    </div>
+    <div class="priority-card p-low">
+      <h3>Week 4: Quality</h3>
+      <p>Vitest setup, parser tests, usage tests, exporter tests (~10h)</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Top 3 Highest-Impact Quick Wins (Next Session)</h2>
+  <table>
+    <tr><th>#</th><th>Item</th><th>Why</th><th>Effort</th></tr>
+    <tr>
+      <td>1</td>
+      <td><strong>Add Plausible/PostHog analytics</strong></td>
+      <td>Without metrics, every other improvement is guessing.</td>
+      <td><span class="effort effort-s">2h</span></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><strong>Debounce localStorage writes</strong></td>
+      <td>Battery drain fix, instant perf win.</td>
+      <td><span class="effort effort-s">1h</span></td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><strong>Stripe integration for Pro</strong></td>
+      <td>Currently no monetization path. Critical for revenue.</td>
+      <td><span class="effort effort-l">12h</span></td>
+    </tr>
+  </table>
+</section>
+
+<footer>
+  Generated by Claude Code on 2026-04-14 &middot; ResumeForge by Surya L
+</footer>
+
+</body>
+</html>

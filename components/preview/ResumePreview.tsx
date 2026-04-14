@@ -1,6 +1,6 @@
 'use client';
 
-import { createElement, forwardRef, useId, useMemo, useState, useCallback } from 'react';
+import { createElement, forwardRef, memo, useId, useMemo, useState, useCallback } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
 import { getTemplateComponent } from '@/components/templates';
 import { DEFAULT_STYLE_OPTIONS, FONT_OPTIONS } from '@/components/templates/TemplateWrapper';
@@ -105,4 +105,4 @@ const ResumePreview = forwardRef<HTMLDivElement>((_, ref) => {
 
 ResumePreview.displayName = 'ResumePreview';
 
-export default ResumePreview;
+export default memo(ResumePreview);

@@ -158,11 +158,11 @@ export default function ExperienceForm() {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = resumeData.experience.findIndex((e) => e.id === active.id);
-      const newIndex = resumeData.experience.findIndex((e) => e.id === over.id);
-      reorderExperience(arrayMove(resumeData.experience, oldIndex, newIndex));
-    }
+    if (!over || active.id === over.id) return;
+    const oldIndex = resumeData.experience.findIndex((e) => e.id === active.id);
+    const newIndex = resumeData.experience.findIndex((e) => e.id === over.id);
+    if (oldIndex < 0 || newIndex < 0) return;
+    reorderExperience(arrayMove(resumeData.experience, oldIndex, newIndex));
   };
 
   return (

@@ -121,15 +121,28 @@ export default function AISuggestions() {
         if (response.status === 401) {
           setError('Invalid API key. Please check your Groq API key.');
           setShowKeyInput(true);
+        } else if (response.status === 429) {
+          setError('Rate limit reached. Please wait a moment and try again.');
+        } else if (response.status === 402 || response.status === 403) {
+          setError('Quota exceeded. Check your Groq account at console.groq.com.');
         } else {
-          setError(errData?.error?.message || `API error (${response.status})`);
+          setError(errData?.error?.message || `API error (${response.status}). Try again.`);
         }
+        showToast('AI request failed. See error details below.', 'warning');
         return;
       }
 
-      const data = await response.json();
-      const content = data.choices?.[0]?.message?.content?.trim();
-      if (content) {
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        setError('Invalid response from AI service. Try again.');
+        showToast('AI response was malformed. Try again.', 'warning');
+        return;
+      }
+
+      const content = data?.choices?.[0]?.message?.content?.trim();
+      if (typeof content === 'string' && content.length > 0) {
         setResult(content);
         incrementUsage('ai');
         const remaining = getUsage('ai').remaining;
@@ -140,7 +153,8 @@ export default function AISuggestions() {
           showToast('AI suggestion generated! Copy it to your resume.', 'success');
         }
       } else {
-        setError('No suggestion generated. Try again.');
+        setError('No suggestion was generated. Try a different prompt or try again.');
+        showToast('AI returned an empty response. Try again.', 'warning');
       }
     } catch {
       setError('Failed to connect to AI service. Check your internet connection.');

@@ -39,11 +39,22 @@ export default function PersonalInfoForm() {
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { alert('Photo must be under 2MB'); return; }
+    // Whitelist allowed image MIME types (no SVG to prevent embedded scripts)
+    const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      alert('Only JPEG, PNG, WebP, or GIF images are allowed.');
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Photo must be under 2MB');
+      return;
+    }
     const reader = new FileReader();
     reader.onload = (ev) => {
       const result = ev.target?.result as string;
-      if (result) updatePersonalInfo({ photo: result });
+      if (result && result.startsWith('data:image/')) {
+        updatePersonalInfo({ photo: result });
+      }
     };
     reader.readAsDataURL(file);
   };

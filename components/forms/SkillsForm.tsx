@@ -139,11 +139,14 @@ export default function SkillsForm() {
           <Card key={skill.id} className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <div className="flex-1">
-                <Label className="text-sm">Category</Label>
+                <Label className="text-sm">Category {!skill.category && <span className="text-amber-500 text-xs ml-1">(required)</span>}</Label>
                 <Input
                   placeholder="Programming Languages"
                   value={skill.category}
                   onChange={(e) => updateSkill(skill.id, { category: e.target.value })}
+                  required
+                  aria-invalid={!skill.category}
+                  className={!skill.category ? 'border-amber-300' : ''}
                 />
               </div>
               <Button variant="ghost" size="icon" onClick={() => removeSkill(skill.id)} className="h-8 w-8 text-destructive mt-5">

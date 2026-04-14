@@ -86,7 +86,13 @@ export default function ATSScoreChecker() {
     if (!keywordResult || !jobDescription.trim()) return;
     setAiGapLoading(true);
     setAiGapAnalysis('');
-    const missing = keywordResult.matches.filter(m => !m.found).map(m => m.keyword).slice(0, 20);
+    const matches = Array.isArray(keywordResult.matches) ? keywordResult.matches : [];
+    const missing = matches.filter(m => m && !m.found).map(m => m.keyword).filter(Boolean).slice(0, 20);
+    if (missing.length === 0) {
+      setAiGapAnalysis('Great news: no missing keywords detected.');
+      setAiGapLoading(false);
+      return;
+    }
     const result = await callGroqAI(
       'You are an ATS optimization expert. Give concise, actionable advice in 3-5 bullet points. No preamble.',
       `Resume summary: ${resumeData.summary}\n\nJob description keywords missing from resume: ${missing.join(', ')}\n\nSuggest how to naturally incorporate these missing keywords into the resume. Be specific about which section to add them to.`,

@@ -115,11 +115,11 @@ export default function ProjectsForm() {
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = resumeData.projects.findIndex((p) => p.id === active.id);
-      const newIndex = resumeData.projects.findIndex((p) => p.id === over.id);
-      reorderProjects(arrayMove(resumeData.projects, oldIndex, newIndex));
-    }
+    if (!over || active.id === over.id) return;
+    const oldIndex = resumeData.projects.findIndex((p) => p.id === active.id);
+    const newIndex = resumeData.projects.findIndex((p) => p.id === over.id);
+    if (oldIndex < 0 || newIndex < 0) return;
+    reorderProjects(arrayMove(resumeData.projects, oldIndex, newIndex));
   };
 
   return (
