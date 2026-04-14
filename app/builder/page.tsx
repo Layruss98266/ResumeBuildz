@@ -441,16 +441,16 @@ export default function HomePage() {
                 )}
               </div>
               <div className="w-px h-6 bg-gray-600 mx-1" />
-              <Button variant="ghost" className="h-8 text-gray-400 hover:text-white text-xs gap-1.5 px-2 hidden lg:flex" onClick={handleImportFile} title="Import Resume (PDF, DOCX, TXT, HTML, MD)">
+              <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={handleImportFile} title="Import Resume (PDF, DOCX, TXT, HTML, MD)">
                 <Upload className="h-3.5 w-3.5" /> Import
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white lg:hidden" onClick={handleImportFile} title="Import">
+              <Button variant="secondary" size="icon" className="h-8 w-8 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 lg:hidden" onClick={handleImportFile} title="Import">
                 <Upload className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" className="h-8 text-gray-400 hover:text-white text-xs gap-1.5 px-2 hidden lg:flex" onClick={handleReset} title="Reset all data">
+              <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={handleReset} title="Reset all data">
                 <RotateCcw className="h-3.5 w-3.5" /> Reset
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white lg:hidden" onClick={handleReset} title="Reset">
+              <Button variant="secondary" size="icon" className="h-8 w-8 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 lg:hidden" onClick={handleReset} title="Reset">
                 <RotateCcw className="h-4 w-4" />
               </Button>
               <ResumeProfileManager />
@@ -459,11 +459,11 @@ export default function HomePage() {
 
             <div className="w-px h-6 bg-gray-600 mx-0.5 hidden md:block" />
 
-            <Button variant="ghost" className="h-8 text-gray-400 hover:text-white text-xs gap-1.5 px-2 hidden lg:flex" onClick={toggleDarkMode} title={isDark ? 'Light mode' : 'Dark mode'}>
+            <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={toggleDarkMode} title={isDark ? 'Light mode' : 'Dark mode'}>
               {isDark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
               {isDark ? 'Light' : 'Dark'}
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white lg:hidden" onClick={toggleDarkMode}>
+            <Button variant="secondary" size="icon" className="h-8 w-8 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 lg:hidden" onClick={toggleDarkMode}>
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
           </div>
