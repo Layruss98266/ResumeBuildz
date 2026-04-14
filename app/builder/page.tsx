@@ -399,6 +399,18 @@ export default function HomePage() {
             </Link>
           </div>
 
+          {/* Center - User info */}
+          {user && (
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-800/50">
+              <div className="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                {(profile?.full_name?.[0] || user.email?.[0] || 'U').toUpperCase()}
+              </div>
+              <span className="text-sm text-gray-300 truncate max-w-[120px]">
+                {profile?.full_name || user.email?.split('@')[0]}
+              </span>
+            </div>
+          )}
+
           {/* Right - Actions */}
           <div className="flex items-center gap-1.5">
             {/* Desktop actions */}
@@ -426,10 +438,16 @@ export default function HomePage() {
                 )}
               </div>
               <div className="w-px h-6 bg-gray-600 mx-1" />
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={handleImportFile} title="Import Resume (PDF, DOCX, TXT, HTML, MD)">
+              <Button variant="ghost" className="h-8 text-gray-400 hover:text-white text-xs gap-1.5 px-2 hidden lg:flex" onClick={handleImportFile} title="Import Resume (PDF, DOCX, TXT, HTML, MD)">
+                <Upload className="h-3.5 w-3.5" /> Import
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white lg:hidden" onClick={handleImportFile} title="Import">
                 <Upload className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={handleReset} title="Reset">
+              <Button variant="ghost" className="h-8 text-gray-400 hover:text-white text-xs gap-1.5 px-2 hidden lg:flex" onClick={handleReset} title="Reset all data">
+                <RotateCcw className="h-3.5 w-3.5" /> Reset
+              </Button>
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white lg:hidden" onClick={handleReset} title="Reset">
                 <RotateCcw className="h-4 w-4" />
               </Button>
               <ResumeProfileManager />
@@ -438,7 +456,11 @@ export default function HomePage() {
 
             <div className="w-px h-6 bg-gray-600 mx-0.5 hidden md:block" />
 
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white" onClick={toggleDarkMode}>
+            <Button variant="ghost" className="h-8 text-gray-400 hover:text-white text-xs gap-1.5 px-2 hidden lg:flex" onClick={toggleDarkMode} title={isDark ? 'Light mode' : 'Dark mode'}>
+              {isDark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+              {isDark ? 'Light' : 'Dark'}
+            </Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white lg:hidden" onClick={toggleDarkMode}>
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
           </div>

@@ -56,7 +56,7 @@ function CertEntry({ cert, onUpdate, onRemove }: {
           </div>
           <div className="md:col-span-2">
             <Label className="text-sm">URL (optional)</Label>
-            <Input placeholder="https://credential.verify.com/..." value={cert.url} onChange={(e) => onUpdate({ url: e.target.value })} />
+            <Input type="url" placeholder="https://credential.verify.com/..." value={cert.url} onChange={(e) => onUpdate({ url: e.target.value })} />
           </div>
         </div>
       )}

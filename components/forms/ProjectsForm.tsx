@@ -61,7 +61,7 @@ function SortableProjectEntry({ project, onUpdate, onRemove }: {
             </div>
             <div>
               <Label className="text-sm">Link (optional)</Label>
-              <Input placeholder="https://github.com/..." value={project.link} onChange={(e) => onUpdate({ link: e.target.value })} />
+              <Input type="url" placeholder="https://github.com/..." value={project.link} onChange={(e) => onUpdate({ link: e.target.value })} />
             </div>
             <div className="flex gap-3">
               <div className="flex-1">
