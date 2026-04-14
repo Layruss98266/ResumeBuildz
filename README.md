@@ -31,21 +31,24 @@ A professional resume builder with 20 ATS-optimized templates, AI-powered writin
 - **HelpTip Tooltips**: (?) tooltips on all major sections for contextual guidance
 - **Error Boundary**: Graceful error recovery with reset option
 - **Step-by-Step Wizard**: Previous/Next navigation between sections with dropdown section navigator and progress dots
-- **Keyboard Shortcuts**: Ctrl+P for PDF export, Ctrl+S for backup save
+- **Keyboard Shortcuts**: Ctrl+P or Ctrl+E for PDF export, Ctrl+S for backup save, Ctrl+1-5 to jump between Edit/Preview/Templates/ATS/AI tabs, Ctrl+B/I for bold/italic
+- **Undo / Redo**: 50-snapshot history with debounced auto-save (1.5s). Ctrl+Z to undo, Ctrl+Y or Ctrl+Shift+Z to redo. History resets per session
 - **Page Estimate**: Shows estimated page count in preview toolbar
-- **Auto-Save**: Data persists in localStorage automatically
+- **Auto-Save**: Data persists in localStorage automatically with debounced writes (1s) to reduce battery drain on mobile
 - **Dark/Light Mode**: Theme toggle for comfortable editing
 - **Smart Matching**: Suggests relevant job keywords when a job title is entered
 - **Skill Suggestions**: Intelligent skill suggestions based on job title, drawn from 201-role industry data
-- **Resume Completion Bar**: Color-coded progress bar tracking 10 completion criteria
+- **Resume Completion Bar**: Color-coded weighted progress bar (15% name, 12% summary, 15% experience, etc.)
 - **Welcome Back Indicator**: Shows last edit time for returning users after >1 hour gap
-- **Toast Notifications**: Visual feedback for actions (welcome, exports, limit warnings, Pro upgrades)
+- **Toast Notifications**: Visual feedback for actions (welcome, exports, limit warnings, Pro upgrades, undo/redo, import success/failure)
+- **Resume Import Rollback**: Snapshot before import, automatically restores previous resume on failure
 
 ### Authentication & Profile
 - **Supabase Auth**: Google OAuth and email/password sign-in (optional)
+- **Login Gateway**: Soft modal on Build Resume CTAs offers Sign In or Continue as Guest
 - **Profile Dropdown**: Avatar, Manage Plan, Reset Password, Export Data, Delete Account, Sign Out
 - **GDPR Controls**: Export My Data and Delete Account from profile menu
-- **Email Verification**: Pro features require verified email address
+- **Email Verification**: Pro features require verified email; in-app banner prompts unverified users
 - **Auth-aware UI**: Builder header shows user avatar and last edited timestamp when signed in
 
 ### Pricing & Freemium
@@ -56,7 +59,7 @@ A professional resume builder with 20 ATS-optimized templates, AI-powered writin
 - **Pro Bypass**: Verified Pro users skip all daily limits
 
 ### Mobile Responsive
-- **Swipeable Tabs**: Swipe left/right between Edit, Preview, Style, ATS, and AI tabs on mobile
+- **Swipeable Tabs**: Swipe left/right between Edit, Preview, Style, ATS, and AI tabs on mobile (ignores swipes inside form fields, draggable handles, and vertical scrolls)
 - **Bottom Sheet Section Picker**: Slide-up sheet with icons and completion dots for quick section navigation
 - **Touch-Friendly Drag Handles**: Larger grip areas on Experience, Education, and Projects for easy reordering
 - **Auto-Scaling Preview**: Mobile resume preview automatically scales to fit the viewport width
@@ -124,6 +127,9 @@ A professional resume builder with 20 ATS-optimized templates, AI-powered writin
 - **Singleton Supabase Client**: Prevents memory leaks and infinite re-renders
 - **Email Verification Gate**: Pro features blocked until email is confirmed
 - **Browser-Only API Keys**: Groq API key stored in localStorage, never sent to ResumeForge servers
+- **Photo Upload Validation**: MIME type whitelist (no SVG to prevent embedded scripts), 2MB size limit
+- **AI Error Handling**: Granular error messages for 401, 429, 402, 403, malformed JSON responses
+- **Validation Helpers**: `lib/validation.ts` shared email/phone/URL/length validators with sanitization
 - **404 Page**: Custom not-found page with helpful navigation
 
 ## Tech Stack
@@ -259,12 +265,13 @@ resumeforge/
 │   ├── ui/                         # shadcn/ui components
 │   ├── forms/                      # 9 form components + custom + cover letter
 │   ├── templates/                  # 20 resume templates
-│   ├── preview/ResumePreview.tsx   # Live preview with style overrides
+│   ├── preview/ResumePreview.tsx   # Live preview (memoized)
 │   ├── ats/                        # ATS Score Checker + AI Suggestions
 │   ├── SiteNavbar.tsx              # Site navigation with profile dropdown
 │   ├── SiteFooter.tsx              # Footer with social links
 │   ├── Toast.tsx                   # Toast notification system
-│   ├── Providers.tsx               # AuthContext + ToastProvider
+│   ├── LoginGateway.tsx            # Login gateway modal for Build Resume CTAs
+│   ├── Providers.tsx               # AuthContext + ToastProvider + LoginGatewayProvider
 │   ├── UpgradeModal.tsx            # Pro upgrade prompt
 │   └── HelpDialog.tsx              # Help guide
 ├── hooks/
@@ -275,14 +282,17 @@ resumeforge/
 │   │   └── server.ts               # Server Supabase client
 │   ├── usage.ts                    # Daily usage limits (AI, PDF)
 │   ├── dateUtils.ts                # Month picker conversion helpers
+│   ├── validation.ts               # Shared form validators (email/phone/url)
+│   ├── parserConfig.ts             # Resume parser regex patterns
 │   ├── importResume.ts             # PDF/DOCX/TXT/HTML/MD import
 │   ├── exportDocx.ts               # DOCX generation
 │   └── exportHtml.ts               # HTML export with sanitization
 ├── store/
-│   └── useResumeStore.ts           # Zustand store with persistence
+│   └── useResumeStore.ts           # Zustand store with debounced persistence + undo/redo
 ├── types/
 │   └── resume.ts                   # Types, template configs, sample data
 ├── proxy.ts                        # Next.js 16 proxy (auth session refresh)
+├── TODO.html                       # Deferred items roadmap (open in browser)
 └── public/
     ├── manifest.json               # PWA manifest
     └── llms.txt                    # LLM discovery file

@@ -6,6 +6,91 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.6.0] - 2026-04-14
+
+### Added
+
+- **Undo / Redo system** with 50-snapshot history. Ctrl+Z to undo, Ctrl+Y or Ctrl+Shift+Z to redo. Auto-snapshots after 1.5s of inactivity.
+- **Keyboard shortcuts**: Ctrl+E for PDF export, Ctrl+1-5 to jump between Edit/Preview/Templates/ATS/AI tabs. Shortcuts are ignored while typing in form fields.
+- **Login Gateway modal** on Build Resume CTAs offers Sign In or Continue as Guest.
+- **Email verification banner** in builder for unverified users.
+- **Resume import rollback**: snapshot taken before import, automatically restored on failure.
+- **BreadcrumbList JSON-LD schema** on ATS Guide page for better SEO.
+- **Section visibility hint** on Languages form clarifying when sections appear in preview.
+- **Real diverse names** in homepage avatars (Sarah Mitchell, David Chen, Priya Sharma, Marcus Johnson, Emily Rodriguez) replacing placeholder letters.
+
+### Changed
+
+- **Debounced localStorage writes** (1s) to reduce battery drain on mobile. Flushes on beforeunload/pagehide to prevent data loss.
+- **`<img>` to `next/image`** on homepage hero and template thumbnails for better performance and LCP.
+- **`React.memo`** on ResumePreview component to prevent re-renders on every keystroke.
+- **Weighted completion score** (15% name, 12% email, 15% experience, etc.) instead of flat per-check weighting.
+- **Loading states** on export use try/finally instead of setTimeout for accurate UI state.
+- **Touch swipe** ignores inputs, draggable handles, sliders, buttons, and contenteditable. Vertical tolerance prevents accidental swipes during scrolls.
+- **AI error handling**: granular messages for HTTP 401 (invalid key), 429 (rate limit), 402/403 (quota), and malformed JSON responses.
+- **Skills category** now shows `(required)` indicator with amber border when empty.
+- **Photo upload** validates MIME type (no SVG) to prevent embedded scripts. Allows JPEG, PNG, WebP, GIF only.
+- **DragEnd handlers** validate findIndex returns to prevent silent reorder bugs.
+- **Resume parser regex** extracted to `lib/parserConfig.ts` for easier maintenance.
+- **Em dashes and double hyphens** removed from all user-facing copy across 12 pages, templates, and docs.
+- **License updated** to allow author commercial use while preventing third-party reselling.
+- **Stat citations** added to homepage and other pages: (Jobscan, 2024), (Glassdoor, 2024), etc.
+
+### Fixed
+
+- ATS scoring crashes when keyword matches array is empty or undefined.
+- DragEnd handlers in Experience, Education, and Projects forms no longer fail silently when findIndex returns -1.
+- ResumeProfileManager memory leak verified as false positive (cleanup is correct).
+- Builder god component reduced (still 950+ lines, deferred for full split).
+- `alert()` calls in resume import replaced with toast notifications.
+
+### Security
+
+- Photo upload MIME type whitelist (no SVG XSS vector).
+- AI suggestions now handle malformed JSON safely.
+- Validation helpers in `lib/validation.ts` provide consistent input sanitization.
+
+---
+
+## [1.5.0] - 2026-04-13
+
+### Added
+
+- Supabase authentication with Google OAuth and email/password sign-in.
+- Profile dropdown with avatar, Manage Plan, Reset Password, Sign Out, Export Data, Delete Account.
+- Pricing page with 5 tiers: Free, Starter ($5), Pro ($9), Team ($19), Lifetime ($49).
+- Freemium gates: 1 AI rewrite/day, 3 PDF exports/day on free tier.
+- Toast notification system for actions, warnings, and Pro upgrades.
+- Waitlist email capture on pricing page for Pro launch notifications.
+- GDPR controls: Export My Data and Delete Account in profile dropdown.
+- Terms of Use page with detailed legal sections.
+- Custom 404 not-found page with helpful navigation.
+- Month picker for date fields (Experience, Education, Projects, Certifications).
+- Dynamic OG image via Next.js ImageResponse (edge runtime).
+- Dynamic robots.ts and sitemap.ts (replaced static files).
+- FAQ schema on `/ats-guide` and `/faq` pages.
+- Organization JSON-LD schema with logo and founder.
+- Login page with Google OAuth and email/password.
+- Forgot password flow.
+- Auth callback route with redirect whitelist validation.
+- Proxy.ts (Next.js 16 migration from middleware.ts).
+
+### Changed
+
+- Removed `output: 'export'` to enable server-side features and proxy.
+- Updated LICENSE to allow author commercial use.
+- Replaced "100% Free" messaging with "Free to start" across all pages.
+- Builder toolbar buttons (Import, Reset, Dark/Light) now match Export button styling.
+
+### Security
+
+- CSP headers: HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy.
+- OAuth redirect whitelist validation in auth callback.
+- Singleton Supabase client (fixed infinite re-render bug).
+- Email verification gate for Pro features.
+
+---
+
 ## [1.4.0] - 2026-04-11
 
 ### Added

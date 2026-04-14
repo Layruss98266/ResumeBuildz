@@ -15,8 +15,38 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
-    version: 'v1.5.0',
+    version: 'v1.6.0',
     date: 'April 14, 2026',
+    title: 'Undo/Redo, Shortcuts & Polish',
+    added: [
+      'Undo/Redo system with 50-snapshot history. Ctrl+Z to undo, Ctrl+Y or Ctrl+Shift+Z to redo.',
+      'Keyboard shortcuts: Ctrl+E for PDF export, Ctrl+1-5 to jump tabs.',
+      'Login Gateway modal on Build Resume CTAs (Sign In or Continue as Guest).',
+      'Email verification banner in builder for unverified users.',
+      'Resume import rollback: snapshot before import, restore on failure.',
+      'BreadcrumbList JSON-LD schema on ATS Guide page.',
+      'Section visibility hint on Languages form.',
+      'lib/validation.ts: shared email/phone/url/length validators.',
+      'lib/parserConfig.ts: extracted parser regex patterns for maintenance.',
+    ],
+    improved: [
+      'Debounced localStorage writes (1s) reduce battery drain on mobile.',
+      'next/image for hero and template thumbnails (better LCP).',
+      'React.memo on ResumePreview prevents re-renders on every keystroke.',
+      'Weighted completion score by importance (15% name, 12% summary, etc).',
+      'Loading states on export use try/finally instead of setTimeout.',
+      'Touch swipe ignores inputs, draggable, and vertical scrolls.',
+      'AI error handling: granular messages for 401, 429, 402, 403, malformed JSON.',
+      'Photo upload MIME validation (no SVG XSS vector).',
+      'DragEnd handlers validate findIndex returns to prevent silent bugs.',
+      'Em dashes and double hyphens removed from all user-facing copy.',
+      'Real diverse names in homepage avatars instead of placeholder letters.',
+      'Stat citations added to homepage and other pages.',
+    ],
+  },
+  {
+    version: 'v1.5.0',
+    date: 'April 13, 2026',
     title: 'Auth, Pricing & Pro Plans',
     added: [
       'Supabase authentication with Google OAuth and email/password sign-in.',
