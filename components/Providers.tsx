@@ -3,6 +3,7 @@
 import { createContext, useContext } from 'react';
 import { ToastProvider } from '@/components/Toast';
 import { LoginGatewayProvider } from '@/components/LoginGateway';
+import CookieBanner from '@/components/CookieBanner';
 import { useAuth as useAuthHook } from '@/hooks/useAuth';
 
 type AuthContextType = ReturnType<typeof useAuthHook>;
@@ -21,7 +22,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext.Provider value={auth}>
       <ToastProvider>
-        <LoginGatewayProvider>{children}</LoginGatewayProvider>
+        <LoginGatewayProvider>
+          {children}
+          <CookieBanner />
+        </LoginGatewayProvider>
       </ToastProvider>
     </AuthContext.Provider>
   );

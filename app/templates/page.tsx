@@ -7,6 +7,7 @@ import { Filter } from 'lucide-react';
 import { TEMPLATES } from '@/types/resume';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import { useLoginGateway } from '@/components/LoginGateway';
 
 const STYLE_TAGS: Record<string, string> = {
   classic: 'Classic',
@@ -34,6 +35,7 @@ const STYLE_TAGS: Record<string, string> = {
 const FILTER_OPTIONS = ['All', 'Classic', 'Modern', 'Creative', 'Minimal', 'Professional'];
 
 export default function TemplatesPage() {
+  const { openGateway } = useLoginGateway();
   useEffect(() => {
     document.title = '20 ATS-Friendly Resume Templates - ResumeForge';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -130,12 +132,12 @@ export default function TemplatesPage() {
                       </span>
                     </div>
                     <p className="text-gray-600 text-sm mb-4">{t.description}</p>
-                    <Link
-                      href="/builder"
-                      className="block text-center bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition"
+                    <button
+                      onClick={() => openGateway('/builder')}
+                      className="block w-full text-center bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-medium transition"
                     >
                       Use Template
-                    </Link>
+                    </button>
                   </div>
                 </div>
               ))}

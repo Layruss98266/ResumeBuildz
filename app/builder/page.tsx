@@ -27,6 +27,7 @@ import WhatsNew from '@/components/WhatsNew';
 import ATSScoreChecker from '@/components/ats/ATSScoreChecker';
 import AISuggestions from '@/components/ats/AISuggestions';
 import UpgradeModal from '@/components/UpgradeModal';
+import PasteImportModal from '@/components/PasteImportModal';
 import { getUsage, incrementUsage, canUse } from '@/lib/usage';
 import { useToast } from '@/components/Toast';
 import { useAuthContext as useAuth } from '@/components/Providers';
@@ -104,6 +105,7 @@ export default function HomePage() {
   const [showMobileSheet, setShowMobileSheet] = useState(false);
   const { importData, resetData, addCustomSection, resumeData, undo, redo, pushHistory, canUndo, canRedo } = useResumeStore();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showPasteModal, setShowPasteModal] = useState(false);
   const [pdfRemaining, setPdfRemaining] = useState(() => getUsage('pdf').remaining);
   const { showToast } = useToast();
   const { user, profile, isPro, isEmailVerified } = useAuth();
@@ -550,6 +552,9 @@ export default function HomePage() {
               </Button>
               <Button variant="secondary" size="icon" className="h-8 w-8 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 lg:hidden" onClick={handleImportFile} title="Import">
                 <Upload className="h-4 w-4" />
+              </Button>
+              <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={() => setShowPasteModal(true)} title="Paste from LinkedIn or text">
+                <FileText className="h-3.5 w-3.5" /> Paste
               </Button>
               <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={handleReset} title="Reset all data">
                 <RotateCcw className="h-3.5 w-3.5" /> Reset
@@ -1036,6 +1041,7 @@ export default function HomePage() {
       </footer>
 
       <UpgradeModal feature="pdf" open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
+      <PasteImportModal open={showPasteModal} onClose={() => setShowPasteModal(false)} />
     </div>
     </ErrorBoundary>
   );

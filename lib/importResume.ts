@@ -516,3 +516,24 @@ export async function importResumeFromFile(file: File): Promise<ImportResult> {
 }
 
 export const SUPPORTED_IMPORT_FORMATS = '.pdf,.docx,.doc,.txt,.html,.htm,.md';
+
+/**
+ * Import resume from raw text (paste workflow).
+ * Useful for LinkedIn profile pastes, plain text resumes, etc.
+ */
+export async function importResumeFromText(text: string): Promise<ImportResult> {
+  const trimmed = text.trim();
+  if (!trimmed) return { success: false, error: 'Please paste some resume text first.' };
+  if (trimmed.length > 100000) return { success: false, error: 'Text exceeds 100k characters. Please paste a smaller section.' };
+
+  try {
+    const groqKey = typeof window !== 'undefined' ? localStorage.getItem('groq-api-key') : null;
+    if (groqKey) {
+      const aiData = await parseWithAI(trimmed, groqKey);
+      if (aiData) return { success: true, data: aiData, rawText: trimmed };
+    }
+    return { success: true, data: parseResumeText(trimmed), rawText: trimmed };
+  } catch (err) {
+    return { success: false, error: `Parse failed: ${err instanceof Error ? err.message : 'Unknown error'}` };
+  }
+}

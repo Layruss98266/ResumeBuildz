@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import { FileText, Heart, ExternalLink } from 'lucide-react';
+import { useLoginGateway } from '@/components/LoginGateway';
 
 export default function SiteFooter() {
+  const { openGateway } = useLoginGateway();
   return (
     <footer className="bg-gray-900 text-gray-400 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -11,7 +13,7 @@ export default function SiteFooter() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-3">Product</h4>
             <div className="space-y-2 text-sm">
-              <Link href="/builder" className="block hover:text-white transition-colors">Resume Builder</Link>
+              <button onClick={() => openGateway('/builder')} className="block text-left w-full hover:text-white transition-colors">Resume Builder</button>
               <Link href="/templates" className="block hover:text-white transition-colors">Templates</Link>
               <Link href="/cover-letter" className="block hover:text-white transition-colors">Cover Letter</Link>
               <Link href="/pricing" className="block hover:text-white transition-colors">Pricing</Link>

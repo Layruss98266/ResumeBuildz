@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import { useLoginGateway } from '@/components/LoginGateway';
 
 export default function ATSGuidePage() {
+  const { openGateway } = useLoginGateway();
   useEffect(() => {
     document.title = 'Complete ATS Guide - How to Pass ATS Screening | ResumeForge';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -211,12 +213,12 @@ export default function ATSGuidePage() {
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">
               Upload your resume or build one from scratch. Our 12-point ATS checker shows you exactly what to fix: keyword gaps, formatting issues, and weak verbs. You can also browse our <Link href="/templates" className="text-blue-400 hover:underline">ATS-friendly templates</Link> or read our <Link href="/resume-tips" className="text-blue-400 hover:underline">resume writing tips</Link>.
             </p>
-            <Link
-              href="/builder"
+            <button
+              onClick={() => openGateway('/builder')}
               className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-lg transition-colors text-lg"
             >
               Check ATS Score Now
-            </Link>
+            </button>
           </div>
         </section>
       </main>
@@ -230,6 +232,58 @@ export default function ATSGuidePage() {
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: "https://resume-forge-orcin.vercel.app" },
               { "@type": "ListItem", position: 2, name: "ATS Guide", item: "https://resume-forge-orcin.vercel.app/ats-guide" },
+            ],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: "How to Beat ATS and Pass Resume Screening",
+            description: "Step-by-step guide to optimize your resume for Applicant Tracking Systems (ATS) and ensure it gets past automated filters.",
+            totalTime: "PT15M",
+            estimatedCost: { "@type": "MonetaryAmount", currency: "USD", value: "0" },
+            tool: [{ "@type": "HowToTool", name: "ResumeForge ATS Score Checker" }],
+            step: [
+              {
+                "@type": "HowToStep",
+                position: 1,
+                name: "Use a clean single-column layout",
+                text: "ATS systems struggle with multi-column layouts, tables, and text boxes. Use a simple, single-column layout that the ATS can parse line-by-line without losing context.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 2,
+                name: "Use standard section headings",
+                text: "Stick to conventional section names like 'Experience', 'Education', 'Skills', and 'Certifications'. Creative headings like 'Where I've Worked' confuse ATS parsers.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 3,
+                name: "Mirror keywords from the job description",
+                text: "Copy exact keywords from the job posting into your resume. ATS scoring relies heavily on keyword matching. Use both full terms and acronyms (e.g., 'Search Engine Optimization (SEO)').",
+              },
+              {
+                "@type": "HowToStep",
+                position: 4,
+                name: "Avoid graphics, icons, and headers/footers",
+                text: "ATS systems cannot read images. Skip logos, profile photos, and decorative icons. Information in headers/footers is often ignored entirely.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 5,
+                name: "Submit as DOCX or PDF",
+                text: "DOCX has the highest ATS compatibility, followed closely by PDF. Never submit as JPG, PNG, or image files. ATS systems cannot read text from images.",
+              },
+              {
+                "@type": "HowToStep",
+                position: 6,
+                name: "Run an ATS score check before submitting",
+                text: "Use ResumeForge's free 12-point ATS checker to verify keyword match, formatting, readability, and active voice before you apply.",
+              },
             ],
           }),
         }}

@@ -6,6 +6,7 @@ import { Check, X, Crown, Sparkles, FileDown, BarChart3, Layout, Zap, HelpCircle
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { FREE_LIMITS } from '@/lib/usage';
+import { useLoginGateway } from '@/components/LoginGateway';
 
 const PLANS = [
   {
@@ -138,6 +139,7 @@ const FAQS = [
 ];
 
 export default function PricingPage() {
+  const { openGateway } = useLoginGateway();
   useEffect(() => {
     document.title = 'Pricing - ResumeForge';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -201,8 +203,8 @@ export default function PricingPage() {
                 </div>
 
                 {plan.ctaHref ? (
-                  <Link
-                    href={plan.ctaHref}
+                  <button
+                    onClick={() => openGateway(plan.ctaHref!)}
                     className={`block w-full text-center py-3 px-6 rounded-xl font-semibold text-sm transition-all mb-8 ${
                       plan.highlight
                         ? 'bg-blue-500 text-white hover:bg-blue-600 shadow-lg shadow-blue-500/25'
@@ -210,7 +212,7 @@ export default function PricingPage() {
                     }`}
                   >
                     {plan.cta}
-                  </Link>
+                  </button>
                 ) : (
                   <button
                     disabled
@@ -301,12 +303,12 @@ export default function PricingPage() {
           <p className="text-gray-400 mb-8 animate-fade-in-up delay-100">
             Start for free, no account required. Your data stays in your browser.
           </p>
-          <Link
-            href="/builder"
+          <button
+            onClick={() => openGateway('/builder')}
             className="inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/25 animate-fade-in-up delay-200"
           >
             <Zap className="h-4 w-4" /> Start Building
-          </Link>
+          </button>
         </div>
       </section>
 

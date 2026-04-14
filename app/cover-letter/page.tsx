@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import { useLoginGateway } from '@/components/LoginGateway';
 
 const structureParts = [
   {
@@ -66,6 +67,7 @@ const industryTemplates = [
 ];
 
 export default function CoverLetterGuidePage() {
+  const { openGateway } = useLoginGateway();
   useEffect(() => {
     document.title = 'Cover Letter Guide & Templates | ResumeForge';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -258,12 +260,12 @@ export default function CoverLetterGuidePage() {
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">
               Our AI writes a tailored cover letter based on your resume and the job description. Need help with your resume first? Check out our <Link href="/resume-tips" className="text-blue-400 hover:underline">resume writing tips</Link> and <Link href="/templates" className="text-blue-400 hover:underline">ATS-friendly templates</Link>.
             </p>
-            <Link
-              href="/builder"
+            <button
+              onClick={() => openGateway('/builder')}
               className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-lg transition-colors text-lg"
             >
               Generate Your Cover Letter
-            </Link>
+            </button>
           </div>
         </section>
       </main>

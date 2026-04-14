@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import { useLoginGateway } from '@/components/LoginGateway';
 
 const actionVerbs = {
   Leadership: ['Led', 'Directed', 'Managed', 'Oversaw', 'Coordinated', 'Mentored', 'Supervised', 'Spearheaded', 'Championed', 'Orchestrated'],
@@ -74,6 +75,7 @@ const industryTips = [
 ];
 
 export default function ResumeTipsPage() {
+  const { openGateway } = useLoginGateway();
   useEffect(() => {
     document.title = 'Resume Writing Tips & Action Verbs | ResumeForge';
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -309,12 +311,12 @@ export default function ResumeTipsPage() {
             <p className="text-gray-400 mb-8 max-w-xl mx-auto">
               Put these tips into action. Pick one of our <Link href="/templates" className="text-blue-400 hover:underline">20 ATS-tested templates</Link>, use the AI to rewrite weak bullet points, and run the <Link href="/ats-guide" className="text-blue-400 hover:underline">ATS checker</Link> before you apply.
             </p>
-            <Link
-              href="/builder"
+            <button
+              onClick={() => openGateway('/builder')}
               className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-lg transition-colors text-lg"
             >
               Start Building Your Resume
-            </Link>
+            </button>
           </div>
         </section>
       </main>
