@@ -176,7 +176,7 @@ export default function ResumeAfterCareerGapPage() {
               <div>
                 <h3 className="font-semibold text-amber-900 mb-2">Returnship programs are real and growing</h3>
                 <p className="text-sm text-amber-900 leading-relaxed">
-                  Companies like Goldman Sachs, IBM, Amazon, Accenture, and TCS now run formal "returnship" programs targeting professionals returning after 2+ year breaks. These programs offer paid 12 to 26 week contracts that often convert to full-time roles. Mentioning interest in returnships explicitly in your summary can route your resume directly into these tracks.
+                  Companies like Goldman Sachs, IBM, Amazon, Accenture, and TCS now run formal &quot;returnship&quot; programs targeting professionals returning after 2+ year breaks. These programs offer paid 12 to 26 week contracts that often convert to full-time roles. Mentioning interest in returnships explicitly in your summary can route your resume directly into these tracks.
                 </p>
               </div>
             </div>

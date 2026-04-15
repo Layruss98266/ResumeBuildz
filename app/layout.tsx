@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 import { Analytics } from "@vercel/analytics/react";
+import { SITE_URL } from "@/lib/siteConfig";
+import { jsonLd } from "@/lib/articleSchema";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://resume-forge-orcin.vercel.app";
+const siteUrl = SITE_URL;
 
 export const metadata: Metadata = {
   title: "ResumeBuildz by Surya L - Free ATS-Friendly Resume Generator",
@@ -87,7 +89,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: jsonLd({
               "@context": "https://schema.org",
               "@graph": [
                 {

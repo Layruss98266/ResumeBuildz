@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { COMPANIES } from '@/lib/resumeCompanyData';
 import { BLOG_CATEGORIES } from '@/lib/blogCategories';
+import { SITE_URL } from '@/lib/siteConfig';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://resume-forge-orcin.vercel.app';
+  const base = SITE_URL;
   const now = new Date();
 
   const staticEntries: MetadataRoute.Sitemap = [

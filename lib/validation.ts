@@ -57,6 +57,5 @@ export function sanitizeText(value: string): string {
 
 /** Strip control characters and zero-width characters that can break ATS parsing. */
 export function stripControlChars(value: string): string {
-  // eslint-disable-next-line no-control-regex
   return value.replace(/[\u0000-\u001F\u007F\u200B-\u200D\uFEFF]/g, '');
 }

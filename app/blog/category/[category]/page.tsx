@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BLOG_CATEGORIES, getCategoryBySlug } from '@/lib/blogCategories';
 import { getPostsByCategory, VIRTUAL_POSTS } from '@/lib/blogPosts';
+import { absoluteUrl } from '@/lib/siteConfig';
 import CategoryView from './CategoryView';
 
 export function generateStaticParams() {
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${cat.name} - ResumeBuildz Blog`,
     description: cat.description,
-    alternates: { canonical: `https://resume-forge-orcin.vercel.app/blog/category/${cat.slug}` },
+    alternates: { canonical: absoluteUrl(`/blog/category/${cat.slug}`) },
     keywords: cat.keywords,
     openGraph: {
       title: `${cat.name} - ResumeBuildz Blog`,

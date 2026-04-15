@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getCompanyBySlug, COMPANIES } from '@/lib/resumeCompanyData';
 import { getCompanyExtended } from '@/lib/resumeCompanyDataExtended';
 import { articleSchema, faqPageSchema, breadcrumbSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
+import { absoluteUrl } from '@/lib/siteConfig';
 import CompanyResumeView from './CompanyResumeView';
 
 // Generate one static page per company at build time.
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: data.metaTitle,
     description: data.metaDescription,
-    alternates: { canonical: `https://resume-forge-orcin.vercel.app/resume-for/${data.slug}` },
+    alternates: { canonical: absoluteUrl(`/resume-for/${data.slug}`) },
     openGraph: {
       title: data.metaTitle,
       description: data.metaDescription,

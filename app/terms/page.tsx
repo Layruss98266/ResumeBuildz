@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import { absoluteUrl } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
   title: 'Terms of Use - ResumeBuildz',
   description: 'Terms of use for ResumeBuildz, the free ATS-friendly resume builder.',
-  alternates: { canonical: 'https://resume-forge-orcin.vercel.app/terms' },
+  alternates: { canonical: absoluteUrl('/terms') },
 };
 
 export default function TermsPage() {

@@ -9,7 +9,7 @@ import { persist, createJSONStorage, type StateStorage } from 'zustand/middlewar
  * Reduces battery drain on mobile devices and improves typing performance.
  */
 let writeTimer: ReturnType<typeof setTimeout> | null = null;
-let pendingWrites = new Map<string, string>();
+const pendingWrites = new Map<string, string>();
 
 function flushWrites() {
   if (typeof window === 'undefined') return;

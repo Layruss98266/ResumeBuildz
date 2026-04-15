@@ -23,7 +23,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [error, setError] = useState('');
+  // Lazy initializer reads the URL ?error= query param exactly once on mount.
+  // Avoids a cascading re-render that would happen if this lived in a useEffect.
+  const [error, setError] = useState<string>(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('error') || '';
+  });
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const router = useRouter();
@@ -38,12 +43,6 @@ export default function LoginPage() {
           ? 'Sign in to ResumeBuildz to access your resume profiles, Pro features, and unlimited AI rewrites.'
           : 'Create a free ResumeBuildz account to save your resumes, sync across devices, and unlock Pro features.'
       );
-    }
-    // Show auth errors from callback redirect
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const urlError = params.get('error');
-      if (urlError) setError(urlError);
     }
   }, [mode]);
 

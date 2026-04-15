@@ -2,11 +2,9 @@
 
 import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
 
-export default function MonochromeTemplate({ data, primaryColor }: TemplateProps) {
+// This template deliberately ignores primaryColor — pure black and white only.
+export default function MonochromeTemplate({ data }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
-
-  // This template deliberately ignores primaryColor - pure black and white only
-  const _ = primaryColor; // acknowledge prop to avoid lint warnings
 
   const renderSection = (key: string) => {
     switch (key) {

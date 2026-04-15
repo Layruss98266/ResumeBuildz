@@ -7,21 +7,23 @@ import { X, Cookie } from 'lucide-react';
 const STORAGE_KEY = 'resumeforge-cookie-consent';
 
 export default function CookieBanner() {
+  // No `mounted` flag: SSR renders null (show starts false), the effect runs
+  // on the client after first paint, and setShow happens inside a setTimeout
+  // callback — never synchronously inside the effect body, so no cascading
+  // renders.
   const [show, setShow] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    let consent: string | null = null;
     try {
-      const consent = localStorage.getItem(STORAGE_KEY);
-      if (!consent) {
-        // Slight delay to avoid layout shift on first paint
-        const id = setTimeout(() => setShow(true), 800);
-        return () => clearTimeout(id);
-      }
+      consent = localStorage.getItem(STORAGE_KEY);
     } catch {
-      // localStorage unavailable
+      // localStorage unavailable — silently skip
+      return;
     }
+    if (consent) return;
+    const id = setTimeout(() => setShow(true), 800);
+    return () => clearTimeout(id);
   }, []);
 
   const accept = () => {
@@ -38,7 +40,7 @@ export default function CookieBanner() {
     accept();
   };
 
-  if (!mounted || !show) return null;
+  if (!show) return null;
 
   return (
     <div

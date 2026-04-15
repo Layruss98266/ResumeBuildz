@@ -4,22 +4,23 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Sparkles } from 'lucide-react';
 
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.12.0';
 
 const WHATS_NEW_ITEMS = [
-  'Resume completion progress bar to track your progress',
-  'Welcome back indicator with last edit timestamp',
-  'Enhanced security headers for Vercel deployment',
-  'Improved disclosure timeline in security policy',
+  'Project renamed from ResumeForge to ResumeBuildz across the entire site.',
+  'New blog section with 7 topic clusters (Resume Writing, ATS, Job Search, India Hiring, etc.) at /blog.',
+  'Resources mega-dropdown in the navbar with 4-column nested layout.',
+  'Interactive 3D hero animation on the homepage with cursor parallax + AI score climb.',
 ];
 
 export default function WhatsNew() {
+  // SSR renders null (show starts false). Effect runs on client and
+  // schedules the reveal via requestAnimationFrame, so setState happens
+  // in a callback — no cascading renders.
   const [show, setShow] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => {
-      setMounted(true);
       const savedVersion = localStorage.getItem('resumeforge-version');
       if (savedVersion !== APP_VERSION) {
         setShow(true);
@@ -33,7 +34,7 @@ export default function WhatsNew() {
     setShow(false);
   };
 
-  if (!mounted || !show) return null;
+  if (!show) return null;
 
   return createPortal(
     <div className="fixed bottom-4 right-4 z-50 w-80 bg-gray-900 border border-blue-500/30 rounded-xl shadow-2xl animate-slide-in-right">

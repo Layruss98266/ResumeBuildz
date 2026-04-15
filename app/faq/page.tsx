@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { jsonLd } from '@/lib/articleSchema';
 
 const faqItems = [
   {
@@ -165,7 +166,7 @@ export default function FAQPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: [

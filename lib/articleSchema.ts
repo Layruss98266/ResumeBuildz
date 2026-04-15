@@ -4,7 +4,7 @@
 //
 // Keep helpers pure and deterministic — no Date.now(), no randomness.
 
-const SITE_URL = 'https://resume-forge-orcin.vercel.app';
+import { SITE_URL } from './siteConfig';
 const PUBLISHER = {
   '@type': 'Organization',
   name: 'ResumeBuildz',

@@ -481,9 +481,15 @@ export function Fill4_HighlightSweep() {
   const [reviewStep, setReviewStep] = useState(-1);
 
   useEffect(() => {
-    let timer: ReturnType<typeof setInterval>;
+    // The 'done' phase uses setTimeout, the others use setInterval. Both
+    // return opaque handles that work with both clearTimeout and
+    // clearInterval in Node and the browser, but TypeScript typings differ.
+    // Using a union type avoids the unsafe `as unknown as` cast.
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
     if (phase === 'filling') {
-      timer = setInterval(() => {
+      intervalId = setInterval(() => {
         setFillStep((s) => {
           if (s >= 4) {
             setPhase('reviewing');
@@ -493,7 +499,7 @@ export function Fill4_HighlightSweep() {
         });
       }, 500);
     } else if (phase === 'reviewing') {
-      timer = setInterval(() => {
+      intervalId = setInterval(() => {
         setReviewStep((s) => {
           if (s >= 3) {
             setPhase('done');
@@ -503,15 +509,16 @@ export function Fill4_HighlightSweep() {
         });
       }, 700);
     } else {
-      timer = setTimeout(() => {
+      timeoutId = setTimeout(() => {
         setPhase('filling');
         setFillStep(0);
         setReviewStep(-1);
-      }, 1800) as unknown as ReturnType<typeof setInterval>;
+      }, 1800);
     }
+
     return () => {
-      if (phase === 'done') clearTimeout(timer as unknown as number);
-      else clearInterval(timer);
+      if (intervalId !== null) clearInterval(intervalId);
+      if (timeoutId !== null) clearTimeout(timeoutId);
     };
   }, [phase]);
 
@@ -571,14 +578,30 @@ export function Fill7_Ultimate() {
   const tiltRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, x: 50, y: 50 });
 
-  // Animation loop
+  // Visibility — pause animations when offscreen to save battery + CPU.
+  // Uses the same ref as the tilt container since they're the same element.
+  const [isVisible, setIsVisible] = useState(true);
   useEffect(() => {
-    const timer = setInterval(() => setStep((s) => (s + 1) % 14), 600);
-    return () => clearInterval(timer);
+    const el = tiltRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  // Score tween
+  // Animation loop — paused when offscreen
   useEffect(() => {
+    if (!isVisible) return;
+    const timer = setInterval(() => setStep((s) => (s + 1) % 14), 600);
+    return () => clearInterval(timer);
+  }, [isVisible]);
+
+  // Score tween — paused when offscreen
+  useEffect(() => {
+    if (!isVisible) return;
     const target =
       step >= 13 ? 94 :
       step >= 12 ? 82 :
@@ -595,7 +618,7 @@ export function Fill7_Ultimate() {
       });
     }, 14);
     return () => clearInterval(id);
-  }, [step]);
+  }, [step, isVisible]);
 
   // Mouse tilt handlers
   const onMouseMove = (e: React.MouseEvent) => {
