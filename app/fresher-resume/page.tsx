@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, CheckCircle2, FileText, Sparkles, Award } from 'lucide-react';
+import { ArrowRight, GraduationCap, CheckCircle2, FileText, Sparkles, Award, AlertTriangle, HelpCircle, Layout } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
@@ -35,6 +35,70 @@ const SECTIONS = [
   {
     title: '7. Achievements and Certifications',
     body: 'Coding contest ranks (LeetCode, Codeforces, HackerRank), hackathon wins, scholarships, published papers, GitHub stars, certifications (AWS, Google Cloud, NPTEL). Recruiters scan this section to spot outliers.',
+  },
+];
+
+const MISTAKES = [
+  {
+    mistake: 'Listing "Languages Known: English, Hindi, Tamil" at the top',
+    fix: 'Move this to the bottom of the resume or remove entirely. Recruiters assume English proficiency; only include if you speak 3+ languages or a specific one is required (e.g., Japanese for JapanGlobal hiring).',
+  },
+  {
+    mistake: 'Including hobbies and interests section',
+    fix: 'Remove unless you have space AND the hobbies are directly relevant (e.g., competitive chess for a quant fund, marathon running for a sales role where grit matters). "Reading and cricket" add nothing.',
+  },
+  {
+    mistake: 'Using a photograph',
+    fix: 'Remove. Modern Indian ATS and all global ATS strip photos. They also open up potential bias. The only exception is flight attendant or acting/modeling roles.',
+  },
+  {
+    mistake: 'Writing paragraphs instead of bullets',
+    fix: 'Rewrite every experience and project block as 2-3 crisp bullets. Paragraphs signal you don\'t understand the format and recruiters skip them.',
+  },
+  {
+    mistake: 'Claiming technologies you can\'t defend',
+    fix: 'If you list React, you must be able to explain hooks, useEffect cleanup, and controlled inputs. Interviewers will ask. Better to list 5 technologies you know well than 15 you half-know.',
+  },
+  {
+    mistake: 'No GitHub profile for CS students',
+    fix: 'Create one today. Push your projects, even the college ones. A CS fresher resume without a GitHub link in 2026 is a visible red flag.',
+  },
+];
+
+const LAYOUT_GUIDE = {
+  header: 'Name (22pt bold) | Phone | Email | LinkedIn | GitHub | City. One line each or comma-separated.',
+  objective: '2-3 lines. Current degree + college, strongest skills, target role.',
+  education: 'B.Tech [branch], [College Name], Year — CGPA: 8.4/10 | 12th: 92% (CBSE) | 10th: 94% (CBSE)',
+  skills: 'Group by category: Languages | Frameworks | Databases | Tools. 4-5 items per group maximum.',
+  projects: 'Project name (bold) + tech stack in parentheses + GitHub link. 2-3 quantified bullets each.',
+  experience: 'Company, role, dates on one line. Quantified bullets below.',
+  achievements: 'Coding profiles (LeetCode 1900+, CodeChef 4-star), hackathon wins, scholarships, certifications.',
+};
+
+const FAQS = [
+  {
+    q: 'How many pages should a fresher resume be?',
+    a: 'Strictly one page. Freshers do not have enough material to justify two pages. A two-page fresher resume signals that you padded it, and recruiters will notice.',
+  },
+  {
+    q: 'Should I include my 10th and 12th percentages?',
+    a: 'Yes for Indian campus placements and IT services (TCS, Infosys, Wipro, Accenture, Cognizant). These companies explicitly filter on academic consistency. For product companies, graduation CGPA alone is enough.',
+  },
+  {
+    q: 'How do I fill a fresher resume if I have no internships?',
+    a: 'Projects are the answer. Pick 3 projects that solve real problems (not CRUD apps), publish them on GitHub, and write 2-3 outcome-focused bullets per project. Open-source contributions, college club leadership, and hackathon participation also count.',
+  },
+  {
+    q: 'Should freshers include references?',
+    a: 'No. "References available on request" is a 1990s convention that wastes a line. Recruiters will ask if they want them.',
+  },
+  {
+    q: 'How do I handle backlogs on a fresher resume?',
+    a: 'If cleared: add "(All backlogs cleared)" next to your CGPA line. If active: many companies filter out candidates with active backlogs entirely (TCS, Infosys, Wipro are strict). Clear them before applying whenever possible.',
+  },
+  {
+    q: 'Which file format should I use — PDF or DOCX?',
+    a: 'PDF always, unless the job posting explicitly asks for Word. PDF preserves formatting across systems and is what 99% of modern ATS parse best. Name the file Firstname_Lastname_Resume.pdf.',
   },
 ];
 
@@ -139,6 +203,60 @@ export default function FresherResumePage() {
               </ul>
             </div>
             <p className="text-xs text-gray-500 mt-3">Notice: tech stack is named, the impact is quantified, and there is verifiable proof (GitHub stars, real adoption).</p>
+          </section>
+
+          {/* Layout guide */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <Layout className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl font-bold text-gray-900">The visual layout, section by section</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Here is exactly how each section should look on the page. This is the single-column, ATS-safe layout that works for every major Indian and global recruiter.
+            </p>
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+              {Object.entries(LAYOUT_GUIDE).map(([key, val], i, arr) => (
+                <div key={key} className={`flex flex-col sm:flex-row sm:items-start gap-3 p-4 ${i < arr.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                  <span className="text-xs uppercase tracking-wide font-semibold text-blue-600 sm:w-32 shrink-0">{key}</span>
+                  <span className="text-sm text-gray-700 leading-relaxed">{val}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Common mistakes */}
+          <section className="bg-red-50 rounded-2xl p-6 md:p-8 border border-red-100">
+            <div className="flex items-center gap-2 mb-5">
+              <AlertTriangle className="h-5 w-5 text-red-600" />
+              <h2 className="text-xl font-bold text-gray-900">6 mistakes that kill fresher resumes</h2>
+            </div>
+            <div className="space-y-4">
+              {MISTAKES.map((m, i) => (
+                <div key={i} className="bg-white rounded-xl p-5 border border-red-100">
+                  <p className="text-sm font-semibold text-red-900 mb-1">✗ {m.mistake}</p>
+                  <p className="text-sm text-gray-700"><span className="text-green-700 font-semibold">✓ Fix:</span> {m.fix}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <HelpCircle className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Fresher resume FAQ</h2>
+            </div>
+            <div className="space-y-3">
+              {FAQS.map((faq, i) => (
+                <details key={i} className="group bg-gray-50 rounded-xl border border-gray-100 p-5 open:shadow-sm">
+                  <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-sm">
+                    <span>{faq.q}</span>
+                    <span className="text-blue-500 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                  </summary>
+                  <p className="mt-3 text-gray-700 text-sm leading-relaxed">{faq.a}</p>
+                </details>
+              ))}
+            </div>
           </section>
 
           <section className="text-center py-8">

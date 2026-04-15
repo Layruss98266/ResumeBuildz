@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, CheckCircle2, Sparkles, Award, AlertCircle } from 'lucide-react';
+import { ArrowRight, GraduationCap, CheckCircle2, Sparkles, Award, AlertCircle, Calendar, HelpCircle, TrendingUp } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
@@ -18,6 +18,68 @@ const CHECKLIST = [
   'Achievements: hackathon wins, scholarships, competition ranks, published papers.',
   'A clean ATS-friendly format with no graphics, no columns, no skill bars.',
   'PDF format, named correctly: Firstname_Lastname_Resume.pdf',
+];
+
+const PLACEMENT_ROUNDS = [
+  {
+    round: 'Round 1: Pre-placement talk (PPT)',
+    what: 'The company visits campus (virtually or in person) and presents culture, compensation, and role. Takes 30-60 min.',
+    prep: 'Take notes on exact role names, CTC, bond period, and the specific team. These become interview hooks.',
+  },
+  {
+    round: 'Round 2: Online assessment',
+    what: 'Usually HackerRank or AMCAT: aptitude (logical + quantitative + English) + 1-3 coding questions. 60-90 minutes.',
+    prep: 'Practice 30+ AMCAT-pattern aptitude questions. For coding, revise 2 easy + 1 medium DSA problems daily for 4 weeks before placement season.',
+  },
+  {
+    round: 'Round 3: Group discussion (for some companies)',
+    what: 'A 15-20 minute GD with 8-12 candidates on a current topic. Used by TCS, Infosys, Deloitte, Accenture.',
+    prep: 'Keep a running list of 10 current affairs topics. Speak early, cite data, summarize others, never interrupt.',
+  },
+  {
+    round: 'Round 4: Technical interview',
+    what: 'One or two 30-45 min rounds with a senior engineer or PM. Expect coding, project walk-through, and CS fundamentals.',
+    prep: 'Be able to walk through every project on your resume in 2 minutes. Revise OS, DBMS, networks, and 2 design patterns.',
+  },
+  {
+    round: 'Round 5: HR interview',
+    what: '15-30 min with HR or the hiring manager. Tests motivation, relocation willingness, culture fit, and salary expectations.',
+    prep: 'Prepare answers to "Why this company," "Why this role," "Your biggest weakness," "5-year plan." Practice out loud.',
+  },
+];
+
+const PLACEMENT_STATS = [
+  { n: '1.5M+', label: 'engineering graduates from Indian colleges each year' },
+  { n: '45%', label: 'of Tier-2 college students placed on campus (AICTE, 2024)' },
+  { n: '85%+', label: 'of Tier-1 IITs and NITs placed on campus (placement reports, 2024)' },
+  { n: '6-8', label: 'weeks — typical duration of a placement season at most campuses' },
+];
+
+const PLACEMENT_FAQS = [
+  {
+    q: 'When should I start preparing my placement resume?',
+    a: 'Start in the summer before your final year. Most placement seasons run August through November. Give yourself 4-6 weeks of DSA practice + 2 weeks of resume polish + 2 weeks of mock interviews before Day 1.',
+  },
+  {
+    q: 'Can I skip placements if I want a product company?',
+    a: 'Most campuses allow you to sit for specific companies only. You can skip TCS/Infosys/Wipro if you are aiming for Flipkart, Amazon, Google, or Microsoft. But read your Training & Placement Cell rules — some colleges make first placements mandatory.',
+  },
+  {
+    q: 'Should I apply to service companies and product companies with the same resume?',
+    a: 'No. Create 2 versions: a service-company version (emphasize academics, project breadth, communication, Java) and a product-company version (emphasize DSA, coding profiles, GitHub, system design basics). The same single resume signals mediocrity to both.',
+  },
+  {
+    q: 'How important are coding profiles for campus placements?',
+    a: 'Very important for product companies (Flipkart, Amazon, Microsoft, Google). Expected: LeetCode 1800+, Codeforces specialist+, CodeChef 4-star+. Service companies care less — academic percentages and aptitude test scores matter more there.',
+  },
+  {
+    q: 'What if I do not get placed on Day 1?',
+    a: 'Normal. Most students place in the second or third wave. The companies that visit later (Day 5+) are often better ones that prefer to see how the cohort performs before committing. Day 1 is not the "best" day.',
+  },
+  {
+    q: 'Is it okay to negotiate CTC during campus placements?',
+    a: 'Generally no — campus offers are standardized and take-it-or-leave-it. You can negotiate joining date, relocation support, or training location in rare cases. Never bluff with a fake offer.',
+  },
 ];
 
 const COMPANIES = [
@@ -101,6 +163,61 @@ export default function CampusPlacementResumePage() {
                   <h3 className="font-semibold text-gray-900 mb-1">{c.name}</h3>
                   <p className="text-sm text-gray-700">{c.focus}</p>
                 </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Stats */}
+          <section className="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100">
+            <div className="flex items-center gap-2 mb-5">
+              <TrendingUp className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl font-bold text-gray-900">The state of Indian campus placements</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {PLACEMENT_STATS.map((s, i) => (
+                <div key={i} className="bg-white rounded-xl p-4 border border-gray-200">
+                  <p className="text-2xl md:text-3xl font-bold text-blue-600">{s.n}</p>
+                  <p className="text-xs text-gray-600 mt-1 leading-snug">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Rounds */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <Calendar className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">The 5 rounds of a typical placement process</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Know what each round actually tests. Campus recruiters move through candidates fast; you only get one shot per round.
+            </p>
+            <div className="space-y-4">
+              {PLACEMENT_ROUNDS.map((r, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                  <h3 className="font-semibold text-gray-900 mb-2">{r.round}</h3>
+                  <p className="text-sm text-gray-700 mb-2"><span className="font-semibold">What:</span> {r.what}</p>
+                  <p className="text-sm text-gray-700"><span className="font-semibold text-green-700">How to prep:</span> {r.prep}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <HelpCircle className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Campus placement FAQ</h2>
+            </div>
+            <div className="space-y-3">
+              {PLACEMENT_FAQS.map((faq, i) => (
+                <details key={i} className="group bg-gray-50 rounded-xl border border-gray-100 p-5 open:shadow-sm">
+                  <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-sm">
+                    <span>{faq.q}</span>
+                    <span className="text-blue-500 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                  </summary>
+                  <p className="mt-3 text-gray-700 text-sm leading-relaxed">{faq.a}</p>
+                </details>
               ))}
             </div>
           </section>

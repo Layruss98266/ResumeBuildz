@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Clock, CheckCircle2, AlertCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, Clock, CheckCircle2, AlertCircle, Sparkles, HelpCircle, BookOpen, Users } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
@@ -14,6 +14,42 @@ const REASONS = [
   { reason: 'Travel or relocation', wording: '"Relocated to [city] in mid-2024. Took a planned career break to settle and study."' },
   { reason: 'Continued education', wording: '"Full-time MBA / MS / certification program. Graduated [date]."' },
   { reason: 'Sabbatical / personal break', wording: '"Took an intentional 14-month sabbatical to upskill in [domain] and complete [project]."' },
+];
+
+const UPSKILLING_IDEAS = [
+  { cat: 'Free courses', examples: 'Coursera audit, edX, YouTube university channels, NPTEL (India), freeCodeCamp, MIT OpenCourseWare' },
+  { cat: 'Certifications', examples: 'Google Career Certificates, AWS Cloud Practitioner, Microsoft Fundamentals, PMI-CAPM, HubSpot Academy' },
+  { cat: 'Freelance work', examples: 'Upwork, Fiverr, Toptal, Contra — even 3 small paid gigs count as current experience' },
+  { cat: 'Volunteer projects', examples: 'Local non-profits, open source contributions, GitHub issues, Wikipedia edits' },
+  { cat: 'Side projects', examples: 'Build a blog, a small SaaS, a YouTube channel, a newsletter, a domain-specific tool' },
+  { cat: 'Part-time consulting', examples: 'Your old network is your best consulting pipeline — offer 10 hours/week to a former employer or adjacent company' },
+];
+
+const FAQS = [
+  {
+    q: 'How long is "too long" for a career gap?',
+    a: 'There is no hard limit, but after 2 years the conversation shifts: for gaps under 2 years, a one-line explanation suffices. For gaps 2-5 years, you need evidence of upskilling during the gap. For gaps over 5 years, target returnship programs, freelance-to-full-time paths, or adjacent-but-lower roles as a re-entry point.',
+  },
+  {
+    q: 'Should I list a "Career Break" entry on my timeline?',
+    a: 'Yes if the gap is 6+ months. Treat it as a regular entry with start and end dates. Example: "Career Break | Mar 2023 - Present | Full-time caregiver for immediate family. Completed Google Data Analytics certificate during this period."',
+  },
+  {
+    q: 'Do I need to mention the gap in my cover letter?',
+    a: 'Yes, in one sentence. Recruiters appreciate transparency. "After a [reason] break, I\'m returning to work with renewed focus on [target role]." Do not dwell; move on to your value proposition in the next sentence.',
+  },
+  {
+    q: 'Will ATS systems reject me for a gap?',
+    a: 'No. Modern ATS parse dates but do not reject based on gaps. The rejection happens at the human screening stage when a recruiter sees an unexplained gap. Name it explicitly and the rejection risk drops significantly.',
+  },
+  {
+    q: 'Should I remove old jobs to hide the gap?',
+    a: 'No. Lying or omitting is worse than the gap itself. Background checks will catch discrepancies. List the dates honestly and frame the gap positively.',
+  },
+  {
+    q: 'Is a "functional" resume better for career gaps?',
+    a: 'No. Pure functional resumes (skills-only, no timeline) are seen as hiding something and hurt you. Use a hybrid format: skills at the top, then a chronological timeline that includes the career break as an explicit entry.',
+  },
 ];
 
 const RULES = [
@@ -108,6 +144,44 @@ export default function ResumeAfterCareerGapPage() {
                   Companies like Goldman Sachs, IBM, Amazon, Accenture, and TCS now run formal "returnship" programs targeting professionals returning after 2+ year breaks. These programs offer paid 12 to 26 week contracts that often convert to full-time roles. Mentioning interest in returnships explicitly in your summary can route your resume directly into these tracks.
                 </p>
               </div>
+            </div>
+          </section>
+
+          {/* Upskilling during gap */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">6 ways to fill your gap with real evidence</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Recruiters do not reject gaps — they reject unexplained gaps. Every item below produces a concrete line you can add to your resume to show you stayed current and intentional.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {UPSKILLING_IDEAS.map((u, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                  <p className="font-semibold text-gray-900 mb-1">{u.cat}</p>
+                  <p className="text-sm text-gray-600">{u.examples}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <HelpCircle className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Career gap resume FAQ</h2>
+            </div>
+            <div className="space-y-3">
+              {FAQS.map((faq, i) => (
+                <details key={i} className="group bg-gray-50 rounded-xl border border-gray-100 p-5 open:shadow-sm">
+                  <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-sm">
+                    <span>{faq.q}</span>
+                    <span className="text-blue-500 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                  </summary>
+                  <p className="mt-3 text-gray-700 text-sm leading-relaxed">{faq.a}</p>
+                </details>
+              ))}
             </div>
           </section>
 

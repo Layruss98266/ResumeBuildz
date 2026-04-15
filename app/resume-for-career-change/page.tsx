@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Compass, CheckCircle2, Sparkles, Target } from 'lucide-react';
+import { ArrowRight, Compass, CheckCircle2, Sparkles, Target, HelpCircle, Clock, BookOpen, AlertTriangle } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
@@ -27,6 +27,48 @@ const STEPS = [
   {
     title: '5. Show evidence of the new direction',
     body: 'Recruiters need proof you are serious. Side projects, certifications, courses, freelance work, volunteer roles, blog posts — anything that demonstrates you have already started moving toward the new field. List these in a "Relevant Projects" section above experience.',
+  },
+];
+
+const TIMELINE_EXPECTATIONS = [
+  { phase: 'Months 1-2', desc: 'Self-assessment, skill gap analysis, picking a target field, starting 1-2 relevant courses or certifications.' },
+  { phase: 'Months 3-6', desc: 'Building 2-3 side projects, getting 1 unpaid or volunteer experience, rewriting your resume as hybrid format, updating LinkedIn.' },
+  { phase: 'Months 6-9', desc: 'Active applications with tailored bullets, informational interviews with 15-20 people in the new field, interview prep.' },
+  { phase: 'Months 9-12', desc: 'Landing the first role in the new field — usually at a level lower than your previous role, with room to climb back up fast.' },
+];
+
+const COMMON_TRAPS = [
+  'Expecting the same seniority in the new field. Most pivots involve a 1-level demotion in title (and sometimes pay) for 12-18 months before you re-enter at your old level.',
+  'Applying without evidence. Recruiters for the new field expect at least 1-2 projects, an internship, or a certification before taking your pivot seriously.',
+  'Leading the cover letter with "I want to transition." This sounds like you need something. Lead with what you bring instead.',
+  'Ignoring network value. Referrals convert 4-5x better than cold applications for career changers. Spend 40% of your time on networking, not applications.',
+  'Lying about experience to match the JD. Background checks and technical interviews will catch this and burn the bridge.',
+];
+
+const FAQS = [
+  {
+    q: 'How long does a career change realistically take?',
+    a: '6-12 months for most pivots, assuming you\'re working on it consistently while still employed. Longer if the new field requires formal credentials (e.g., engineering to medicine). Shorter for adjacent pivots (e.g., customer success to product management).',
+  },
+  {
+    q: 'Will I have to take a pay cut?',
+    a: 'Usually yes, at least initially. Expect a 10-25% pay cut for the first role in the new field. Most career changers return to their pre-pivot compensation within 18-24 months and often exceed it within 3-4 years because the new field aligns better with their strengths.',
+  },
+  {
+    q: 'Should I go back to school for a career change?',
+    a: 'Rarely necessary. For most pivots (marketing to PM, engineering to consulting, finance to ops), a 3-6 month certification + side project portfolio beats a 2-year degree. Formal degrees only make sense when the target field has hard credentialing requirements (law, medicine, architecture, academia).',
+  },
+  {
+    q: 'Is a bootcamp worth it for engineering pivots?',
+    a: 'Sometimes. Top bootcamps (Hack Reactor, Lambda School equivalents, App Academy) can work for motivated career changers with a strong work ethic. But the return has dropped since 2023 — tech hiring is tighter, and bootcamp grads compete with laid-off senior engineers. Do 2-3 months of free pre-work (freeCodeCamp, CS50) before committing cash.',
+  },
+  {
+    q: 'How do I explain the pivot to a hiring manager?',
+    a: 'Use a 3-sentence script: (1) What you did before and what you were good at, (2) Why that experience makes you ready for this new field, (3) What specific recent work proves it. Example: "I spent 6 years in sales, where I learned to diagnose customer problems fast and communicate across stakeholders. Those skills translate directly to product management. Over the past 8 months, I\'ve shipped 3 side projects and completed the Reforge PM foundations course."',
+  },
+  {
+    q: 'Should my LinkedIn headline reflect the new field?',
+    a: 'Yes, gradually. Use a transition headline: "Software Engineer | Aspiring Product Manager | Shipping side projects with user research." This signals direction without lying about your current title. Once you land your first PM role, update it fully.',
   },
 ];
 
@@ -127,6 +169,62 @@ export default function ResumeForCareerChangePage() {
               </p>
             </div>
             <p className="text-xs text-gray-500 mt-3">Notice how it owns both halves: real credibility from the old role, real evidence of effort toward the new one.</p>
+          </section>
+
+          {/* Timeline expectations */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <Clock className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">How long a career pivot realistically takes</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Pivots rarely happen in 30 days. Here is the honest, stage-by-stage timeline most career changers follow — assuming you are working on it while still employed.
+            </p>
+            <div className="space-y-4">
+              {TIMELINE_EXPECTATIONS.map((t, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl border border-gray-100 p-5 flex items-start gap-4">
+                  <div className="flex-shrink-0 w-20 sm:w-24">
+                    <p className="text-xs uppercase tracking-wide font-bold text-blue-600">{t.phase}</p>
+                  </div>
+                  <p className="text-sm text-gray-700 leading-relaxed">{t.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Common traps */}
+          <section className="bg-red-50 rounded-2xl p-6 md:p-8 border border-red-100">
+            <div className="flex items-center gap-2 mb-5">
+              <AlertTriangle className="h-5 w-5 text-red-600" />
+              <h2 className="text-xl font-bold text-gray-900">5 traps that kill career pivots</h2>
+            </div>
+            <ul className="space-y-3">
+              {COMMON_TRAPS.map((trap, i) => (
+                <li key={i} className="flex gap-3 text-sm text-gray-700">
+                  <span className="text-red-500 font-bold mt-0.5">✗</span>
+                  <span className="leading-relaxed">{trap}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* FAQ */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <HelpCircle className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Career change FAQ</h2>
+            </div>
+            <div className="space-y-3">
+              {FAQS.map((faq, i) => (
+                <details key={i} className="group bg-gray-50 rounded-xl border border-gray-100 p-5 open:shadow-sm">
+                  <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-sm">
+                    <span>{faq.q}</span>
+                    <span className="text-blue-500 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                  </summary>
+                  <p className="mt-3 text-gray-700 text-sm leading-relaxed">{faq.a}</p>
+                </details>
+              ))}
+            </div>
           </section>
 
           <section className="text-center py-8">

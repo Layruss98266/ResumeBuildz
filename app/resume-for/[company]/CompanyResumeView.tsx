@@ -1,11 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, ChevronLeft, CheckCircle2, Tag, Briefcase, MapPin, Sparkles, FileText, Lightbulb } from 'lucide-react';
+import { ArrowRight, ChevronLeft, CheckCircle2, Tag, Briefcase, MapPin, Sparkles, FileText, Lightbulb, Users, AlertTriangle, Quote, Wrench, HelpCircle } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
 import type { CompanyEntry } from '@/lib/resumeCompanyData';
+import { getCompanyExtended } from '@/lib/resumeCompanyDataExtended';
 
 interface Props {
   data: CompanyEntry;
@@ -14,6 +15,7 @@ interface Props {
 
 export default function CompanyResumeView({ data, related }: Props) {
   const { openGateway } = useLoginGateway();
+  const extended = getCompanyExtended(data.slug);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -102,6 +104,89 @@ export default function CompanyResumeView({ data, related }: Props) {
               ))}
             </ol>
           </section>
+
+          {extended && (
+            <>
+              {/* Interview Process */}
+              <section className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200">
+                <div className="flex items-center gap-2 mb-4">
+                  <Users className="h-5 w-5 text-blue-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">What the {data.name} interview looks like</h2>
+                </div>
+                <p className="text-gray-700 leading-relaxed">{extended.interviewProcess}</p>
+              </section>
+
+              {/* Common Pitfalls */}
+              <section className="bg-red-50 rounded-2xl p-6 md:p-8 border border-red-100">
+                <div className="flex items-center gap-2 mb-5">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">{extended.commonPitfalls.length} common pitfalls that tank {data.name} resumes</h2>
+                </div>
+                <ul className="space-y-3">
+                  {extended.commonPitfalls.map((item, i) => (
+                    <li key={i} className="flex gap-3 text-gray-700 text-sm">
+                      <span className="flex-shrink-0 text-red-500 font-bold mt-0.5">✗</span>
+                      <span className="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              {/* Sample bullet */}
+              <section className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl p-6 md:p-8 border border-gray-200">
+                <div className="flex items-center gap-2 mb-4">
+                  <Quote className="h-5 w-5 text-slate-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">A sample {data.name}-ready bullet</h2>
+                </div>
+                <p className="text-sm text-gray-600 mb-4">
+                  Notice the structure: action verb, specific scope, quantified outcome, and clear business value. This is the format {data.name} recruiters look for.
+                </p>
+                <div className="bg-white rounded-xl p-5 border-l-4 border-blue-500 shadow-sm">
+                  <p className="text-gray-800 leading-relaxed font-medium">{extended.sampleBullet}</p>
+                </div>
+              </section>
+
+              {/* How to tailor */}
+              <section>
+                <div className="flex items-center gap-2 mb-5">
+                  <Wrench className="h-5 w-5 text-blue-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">How to tailor your existing resume for {data.name}</h2>
+                </div>
+                <p className="text-gray-600 mb-5">
+                  You probably already have a resume that works for general applications. Here is exactly what to change before applying to {data.name}:
+                </p>
+                <ol className="space-y-4">
+                  {extended.howToTailor.map((step, i) => (
+                    <li key={i} className="flex gap-4 bg-gray-50 rounded-xl border border-gray-100 p-5">
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white font-bold text-sm flex items-center justify-center">
+                        {i + 1}
+                      </div>
+                      <p className="text-gray-700 leading-relaxed text-sm">{step}</p>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+
+              {/* FAQ */}
+              <section className="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100">
+                <div className="flex items-center gap-2 mb-5">
+                  <HelpCircle className="h-5 w-5 text-blue-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">{data.name} resume FAQ</h2>
+                </div>
+                <div className="space-y-4">
+                  {extended.faqs.map((faq, i) => (
+                    <details key={i} className="group bg-white rounded-xl border border-gray-200 p-5 open:shadow-sm">
+                      <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-sm">
+                        <span>{faq.q}</span>
+                        <span className="text-blue-500 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                      </summary>
+                      <p className="mt-3 text-gray-700 text-sm leading-relaxed">{faq.a}</p>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
 
           {/* Recommended Template */}
           <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">

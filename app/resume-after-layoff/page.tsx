@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, AlertCircle, Heart, Target, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, AlertCircle, Heart, Target, Sparkles, Calendar, TrendingUp, HelpCircle, BarChart3 } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
@@ -22,6 +22,84 @@ const DONTS = [
   'Don\'t leave a gap explanation in the bullet points. Bullets are for accomplishments. Move context to your summary or cover letter.',
   'Don\'t apologise. The resume is a sales document; the apology in your tone will lose interviews.',
   'Don\'t hide the gap with creative date formatting. Modern ATS parses dates strictly and "Present" with no end date triggers manual review.',
+];
+
+const STATS = [
+  { n: '20M', label: 'US workers experience involuntary separation each year (BLS, 2024)' },
+  { n: '4 mo', label: 'median time to new role for laid-off tech workers (Revelio Labs, 2024)' },
+  { n: '61%', label: 'of hiring managers view layoffs as "not a performance issue" (LinkedIn poll, 2024)' },
+  { n: '38%', label: 'of laid-off workers end up in a higher-paying role within 12 months (BLS, 2023)' },
+];
+
+const TIMELINE = [
+  {
+    phase: 'Week 1: Breathe, file, inventory',
+    actions: [
+      'File for unemployment benefits the day after separation — most US states require prompt filing.',
+      'Review severance carefully. Do NOT sign anything that waives future claims without reading twice.',
+      'Collect work samples, references, and a list of achievements from your past 18 months while memory is fresh.',
+      'Do not touch the resume yet. Rest.',
+    ],
+  },
+  {
+    phase: 'Week 2: Rewrite your resume and LinkedIn',
+    actions: [
+      'Work through the 5-step framework below. Give yourself 4-6 hours, not 30 minutes.',
+      'Run the finished resume through an ATS checker.',
+      'Update LinkedIn on the same day. Recruiters cross-check.',
+      'Send 3-5 "looking for opportunities" messages to your closest network contacts.',
+    ],
+  },
+  {
+    phase: 'Weeks 3-4: Apply at 15 companies/week',
+    actions: [
+      'Target 15 well-fit roles per week, not 100 spray-and-pray.',
+      'Tailor the top of your resume for each role (summary + top 3 bullets).',
+      'Send a short follow-up email to recruiters 5 days after applying.',
+      'Track every application in a spreadsheet.',
+    ],
+  },
+  {
+    phase: 'Month 2: Iterate based on signal',
+    actions: [
+      'If you have 3+ interviews, your resume is working — focus on interview prep.',
+      'If you have 0-1 interviews after 40 applications, your resume needs rework — start with the summary and top bullets.',
+      'Expand your search by 1 level (e.g., senior to staff) and 1 adjacent function.',
+      'Take 1-2 informational interviews per week.',
+    ],
+  },
+];
+
+const RETURNSHIP_COMPANIES = [
+  { name: 'Goldman Sachs Returnship', desc: '20-week paid program for professionals returning after 2+ years.' },
+  { name: 'Amazon Returnship', desc: '16-week paid program across corporate functions.' },
+  { name: 'IBM Tech Re-Entry', desc: 'Technical returnship for engineers after a 2+ year gap.' },
+  { name: 'Accenture Career Reboot', desc: '12-week program with full-time conversion path.' },
+  { name: 'JP Morgan ReEntry', desc: '15-week program across 100+ roles in tech, finance, ops.' },
+  { name: 'Tata Second Careers (India)', desc: 'TCS-backed program for women returning after a break.' },
+];
+
+const FAQS = [
+  {
+    q: 'Should I put "Laid Off" on my resume?',
+    a: 'No. The resume is a sales document, not an incident report. You can optionally add "(Company-wide reorg, Sep 2024)" next to the end date if you want to preempt the question, but most recruiters already know — 2024 and 2025 tech layoffs have been heavily publicized. Address the layoff once in your cover letter in one neutral sentence, then move on.',
+  },
+  {
+    q: 'How do I explain a layoff in interviews?',
+    a: 'One sentence, neutral tone, no detail: "My team was part of a company-wide reorganization in [month]. I\'m now focused on finding a [role] where I can [specific contribution]." Do not apologise, do not speculate on why you were chosen, do not share internal gossip about the company.',
+  },
+  {
+    q: 'Is it worth mentioning severance or notice period?',
+    a: 'Only if the recruiter directly asks. Never put it on the resume. Never volunteer it in your first call. If asked, be factual: "I\'m on a 2-month paid notice period and my last working day is [date]."',
+  },
+  {
+    q: 'Should I take a lower-paying role to bridge the gap?',
+    a: 'Depends on runway. If you have 6+ months of savings, hold out for a role at your previous level. If you have under 3 months, a bridge role is often smarter — gaps past 6 months become harder to explain. An honest temporary role is better than a stretched gap.',
+  },
+  {
+    q: 'What if I was laid off from a high-profile company like Google, Meta, or TCS?',
+    a: 'Use it as a signal, not a liability. Being part of a publicly-reported layoff wave at a top company is now widely understood. Recruiters at competing companies actively source from these layoffs. Make sure your LinkedIn says "Open to work" and list the former employer prominently.',
+  },
 ];
 
 const STEPS = [
@@ -98,6 +176,22 @@ export default function ResumeAfterLayoffPage() {
             </p>
           </section>
 
+          {/* Stats */}
+          <section className="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100">
+            <div className="flex items-center gap-2 mb-5">
+              <BarChart3 className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl font-bold text-gray-900">The numbers on post-layoff job searches</h2>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {STATS.map((s, i) => (
+                <div key={i} className="bg-white rounded-xl p-4 border border-gray-200">
+                  <p className="text-2xl md:text-3xl font-bold text-blue-600">{s.n}</p>
+                  <p className="text-xs text-gray-600 mt-1 leading-snug">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Steps */}
           <section>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">The 5-Step Recovery Framework</h2>
@@ -168,6 +262,73 @@ export default function ResumeAfterLayoffPage() {
                 <span className="font-semibold text-gray-900">Marketing Manager:</span> Built and ran a 6-channel demand generation engine that delivered 4,200 SQLs and $1.8M in pipeline at a blended CAC of $430.
               </li>
             </ul>
+          </section>
+
+          {/* Timeline */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <Calendar className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Your first 60 days after a layoff</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              A structured timeline beats panic. Here is the action list most high-performers follow.
+            </p>
+            <div className="space-y-4">
+              {TIMELINE.map((phase, i) => (
+                <div key={i} className="bg-gray-50 rounded-xl border border-gray-100 p-6">
+                  <h3 className="flex items-center gap-2 font-semibold text-gray-900 mb-3">
+                    <span className="h-6 w-6 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center justify-center">{i + 1}</span>
+                    {phase.phase}
+                  </h3>
+                  <ul className="space-y-2 ml-8">
+                    {phase.actions.map((a, j) => (
+                      <li key={j} className="flex gap-2 text-sm text-gray-700">
+                        <span className="text-blue-500 mt-0.5">•</span>
+                        {a}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Returnship / post-layoff programs */}
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <div className="flex items-center gap-2 mb-5">
+              <TrendingUp className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl font-bold text-gray-900">Formal returnship and post-layoff hiring programs</h2>
+            </div>
+            <p className="text-sm text-gray-600 mb-5">
+              Several large employers run dedicated programs for professionals returning to work, including those returning after a layoff. These programs often bypass standard ATS and give you a direct path to an interview.
+            </p>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {RETURNSHIP_COMPANIES.map((c, i) => (
+                <div key={i} className="bg-white rounded-lg p-3 border border-gray-200">
+                  <p className="text-sm font-semibold text-gray-900">{c.name}</p>
+                  <p className="text-xs text-gray-600 mt-0.5">{c.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FAQ */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <HelpCircle className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Frequently asked questions</h2>
+            </div>
+            <div className="space-y-3">
+              {FAQS.map((faq, i) => (
+                <details key={i} className="group bg-gray-50 rounded-xl border border-gray-100 p-5 open:shadow-sm">
+                  <summary className="flex items-center justify-between cursor-pointer font-semibold text-gray-900 text-sm">
+                    <span>{faq.q}</span>
+                    <span className="text-blue-500 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                  </summary>
+                  <p className="mt-3 text-gray-700 text-sm leading-relaxed">{faq.a}</p>
+                </details>
+              ))}
+            </div>
           </section>
 
           {/* CTA */}
