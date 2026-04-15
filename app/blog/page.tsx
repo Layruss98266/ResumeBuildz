@@ -6,7 +6,7 @@ import { ArrowRight, Clock, Calendar, Sparkles, BookOpen, Filter } from 'lucide-
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import ReadingProgress from '@/components/ReadingProgress';
-import { BLOG_CATEGORIES } from '@/lib/blogCategories';
+import { BLOG_CATEGORIES, PARENT_GROUPS, getCategoriesByParent } from '@/lib/blogCategories';
 import { BLOG_POSTS, VIRTUAL_POSTS, getFeaturedPosts, getAllPosts, getPostCountByCategory } from '@/lib/blogPosts';
 
 export default function BlogHubPage() {
@@ -91,35 +91,52 @@ export default function BlogHubPage() {
         </section>
       )}
 
-      {/* Categories grid */}
+      {/* Pillar groups — 4 parent sections, each containing its child categories */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Browse by topic cluster</h2>
           <p className="text-gray-600 mb-10">
-            Each cluster is a coherent set of guides on one theme. Start with whichever matches your situation.
+            The blog is organised into 4 pillar groups. Each group contains a focused set of cluster guides on one theme — pick the group that matches your situation.
           </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {BLOG_CATEGORIES.map((cat) => {
-              const CatIcon = cat.icon;
-              const count = getPostCountByCategory(cat.slug);
+          <div className="space-y-10">
+            {PARENT_GROUPS.map((parent) => {
+              const children = getCategoriesByParent(parent.slug);
+              if (children.length === 0) return null;
               return (
-                <Link
-                  key={cat.slug}
-                  href={`/blog/category/${cat.slug}`}
-                  className="group bg-white rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-xl p-6 transition"
-                >
-                  <div className={`inline-flex h-12 w-12 rounded-xl ${cat.bgColor} items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <CatIcon className={`h-6 w-6 ${cat.color}`} />
+                <div key={parent.slug}>
+                  <div className="flex items-baseline justify-between mb-4 pb-3 border-b border-gray-200">
+                    <div>
+                      <h3 className={`text-xl md:text-2xl font-bold ${parent.color}`}>{parent.name}</h3>
+                      <p className="text-sm text-gray-600 mt-1">{parent.tagline}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 shrink-0">{children.length} cluster{children.length === 1 ? '' : 's'}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition">{cat.name}</h3>
-                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{cat.description}</p>
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <span>{count} guide{count === 1 ? '' : 's'}</span>
-                    <span className="inline-flex items-center gap-1 text-blue-600 font-semibold group-hover:translate-x-1 transition-transform">
-                      Browse <ArrowRight className="h-3 w-3" />
-                    </span>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {children.map((cat) => {
+                      const CatIcon = cat.icon;
+                      const count = getPostCountByCategory(cat.slug);
+                      return (
+                        <Link
+                          key={cat.slug}
+                          href={`/blog/category/${cat.slug}`}
+                          className="group bg-white rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-xl p-6 transition"
+                        >
+                          <div className={`inline-flex h-12 w-12 rounded-xl ${cat.bgColor} items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                            <CatIcon className={`h-6 w-6 ${cat.color}`} />
+                          </div>
+                          <h4 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition">{cat.name}</h4>
+                          <p className="text-sm text-gray-600 mb-4 leading-relaxed">{cat.description}</p>
+                          <div className="flex items-center justify-between text-xs text-gray-500">
+                            <span>{count} guide{count === 1 ? '' : 's'}</span>
+                            <span className="inline-flex items-center gap-1 text-blue-600 font-semibold group-hover:translate-x-1 transition-transform">
+                              Browse <ArrowRight className="h-3 w-3" />
+                            </span>
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>

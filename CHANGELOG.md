@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.12.0] - 2026-04-15
+
+### Added
+
+- **Ahrefs-style 2-tier blog taxonomy**: 4 parent groups containing 7 child clusters, based on research across HubSpot, Ahrefs, Indeed, Zety, Enhancv, Kickresume, Teal, LinkedIn Talent, Canva, and Notion blog navs.
+- **New "Interviews & Cover Letters" category** at `/blog/category/interviews-cover-letters` — closes the biggest gap vs. every direct competitor.
+- **`/cover-letter` page** added as a blog post in the new category.
+- **`PARENT_GROUPS` array + `parentGroup` field** in `lib/blogCategories.ts`. New helpers `getCategoriesByParent()` and `getParentBySlug()`.
+- **Mega-dropdown in the navbar** Resources menu — 4-column grid on desktop showing parent group headers + their child categories. Mobile renders as nested accordion grouped by parent.
+- **Parent-grouped blog hub** at `/blog` — categories now grouped under 4 pillar headers (Resume & ATS, Job Search, India Hiring, Company Guides) instead of a flat 6-card grid.
+
+### Changed
+
+- **Footer Blog column** restructured into 3 visual groups (Resume & ATS / Job Search / India & Companies) matching the new parent taxonomy.
+- **Sitemap** auto-includes the new `/blog/category/interviews-cover-letters` URL.
+
+### Why this structure
+
+Research summary: every direct resume/career competitor (Zety, Indeed, Enhancv, Kickresume, Teal) caps at 3-6 flat categories around Resume + Cover Letter + Interview + Job Search. None of them break out India Hiring, Company Guides, or AI Tools as top-level — those would dilute the 5-cluster cap. ResumeBuildz has all three as content moats, so a flat 7-cluster menu would bury our differentiators. The Ahrefs nested model is the only researched pattern that scales to 7+ clusters while preserving clean SEO silos.
+
+---
+
 ## [1.11.0] - 2026-04-15
 
 ### Changed

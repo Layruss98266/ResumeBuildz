@@ -23,12 +23,18 @@ export default function SiteFooter() {
           <div>
             <h4 className="text-white font-semibold text-sm mb-3">Blog</h4>
             <div className="space-y-2 text-sm">
-              <Link href="/blog" className="block hover:text-white transition-colors">All Articles</Link>
+              <Link href="/blog" className="block hover:text-white transition-colors font-semibold text-blue-400">All Articles</Link>
+              <p className="text-[10px] uppercase tracking-wide text-gray-600 mt-3 mb-1">Resume &amp; ATS</p>
               <Link href="/blog/category/resume-writing" className="block hover:text-white transition-colors">Resume Writing</Link>
               <Link href="/blog/category/ats-keywords" className="block hover:text-white transition-colors">ATS &amp; Keywords</Link>
+              <Link href="/blog/category/ai-resume" className="block hover:text-white transition-colors">AI Resume Tools</Link>
+              <p className="text-[10px] uppercase tracking-wide text-gray-600 mt-3 mb-1">Job Search</p>
+              <Link href="/blog/category/interviews-cover-letters" className="block hover:text-white transition-colors">Interviews &amp; Cover Letters</Link>
               <Link href="/blog/category/career-transitions" className="block hover:text-white transition-colors">Career Transitions</Link>
+              <p className="text-[10px] uppercase tracking-wide text-gray-600 mt-3 mb-1">India &amp; Companies</p>
               <Link href="/blog/category/india-hiring" className="block hover:text-white transition-colors">India Hiring</Link>
-              <Link href="/faq" className="block hover:text-white transition-colors">FAQ</Link>
+              <Link href="/blog/category/company-guides" className="block hover:text-white transition-colors">Company Guides</Link>
+              <Link href="/faq" className="block hover:text-white transition-colors mt-3">FAQ</Link>
             </div>
           </div>
           <div>

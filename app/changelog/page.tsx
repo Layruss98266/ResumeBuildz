@@ -15,6 +15,23 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.12.0',
+    date: 'April 15, 2026',
+    title: 'Ahrefs-style Blog Taxonomy + Mega-dropdown',
+    added: [
+      'Ahrefs-style 2-tier blog taxonomy: 4 parent groups (Resume & ATS, Job Search, India Hiring, Company Guides) containing 7 child clusters.',
+      'New "Interviews & Cover Letters" category — closes the biggest content gap vs. every direct resume/career competitor.',
+      'Cover Letter page added as a blog post in the new Interviews & Cover Letters cluster.',
+      'PARENT_GROUPS array + parentGroup field in lib/blogCategories.ts with getCategoriesByParent helper.',
+      'Mega-dropdown in the Resources navbar menu: 4-column grid on desktop, nested accordion on mobile.',
+      'Parent-grouped blog hub at /blog showing categories under 4 pillar headers instead of a flat grid.',
+    ],
+    improved: [
+      'Footer Blog column restructured into 3 visual groups matching the new parent taxonomy.',
+      'Research-backed structure: HubSpot, Ahrefs, Indeed, Zety, Enhancv, Kickresume, Teal, LinkedIn Talent, Canva, Notion all studied. Ahrefs nested model picked as the only scalable approach for 7+ clusters.',
+    ],
+  },
+  {
     version: 'v1.11.0',
     date: 'April 15, 2026',
     title: 'Project Renamed to ResumeBuildz + Navbar Restructure',

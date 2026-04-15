@@ -98,6 +98,21 @@ export const BLOG_POSTS: BlogPost[] = [
     readingTime: 11,
   },
 
+  // ─────────── Interviews & Cover Letters ───────────
+  {
+    slug: 'cover-letter',
+    title: 'Cover Letter Guide & Templates',
+    excerpt:
+      'How to write a cover letter that pairs with a strong resume — 4-part structure, 6 industry templates, and the do/don\'t list every recruiter wishes more candidates followed.',
+    category: 'interviews-cover-letters',
+    tags: ['cover-letter', 'templates', 'STAR', 'job-search'],
+    author: 'Surya L',
+    datePublished: '2026-03-15',
+    dateModified: '2026-04-15',
+    readingTime: 8,
+    featured: true,
+  },
+
   // ─────────── India Hiring ───────────
   {
     slug: 'campus-placement-resume',
