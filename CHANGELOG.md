@@ -6,6 +6,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.13.0] - 2026-04-15
+
+### Added
+
+- **Page transition loader** (`components/PageLoader.tsx`) — global navigation indicator wired into `app/layout.tsx`. Two visual elements:
+  - Thin blue gradient progress bar at the top of the viewport that trickles up to ~85% during navigation and snaps to 100% on completion.
+  - Floating mini "resume building" card in the bottom-right corner with skeletal bars filling in (mirrors the homepage Fill7_Ultimate hero aesthetic). Only shows after 25% progress so quick navigations don't flash it.
+- The loader detects navigation start via a global click listener on `<a>` elements (filters out external links, downloads, modifier-key clicks, anchor jumps, mailto/tel links). It also responds to browser back/forward via `popstate`. Completes when `usePathname()` reports the new route.
+
+### Fixed (codereview pass — 16 issues)
+
+- **High:** `WhatsNew.tsx` `APP_VERSION` bumped from stale `1.4.0` to `1.12.0` with current release notes.
+- **High:** ESLint enforcement moved from `next.config.ts` (Next 16 removed the option) to `.github/workflows/ci.yml` — CI now runs `npm run lint -- --max-warnings 50` between TypeScript check and build.
+- **Medium:** `app/login/page.tsx` setError-in-effect → lazy useState initializer. No more cascading-render warning.
+- **Medium:** `components/CookieBanner.tsx` and `components/WhatsNew.tsx` — dropped `mounted` flag, setState only inside setTimeout/rAF callbacks.
+- **Medium:** `store/useResumeStore.ts` `let pendingWrites` → `const`.
+- **Medium:** `app/resume-after-career-gap/page.tsx` line 179 unescaped `"` → `&quot;`.
+- **Medium:** `lib/siteConfig.ts` (new) centralizes the deployed site URL via `NEXT_PUBLIC_SITE_URL`. All 9 hardcoded `https://resume-forge-orcin.vercel.app` references replaced with `SITE_URL` / `absoluteUrl()` imports. Renaming the Vercel project now requires changing one constant.
+- **Medium:** All `dangerouslySetInnerHTML JSON.stringify` blocks for JSON-LD now use the `jsonLd()` helper from `lib/articleSchema.ts` (escapes `<`).
+- **Medium:** Removed unused `SUPABASE_SERVICE_ROLE_KEY` from `.env.example` and `README.md`.
+- **Medium:** `components/templates/MonochromeTemplate.tsx` — removed dead `const _ = primaryColor` workaround. Destructure `{ data }` only.
+- **Low:** `components/HeroOptions.tsx` Fill4 — removed `as unknown as ReturnType<typeof setInterval>` type lie. Uses union of separate intervalId / timeoutId variables.
+- **Low:** `components/HeroOptions.tsx` Fill7_Ultimate — added `IntersectionObserver` to pause animation timers when hero scrolls offscreen. Resumes on re-entry.
+- **Low:** `eslint.config.mjs` silences `@next/next/no-img-element` for `components/templates/**` (since `images.unoptimized: true` makes `<img>` no worse than `<Image />`).
+- **Low:** `next.config.ts` documented why `images.unoptimized: true` is set.
+- **Low:** `lib/validation.ts` removed unused `eslint-disable` directive.
+
+Lint result: **0 errors, 13 warnings** (down from 5 errors / 35 warnings before the codereview).
+
+---
+
 ## [1.12.0] - 2026-04-15
 
 ### Added

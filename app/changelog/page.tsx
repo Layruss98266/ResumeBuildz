@@ -15,6 +15,21 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.13.0',
+    date: 'April 15, 2026',
+    title: 'Page Loader + Codereview Cleanup',
+    added: [
+      'Global page transition loader (PageLoader.tsx) wired into the root layout.',
+      'Top blue gradient progress bar that trickles during navigation and snaps to 100% on completion.',
+      'Floating mini "resume building" card in the bottom-right with skeletal bars filling in (matches the homepage hero aesthetic).',
+      'Detects navigation start via global click listener on <a> elements; responds to browser back/forward via popstate; completes via usePathname.',
+    ],
+    improved: [
+      'All 16 issues from the codereview pass fixed: WhatsNew APP_VERSION bumped to 1.12.0, ESLint enforcement moved to CI, setState-in-effect warnings resolved on login + CookieBanner + WhatsNew, hardcoded Vercel URL centralized via lib/siteConfig.ts (9 replacements), JSON-LD blocks consolidated via jsonLd() helper, unused SUPABASE_SERVICE_ROLE_KEY removed, MonochromeTemplate dead code removed, Fill4 type cast cleaned up, Fill7_Ultimate now pauses animations offscreen via IntersectionObserver, eslint-config silences <img> warnings for resume templates.',
+      'Lint result: 0 errors, 13 warnings (down from 5 errors / 35 warnings).',
+    ],
+  },
+  {
     version: 'v1.12.0',
     date: 'April 15, 2026',
     title: 'Ahrefs-style Blog Taxonomy + Mega-dropdown',

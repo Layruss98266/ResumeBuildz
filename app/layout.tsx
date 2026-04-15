@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
+import PageLoader from "@/components/PageLoader";
 import { Analytics } from "@vercel/analytics/react";
 import { SITE_URL } from "@/lib/siteConfig";
 import { jsonLd } from "@/lib/articleSchema";
@@ -143,7 +144,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <Providers>
+          <PageLoader />
+          {children}
+        </Providers>
         <Analytics />
       </body>
     </html>
