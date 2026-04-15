@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Clock, CheckCircle2, AlertCircle, Sparkles, HelpCircle, BookOpen, Users } from 'lucide-react';
+import { ArrowRight, Clock, CheckCircle2, AlertCircle, Sparkles, HelpCircle, BookOpen, Users, Mail } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import TOC from '@/components/TOC';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleMeta from '@/components/ArticleMeta';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { articleSchema, faqPageSchema, breadcrumbSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
 
 const REASONS = [
   { reason: 'Childcare / parental leave', wording: '"Career break to focus on raising young children. Stayed current via online certifications and freelance projects."' },
@@ -52,6 +56,16 @@ const FAQS = [
   },
 ];
 
+const EXPLANATION_EMAIL = {
+  subject: 'Re: [Role] application — brief career break context',
+  body: `Hi [Recruiter Name],\n\nThanks for considering my application for the [Role] position. I wanted to proactively share one thing that might come up in screening.\n\nBetween [start date] and [end date] I took a planned career break for [reason — e.g., "full-time childcare during the early years," "a health matter that has since resolved," "caregiving for a family member"]. During that time I stayed current in [domain] by completing [specific certification, course, freelance project, or volunteer work] and I am fully ready to return to a full-time role.\n\nI'd love the opportunity to discuss how my [N] years of experience in [specific domain] maps to what your team is building. Happy to share more context on a call.\n\nThanks,\n[Your name]`,
+};
+
+const CASE_STUDY_GAP = {
+  title: 'Case study: Meera returned after a 3-year gap',
+  story: `Meera had 8 years of marketing experience at two SaaS companies before taking a 3-year career break to care for her young children. When she started applying again in early 2025, her first 20 applications got zero responses — every cover letter apologized for the gap.\n\nShe switched strategies. She rewrote her summary to lead with accomplishments ("Grew a B2B SaaS demand-gen engine from $400k to $6.2M ARR") and added one factual line at the end: "Returning to work after a 3-year family care break. Completed HubSpot Inbound Marketing certification and 2 freelance projects during this period."\n\nShe also applied to Goldman Sachs\' returnship program as a backup. The returnship didn\'t materialize — she got 4 interviews from her first 25 tailored applications after the rewrite, and accepted a senior marketing role at a healthtech startup.\n\nThe turning point was reframing the gap from "apologize and explain" to "stated once, then moved on to value."`,
+};
+
 const RULES = [
   'Be honest, brief, and unapologetic. One factual line is enough — never bury the gap, never over-explain it.',
   'Use a "Career Break" entry on the resume timeline. Treat it like any other entry with start and end dates.',
@@ -84,12 +98,29 @@ export default function ResumeAfterCareerGapPage() {
     if (ogTitle) ogTitle.setAttribute('content', 'Resume After Career Gap 2026 - How to Explain & Win | ResumeForge');
   }, []);
 
+  const schema = combineSchemas(
+    articleSchema({
+      headline: 'How to Write a Resume After a Career Gap',
+      description: 'How to write a resume after a career gap of any length. Real wording, upskilling ideas, email template, case study, and FAQ.',
+      slug: 'resume-after-career-gap',
+      datePublished: '2026-04-14',
+      dateModified: '2026-04-15',
+    }),
+    faqPageSchema(FAQS),
+    breadcrumbSchema([
+      { label: 'Resources', slug: 'resume-for' },
+      { label: 'Resume after career gap' },
+    ])
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <SiteNavbar />
 
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Breadcrumbs items={[{ label: 'Resume after career gap' }]} className="justify-center flex mb-4" />
           <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
             <Clock className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Career Gap Recovery
           </span>
@@ -103,7 +134,9 @@ export default function ResumeAfterCareerGapPage() {
       </section>
 
       <main className="flex-1 bg-white py-14">
+        <TOC />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <ArticleMeta publishedDate="2026-04-14" updatedDate="2026-04-15" readingTime={10} reviewed />
           <section>
             <p className="text-gray-700 leading-relaxed text-lg">
               The biggest mistake is hiding the gap. Modern ATS systems calculate tenure from start and end dates automatically, and any unexplained year triggers a manual review flag. The candidates who get interviews are the ones who name the gap, normalize it in one line, and immediately pivot to current skills.
@@ -183,6 +216,37 @@ export default function ResumeAfterCareerGapPage() {
                 </details>
               ))}
             </div>
+          </section>
+
+          {/* Email Template */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <Mail className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Email template — explaining the gap to a recruiter</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Use this as a proactive email after you apply, or as a response if a recruiter asks about the gap on screening. One neutral paragraph, no apology.
+            </p>
+            <div className="bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden">
+              <div className="bg-gray-900 text-gray-300 px-5 py-2.5 text-xs font-mono">Subject</div>
+              <div className="px-5 py-3 text-sm text-gray-900 font-medium border-b border-gray-200">{EXPLANATION_EMAIL.subject}</div>
+              <div className="bg-gray-900 text-gray-300 px-5 py-2.5 text-xs font-mono">Body</div>
+              <pre className="px-5 py-4 text-xs text-gray-800 leading-relaxed whitespace-pre-wrap font-sans">{EXPLANATION_EMAIL.body}</pre>
+            </div>
+          </section>
+
+          {/* Case Study */}
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{CASE_STUDY_GAP.title}</h2>
+            </div>
+            <div className="text-sm text-gray-700">
+              {CASE_STUDY_GAP.story.split('\n\n').map((p, i) => (
+                <p key={i} className="mb-3 leading-relaxed">{p}</p>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-4 italic">Composite story based on public returnship and re-entry accounts from 2024-2025.</p>
           </section>
 
           <section className="text-center py-8">

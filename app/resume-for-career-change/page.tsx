@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Compass, CheckCircle2, Sparkles, Target, HelpCircle, Clock, BookOpen, AlertTriangle } from 'lucide-react';
+import { ArrowRight, Compass, CheckCircle2, Sparkles, Target, HelpCircle, Clock, BookOpen, AlertTriangle, Mail } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import TOC from '@/components/TOC';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleMeta from '@/components/ArticleMeta';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { articleSchema, faqPageSchema, howToSchema, breadcrumbSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
 
 const STEPS = [
   {
@@ -72,6 +76,16 @@ const FAQS = [
   },
 ];
 
+const PIVOT_EMAIL = {
+  subject: 'Exploring a transition into [Target Field] — quick chat?',
+  body: `Hi [Name],\n\nI found your profile while researching [their company / their field] and was struck by [specific thing they posted, published, or shipped].\n\nI'm currently a [current role] with [N] years at [current company], and I'm in the early stages of transitioning into [target field]. I've been [specific evidence of effort — built side projects, completed a certification, taken a course, done freelance work].\n\nI'd love 15 minutes of your time to ask how you navigated your path into [target field]. I'm not asking for a job or a referral — just learning from someone whose journey I admire. Totally understand if your schedule doesn't allow it.\n\nThanks for considering,\n[Your name]`,
+};
+
+const CASE_STUDY_PIVOT = {
+  title: 'Case study: Nikhil pivoted from sales to product management',
+  story: `Nikhil spent 6 years in B2B sales at a SaaS company, consistently hitting 110%+ of quota and managing key enterprise accounts. He decided to pivot into product management because he was more energized by discovery calls and customer research than by closing deals.\n\nHis first mistake: applying to senior PM roles at product companies with a straight chronological resume. Zero responses over 40 applications. The pivot framework on this page fixed it.\n\nHe rewrote the resume to a hybrid format, leading with "Customer-obsessed operator transitioning into product management" in the summary. He added a "Relevant Projects" section above experience that listed 3 PM-adjacent side projects: user research interviews he ran for a local non-profit, a prototype customer feedback portal he built in Notion, and a Reforge PM Foundations certification.\n\nIn experience, he rewrote sales bullets in PM language: "Identified and synthesized customer needs for 24 Fortune 500 accounts, shaping the product roadmap via direct feedback loops with product and engineering."\n\nOver 3 months he got 5 interviews for Associate PM roles and accepted a role at a mid-stage startup at a 12% pay cut. Within 18 months he was promoted to PM and exceeded his previous sales compensation.`,
+};
+
 const PIVOTS = [
   { from: 'Marketing', to: 'Product Management', overlap: 'Customer research, A/B testing, GTM strategy, copywriting' },
   { from: 'Sales', to: 'Customer Success', overlap: 'Stakeholder management, retention, expansion, account planning' },
@@ -104,12 +118,35 @@ export default function ResumeForCareerChangePage() {
     if (ogTitle) ogTitle.setAttribute('content', 'Resume for Career Change 2026 - 5-Step Pivot Guide | ResumeForge');
   }, []);
 
+  const schema = combineSchemas(
+    articleSchema({
+      headline: 'Resume for Career Change: The 5-Step Pivot Guide',
+      description: 'How to write a resume for a career change. 5-step pivot framework, transferable-skills rewriting, pivot examples, email template, case study, and FAQ.',
+      slug: 'resume-for-career-change',
+      datePublished: '2026-04-14',
+      dateModified: '2026-04-15',
+    }),
+    howToSchema({
+      name: 'How to write a resume for a career change',
+      description: '5-step framework for pivoting your resume into a new field.',
+      totalTime: 'PT3H',
+      steps: STEPS.map((s) => ({ name: s.title, text: s.body })),
+    }),
+    faqPageSchema(FAQS),
+    breadcrumbSchema([
+      { label: 'Resources', slug: 'resume-for' },
+      { label: 'Resume for career change' },
+    ])
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <SiteNavbar />
 
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Breadcrumbs items={[{ label: 'Resume for career change' }]} className="justify-center flex mb-4" />
           <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
             <Compass className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Career Pivot
           </span>
@@ -123,7 +160,9 @@ export default function ResumeForCareerChangePage() {
       </section>
 
       <main className="flex-1 bg-white py-14">
+        <TOC />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <ArticleMeta publishedDate="2026-04-14" updatedDate="2026-04-15" readingTime={11} reviewed />
           <section>
             <p className="text-gray-700 leading-relaxed text-lg">
               The hardest part of a career change is not the new skills. It is rewriting your past so the new field sees you as a credible candidate, not as someone who is just starting over. The framework below has been used by thousands of pivoters from marketing to PM, sales to CS, finance to ops, and engineering to product.
@@ -225,6 +264,37 @@ export default function ResumeForCareerChangePage() {
                 </details>
               ))}
             </div>
+          </section>
+
+          {/* Email Template */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <Mail className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Pivot outreach email — for informational interviews</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Informational interviews are the highest-leverage activity during a career pivot. This template gets response rates around 25-30% when you customize the first line with something specific from the recipient&apos;s public work.
+            </p>
+            <div className="bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden">
+              <div className="bg-gray-900 text-gray-300 px-5 py-2.5 text-xs font-mono">Subject</div>
+              <div className="px-5 py-3 text-sm text-gray-900 font-medium border-b border-gray-200">{PIVOT_EMAIL.subject}</div>
+              <div className="bg-gray-900 text-gray-300 px-5 py-2.5 text-xs font-mono">Body</div>
+              <pre className="px-5 py-4 text-xs text-gray-800 leading-relaxed whitespace-pre-wrap font-sans">{PIVOT_EMAIL.body}</pre>
+            </div>
+          </section>
+
+          {/* Case Study */}
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{CASE_STUDY_PIVOT.title}</h2>
+            </div>
+            <div className="text-sm text-gray-700">
+              {CASE_STUDY_PIVOT.story.split('\n\n').map((p, i) => (
+                <p key={i} className="mb-3 leading-relaxed">{p}</p>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-4 italic">Composite story based on public accounts of sales-to-PM pivots from 2023-2025.</p>
           </section>
 
           <section className="text-center py-8">

@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, CheckCircle2, Sparkles, Award, AlertCircle, Calendar, HelpCircle, TrendingUp } from 'lucide-react';
+import { ArrowRight, GraduationCap, CheckCircle2, Sparkles, Award, AlertCircle, Calendar, HelpCircle, TrendingUp, BookOpen } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import TOC from '@/components/TOC';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleMeta from '@/components/ArticleMeta';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { articleSchema, faqPageSchema, breadcrumbSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
 
 const CHECKLIST = [
   '10th, 12th, and graduation percentages or CGPA prominently listed (top of education section).',
@@ -19,6 +23,11 @@ const CHECKLIST = [
   'A clean ATS-friendly format with no graphics, no columns, no skill bars.',
   'PDF format, named correctly: Firstname_Lastname_Resume.pdf',
 ];
+
+const CASE_STUDY_CAMPUS = {
+  title: 'Case study: Rohan from a tier-2 engineering college',
+  story: `Rohan was a B.Tech CSE student at a tier-2 Maharashtra engineering college with a CGPA of 7.8. His 10th was 88%, 12th was 82%, and he had no active backlogs. Through the placement season, he cleared TCS NQT with 78%, Infosys InfyTQ with Pro-level certification, and completed 3 LeetCode-verified projects on his GitHub.\n\nDuring placements, TCS offered him the Digital track (₹7.1 LPA) based on his NQT score. Infosys offered him System Engineer at ₹6.5 LPA. Wipro offered Elite NTH at ₹3.5 LPA. He also cleared the first round at Flipkart but was rejected in round 3.\n\nHe accepted the TCS Digital offer and started at the Bangalore center. His resume strategy was simple: one page, academic percentages prominently on line 2, three projects with real GitHub links and quantified bullets, InfyTQ Pro + TCS NQT scores as certifications, and zero fluff.\n\nThe difference-maker: Rohan used the same resume format across all 4 companies but tailored the "Interests" section at the bottom to mention relevant domain interest (BFSI for TCS, Digital for Infosys, EdTech for Wipro). The core was identical.`,
+};
 
 const PLACEMENT_ROUNDS = [
   {
@@ -114,12 +123,29 @@ export default function CampusPlacementResumePage() {
     if (ogTitle) ogTitle.setAttribute('content', 'Campus Placement Resume 2026 - Format, Tips & Checklist | ResumeForge');
   }, []);
 
+  const schema = combineSchemas(
+    articleSchema({
+      headline: 'Campus Placement Resume 2026',
+      description: 'Complete campus placement resume guide for Indian engineering students. Format, checklist, 5-round process, case study, and FAQ.',
+      slug: 'campus-placement-resume',
+      datePublished: '2026-04-14',
+      dateModified: '2026-04-15',
+    }),
+    faqPageSchema(PLACEMENT_FAQS),
+    breadcrumbSchema([
+      { label: 'Resources', slug: 'resume-for' },
+      { label: 'Campus placement resume' },
+    ])
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <SiteNavbar />
 
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Breadcrumbs items={[{ label: 'Campus placement resume' }]} className="justify-center flex mb-4" />
           <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
             <GraduationCap className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Campus Placements
           </span>
@@ -133,7 +159,9 @@ export default function CampusPlacementResumePage() {
       </section>
 
       <main className="flex-1 bg-white py-14">
+        <TOC />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <ArticleMeta publishedDate="2026-04-14" updatedDate="2026-04-15" readingTime={10} reviewed />
           <section>
             <p className="text-gray-700 leading-relaxed text-lg">
               Most college Training and Placement (T&P) cells require a standard one-page resume. The mistake students make is treating the resume like a casual document. The companies that visit campus screen 20,000+ resumes in 48 hours — every formatting issue, missing percentage, or unverified claim costs you the interview slot.
@@ -220,6 +248,20 @@ export default function CampusPlacementResumePage() {
                 </details>
               ))}
             </div>
+          </section>
+
+          {/* Case Study */}
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{CASE_STUDY_CAMPUS.title}</h2>
+            </div>
+            <div className="text-sm text-gray-700">
+              {CASE_STUDY_CAMPUS.story.split('\n\n').map((p, i) => (
+                <p key={i} className="mb-3 leading-relaxed">{p}</p>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-4 italic">Composite based on public tier-2 placement stories from the 2024-2025 season.</p>
           </section>
 
           <section className="bg-amber-50 rounded-xl p-6 border border-amber-100">

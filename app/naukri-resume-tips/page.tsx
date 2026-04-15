@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Search, CheckCircle2, Sparkles, Tag, Eye, HelpCircle, TrendingUp, Zap } from 'lucide-react';
+import { ArrowRight, Search, CheckCircle2, Sparkles, Tag, Eye, HelpCircle, TrendingUp, Zap, BookOpen } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import TOC from '@/components/TOC';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleMeta from '@/components/ArticleMeta';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { articleSchema, faqPageSchema, breadcrumbSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
 
 const RANKING_FACTORS = [
   { factor: 'Active in last 7 days', weight: 'Very High', note: 'Profiles that have not been active for 30+ days drop out of most recruiter filters entirely.' },
@@ -59,6 +63,11 @@ const FAQS = [
     a: 'Unavoidable if you keep your profile active. Use a dedicated job search phone number and email, or at least filter aggressively. Naukri\'s "Do Not Disturb" settings help but do not eliminate the volume.',
   },
 ];
+
+const CASE_STUDY_NAUKRI = {
+  title: 'Case study: Arjun\'s Naukri profile went from 2 views/week to 40',
+  story: `Arjun was a 5-year Java backend developer at an IT services firm in Hyderabad, actively looking for product-company roles. His Naukri profile was getting 2-3 recruiter views per week despite his strong experience — not enough to land interviews.\n\nHe applied the 8 tips on this page over one weekend. The biggest changes: he rewrote his headline from "Software Engineer" to "Senior Java Backend Engineer | 5 yrs | Spring Boot, Microservices, Kafka, AWS | Bangalore | 30 days notice." He added 42 key skills (he\'d only listed 8). He updated his notice period from "3 months" to "30 days" (which matched his actual situation after negotiation). He added 6 detailed projects with tech stacks.\n\nWithin two weeks, his recruiter views jumped from 2-3/week to 40/week. He got 11 first-round calls in the following month and accepted an offer at a Bangalore fintech at a 68% hike.\n\nThe single highest-leverage change: the headline. Recruiters search Naukri primarily via keyword filters, and his old headline had almost none of the terms they were searching for.`,
+};
 
 const TIPS = [
   {
@@ -118,12 +127,29 @@ export default function NaukriResumeTipsPage() {
     if (ogTitle) ogTitle.setAttribute('content', 'Naukri.com Resume Tips 2026 - Get 3x More Recruiter Views | ResumeForge');
   }, []);
 
+  const schema = combineSchemas(
+    articleSchema({
+      headline: '8 Naukri.com Resume Tips That 3x Recruiter Views',
+      description: 'How to optimize your Naukri.com profile and resume to get more recruiter views. Ranking factors, profile checklist, case study, and FAQ.',
+      slug: 'naukri-resume-tips',
+      datePublished: '2026-04-14',
+      dateModified: '2026-04-15',
+    }),
+    faqPageSchema(FAQS),
+    breadcrumbSchema([
+      { label: 'Resources', slug: 'resume-for' },
+      { label: 'Naukri.com resume tips' },
+    ])
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <SiteNavbar />
 
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Breadcrumbs items={[{ label: 'Naukri.com resume tips' }]} className="justify-center flex mb-4" />
           <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
             <Search className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Naukri.com Optimisation
           </span>
@@ -137,7 +163,9 @@ export default function NaukriResumeTipsPage() {
       </section>
 
       <main className="flex-1 bg-white py-14">
+        <TOC />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <ArticleMeta publishedDate="2026-04-14" updatedDate="2026-04-15" readingTime={9} reviewed />
           <section>
             <p className="text-gray-700 leading-relaxed text-lg">
               Naukri does not work like LinkedIn. Recruiters do not browse profiles — they search using narrow filters: skill, location, notice period, current CTC, expected CTC, total experience, and last active date. Every tip below moves the dial on one of those filters.
@@ -236,6 +264,20 @@ export default function NaukriResumeTipsPage() {
               <li><span className="font-semibold text-gray-900">LinkedIn:</span> better for product companies, startups, fintech, global roles. Recruiter Lite uses different signals — engagement and content matter.</li>
               <li><span className="font-semibold text-gray-900">Indeed:</span> aggregator with strong search by job title and city. Easier resume parsing. Useful for non-IT roles.</li>
             </ul>
+          </section>
+
+          {/* Case Study */}
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{CASE_STUDY_NAUKRI.title}</h2>
+            </div>
+            <div className="text-sm text-gray-700">
+              {CASE_STUDY_NAUKRI.story.split('\n\n').map((p, i) => (
+                <p key={i} className="mb-3 leading-relaxed">{p}</p>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-4 italic">Composite story based on typical Naukri profile optimization outcomes.</p>
           </section>
 
           <section className="text-center py-8">

@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2, AlertCircle, Heart, Target, Sparkles, Calendar, TrendingUp, HelpCircle, BarChart3 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, AlertCircle, Heart, Target, Sparkles, Calendar, TrendingUp, HelpCircle, BarChart3, Mail, BookOpen } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import TOC from '@/components/TOC';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleMeta from '@/components/ArticleMeta';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { articleSchema, faqPageSchema, howToSchema, breadcrumbSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
 
 const DOS = [
   'Treat the layoff as a business event, not a personal failure. The resume is not the place to explain it; the cover letter is.',
@@ -102,6 +106,29 @@ const FAQS = [
   },
 ];
 
+const EMAIL_TEMPLATES = [
+  {
+    title: 'Networking outreach — to a former colleague',
+    subject: 'Catching up + looking for my next role',
+    body: `Hi [Name],\n\nHope you're doing well — it's been a while since we last connected. I wanted to reach out because I was part of the recent reorganization at [Company] and I'm now actively looking for my next [role] role.\n\nI remembered how much I enjoyed working with you on [specific project] and thought you might know people in your network who are hiring. If you have 15 minutes in the next week or two, I'd love to catch up and hear what you're working on.\n\nI've attached my updated resume for context. No pressure at all — happy to connect when it works for you.\n\nThanks,\n[Your name]`,
+  },
+  {
+    title: 'Referral ask — to a weak-tie contact',
+    subject: 'Quick favor? Referral at [Target Company]',
+    body: `Hi [Name],\n\nWe connected a while back through [context — conference, LinkedIn, mutual friend]. I hope you're doing well at [Their Company].\n\nI'm writing because I saw that [Target Company] is hiring for a [Role] and I believe I'd be a strong fit — my experience at [Company] included [specific relevant outcome]. Since I know you work there, I wanted to ask: would you be open to referring me internally?\n\nI've attached my resume and the job posting. Happy to send anything else that helps. Totally understand if you don't feel comfortable referring someone you haven't worked with directly.\n\nThanks for considering,\n[Your name]`,
+  },
+  {
+    title: 'Follow-up after applying — to a hiring manager',
+    subject: 'Follow-up: [Role] application from [Your Name]',
+    body: `Hi [Name],\n\nI applied last week for the [Role] position on your team and wanted to follow up briefly. The role stood out to me because [one specific thing about the team or the role].\n\nIn my previous role at [Company], I [one quantified achievement that maps to the JD]. I'd welcome the chance to discuss how that experience could translate to what your team is building.\n\nI've reattached my resume for convenience. Thanks for your time.\n\nBest,\n[Your name]`,
+  },
+];
+
+const CASE_STUDY = {
+  title: 'Case study: Priya, laid off from a tech firm in July 2024',
+  story: `Priya was a mid-level product manager at a fast-growing SaaS company when she was laid off as part of a 15% company-wide reduction in July 2024. She spent the first week processing the shock, then applied the framework on this page. By week two she had a fully rewritten one-page resume leading with a quantified outcome: "Grew weekly active users from 41k to 87k in 12 months." She updated LinkedIn with a simple "Open to work — product management roles" banner and started applying to 15 roles per week.\n\nIn month two, she added three volunteer product reviews for a local non-profit to show continued momentum. She also signed up for Goldman Sachs\' returnship program as a backup path, though she ultimately didn't need it. By the end of month three she had 6 interviews and 2 offers. She accepted a role at a larger company at a 14% higher base salary than her previous job.\n\nThe difference-maker wasn't luck — it was a quantified, forward-looking resume (not apologetic), an updated LinkedIn on day one, and a disciplined 15-applications-per-week rhythm rather than spray-and-pray.`,
+};
+
 const STEPS = [
   {
     title: 'Step 1: Take 48 hours, then start',
@@ -148,13 +175,39 @@ export default function ResumeAfterLayoffPage() {
     if (ogTitle) ogTitle.setAttribute('content', 'Resume After Layoff 2026 - 5-Step Guide & Templates | ResumeForge');
   }, []);
 
+  const schema = combineSchemas(
+    articleSchema({
+      headline: 'Resume After a Layoff: A 5-Step Guide for 2026',
+      description: 'How to write a resume after a layoff. 5-step recovery framework, timeline, returnship programs, FAQ, and email templates.',
+      slug: 'resume-after-layoff',
+      datePublished: '2026-04-14',
+      dateModified: '2026-04-15',
+    }),
+    howToSchema({
+      name: 'How to write a resume after a layoff',
+      description: '5-step framework for rewriting your resume after involuntary separation.',
+      totalTime: 'PT2H',
+      steps: STEPS.map((s) => ({ name: s.title, text: s.body })),
+    }),
+    faqPageSchema(FAQS),
+    breadcrumbSchema([
+      { label: 'Resources', slug: 'resume-for' },
+      { label: 'Resume after a layoff' },
+    ])
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <SiteNavbar />
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Breadcrumbs
+            items={[{ label: 'Resume after a layoff' }]}
+            className="justify-center flex mb-4"
+          />
           <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
             <Heart className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Career Recovery
           </span>
@@ -169,7 +222,14 @@ export default function ResumeAfterLayoffPage() {
 
       {/* Intro */}
       <main className="flex-1 bg-white py-14">
+        <TOC />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <ArticleMeta
+            publishedDate="2026-04-14"
+            updatedDate="2026-04-15"
+            readingTime={12}
+            reviewed
+          />
           <section>
             <p className="text-gray-700 leading-relaxed text-lg">
               A layoff is not a performance issue. According to the US Bureau of Labor Statistics, roughly 20 million workers experience involuntary separation each year, and the majority find new roles within 4 months. The candidates who land fastest share three traits: a quantified, forward-looking resume; a calm, factual cover letter; and an updated LinkedIn that matches both.
@@ -329,6 +389,47 @@ export default function ResumeAfterLayoffPage() {
                 </details>
               ))}
             </div>
+          </section>
+
+          {/* Email Templates */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <Mail className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Email templates for your first week</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              The fastest way to land interviews after a layoff is targeted outreach. These three templates are structured to get responses, not just attention. Copy, personalize the bracketed fields, and send 3-5 per week.
+            </p>
+            <div className="space-y-4">
+              {EMAIL_TEMPLATES.map((t, i) => (
+                <details key={i} className="group bg-gray-50 rounded-xl border border-gray-100 overflow-hidden open:shadow-sm">
+                  <summary className="px-5 py-4 cursor-pointer font-semibold text-gray-900 text-sm flex items-center justify-between">
+                    <span>{t.title}</span>
+                    <span className="text-blue-500 transition-transform group-open:rotate-45 text-xl leading-none">+</span>
+                  </summary>
+                  <div className="px-5 pb-5 border-t border-gray-200">
+                    <p className="text-xs font-mono text-gray-500 uppercase tracking-wide mt-3 mb-1">Subject</p>
+                    <p className="text-sm text-gray-900 font-medium mb-3">{t.subject}</p>
+                    <p className="text-xs font-mono text-gray-500 uppercase tracking-wide mb-1">Body</p>
+                    <pre className="text-xs text-gray-800 leading-relaxed whitespace-pre-wrap font-sans">{t.body}</pre>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          {/* Case Study */}
+          <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+            <div className="flex items-center gap-2 mb-4">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">{CASE_STUDY.title}</h2>
+            </div>
+            <div className="prose prose-sm max-w-none text-gray-700">
+              {CASE_STUDY.story.split('\n\n').map((p, i) => (
+                <p key={i} className="mb-3 leading-relaxed">{p}</p>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-4 italic">Composite story based on public accounts from 2024-2025 tech layoff recoveries.</p>
           </section>
 
           {/* CTA */}

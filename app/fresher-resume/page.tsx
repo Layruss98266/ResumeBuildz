@@ -2,10 +2,14 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, CheckCircle2, FileText, Sparkles, Award, AlertTriangle, HelpCircle, Layout } from 'lucide-react';
+import { ArrowRight, GraduationCap, CheckCircle2, FileText, Sparkles, Award, AlertTriangle, HelpCircle, Layout, BookOpen, LayoutGrid } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import TOC from '@/components/TOC';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleMeta from '@/components/ArticleMeta';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { articleSchema, faqPageSchema, breadcrumbSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
 
 const SECTIONS = [
   {
@@ -102,6 +106,28 @@ const FAQS = [
   },
 ];
 
+const GLOSSARY = [
+  { term: 'ATS', full: 'Applicant Tracking System — software companies use to parse and filter resumes. 98% of Fortune 500 companies use one (Jobscan, 2024).' },
+  { term: 'CGPA', full: 'Cumulative Grade Point Average — typically on a 10-point scale in Indian universities. TCS/Infosys often require 7.0+ for Ninja and 7.5+ for Digital tracks.' },
+  { term: 'DSA', full: 'Data Structures and Algorithms — the foundation of technical interviews at product companies. Typically assessed via LeetCode, HackerRank, or CodeChef.' },
+  { term: 'NQT', full: 'National Qualifier Test — TCS\'s standardized assessment for fresher hiring. Score determines Ninja (₹3.4 LPA) or Digital (₹7.1 LPA) track.' },
+  { term: 'InfyTQ', full: 'Infosys\' free certification platform on Python, DBMS, and software engineering. Pro-level certification fast-tracks candidates.' },
+  { term: 'NTH', full: 'National Talent Hunt — Wipro\'s assessment for fresher hiring. Elite NTH (₹3.5 LPA), WILP (₹6.5 LPA).' },
+  { term: 'OT', full: 'Online Test — the first round at most campus drives. Typically 60-90 min of aptitude + coding.' },
+  { term: 'GD', full: 'Group Discussion — used by TCS, Deloitte, and Accenture to assess communication and leadership in a group setting.' },
+  { term: 'PPT', full: 'Pre-Placement Talk — company presentation before the placement drive. Attend every one for the companies you want to target.' },
+  { term: 'CTC', full: 'Cost to Company — total annual compensation including base, benefits, bonuses, and employer contributions. Different from take-home pay.' },
+];
+
+const COMPARISON_ROWS = [
+  { feature: 'Length', chrono: '1 page', funct: '1 page', hybrid: '1-2 pages' },
+  { feature: 'Best for', chrono: 'Most freshers and laterals', funct: 'Career changers, gaps', hybrid: 'Pivot + experienced freshers' },
+  { feature: 'ATS parsing', chrono: 'Excellent', funct: 'Poor — dates get lost', hybrid: 'Good' },
+  { feature: 'Skill visibility', chrono: 'Buried', funct: 'Top', hybrid: 'Top + timeline' },
+  { feature: 'Recruiter perception', chrono: 'Standard, trusted', funct: 'Suspicious (hides gaps)', hybrid: 'Modern, confident' },
+  { feature: 'Recommended for freshers?', chrono: 'Yes (default)', funct: 'No', hybrid: 'Optional' },
+];
+
 const TIPS = [
   'One page only. Freshers do not have enough material to justify two pages, and ATS prefers single-page resumes for entry roles.',
   'Lead bullets with action verbs (Built, Designed, Optimised, Reduced) and end with a number or outcome.',
@@ -134,12 +160,29 @@ export default function FresherResumePage() {
     if (ogTitle) ogTitle.setAttribute('content', 'Fresher Resume Format 2026 - Free ATS Template & Tips | ResumeForge');
   }, []);
 
+  const schema = combineSchemas(
+    articleSchema({
+      headline: 'Fresher Resume Format 2026',
+      description: 'How to write a fresher resume in 2026. 7-section format, mistakes to avoid, glossary, comparison tables, and FAQ.',
+      slug: 'fresher-resume',
+      datePublished: '2026-04-14',
+      dateModified: '2026-04-15',
+    }),
+    faqPageSchema(FAQS),
+    breadcrumbSchema([
+      { label: 'Resources', slug: 'resume-for' },
+      { label: 'Fresher resume' },
+    ])
+  );
+
   return (
     <div className="min-h-screen flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
       <SiteNavbar />
 
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-14 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Breadcrumbs items={[{ label: 'Fresher resume' }]} className="justify-center flex mb-4" />
           <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-medium px-4 py-1.5 rounded-full mb-6 animate-fade-in">
             <GraduationCap className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" /> Fresher / Entry-Level
           </span>
@@ -153,7 +196,9 @@ export default function FresherResumePage() {
       </section>
 
       <main className="flex-1 bg-white py-14">
+        <TOC />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <ArticleMeta publishedDate="2026-04-14" updatedDate="2026-04-15" readingTime={11} reviewed />
           <section>
             <p className="text-gray-700 leading-relaxed text-lg">
               India produces over 1.5 million engineering graduates every year. The students who get placed first are not always the ones with the highest CGPA — they are the ones with resumes that are easy for recruiters to skim, ATS-clean, and full of evidence of doing real things. Here is the format that consistently wins.
@@ -257,6 +302,58 @@ export default function FresherResumePage() {
                 </details>
               ))}
             </div>
+          </section>
+
+          {/* Comparison table */}
+          <section>
+            <div className="flex items-center gap-2 mb-5">
+              <LayoutGrid className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Chronological vs functional vs hybrid — which format to pick</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Most freshers use chronological without thinking about it, and that is usually correct. Here is the full comparison so you can see why the default wins for entry-level applicants.
+            </p>
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-x-auto">
+              <table className="w-full text-sm min-w-[560px]">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Feature</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Chronological</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Functional</th>
+                    <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Hybrid</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARISON_ROWS.map((row, i) => (
+                    <tr key={i} className={i < COMPARISON_ROWS.length - 1 ? 'border-b border-gray-100' : ''}>
+                      <td className="px-4 py-3 font-semibold text-gray-900">{row.feature}</td>
+                      <td className="px-4 py-3 text-gray-700 text-xs">{row.chrono}</td>
+                      <td className="px-4 py-3 text-gray-700 text-xs">{row.funct}</td>
+                      <td className="px-4 py-3 text-gray-700 text-xs">{row.hybrid}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* Glossary */}
+          <section className="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100">
+            <div className="flex items-center gap-2 mb-5">
+              <BookOpen className="h-5 w-5 text-blue-600" />
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Fresher resume glossary</h2>
+            </div>
+            <p className="text-gray-600 mb-6 text-sm">
+              The terms that show up on Indian campus placement notices and hiring portals, defined clearly.
+            </p>
+            <dl className="grid sm:grid-cols-2 gap-3">
+              {GLOSSARY.map((g, i) => (
+                <div key={i} className="bg-white rounded-lg p-4 border border-gray-200">
+                  <dt className="font-bold text-gray-900 text-sm mb-1">{g.term}</dt>
+                  <dd className="text-xs text-gray-600 leading-relaxed">{g.full}</dd>
+                </div>
+              ))}
+            </dl>
           </section>
 
           <section className="text-center py-8">

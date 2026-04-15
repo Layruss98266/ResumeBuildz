@@ -1,12 +1,16 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, ChevronLeft, CheckCircle2, Tag, Briefcase, MapPin, Sparkles, FileText, Lightbulb, Users, AlertTriangle, Quote, Wrench, HelpCircle } from 'lucide-react';
+import { ArrowRight, ChevronLeft, CheckCircle2, Tag, Briefcase, MapPin, Sparkles, FileText, Lightbulb, Users, AlertTriangle, Quote, Wrench, HelpCircle, Mail, MessageSquare, DollarSign, Share2 } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
+import TOC from '@/components/TOC';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import ArticleMeta from '@/components/ArticleMeta';
 import { useLoginGateway } from '@/components/LoginGateway';
 import type { CompanyEntry } from '@/lib/resumeCompanyData';
 import { getCompanyExtended } from '@/lib/resumeCompanyDataExtended';
+import { getCompanyDeep } from '@/lib/resumeCompanyDataDeep';
 
 interface Props {
   data: CompanyEntry;
@@ -16,6 +20,7 @@ interface Props {
 export default function CompanyResumeView({ data, related }: Props) {
   const { openGateway } = useLoginGateway();
   const extended = getCompanyExtended(data.slug);
+  const deep = getCompanyDeep(data.slug);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -24,6 +29,13 @@ export default function CompanyResumeView({ data, related }: Props) {
       {/* Hero */}
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white py-12 md:py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs
+            items={[
+              { label: 'Company Guides', href: '/resume-for' },
+              { label: data.name },
+            ]}
+            className="mb-4"
+          />
           <Link
             href="/resume-for"
             className="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-white mb-6 transition"
@@ -52,7 +64,15 @@ export default function CompanyResumeView({ data, related }: Props) {
 
       {/* Body */}
       <main className="flex-1 bg-white py-12 md:py-16">
+        <TOC />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <ArticleMeta
+            publishedDate="2026-04-15"
+            updatedDate="2026-04-15"
+            readingTime={Math.max(6, Math.round((deep ? 14 : 8)))}
+            reviewed
+          />
+
           {/* Hiring Focus */}
           <section>
             <div className="flex items-start gap-4">
@@ -184,6 +204,120 @@ export default function CompanyResumeView({ data, related }: Props) {
                     </details>
                   ))}
                 </div>
+              </section>
+            </>
+          )}
+
+          {deep && (
+            <>
+              {/* Cover Letter Template */}
+              <section>
+                <div className="flex items-center gap-2 mb-5">
+                  <Mail className="h-5 w-5 text-blue-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">Cover letter template for {data.name}</h2>
+                </div>
+                <p className="text-gray-600 mb-5">
+                  A 3-paragraph structure tuned for {data.name}&apos;s recruiting style. Copy it, fill in the bracketed placeholders, and edit for voice before sending.
+                </p>
+                <div className="bg-gradient-to-br from-slate-50 to-gray-100 rounded-2xl border border-gray-200 overflow-hidden">
+                  <div className="bg-gray-900 text-gray-300 px-5 py-2.5 text-xs font-mono flex items-center justify-between">
+                    <span>Cover Letter — {data.name}</span>
+                    <span className="text-gray-500">Plain text, 3 paragraphs</span>
+                  </div>
+                  <div className="p-6 space-y-4">
+                    {deep.coverLetterTemplate.map((para, i) => (
+                      <p key={i} className="text-sm text-gray-800 leading-relaxed">
+                        <span className="text-xs font-mono text-gray-400 mr-2">¶{i + 1}</span>
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* Interview Questions */}
+              <section>
+                <div className="flex items-center gap-2 mb-5">
+                  <MessageSquare className="h-5 w-5 text-blue-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">{deep.interviewQuestions.length} common {data.name} interview questions</h2>
+                </div>
+                <p className="text-gray-600 mb-5">
+                  These questions show up in {data.name}&apos;s loops more than most. Hints are starting points, not full answers — practice saying each one out loud in 90 seconds.
+                </p>
+                <ol className="space-y-3">
+                  {deep.interviewQuestions.map((qa, i) => (
+                    <li key={i} className="bg-gray-50 rounded-xl border border-gray-100 p-5">
+                      <p className="font-semibold text-gray-900 text-sm mb-2 flex gap-2">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>
+                        {qa.q}
+                      </p>
+                      <p className="text-xs text-gray-600 ml-8">
+                        <span className="font-semibold text-blue-600">Hint:</span> {qa.hint}
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+
+              {/* Red Flags */}
+              <section className="bg-red-50 rounded-2xl p-6 md:p-8 border border-red-100">
+                <div className="flex items-center gap-2 mb-5">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">{deep.redFlags.length} red flags that auto-reject you at {data.name}</h2>
+                </div>
+                <p className="text-sm text-gray-700 mb-5">
+                  These are the fast-rejection triggers {data.name} recruiters have openly discussed. Fix these before you submit.
+                </p>
+                <ul className="space-y-3">
+                  {deep.redFlags.map((flag, i) => (
+                    <li key={i} className="flex gap-3 bg-white rounded-lg p-4 border border-red-100">
+                      <span className="flex-shrink-0 text-red-500 font-bold mt-0.5">🚩</span>
+                      <span className="text-sm text-gray-800 leading-relaxed">{flag}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              {/* Salary Benchmark */}
+              <section>
+                <div className="flex items-center gap-2 mb-5">
+                  <DollarSign className="h-5 w-5 text-green-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">{data.name} salary benchmarks</h2>
+                </div>
+                <p className="text-gray-600 mb-5 text-sm">
+                  Estimated total compensation (base + bonus + equity, annualized) by role and seniority. Numbers are public market estimates from Levels.fyi, Glassdoor, AmbitionBox, and Indeed — use them as rough ranges, not exact offers.
+                </p>
+                <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                  <table className="w-full text-sm">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Role</th>
+                        <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Junior</th>
+                        <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Mid</th>
+                        <th className="text-left px-4 py-3 font-semibold text-gray-900 text-xs uppercase tracking-wide">Senior</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {deep.salaryBenchmark.map((row, i) => (
+                        <tr key={i} className={i < deep.salaryBenchmark.length - 1 ? 'border-b border-gray-100' : ''}>
+                          <td className="px-4 py-3 font-semibold text-gray-900">{row.role}</td>
+                          <td className="px-4 py-3 text-gray-700 text-xs">{row.junior}</td>
+                          <td className="px-4 py-3 text-gray-700 text-xs">{row.mid}</td>
+                          <td className="px-4 py-3 text-gray-700 text-xs">{row.senior}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              {/* Referral Strategy */}
+              <section className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 md:p-8 border border-blue-100">
+                <div className="flex items-center gap-2 mb-4">
+                  <Share2 className="h-5 w-5 text-blue-600" />
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">How to get a {data.name} referral</h2>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed">{deep.referralStrategy}</p>
               </section>
             </>
           )}
