@@ -111,7 +111,7 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="hidden md:flex justify-center items-center animate-scale-in delay-300">
+            <div className="hidden md:flex justify-end items-center animate-scale-in delay-300 pr-2 lg:pr-6">
               <Fill7_Ultimate />
             </div>
           </div>

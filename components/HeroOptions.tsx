@@ -621,7 +621,7 @@ export function Fill7_Ultimate() {
   ];
 
   return (
-    <div className="relative w-[440px] h-[540px] mx-auto" style={{ perspective: '1600px' }}>
+    <div className="relative w-[380px] h-[460px] mx-auto" style={{ perspective: '1500px' }}>
       <div
         ref={tiltRef}
         onMouseMove={onMouseMove}
@@ -634,7 +634,7 @@ export function Fill7_Ultimate() {
       >
         {/* Resume card — base layer */}
         <div
-          className="absolute top-6 left-1/2 -translate-x-1/2 w-[360px] h-[480px] rounded-2xl overflow-hidden bg-white border border-gray-200 shadow-2xl shadow-blue-500/40 p-8"
+          className="absolute top-5 left-1/2 -translate-x-1/2 w-[310px] h-[410px] rounded-2xl overflow-hidden bg-white border border-gray-200 shadow-2xl shadow-blue-500/40 p-6"
           style={{ transform: 'translateZ(0px) translateX(-50%)' }}
         >
           {/* Header */}
@@ -683,28 +683,28 @@ export function Fill7_Ultimate() {
 
         {/* ATS Score chip — floating at depth */}
         <div
-          className="absolute -top-2 right-0 bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 w-36 z-30"
+          className="absolute top-0 right-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-3 w-28 z-30"
           style={{ transform: 'translateZ(100px)' }}
         >
           <div className="flex items-center gap-1.5 mb-1">
             <div className={`h-1.5 w-1.5 rounded-full ${score >= 80 ? 'bg-green-500' : score >= 50 ? 'bg-amber-500' : 'bg-blue-500'} animate-pulse`} />
-            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">ATS Score</p>
+            <p className="text-[9px] font-bold text-gray-500 uppercase tracking-wider">ATS Score</p>
           </div>
-          <div className="flex items-end gap-1 mb-2">
-            <span className={`text-4xl font-black tabular-nums transition-colors ${score >= 80 ? 'text-green-500' : score >= 50 ? 'text-amber-500' : 'text-blue-500'}`}>
+          <div className="flex items-end gap-1 mb-1.5">
+            <span className={`text-3xl font-black tabular-nums transition-colors ${score >= 80 ? 'text-green-500' : score >= 50 ? 'text-amber-500' : 'text-blue-500'}`}>
               {score}
             </span>
-            <span className="text-sm text-gray-400 mb-1">%</span>
+            <span className="text-xs text-gray-400 mb-0.5">%</span>
           </div>
-          <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-300 ${score >= 80 ? 'bg-green-500' : score >= 50 ? 'bg-amber-500' : 'bg-blue-500'}`}
               style={{ width: `${score}%` }}
             />
           </div>
           {score >= 90 && (
-            <div className="mt-2 flex items-center gap-1 text-[9px] font-bold text-green-600 animate-fade-in">
-              <CheckCircle2 className="h-3 w-3" />
+            <div className="mt-1.5 flex items-center gap-1 text-[8px] font-bold text-green-600 animate-fade-in">
+              <CheckCircle2 className="h-2.5 w-2.5" />
               ATS-READY
             </div>
           )}
