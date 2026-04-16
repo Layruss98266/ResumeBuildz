@@ -9,10 +9,27 @@ import { Input } from '@/components/ui/input';
 import { Sparkles, Copy, Check } from 'lucide-react';
 import { streamGroqAI } from '@/components/ats/utils/groqAI';
 
+type Tone = 'professional' | 'formal' | 'casual' | 'concise';
+
+const TONE_PROMPTS: Record<Tone, string> = {
+  professional: 'Write a professional cover letter. Balanced tone, concrete achievements, 250-350 words. No placeholders - use the provided details. Return only the letter text.',
+  formal: 'Write a formal cover letter suitable for law, finance, government, or academia. Third-person style where natural, sophisticated vocabulary, 300-400 words. No contractions. No placeholders. Return only the letter text.',
+  casual: 'Write a warm, conversational cover letter for a startup or creative agency. First-person, use contractions, show personality, 200-300 words. No placeholders. Return only the letter text.',
+  concise: 'Write a concise cover letter. 4 short paragraphs, <200 words total. Lead with one killer achievement with a number. No placeholders. Return only the letter text.',
+};
+
+const TONE_LABELS: Record<Tone, string> = {
+  professional: 'Professional',
+  formal: 'Formal',
+  casual: 'Casual',
+  concise: 'Concise',
+};
+
 export default function CoverLetterForm() {
   const { resumeData, updateCoverLetter } = useResumeStore();
   const [jobTitle, setJobTitle] = useState('');
   const [company, setCompany] = useState('');
+  const [tone, setTone] = useState<Tone>('professional');
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -44,11 +61,11 @@ export default function CoverLetterForm() {
     updateCoverLetter('');
     try {
       const res = await streamGroqAI(
-        'Write a professional cover letter. Be concise (250-350 words). No placeholders  -  use the provided details. Return only the letter text.',
+        TONE_PROMPTS[tone],
         `Write a cover letter for ${jobTitle || 'a role'} at ${company || 'a company'}.\n\nCandidate info:\n${context}`,
         (_delta, full) => updateCoverLetter(full),
-        800,
-        0.7,
+        900,
+        tone === 'casual' ? 0.85 : tone === 'formal' ? 0.5 : 0.7,
       );
       if (!res.success) alert(res.error || 'AI generation failed.');
     } catch {
@@ -87,8 +104,27 @@ export default function CoverLetterForm() {
             <Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder="e.g. Google" className="mt-0.5 h-8 text-xs" />
           </div>
         </div>
+        <div>
+          <Label className="text-[10px] text-muted-foreground">Tone</Label>
+          <div className="grid grid-cols-4 gap-1 mt-1">
+            {(Object.keys(TONE_LABELS) as Tone[]).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTone(t)}
+                disabled={loading}
+                className={`text-[10px] font-semibold px-2 py-1.5 rounded border transition ${
+                  tone === t
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-background hover:bg-muted border-input'
+                }`}
+              >
+                {TONE_LABELS[t]}
+              </button>
+            ))}
+          </div>
+        </div>
         <Button size="sm" onClick={generateCoverLetter} disabled={loading} className="w-full gap-1.5">
-          <Sparkles className="h-3.5 w-3.5" /> {loading ? 'Generating...' : 'Generate Cover Letter'}
+          <Sparkles className="h-3.5 w-3.5" /> {loading ? 'Generating...' : `Generate ${TONE_LABELS[tone]} Letter`}
         </Button>
       </div>
 

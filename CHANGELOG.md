@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.18.0] - 2026-04-16
+
+### Added — 8 roadmap features shipped
+
+- **PDF.js worker bundled locally** at `/pdfjs/pdf.worker.min.mjs`. Kills unpkg CDN dependency — PDF import now works behind corporate firewalls.
+- **LinkedIn JSON import** (`lib/importLinkedIn.ts` + `LinkedInImportModal`). Auto-detects LinkedIn Data Export, Voyager API, and JSON Resume formats. Toolbar: "LinkedIn" button.
+- **Resume version history** (`lib/versionHistory.ts` + `VersionHistoryDialog`). Up to 30 named snapshots, auto-save hourly, one-click restore with automatic pre-restore backup. Toolbar: "Versions" button.
+- **Shareable read-only link** at `/r#<payload>`. Resume encoded in URL fragment via gzip+base64url. Zero backend, zero PII leaves the browser. Toolbar: "Share" button. `/r` added to robots disallow.
+- **JD-tailored rewrite** (`components/JDTailor.tsx`). Paste a job description, AI rewrites summary + top experience bullets with diff preview. Auto-snapshots before applying. Lives in the AI tab.
+- **Resume diff viewer** (`components/ResumeDiff.tsx`). Word-level LCS diff — inline or side-by-side. Powers the JD tailor preview.
+- **Cover letter tone variants** — 4 picks (Professional, Formal, Casual, Concise) in the cover letter form. Per-tone system prompts and temperature tuning.
+- **ATS score trend** (`components/ats/ATSTrend.tsx`). SVG sparkline of score history. Debounced snapshots (min 1-minute gap). Visible in the ATS tab.
+
+### Infrastructure
+
+- New shared libs: `lib/shareLink.ts` (gzip+base64url codec), `lib/diffText.ts` (LCS word-diff), `lib/atsTrend.ts` (trend storage), `lib/versionHistory.ts`.
+- Build output unchanged: 0 errors, same number of static routes +1 (`/r`).
+
+---
+
 ## [1.17.0] - 2026-04-16
 
 ### Added — 15 features across builder, AI, infra, growth

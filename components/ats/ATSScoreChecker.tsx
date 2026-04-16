@@ -20,6 +20,7 @@ import { useFormattingWarnings } from './hooks/useFormattingWarnings';
 import { useActiveVoice } from './hooks/useActiveVoice';
 
 // Sections
+import ATSTrend from './ATSTrend';
 import SectionScoreBreakdown from './sections/SectionScoreBreakdown';
 import ReadabilityScore from './sections/ReadabilityScore';
 import FormattingWarnings from './sections/FormattingWarnings';
@@ -131,6 +132,9 @@ export default function ATSScoreChecker() {
            score >= 50 ? 'Good start, but there\'s room for improvement.' :
            'Your resume needs more content to pass ATS screening.'}
         </p>
+
+        {/* ATS score trend over time */}
+        <ATSTrend currentScore={score} />
 
         <div className="space-y-1.5">
           {checks.map((check, i) => (

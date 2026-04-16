@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       // Internal preview tools — selectable galleries only, no public
       // value, kept out of indexing to avoid SEO leakage.
-      disallow: ['/loader-preview', '/hero-preview'],
+      disallow: ['/loader-preview', '/hero-preview', '/r', '/r/*'],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

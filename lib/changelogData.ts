@@ -14,6 +14,27 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.18.0',
+    date: 'April 16, 2026',
+    isoDate: '2026-04-16',
+    title: '8 Roadmap Features: LinkedIn Import, Versions, Share, JD Tailor, Diff, Tones, Trend',
+    added: [
+      'PDF.js worker bundled locally — PDF import now works behind corporate firewalls that block unpkg CDN.',
+      'LinkedIn JSON import — auto-detects LinkedIn Data Export, Voyager API, and JSON Resume formats.',
+      'Resume version history — up to 30 named snapshots, auto-save hourly, one-click restore with pre-restore backup.',
+      'Shareable read-only link /r#<payload> — gzip+base64url encoded, zero backend, no PII leaves the browser.',
+      'JD-tailored rewrite in AI tab — paste JD, AI rewrites summary + top bullets with side-by-side diff preview.',
+      'Resume diff viewer — word-level LCS diff, inline or side-by-side rendering.',
+      'Cover letter tone variants — Professional, Formal, Casual, Concise with per-tone temperature tuning.',
+      'ATS score trend — SVG sparkline of score history with debounced snapshots.',
+    ],
+    improved: [
+      'Toolbar gains LinkedIn, Versions, and Share buttons (desktop).',
+      'New shared libs: shareLink.ts, diffText.ts, atsTrend.ts, versionHistory.ts, importLinkedIn.ts.',
+      'JD tailor and LinkedIn import both auto-snapshot to version history before applying.',
+    ],
+  },
+  {
     version: 'v1.17.0',
     date: 'April 16, 2026',
     isoDate: '2026-04-16',

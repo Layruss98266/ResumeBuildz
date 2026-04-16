@@ -27,9 +27,13 @@ import SectionReorder from '@/components/SectionReorder';
 import WhatsNew from '@/components/WhatsNew';
 import ATSScoreChecker from '@/components/ats/ATSScoreChecker';
 import AISuggestions from '@/components/ats/AISuggestions';
+import JDTailor from '@/components/JDTailor';
 import UpgradeModal from '@/components/UpgradeModal';
 import PasteImportModal from '@/components/PasteImportModal';
 import ShortcutsDialog from '@/components/ShortcutsDialog';
+import VersionHistoryDialog from '@/components/VersionHistoryDialog';
+import LinkedInImportModal from '@/components/LinkedInImportModal';
+import ShareResumeDialog from '@/components/ShareResumeDialog';
 import { getUsage, incrementUsage, canUse } from '@/lib/usage';
 import { useToast } from '@/components/Toast';
 import { useAuthContext as useAuth } from '@/components/Providers';
@@ -116,6 +120,9 @@ export default function HomePage() {
   const [lastEdited, setLastEdited] = useState<number | null>(null);
   const [lastEditedLabel, setLastEditedLabel] = useState('');
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showLinkedInImport, setShowLinkedInImport] = useState(false);
+  const [showShare, setShowShare] = useState(false);
   const { showToast } = useToast();
   const { user, profile, isPro, isEmailVerified } = useAuth();
   // Cloud sync: pull on sign-in, debounced push on edits. Silent fallback
@@ -626,6 +633,15 @@ export default function HomePage() {
               <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={() => setShowPasteModal(true)} title="Paste from LinkedIn or text">
                 <FileText className="h-3.5 w-3.5" /> Paste
               </Button>
+              <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={() => setShowLinkedInImport(true)} title="Import from LinkedIn JSON">
+                <FileText className="h-3.5 w-3.5" /> LinkedIn
+              </Button>
+              <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={() => setShowVersionHistory(true)} title="Version history (save/restore snapshots)">
+                <FileText className="h-3.5 w-3.5" /> Versions
+              </Button>
+              <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={() => setShowShare(true)} title="Share read-only link">
+                <FileText className="h-3.5 w-3.5" /> Share
+              </Button>
               <Button variant="secondary" size="sm" className="gap-1.5 shadow-sm bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 hidden lg:flex" onClick={handleReset} title="Reset all data">
                 <RotateCcw className="h-3.5 w-3.5" /> Reset
               </Button>
@@ -998,7 +1014,7 @@ export default function HomePage() {
           )}
           {activeTab === 'ai' && (
             <ScrollArea className="h-full">
-              <div className="px-3 py-4 sm:px-4 overflow-hidden"><AISuggestions /></div>
+              <div className="px-3 py-4 sm:px-4 overflow-hidden space-y-6"><AISuggestions /><JDTailor /></div>
             </ScrollArea>
           )}
         </div>
@@ -1066,7 +1082,7 @@ export default function HomePage() {
                   <div className="p-4">
                     {activeTab === 'templates' && <TemplateSelector />}
                     {activeTab === 'ats' && <ATSScoreChecker />}
-                    {activeTab === 'ai' && <AISuggestions />}
+                    {activeTab === 'ai' && <><AISuggestions /><div className="mt-6"><JDTailor /></div></>}
                   </div>
                 </ScrollArea>
               </div>
@@ -1128,6 +1144,9 @@ export default function HomePage() {
       <UpgradeModal feature="pdf" open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
       <PasteImportModal open={showPasteModal} onClose={() => setShowPasteModal(false)} />
       <ShortcutsDialog open={showShortcuts} onOpenChange={setShowShortcuts} />
+      <VersionHistoryDialog open={showVersionHistory} onOpenChange={setShowVersionHistory} />
+      <LinkedInImportModal open={showLinkedInImport} onOpenChange={setShowLinkedInImport} />
+      <ShareResumeDialog open={showShare} onOpenChange={setShowShare} />
     </div>
     </ErrorBoundary>
   );
