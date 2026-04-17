@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useResumeStore } from '@/store/useResumeStore';
-import { CustomSection, CustomSectionItem } from '@/types/resume';
+import { CustomSectionItem } from '@/types/resume';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';

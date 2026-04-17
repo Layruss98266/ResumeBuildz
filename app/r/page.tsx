@@ -21,6 +21,8 @@ export default function SharePage() {
   useEffect(() => {
     const raw = typeof window !== 'undefined' ? window.location.hash.slice(1) : '';
     if (!raw) {
+      // Initial decode of URL fragment — unavoidable effect-based state sync.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setErrorMsg('No resume payload in the URL. Ask the sender to re-share the link.');
       setState('error');
       return;
@@ -36,7 +38,6 @@ export default function SharePage() {
       useResumeStore.setState({ resumeData: data });
       setState('ready');
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (state === 'loading') {

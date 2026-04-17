@@ -8,16 +8,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { CheckCircle2, AlertTriangle, XCircle, Info, Target, Sparkles, BarChart3, FileText, Zap } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, XCircle, Info, Target, Sparkles, BarChart3, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HelpTip } from '@/components/ui/help-tip';
 
 // Hooks
 import { useATSScore, type ATSCheck } from './hooks/useATSScore';
 import { useKeywordMatch } from './hooks/useKeywordMatch';
-import { useReadabilityScore } from './hooks/useReadabilityScore';
-import { useFormattingWarnings } from './hooks/useFormattingWarnings';
-import { useActiveVoice } from './hooks/useActiveVoice';
 
 // Sections
 import ATSTrend from './ATSTrend';
@@ -41,9 +38,6 @@ export default function ATSScoreChecker() {
   const { score, maxScore, checks, sectionScores } = useATSScore();
   const [jobDescription, setJobDescription] = useState('');
   const keywordResult = useKeywordMatch(jobDescription);
-  const readability = useReadabilityScore();
-  const formattingWarnings = useFormattingWarnings();
-  const passiveVoiceFlags = useActiveVoice();
 
   // AI gap analysis state
   const [aiGapAnalysis, setAiGapAnalysis] = useState('');

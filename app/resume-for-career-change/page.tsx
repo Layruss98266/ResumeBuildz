@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Compass, CheckCircle2, Sparkles, Target, HelpCircle, Clock, BookOpen, AlertTriangle, Mail } from 'lucide-react';
+import { ArrowRight, Compass, Sparkles, Target, HelpCircle, Clock, BookOpen, AlertTriangle, Mail } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import TOC from '@/components/TOC';

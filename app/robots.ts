@@ -6,9 +6,10 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      // Internal preview tools — selectable galleries only, no public
-      // value, kept out of indexing to avoid SEO leakage.
-      disallow: ['/loader-preview', '/hero-preview', '/r', '/r/*'],
+      // Internal preview tools + auth-only flows — no public SEO value.
+      // Auth pages (/login, /forgot-password) deliberately excluded from
+      // indexing so they don't outrank product/marketing pages on brand queries.
+      disallow: ['/loader-preview', '/hero-preview', '/r', '/r/*', '/login', '/forgot-password'],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

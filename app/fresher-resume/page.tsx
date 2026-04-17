@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, GraduationCap, CheckCircle2, FileText, Sparkles, Award, AlertTriangle, HelpCircle, Layout, BookOpen, LayoutGrid } from 'lucide-react';
+import { ArrowRight, GraduationCap, Sparkles, Award, AlertTriangle, HelpCircle, Layout, BookOpen, LayoutGrid } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import TOC from '@/components/TOC';

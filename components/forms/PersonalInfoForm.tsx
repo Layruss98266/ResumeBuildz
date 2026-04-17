@@ -76,6 +76,7 @@ export default function PersonalInfoForm() {
         <div className="relative">
           {personalInfo.photo ? (
             <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element -- data URL from file upload, not a static asset */}
               <img src={personalInfo.photo} alt="Profile" className="w-16 h-16 rounded-full object-cover border-2 border-muted" />
               <button
                 onClick={() => updatePersonalInfo({ photo: '' })}

@@ -28,8 +28,30 @@ function base64UrlDecode(s: string): Uint8Array {
 }
 
 /**
+ * Upper bound for the share-link payload length (base64url characters).
+ * Browsers and email clients vary wildly on URL length support:
+ *   - Chromium: ~32KB effective cap
+ *   - Firefox: ~64KB
+ *   - Old Outlook / some SMS gateways: 2KB truncate silently
+ * We clamp at 50_000 chars (~60KB URL total) so the decode side isn't fed
+ * a truncated payload. Beyond that, the UI surfaces a friendly "too big,
+ * use PDF export" error instead.
+ */
+export const MAX_SHARE_PAYLOAD_LENGTH = 50_000;
+
+export class ShareLinkTooLargeError extends Error {
+  constructor(public payloadLength: number) {
+    super(`Resume is too large for a share link (${payloadLength} chars, max ${MAX_SHARE_PAYLOAD_LENGTH}). Export as PDF instead.`);
+    this.name = 'ShareLinkTooLargeError';
+  }
+}
+
+/**
  * Encode ResumeData into a URL-safe fragment. Uses CompressionStream when
  * available (all modern browsers) for ~70% size reduction.
+ *
+ * Throws {@link ShareLinkTooLargeError} if the encoded payload exceeds
+ * {@link MAX_SHARE_PAYLOAD_LENGTH} characters.
  */
 export async function encodeResume(data: ResumeData): Promise<string> {
   const json = JSON.stringify(data);
@@ -42,13 +64,22 @@ export async function encodeResume(data: ResumeData): Promise<string> {
         new Blob([bytes as BlobPart]).stream().pipeThrough(new CompressionStream('gzip')),
       );
       const compressed = new Uint8Array(await stream.arrayBuffer());
-      return 'g:' + base64UrlEncode(compressed);
-    } catch {
+      const payload = 'g:' + base64UrlEncode(compressed);
+      if (payload.length > MAX_SHARE_PAYLOAD_LENGTH) {
+        throw new ShareLinkTooLargeError(payload.length);
+      }
+      return payload;
+    } catch (err) {
+      if (err instanceof ShareLinkTooLargeError) throw err;
       // Fall through to uncompressed.
     }
   }
 
-  return 'p:' + base64UrlEncode(bytes);
+  const payload = 'p:' + base64UrlEncode(bytes);
+  if (payload.length > MAX_SHARE_PAYLOAD_LENGTH) {
+    throw new ShareLinkTooLargeError(payload.length);
+  }
+  return payload;
 }
 
 export async function decodeResume(payload: string): Promise<ResumeData | null> {

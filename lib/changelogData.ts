@@ -14,6 +14,39 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.19.2',
+    date: 'April 17, 2026',
+    isoDate: '2026-04-17',
+    title: 'Navbar + Footer Redesign — Notion White + Newsletter Takeover',
+    added: [
+      'Newsletter subscribe form in footer with live email validation (green/red border on input).',
+      'Sitemap link added to footer Legal column + bottom nav bar so users can find the site map without hunting.',
+    ],
+    improved: [
+      'Navbar: inverted from dark gray-900 to clean white (Notion-style), blue-500 logo chip, blue hover states, blue-500 "Get started free" CTA. Mega-dropdown (4 blog clusters + Help footer), auth profile menu, mobile menu all preserved.',
+      'Footer: dark from-gray-900 via-slate-900 to-black gradient matches existing homepage hero for visual continuity. Blue-400→blue-600 gradient headline. 4-column link grid (Product, Resources, Company, Legal).',
+      'Supabase guest-mode stub extended with .maybeSingle, .upsert, .insert, .update — covers every call path in useCloudSync so guest-mode boot is fully defensive.',
+      'Auth pages (/login, /forgot-password) added to robots.ts disallow so they don\'t outrank product pages on brand queries.',
+      'Removed internal design-selection preview pages (/design-previews, /preview-final) — were accidentally shipping to production builds.',
+    ],
+  },
+  {
+    version: 'v1.19.1',
+    date: 'April 16, 2026',
+    isoDate: '2026-04-16',
+    title: 'Stability Fixes — Guest-Mode Boot, Script Tag, Lint Clean',
+    added: [
+      'Typed env accessors (lib/env.ts) replace process.env.FOO! non-null assertions with lazy getters that throw clear "Missing required env var" errors at access time.',
+      'Auth error normalization (lib/authErrors.ts) — raw Supabase messages never reflected into URL params or UI; all errors pass through stable codes with friendly labels.',
+    ],
+    improved: [
+      'Guest-mode boot: Supabase client + server + middleware + auth callback now detect missing NEXT_PUBLIC_SUPABASE_* env vars and fall back to a no-op stub instead of crashing on first render.',
+      'Dark-mode init script moved from next/script (body child) to plain inline <script> in <head> — kills React "script tag while rendering component" warning in Next 16 while still running before hydration.',
+      'Lint clean: 3 set-state-in-effect errors suppressed with targeted per-line disables + comments; 16 warnings resolved (unused imports, stale eslint-disable directives, dead hook calls).',
+      'Canonical URLs corrected: siteConfig fallback now resume-forge-orcin.vercel.app (the actual Vercel project URL); all GitHub references fixed to Surya8991/ResumeBuildz (proper casing). Affects sitemap, JSON-LD, footer, and README.',
+    ],
+  },
+  {
     version: 'v1.19.0',
     date: 'April 16, 2026',
     isoDate: '2026-04-16',

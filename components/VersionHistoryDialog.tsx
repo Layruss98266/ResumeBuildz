@@ -43,6 +43,8 @@ export default function VersionHistoryDialog({ open, onOpenChange }: Props) {
   const [newLabel, setNewLabel] = useState('');
 
   useEffect(() => {
+    // Refresh list from localStorage every time the dialog opens.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) setVersions(listVersions());
   }, [open]);
 

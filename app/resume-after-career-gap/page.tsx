@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Clock, CheckCircle2, AlertCircle, Sparkles, HelpCircle, BookOpen, Users, Mail } from 'lucide-react';
+import { ArrowRight, Clock, CheckCircle2, AlertCircle, Sparkles, HelpCircle, BookOpen, Mail } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import TOC from '@/components/TOC';

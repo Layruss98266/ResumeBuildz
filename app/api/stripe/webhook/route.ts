@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { logger } from '@/lib/logger';
+import { serverEnv } from '@/lib/env';
 
 // Stripe webhook handler — signature verification + event routing.
 //
@@ -55,7 +56,6 @@ export async function POST(req: NextRequest) {
   };
   let stripeMod: { default: StripeCtor } | null = null;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
     const dyn = new Function('m', 'return import(m)') as (m: string) => Promise<{ default: StripeCtor }>;
     stripeMod = await dyn('stripe').catch(() => null);
   } catch {
@@ -66,11 +66,11 @@ export async function POST(req: NextRequest) {
   }
 
   const Stripe = stripeMod.default;
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY);
 
   let event;
   try {
-    event = stripe.webhooks.constructEvent(rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = stripe.webhooks.constructEvent(rawBody, sig, serverEnv.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Invalid signature';
     // Only log the TYPE of failure — never echo the signature back, as

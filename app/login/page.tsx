@@ -5,6 +5,7 @@ import { useAuthContext as useAuth } from '@/components/Providers';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FileText } from 'lucide-react';
+import { classifyAuthError, authErrorLabel } from '@/lib/authErrors';
 
 function GoogleIcon() {
   return (
@@ -24,10 +25,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   // Lazy initializer reads the URL ?error= query param exactly once on mount.
-  // Avoids a cascading re-render that would happen if this lived in a useEffect.
+  // The query value is a stable AuthErrorCode (from the callback route);
+  // authErrorLabel() maps it to a human-friendly string. Never reflect raw
+  // 3rd-party error text into the UI.
   const [error, setError] = useState<string>(() => {
     if (typeof window === 'undefined') return '';
-    return new URLSearchParams(window.location.search).get('error') || '';
+    const code = new URLSearchParams(window.location.search).get('error');
+    return code ? authErrorLabel(code) : '';
   });
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
@@ -53,11 +57,11 @@ export default function LoginPage() {
 
     if (mode === 'login') {
       const { error } = await signInWithEmail(email, password);
-      if (error) setError(error.message);
+      if (error) setError(authErrorLabel(classifyAuthError(error)));
       else router.push('/builder');
     } else {
       const { error } = await signUpWithEmail(email, password, name);
-      if (error) setError(error.message);
+      if (error) setError(authErrorLabel(classifyAuthError(error)));
       else setEmailSent(true);
     }
     setLoading(false);

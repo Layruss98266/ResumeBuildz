@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { PLANS, type PlanId, isStripeConfigured } from '@/lib/stripe';
 import { SITE_URL } from '@/lib/siteConfig';
 import { rateLimit, clientId } from '@/lib/rateLimit';
+import { serverEnv } from '@/lib/env';
 
 // Stripe checkout session creator.
 //
@@ -86,7 +87,6 @@ export async function POST(req: NextRequest) {
   };
   let stripeMod: { default: StripeCtor } | null = null;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
     const dyn = new Function('m', 'return import(m)') as (m: string) => Promise<{ default: StripeCtor }>;
     stripeMod = await dyn('stripe').catch(() => null);
   } catch {
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const Stripe = stripeMod.default;
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY);
 
     const session = await stripe.checkout.sessions.create({
       mode: planMeta.recurring === 'one-time' ? 'payment' : 'subscription',

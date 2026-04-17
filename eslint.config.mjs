@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored, minified assets served under /public — never our code.
+    "public/**",
+    // Deno-runtime Edge Functions (TS config excludes them too).
+    "supabase/functions/**",
   ]),
   // Resume template files render the user's resume in the print preview.
   // next.config.ts sets `images.unoptimized: true`, so `<img>` is no worse

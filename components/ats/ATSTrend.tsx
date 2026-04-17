@@ -19,6 +19,8 @@ export default function ATSTrend({ currentScore }: Props) {
 
   useEffect(() => {
     recordScore(currentScore);
+    // Re-read trend after recording new point.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPoints(getTrend());
   }, [currentScore]);
 

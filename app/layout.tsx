@@ -81,16 +81,18 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* Apply dark class before first paint to avoid FOUC */}
+        <meta name="theme-color" content="#2563eb" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="ResumeBuildz" />
+        {/* Apply dark mode class before first paint to avoid FOUC.
+            Plain inline script in <head> runs synchronously at HTML parse time,
+            before React hydration — no flash, no React script-in-component warning. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `try{if(localStorage.getItem('resumeforge-dark')==='1')document.documentElement.classList.add('dark');}catch(e){}`,
           }}
         />
-        <meta name="theme-color" content="#2563eb" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="ResumeBuildz" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -139,7 +141,7 @@ export default function RootLayout({
                     name: "Surya L",
                   },
                   sameAs: [
-                    "https://github.com/Surya8991/resumebuildz",
+                    "https://github.com/Surya8991/ResumeBuildz",
                   ],
                 },
               ],

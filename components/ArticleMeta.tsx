@@ -1,4 +1,4 @@
-import { Clock, Calendar, UserCircle, CheckCircle2 } from 'lucide-react';
+import { Clock, Calendar, CheckCircle2 } from 'lucide-react';
 
 interface Props {
   author?: string;

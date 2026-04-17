@@ -1,14 +1,20 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 import { logger } from '@/lib/logger';
+import { env } from '@/lib/env';
 
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
+  // Skip auth refresh entirely when Supabase isn't configured (guest-mode dev).
+  if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
+    return supabaseResponse;
+  }
+
   try {
     const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      env.SUPABASE_URL,
+      env.SUPABASE_ANON_KEY,
       {
         cookies: {
           getAll() {

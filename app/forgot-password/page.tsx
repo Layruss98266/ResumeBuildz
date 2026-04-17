@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
+import { classifyAuthError, authErrorLabel } from '@/lib/authErrors';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -25,7 +26,7 @@ export default function ForgotPasswordPage() {
     });
 
     if (err) {
-      setError(err.message);
+      setError(authErrorLabel(classifyAuthError(err)));
     } else {
       setSent(true);
     }

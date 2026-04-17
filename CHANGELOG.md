@@ -6,6 +6,41 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.19.2] - 2026-04-17
+
+### Changed
+
+- **Navbar redesign — Notion-style clean white.** Inverted from dark `bg-gray-900` to white with `blue-500` logo chip, blue hover states, and blue-500 CTA. All existing functionality preserved: mega-dropdown (4 blog clusters + Help footer), auth profile dropdown (Manage Plan, Reset Password, Export Data, Sign Out, Delete Account, Upgrade), mobile menu, `useLoginGateway` wiring. CTA copy: "Get started free" for anon, "Build Resume" for signed-in.
+- **Footer redesign — Newsletter takeover.** Dark `from-gray-900 via-slate-900 to-black` gradient (matches existing homepage hero for visual continuity). Live email validation (green/red border on input). Blue-400→blue-600 gradient headline. 4-column link grid (Product, Resources, Company, Legal) with Sitemap link in Legal column + bottom nav. GitHub URL corrected to canonical `Surya8991/ResumeBuildz` casing.
+
+### Fixed
+
+- **Supabase guest-mode stub completeness** — extended `lib/supabase/client.ts` stub with `.maybeSingle()`, `.upsert()`, `.insert()`, `.update()` methods. Previously only covered `.select().eq().single()` + `.delete().eq()`. Now handles every call path in `useCloudSync.ts` (`.maybeSingle`, `.upsert`) so guest-mode boot survives even if a user object somehow materializes.
+- **Auth pages excluded from indexing** — `/login` and `/forgot-password` added to `app/robots.ts` disallow. Prevents outranking product pages on brand queries.
+
+### Removed
+
+- `app/design-previews/` and `app/preview-final/` — internal design-selection pages deleted after navbar/footer picks were finalized. Were showing up in `next build` output as static routes; now gone.
+
+---
+
+## [1.19.1] - 2026-04-16
+
+### Fixed
+
+- **Runtime crash when Supabase env vars missing.** `createBrowserClient('', '')` was throwing on first render on fresh clones with no `.env.local`. Both `lib/supabase/client.ts` and `lib/supabase/server.ts` now detect missing env and return a no-op stub so the app runs in guest mode. Same guard added to `proxy.ts` (middleware) and `app/auth/callback/route.ts`.
+- **React "script tag while rendering component" warning** in `app/layout.tsx`. Replaced `next/script` with `strategy="beforeInteractive"` (which Next 16 no longer renders correctly when placed in `<body>`) with a plain inline `<script>` tag in `<head>`. Dark-mode init still runs synchronously before hydration — no FOUC.
+- **3 ESLint errors** (`react-hooks/set-state-in-effect`) in `ShareResumeDialog`, `VersionHistoryDialog`, `ATSTrend`, and `app/r/page.tsx`. All legitimate async-state-sync patterns — suppressed with targeted per-line disables + explanatory comments.
+- **Typed env accessors** (`lib/env.ts`) replace scattered `process.env.FOO!` non-null assertions with lazy getters that throw a clear "Missing required env var: X" error at access time. Soft-required helpers return `''` with a dev warning so the app still boots in guest mode.
+- **Auth error normalization** (`lib/authErrors.ts`). Raw Supabase error messages are no longer reflected into URL query params or UI — all errors pass through `classifyAuthError` → stable code (`code_expired`, `invalid_credentials`, etc.) → friendly label. Prevents implementation-detail leaks and weak-trust phishing.
+
+### Chore
+
+- **Lint cleanup** — 16 warnings resolved: unused imports (`CheckCircle2`, `FileText`, `Link`, `Users`, `UserCircle`, `CustomSection`), unused `eslint-disable` directives, 3 dead `useMemo` hook calls in `ATSScoreChecker` whose return values had moved to child sections.
+- **Canonical URL cleanup** — `lib/siteConfig.ts` fallback corrected from the non-existent `resumebuildz.vercel.app` to the actual Vercel project URL `resume-forge-orcin.vercel.app`. All GitHub references (`app/layout.tsx` JSON-LD, `components/SiteFooter.tsx`, `README.md`, `README.html`) updated to the canonical casing `Surya8991/ResumeBuildz`. Vercel env var `NEXT_PUBLIC_SITE_URL` should be set in the production environment to override this fallback with the final custom domain.
+
+---
+
 ## [1.19.0] - 2026-04-16
 
 ### Security — 10 hardening fixes
