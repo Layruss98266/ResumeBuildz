@@ -92,7 +92,7 @@ export default function ATSGuidePage() {
         </section>
 
         {/* ATS Statistics */}
-        <section className="bg-white py-16 md:py-20">
+        <section id="ats-stats" className="bg-white py-16 md:py-20 scroll-mt-24">
           <div className="max-w-6xl mx-auto px-4">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12 animate-fade-in-up">ATS Statistics That Matter</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
