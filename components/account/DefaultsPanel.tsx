@@ -5,6 +5,8 @@ import { useAuthContext as useAuth } from '@/components/Providers';
 import { updateProfile } from '@/lib/accountUpdate';
 import { defaultsSchema } from '@/lib/accountSchema';
 import { Field, SaveBar, inputCls, useSaveState } from './shared';
+import { TEMPLATES } from '@/types/resume';
+import { FONT_OPTIONS } from '@/components/templates/TemplateWrapper';
 
 export default function DefaultsPanel() {
   const { user, profile } = useAuth();
@@ -38,11 +40,21 @@ export default function DefaultsPanel() {
     <form onSubmit={handleSubmit}>
       <h2 className="text-lg font-semibold text-gray-900 mb-6">Builder defaults</h2>
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label="Default template" hint="Template slug, e.g. modern" error={fieldErrors['default_template']}>
-          <input type="text" maxLength={40} value={form.default_template} onChange={(e) => setForm({ ...form, default_template: e.target.value })} className={inputCls} />
+        <Field label="Default template" error={fieldErrors['default_template']}>
+          <select value={form.default_template} onChange={(e) => setForm({ ...form, default_template: e.target.value })} className={`${inputCls} bg-white`}>
+            <option value="">No default (pick each time)</option>
+            {TEMPLATES.map((t) => (
+              <option key={t.name} value={t.name}>{t.label}</option>
+            ))}
+          </select>
         </Field>
-        <Field label="Default font" hint="Font family, e.g. Inter" error={fieldErrors['default_font']}>
-          <input type="text" maxLength={40} value={form.default_font} onChange={(e) => setForm({ ...form, default_font: e.target.value })} className={inputCls} />
+        <Field label="Default font" error={fieldErrors['default_font']}>
+          <select value={form.default_font} onChange={(e) => setForm({ ...form, default_font: e.target.value })} className={`${inputCls} bg-white`}>
+            <option value="">No default (pick each time)</option>
+            {FONT_OPTIONS.map((f) => (
+              <option key={f.value} value={f.value} style={{ fontFamily: f.value }}>{f.label}</option>
+            ))}
+          </select>
         </Field>
         <Field label="Accent colour" hint="Hex like #4F46E5" error={fieldErrors['default_accent']}>
           <div className="flex items-center gap-2">
