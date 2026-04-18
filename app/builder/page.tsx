@@ -36,7 +36,7 @@ import LinkedInImportModal from '@/components/LinkedInImportModal';
 import ShareResumeDialog from '@/components/ShareResumeDialog';
 import SaveStateChip from '@/components/SaveStateChip';
 import CommandPalette, { type Command } from '@/components/CommandPalette';
-import { TEMPLATES } from '@/types/resume';
+import { TEMPLATES, sampleResumeData } from '@/types/resume';
 import { getUsage, incrementUsage, canUse } from '@/lib/usage';
 import { useToast } from '@/components/Toast';
 import { useAuthContext as useAuth } from '@/components/Providers';
@@ -605,6 +605,17 @@ export default function HomePage() {
     out.push({ id: 'undo', group: 'Edit', label: 'Undo', hint: 'Ctrl+Z', run: () => { if (canUndo()) undo(); } });
     out.push({ id: 'redo', group: 'Edit', label: 'Redo', hint: 'Ctrl+Shift+Z', run: () => { if (canRedo()) redo(); } });
     out.push({ id: 'dark', group: 'View', label: 'Toggle dark mode', run: toggleDarkMode });
+    out.push({
+      id: 'load-sample',
+      group: 'Data',
+      label: 'Load sample resume (Sarah Mitchell)',
+      hint: 'Populates every section with the example data for editing',
+      run: () => {
+        if (confirm('Load the sample resume? This replaces your current data.')) {
+          importData(sampleResumeData);
+        }
+      },
+    });
     out.push({ id: 'shortcuts', group: 'Help', label: 'Keyboard shortcuts', hint: '?', run: () => setShowShortcuts(true) });
     return out;
   // eslint-disable-next-line react-hooks/exhaustive-deps
