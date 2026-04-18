@@ -460,7 +460,7 @@ function WaitlistSection() {
           Join the waitlist. First 100 members get 50% off launch price, one-time.
         </p>
         {submitted ? (
-          <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+          <div role="status" aria-live="polite" className="bg-green-50 border border-green-200 rounded-xl p-4">
             <p className="text-green-800 font-medium text-sm">
               You&apos;re on the list. We&apos;ll notify you at {email}.
             </p>
@@ -475,18 +475,20 @@ function WaitlistSection() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={submitting}
+                aria-label="Email address for the Pro waitlist"
                 className="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 disabled:opacity-60"
               />
               <button
                 type="submit"
                 disabled={submitting}
+                aria-busy={submitting}
                 className="px-6 py-3 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors shrink-0 shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {submitting ? 'Joining...' : 'Join Waitlist'}
               </button>
             </form>
             {error && (
-              <p className="text-sm text-red-600 mt-3">{error}</p>
+              <p role="alert" className="text-sm text-red-600 mt-3">{error}</p>
             )}
           </>
         )}

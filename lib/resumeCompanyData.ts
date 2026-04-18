@@ -1,6 +1,6 @@
 // Curated company-specific resume guidance for high-intent SEO pages.
 // 22 companies (10 Global + 12 India) — kept fully static. No PII, no scraping.
-// Used by: app/resume-for/page.tsx (hub) and app/resume-for/[company]/page.tsx (dynamic).
+// Used by: app/blog/company-guides/page.tsx (hub) and app/blog/company-guides/[company]/page.tsx (dynamic).
 
 export type CompanyTier = 'Global' | 'India';
 

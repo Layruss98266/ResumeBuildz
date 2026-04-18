@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowUpRight, Clock, ChevronLeft, ChevronRight, Building2 } from 'lucide-react';
@@ -43,21 +43,30 @@ function filterIncludesCompanies(filter: string): boolean {
   return filter === 'all' || filter === 'company-guides';
 }
 
+// Next 16 requires useSearchParams to be wrapped in a Suspense boundary so
+// the page can still render statically around the dynamic segment.
 export default function BlogHubPage() {
+  return (
+    <Suspense fallback={<BlogHubSkeleton />}>
+      <BlogHubContent />
+    </Suspense>
+  );
+}
+
+function BlogHubSkeleton() {
+  return <div className="min-h-screen bg-white" aria-hidden />;
+}
+
+function BlogHubContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const initialFilter = searchParams.get('cat') || 'all';
-  const initialPage = Math.max(1, Number(searchParams.get('page') || 1));
-  const [filter, setFilter] = useState<FilterValue>(initialFilter);
-  const [page, setPage] = useState<number>(initialPage);
-
-  // Sync local state when the URL changes (navbar dropdown, back button).
-  useEffect(() => {
-    setFilter(searchParams.get('cat') || 'all');
-    setPage(Math.max(1, Number(searchParams.get('page') || 1)));
-  }, [searchParams]);
+  // URL is the single source of truth. Deriving state directly from
+  // searchParams avoids setState-in-effect cascades and keeps browser
+  // back/forward naturally in sync.
+  const filter: FilterValue = searchParams.get('cat') || 'all';
+  const page = Math.max(1, Number(searchParams.get('page') || 1));
 
   useEffect(() => {
     document.title = 'Blog . Updates, guides, and research . ResumeBuildz';
@@ -98,9 +107,11 @@ export default function BlogHubPage() {
     return map;
   }, [allPosts]);
 
-  // Counts reflect exactly what the grid renders for each filter. The 22
-  // company entries always surface as first-class cards, so they count on
-  // All and on Company Guides. Non-company parents count only their posts.
+  // Counts reflect total content per filter, so the children (Resume & ATS +
+  // Job Search + India Hiring + Company Guides) sum to the All count. On the
+  // All filter the hero renders separately above the grid, which means the
+  // visible grid shows count - 1 items, but the chip number represents total
+  // content not current-page items.
   const parentChips = useMemo(
     () => [
       { value: 'all' as const, label: 'All', count: allPosts.length + COMPANIES.length },
@@ -124,27 +135,30 @@ export default function BlogHubPage() {
   };
 
   const handleFilter = (value: FilterValue) => {
-    setFilter(value);
-    setPage(1);
+    // Reset page when filter changes so the user is not stranded on an
+    // empty page 4 of a smaller result set.
     updateUrl(value, 1);
   };
 
   const handlePage = (next: number) => {
-    setPage(next);
     updateUrl(filter, next);
-    // Scroll to the grid so the user sees the new page start.
+    // Scroll the grid into view on a new frame so the URL replace commits
+    // before the scroll starts.
     if (typeof window !== 'undefined') {
-      const grid = document.getElementById('post-grid');
-      if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      requestAnimationFrame(() => {
+        const grid = document.getElementById('post-grid');
+        if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     }
   };
 
   // ---------- Filtered results (O(1) via indexes) ----------
+  // The hero is only rendered separately on the All filter (page 1). On any
+  // other filter the grid shows the complete list without hiding a hero.
   const filteredPosts = useMemo((): BlogPost[] => {
-    const excludeHero = (p: BlogPost) => p.slug !== hero?.slug;
-    if (filter === 'all') return allPosts.filter(excludeHero);
-    if (isParentGroup(filter)) return (postsByParent.get(filter) || []).filter(excludeHero);
-    return (postsByCategory.get(filter) || []).filter(excludeHero);
+    if (filter === 'all') return allPosts.filter((p) => p.slug !== hero?.slug);
+    if (isParentGroup(filter)) return postsByParent.get(filter) || [];
+    return postsByCategory.get(filter) || [];
   }, [filter, allPosts, postsByParent, postsByCategory, hero]);
 
   // Unified display stream: posts first, company cards after. Companies are

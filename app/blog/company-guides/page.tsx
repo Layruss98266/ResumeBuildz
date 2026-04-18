@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Building2, ArrowRight, ChevronRight, ArrowUpRight } from 'lucide-react';
@@ -11,16 +11,41 @@ import { COMPANIES } from '@/lib/resumeCompanyData';
 
 type TierFilter = 'all' | 'Global' | 'India';
 
+// Next 16 Suspense wrapper for useSearchParams.
 export default function CompanyGuidesHubPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" aria-hidden />}>
+      <CompanyGuidesHubContent />
+    </Suspense>
+  );
+}
+
+function isTier(v: string | null): v is TierFilter {
+  return v === 'Global' || v === 'India';
+}
+
+function CompanyGuidesHubContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const { openGateway } = useLoginGateway();
 
-  const initialTier = (searchParams.get('tier') as TierFilter) || 'all';
-  const initialIndustry = searchParams.get('industry') || 'all';
-  const [tier, setTier] = useState<TierFilter>(initialTier);
-  const [industry, setIndustry] = useState<string>(initialIndustry);
+  // URL is the source of truth. Reading directly from searchParams also keeps
+  // browser back/forward naturally in sync.
+  const tierParam = searchParams.get('tier');
+  const tier: TierFilter = isTier(tierParam) ? tierParam : 'all';
+  const industry: string = searchParams.get('industry') || 'all';
+
+  const setTier = (next: TierFilter) => updateUrl(next, industry);
+  const setIndustry = (next: string) => updateUrl(tier, next);
+
+  function updateUrl(nextTier: TierFilter, nextIndustry: string) {
+    const params = new URLSearchParams();
+    if (nextTier !== 'all') params.set('tier', nextTier);
+    if (nextIndustry !== 'all') params.set('industry', nextIndustry);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }
 
   useEffect(() => {
     document.title = 'Company Resume Guides . 22 Top Employers | ResumeBuildz';
@@ -32,15 +57,6 @@ export default function CompanyGuidesHubPage() {
     ogMeta('og:description')?.setAttribute('content', desc);
   }, []);
 
-  // URL-sync
-  useEffect(() => {
-    const params = new URLSearchParams();
-    if (tier !== 'all') params.set('tier', tier);
-    if (industry !== 'all') params.set('industry', industry);
-    const qs = params.toString();
-    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-  }, [tier, industry, pathname, router]);
-
   // Distinct industries, sorted by count desc so heavy ones surface first.
   const industries = useMemo(() => {
     const counts = new Map<string, number>();
@@ -50,13 +66,13 @@ export default function CompanyGuidesHubPage() {
       .map(([label, count]) => ({ label, count }));
   }, []);
 
-  const filtered = useMemo(() => {
-    return COMPANIES.filter((c) => {
-      if (tier !== 'all' && c.tier !== tier) return false;
-      if (industry !== 'all' && c.industry !== industry) return false;
-      return true;
-    });
-  }, [tier, industry]);
+  // Cheap enough at 22 entries to filter every render; React Compiler
+  // auto-memoizes where it matters.
+  const filtered = COMPANIES.filter((c) => {
+    if (tier !== 'all' && c.tier !== tier) return false;
+    if (industry !== 'all' && c.industry !== industry) return false;
+    return true;
+  });
 
   const globalCount = COMPANIES.filter((c) => c.tier === 'Global').length;
   const indiaCount = COMPANIES.filter((c) => c.tier === 'India').length;
@@ -145,7 +161,7 @@ export default function CompanyGuidesHubPage() {
                 Showing <strong className="text-gray-900">{filtered.length}</strong> of {COMPANIES.length} companies
                 {' '}
                 <button
-                  onClick={() => { setTier('all'); setIndustry('all'); }}
+                  onClick={() => updateUrl('all', 'all')}
                   className="ml-2 text-indigo-600 hover:underline"
                 >
                   Clear filters

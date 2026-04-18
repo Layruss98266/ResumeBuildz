@@ -95,9 +95,9 @@ export default function ContactPage() {
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 animate-scale-in delay-200">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Send a Message</h2>
             {submitted ? (
-              <div className="text-center py-12">
+              <div className="text-center py-12" role="status" aria-live="polite">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-8 h-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
@@ -131,9 +131,9 @@ export default function ContactPage() {
                   <textarea id="message" required rows={5} value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} disabled={submitting} className="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-900 focus:ring-2 focus:ring-indigo-600 focus:border-transparent outline-none resize-none disabled:opacity-60" placeholder="Your message..." />
                 </div>
                 {error && (
-                  <p className="text-sm text-red-600">{error}</p>
+                  <p role="alert" className="text-sm text-red-600">{error}</p>
                 )}
-                <button type="submit" disabled={submitting} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
+                <button type="submit" disabled={submitting} aria-busy={submitting} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg transition-colors shadow-sm disabled:opacity-60 disabled:cursor-not-allowed">
                   {submitting ? 'Sending...' : 'Send Message'}
                 </button>
                 <p className="text-xs text-gray-500 text-center">We read every message, usually within a day.</p>

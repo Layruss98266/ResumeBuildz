@@ -23,7 +23,7 @@ const SEARCHABLE = [
   { path: '/status', title: 'Status' },
   { path: '/roadmap', title: 'Roadmap' },
   ...BLOG_POSTS.map((p) => ({ path: `/${p.slug}`, title: p.title })),
-  ...COMPANIES.map((c) => ({ path: `/resume-for/${c.slug}`, title: `Resume for ${c.name}` })),
+  ...COMPANIES.map((c) => ({ path: `/blog/company-guides/${c.slug}`, title: `Resume for ${c.name}` })),
 ];
 
 export default function NotFound() {

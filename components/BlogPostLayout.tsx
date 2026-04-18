@@ -136,15 +136,10 @@ export default function BlogPostLayout({
           {/* Article body */}
           <div className="text-gray-800 text-[16px] leading-[1.7] blog-post-body">{children}</div>
 
-          {/* Was this helpful */}
+          {/* Feedback strip. Kept minimal until a real backend lands so no dead
+              buttons are in the UI. */}
           <div className="mt-14 pt-6 border-t border-gray-200 flex items-center gap-3 text-sm flex-wrap">
-            <p className="text-gray-500">Was this guide helpful?</p>
-            <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700">
-              Yes
-            </button>
-            <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700">
-              No
-            </button>
+            <p className="text-gray-500">Spotted something off?</p>
             <Link
               href="/contact"
               className="md:ml-auto text-indigo-600 hover:underline"

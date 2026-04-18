@@ -116,7 +116,7 @@ export default function ResumeTipsPage() {
 
       <section id="verbs" className="mt-10 scroll-mt-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-3">40 action verbs that grab attention</h2>
-        <p className="text-gray-600 mb-5">Weak verbs kill resumes. Replace "responsible for" and "helped with" by starting every bullet point with one of these.</p>
+        <p className="text-gray-600 mb-5">Weak verbs kill resumes. Replace &ldquo;responsible for&rdquo; and &ldquo;helped with&rdquo; by starting every bullet point with one of these.</p>
         <div className="grid sm:grid-cols-2 gap-4">
           {Object.entries(actionVerbs).map(([category, verbs]) => (
             <div key={category} className="bg-white rounded-lg border border-gray-200 p-5">
@@ -133,7 +133,7 @@ export default function ResumeTipsPage() {
 
       <section id="before-after" className="mt-10 scroll-mt-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-3">Before and after: weak vs strong bullet points</h2>
-        <p className="text-gray-600 mb-5">Numbers make your resume memorable. A recruiter will not remember "improved sales" but will remember "$2.4M revenue growth."</p>
+        <p className="text-gray-600 mb-5">Numbers make your resume memorable. A recruiter will not remember &ldquo;improved sales&rdquo; but will remember &ldquo;$2.4M revenue growth.&rdquo;</p>
         <div className="space-y-3">
           {[
             { weak: 'Managed a team', strong: 'Led a team of 12 engineers, increasing sprint velocity by 35%' },

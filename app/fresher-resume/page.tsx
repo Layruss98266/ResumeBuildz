@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
 import { ArrowRight, Sparkles, Award, AlertTriangle, HelpCircle, Layout, BookOpen, LayoutGrid } from 'lucide-react';
 import BlogPostLayout from '@/components/BlogPostLayout';
 import { useLoginGateway } from '@/components/LoginGateway';

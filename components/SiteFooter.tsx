@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Heart, ExternalLink } from 'lucide-react';
 import { useLoginGateway } from '@/components/LoginGateway';
+import { joinWaitlist } from '@/lib/leads';
 
 // Shape of one row in the link grid below the newsletter hero. Kept as data
 // so rendering is consistent and adding a new column is one array entry.
@@ -60,14 +61,21 @@ export default function SiteFooter() {
   const [sent, setSent] = useState(false);
   const valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!valid) return;
-    // No newsletter backend yet — setSent gives user feedback while we finish
-    // the mailing-list integration. See TODO in lib/changelogData.ts roadmap.
-    // When wiring a real service (Beehiiv / ConvertKit / Resend), replace
-    // this branch with a fetch to the provider's subscribe endpoint.
-    setSent(true);
+    if (!valid || submitting) return;
+    setSubmitting(true);
+    setError(null);
+    // Reuse the waitlist backend for the footer newsletter. Same table, the
+    // 'source' field distinguishes entry point. Falls back to localStorage
+    // automatically when Supabase is not configured.
+    const result = await joinWaitlist(email, 'footer-newsletter');
+    setSubmitting(false);
+    if (result.ok) setSent(true);
+    else setError(result.error || 'Something went wrong. Please try again.');
   };
 
   return (
@@ -100,12 +108,19 @@ export default function SiteFooter() {
           />
           <button
             type="submit"
-            disabled={!valid || sent}
+            disabled={!valid || sent || submitting}
+            aria-busy={submitting}
             className="bg-blue-500 hover:bg-blue-600 disabled:bg-white/10 disabled:text-gray-500 disabled:cursor-not-allowed text-white font-bold px-6 rounded-lg transition-colors"
           >
-            {sent ? '✓ Sent' : 'Subscribe'}
+            {sent ? '✓ Sent' : submitting ? 'Joining...' : 'Subscribe'}
           </button>
         </form>
+        {error && (
+          <p role="alert" className="text-xs text-rose-400 mt-3 max-w-md mx-auto">{error}</p>
+        )}
+        {sent && (
+          <p role="status" className="text-xs text-emerald-400 mt-3 max-w-md mx-auto">You are on the list. Thanks.</p>
+        )}
 
         {/* Secondary CTA back to the builder — for users who scroll to the
             bottom without signing up. Goes through the gateway for auth. */}
