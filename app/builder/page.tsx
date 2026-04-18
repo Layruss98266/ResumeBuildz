@@ -37,6 +37,7 @@ import ShareResumeDialog from '@/components/ShareResumeDialog';
 import SaveStateChip from '@/components/SaveStateChip';
 import CommandPalette, { type Command } from '@/components/CommandPalette';
 import { TEMPLATES, sampleResumeData } from '@/types/resume';
+import { resumeFilename } from '@/lib/exportFilename';
 import { getUsage, incrementUsage, canUse } from '@/lib/usage';
 import { useToast } from '@/components/Toast';
 import { useAuthContext as useAuth } from '@/components/Providers';
@@ -284,7 +285,10 @@ export default function HomePage() {
 
   const handlePrint = useReactToPrint({
     contentRef: resumeRef,
-    documentTitle: 'Resume',
+    // react-to-print uses documentTitle as the suggested PDF filename in
+    // most browsers. Recompute from current resumeData on every call so
+    // the file is always named after whoever is in Personal Info right now.
+    documentTitle: resumeFilename(resumeData, '').replace(/\.$/, ''),
   });
 
   const toggleDarkMode = () => {
@@ -300,7 +304,7 @@ export default function HomePage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'resume-data.json';
+    a.download = resumeFilename(data, 'json');
     a.click();
     setTimeout(() => URL.revokeObjectURL(url), 60_000);
   };

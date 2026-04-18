@@ -293,5 +293,6 @@ export async function downloadDocx(data: ResumeData, primaryColor: string) {
   });
 
   const blob = await Packer.toBlob(doc);
-  saveAs(blob, `${personalInfo.fullName || 'resume'}.docx`);
+  const { resumeFilename } = await import('@/lib/exportFilename');
+  saveAs(blob, resumeFilename({ personalInfo }, 'docx'));
 }

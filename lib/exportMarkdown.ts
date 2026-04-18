@@ -8,6 +8,7 @@
 
 import type { ResumeData } from '@/types/resume';
 import { formatBullet } from '@/components/templates/TemplateWrapper';
+import { resumeFilename } from '@/lib/exportFilename';
 
 function fmtDate(exp: { startDate: string; endDate: string; current?: boolean }): string {
   const end = exp.current ? 'Present' : (exp.endDate || 'Present');
@@ -264,11 +265,9 @@ function download(filename: string, body: string, mime: string) {
 }
 
 export function downloadMarkdown(data: ResumeData) {
-  const name = (data.personalInfo.fullName || 'resume').trim().replace(/\s+/g, '_');
-  download(`${name}.md`, generateMarkdown(data), 'text/markdown;charset=utf-8');
+  download(resumeFilename(data, 'md'), generateMarkdown(data), 'text/markdown;charset=utf-8');
 }
 
 export function downloadAtsText(data: ResumeData) {
-  const name = (data.personalInfo.fullName || 'resume').trim().replace(/\s+/g, '_');
-  download(`${name}-ats.txt`, generateAtsText(data), 'text/plain;charset=utf-8');
+  download(resumeFilename(data, 'txt'), generateAtsText(data), 'text/plain;charset=utf-8');
 }

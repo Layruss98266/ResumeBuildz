@@ -1,4 +1,5 @@
 import { ResumeData } from '@/types/resume';
+import { resumeFilename } from '@/lib/exportFilename';
 
 function escapeHtml(text: string): string {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -133,7 +134,7 @@ export function downloadHtml(data: ResumeData, primaryColor: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${data.personalInfo.fullName || 'resume'}.html`;
+  a.download = resumeFilename(data, 'html');
   a.click();
   URL.revokeObjectURL(url);
 }
