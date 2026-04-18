@@ -46,7 +46,8 @@ A professional resume builder with 20 ATS-optimized templates, AI-powered writin
 ### Authentication & Profile
 - **Supabase Auth**: Google OAuth and email/password sign-in (optional)
 - **Login Gateway**: Soft modal on Build Resume CTAs offers Sign In or Continue as Guest
-- **Profile Dropdown**: Avatar, Manage Plan, Reset Password, Export Data, Delete Account, Sign Out
+- **Profile Dropdown**: Avatar, Account Settings, Reset Password, Export Data, Delete Account, Sign Out
+- **Account Settings** (`/account`): Tabbed page covering Profile (avatar, headline, role, years, timezone, locale), Job Search (target role, seniority, industry, locations, open-to-work), Builder Defaults (template, font, accent colour, language, phone-mask on share), Links (LinkedIn/GitHub/portfolio), Notifications (ATS tips, product updates), Security (password change, TOTP 2FA, connected Google, sign-out-everywhere), Billing (plan + invoice email). All writes routed through a Zod-validated, field-whitelisted helper; Supabase RLS enforces `auth.uid() = id` on every update.
 - **GDPR Controls**: Export My Data and Delete Account from profile menu
 - **Email Verification**: Pro features require verified email; in-app banner prompts unverified users
 - **Auth-aware UI**: Builder header shows user avatar and last edited timestamp when signed in
@@ -252,6 +253,7 @@ resumebuildz/
 │   ├── builder/page.tsx            # Resume builder (tabs, sidebar, preview)
 │   ├── login/page.tsx              # Login (Google OAuth + email/password)
 │   ├── forgot-password/page.tsx    # Password reset flow
+│   ├── account/page.tsx            # Tabbed account settings (profile, job search, defaults, links, notifications, security, billing)
 │   ├── auth/callback/route.ts      # OAuth callback handler
 │   ├── pricing/page.tsx            # 5-tier pricing + waitlist
 │   ├── terms/page.tsx              # Terms of Use (server component)

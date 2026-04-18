@@ -6,6 +6,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.20.0] - 2026-04-18
+
+### Added
+
+- **Account Settings page (`/account`).** Tabbed post-login page replacing the basic profile-dropdown options. Seven sections:
+  - **Profile** — avatar upload (Supabase Storage, max 2 MB, JPG/PNG/WebP), full name, headline, current role, years of experience, timezone, locale.
+  - **Job Search** — target role, seniority (intern through C-suite), industry, preferred locations, "open to work" toggle.
+  - **Builder Defaults** — default template, font, accent colour (hex), resume language (en/hi), mask-phone-on-share toggle.
+  - **Links** — LinkedIn, GitHub, portfolio URLs (https-only, auto-fill into builder).
+  - **Notifications** — weekly ATS tips, product updates opt-in.
+  - **Security** — change password, TOTP 2FA enrol/verify/remove, connected Google account, sign-out-this-device + sign-out-everywhere.
+  - **Billing** — current plan (read-only, payments still on hold), invoice email.
+- **`lib/accountUpdate.ts`** single-source helper: every write routes through a field-whitelisted `updateProfile` so forms cannot smuggle extra columns.
+- **`lib/accountSchema.ts`** Zod validators for every form with length caps and URL/hex/email checks.
+- **`docs/SUPABASE_ACCOUNT_SCHEMA.md`** migration doc with idempotent SQL for the new columns, RLS policies (`auth.uid() = id` on SELECT/UPDATE/INSERT, no DELETE), and the `avatars` storage bucket with owner-only write policies keyed by `storage.foldername(name)[1]`.
+- **Code-split panels** — each tab is a separate file under `components/account/` loaded via `next/dynamic` so Turbopack compiles them on demand.
+
+### Changed
+
+- Navbar profile dropdown: "Manage Plan" → "Account Settings" pointing at `/account`. Upgrade and Reset Password links preserved.
+- `Profile` type in `hooks/useAuth.ts` extended with 21 nullable fields matching the new schema; `.select('*')` so all fields hydrate on load.
+
+### Security
+
+- New columns all nullable with DB-level check constraints (length, enum, hex-regex).
+- RLS policies enforce that no user can read or modify another user's row.
+- Avatar bucket policies check `auth.uid()::text = storage.foldername(name)[1]` so users can only upload to their own folder.
+- URL fields reject non-`https://` schemes and block `javascript:` explicitly.
+- 2FA, password change, OAuth linking go through Supabase Auth API (audit logged, re-auth where required).
+
+---
+
 ## [1.19.2] - 2026-04-17
 
 ### Changed

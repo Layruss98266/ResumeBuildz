@@ -112,11 +112,11 @@ export default function SiteNavbar() {
                               <ArrowRight className="h-3.5 w-3.5" /> Build Resume
                             </button>
                             <Link
-                              href="/pricing"
+                              href="/account"
                               onClick={() => setProfileOpen(false)}
                               className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors"
                             >
-                              <Settings className="h-3.5 w-3.5" /> Manage Plan
+                              <Settings className="h-3.5 w-3.5" /> Account settings
                             </Link>
                             <Link
                               href="/forgot-password"

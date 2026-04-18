@@ -14,6 +14,28 @@ export type Profile = {
   plan: 'free' | 'starter' | 'pro' | 'team' | 'lifetime';
   ai_rewrites_used: number;
   ai_rewrites_reset_date: string;
+  // Extended fields for /account (all nullable; see docs/SUPABASE_ACCOUNT_SCHEMA.md)
+  headline?: string | null;
+  current_role?: string | null;
+  years_experience?: number | null;
+  timezone?: string | null;
+  locale?: string | null;
+  target_role?: string | null;
+  target_seniority?: string | null;
+  target_industry?: string | null;
+  target_locations?: string | null;
+  open_to_work?: boolean | null;
+  default_template?: string | null;
+  default_font?: string | null;
+  default_accent?: string | null;
+  default_language?: 'en' | 'hi' | null;
+  mask_phone_on_share?: boolean | null;
+  linkedin_url?: string | null;
+  github_url?: string | null;
+  portfolio_url?: string | null;
+  notify_ats_tips?: boolean | null;
+  notify_product?: boolean | null;
+  invoice_email?: string | null;
 };
 
 export function useAuth() {
@@ -27,7 +49,7 @@ export function useAuth() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('id, email, full_name, avatar_url, plan, ai_rewrites_used, ai_rewrites_reset_date')
+          .select('*')
           .eq('id', userId)
           .single();
         if (error) logger.warn('Profile fetch failed:', error.message);
