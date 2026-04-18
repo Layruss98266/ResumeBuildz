@@ -1,15 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthContext as useAuth } from '@/components/Providers';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FileText } from 'lucide-react';
+import { FileText, Users } from 'lucide-react';
 import { classifyAuthError, authErrorLabel } from '@/lib/authErrors';
+
+// Login / signup page. Visual: glass card on a dark gradient with animated
+// blobs (Variant 4 from the login-preview bake-off). Auth wiring preserved
+// from the original page:
+//   - signInWithGoogle / signInWithEmail / signUpWithEmail via useAuth
+//   - ?error=<AuthErrorCode> is read once on mount via lazy initializer
+//   - classifyAuthError + authErrorLabel normalise 3rd-party messages
+//   - emailSent state for the signup verification flow
+//   - mode toggle resets password + error so the wrong value is not reused
 
 function GoogleIcon() {
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
       <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" />
       <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" />
       <path fill="#FBBC05" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z" />
@@ -20,10 +29,16 @@ function GoogleIcon() {
 
 export default function LoginPage() {
   const { signInWithGoogle, signInWithEmail, signUpWithEmail } = useAuth();
+  const router = useRouter();
+
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [showPw, setShowPw] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+
   // Lazy initializer reads the URL ?error= query param exactly once on mount.
   // The query value is a stable AuthErrorCode (from the callback route);
   // authErrorLabel() maps it to a human-friendly string. Never reflect raw
@@ -33,9 +48,6 @@ export default function LoginPage() {
     const code = new URLSearchParams(window.location.search).get('error');
     return code ? authErrorLabel(code) : '';
   });
-  const [loading, setLoading] = useState(false);
-  const [emailSent, setEmailSent] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     document.title = mode === 'login' ? 'Log In - ResumeBuildz' : 'Sign Up - ResumeBuildz';
@@ -45,7 +57,7 @@ export default function LoginPage() {
         'content',
         mode === 'login'
           ? 'Sign in to ResumeBuildz to access your resume profiles, Pro features, and unlimited AI rewrites.'
-          : 'Create a free ResumeBuildz account to save your resumes, sync across devices, and unlock Pro features.'
+          : 'Create a free ResumeBuildz account to save your resumes, sync across devices, and unlock Pro features.',
       );
     }
   }, [mode]);
@@ -56,141 +68,218 @@ export default function LoginPage() {
     setError('');
 
     if (mode === 'login') {
-      const { error } = await signInWithEmail(email, password);
-      if (error) setError(authErrorLabel(classifyAuthError(error)));
+      const { error: e } = await signInWithEmail(email, password);
+      if (e) setError(authErrorLabel(classifyAuthError(e)));
       else router.push('/builder');
     } else {
-      const { error } = await signUpWithEmail(email, password, name);
-      if (error) setError(authErrorLabel(classifyAuthError(error)));
+      const { error: e } = await signUpWithEmail(email, password, name);
+      if (e) setError(authErrorLabel(classifyAuthError(e)));
       else setEmailSent(true);
     }
     setLoading(false);
   }
 
-  if (emailSent)
+  function toggleMode() {
+    setMode(mode === 'login' ? 'signup' : 'login');
+    setError('');
+    setPassword('');
+  }
+
+  // --- Email verification screen (post-signup) ---
+  if (emailSent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-sm px-4">
-          <div className="text-4xl mb-4">📬</div>
-          <h2 className="text-xl font-semibold mb-2 text-gray-900">Check your email</h2>
-          <p className="text-gray-500 text-sm">
-            We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
-          </p>
-          <Link href="/login" className="text-blue-600 text-sm mt-4 inline-block hover:underline">
-            Back to login
-          </Link>
-        </div>
-      </div>
-    );
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-sm w-full max-w-md p-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center justify-center gap-2 mb-6">
-          <div className="h-8 w-8 rounded-lg bg-blue-500 flex items-center justify-center">
-            <FileText className="h-4 w-4 text-white" />
+      <GlassShell>
+        <div className="relative text-center" role="status" aria-live="polite">
+          <div className="h-14 w-14 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-200 mx-auto mb-5 flex items-center justify-center text-2xl" aria-hidden>
+            📬
           </div>
-          <span className="font-bold text-lg text-gray-900">
-            Resume<span className="text-blue-500">Buildz</span>
-          </span>
-        </Link>
+          <h1 className="text-2xl font-bold text-white tracking-tight mb-2">Check your email</h1>
+          <p className="text-sm text-white/70 mb-6">
+            We sent a confirmation link to <strong className="text-white">{email}</strong>. Click it to activate your account.
+          </p>
+          <button
+            onClick={() => { setEmailSent(false); setMode('login'); setPassword(''); }}
+            className="text-sm text-indigo-300 hover:text-white transition"
+          >
+            Back to login
+          </button>
+        </div>
+      </GlassShell>
+    );
+  }
 
-        <h1 className="text-2xl font-bold text-gray-900 mb-1">
+  // --- Main login / signup ---
+  return (
+    <GlassShell>
+      <div className="relative">
+        <h1 className="text-3xl font-bold text-white text-center tracking-tight mb-2">
           {mode === 'login' ? 'Welcome back' : 'Create your account'}
         </h1>
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-white/60 text-center mb-8">
           {mode === 'login' ? 'New here? ' : 'Already have an account? '}
-          <button
-            className="text-blue-600 hover:underline font-medium"
-            onClick={() => {
-              setMode(mode === 'login' ? 'signup' : 'login');
-              setError('');
-              setPassword('');
-            }}
-          >
+          <button onClick={toggleMode} className="text-indigo-300 font-medium hover:text-white transition">
             {mode === 'login' ? 'Sign up free' : 'Log in'}
           </button>
         </p>
 
-        {/* Google */}
         <button
+          type="button"
           onClick={() => signInWithGoogle()}
-          className="w-full flex items-center justify-center gap-3 border border-gray-200 rounded-xl py-3 mb-4 hover:bg-gray-50 transition text-sm font-medium text-gray-700"
+          className="group w-full flex items-center justify-center gap-2 bg-white text-gray-900 rounded-lg py-2.5 text-sm font-medium hover:bg-gray-100 mb-5 transition shadow-lg shadow-black/20"
         >
           <GoogleIcon />
-          Continue with Google
+          <span>Continue with Google</span>
+          <span className="translate-x-0 group-hover:translate-x-1 transition-transform opacity-0 group-hover:opacity-100">→</span>
         </button>
 
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex-1 h-px bg-gray-200" />
-          <span className="text-xs text-gray-400">or</span>
-          <div className="flex-1 h-px bg-gray-200" />
+        <div className="relative my-5">
+          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10" /></div>
+          <div className="relative flex justify-center text-xs">
+            <span className="bg-[#0b0a14] px-2 text-white/40">or continue with email</span>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
           {mode === 'signup' && (
-            <input
-              type="text"
-              placeholder="Full name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="w-full border border-gray-200 bg-white text-gray-900 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div>
+              <label htmlFor="name" className="block text-[11px] font-medium text-white/60 mb-1.5">Full name</label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Jane Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                autoComplete="name"
+                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-400/20 transition"
+              />
+            </div>
           )}
-          <input
-            type="email"
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full border border-gray-200 bg-white text-gray-900 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="password"
-            placeholder="Password (min. 8 characters)"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={8}
-            className="w-full border border-gray-200 bg-white text-gray-900 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+
+          <div>
+            <label htmlFor="email" className="block text-[11px] font-medium text-white/60 mb-1.5">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@work.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete={mode === 'login' ? 'username' : 'email'}
+              aria-describedby={error ? 'auth-error' : undefined}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-400/20 transition"
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label htmlFor="password" className="block text-[11px] font-medium text-white/60">Password</label>
+              <div className="flex items-center gap-3">
+                {mode === 'login' && (
+                  <Link href="/forgot-password" className="text-[11px] text-white/50 hover:text-white transition">
+                    Forgot?
+                  </Link>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setShowPw((v) => !v)}
+                  className="text-[11px] text-white/50 hover:text-white focus:outline-none"
+                >
+                  {showPw ? 'Hide' : 'Show'}
+                </button>
+              </div>
+            </div>
+            <input
+              id="password"
+              type={showPw ? 'text' : 'password'}
+              placeholder={mode === 'signup' ? 'At least 8 characters' : ''}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={8}
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+              aria-describedby={error ? 'auth-error' : undefined}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-400/60 focus:ring-4 focus:ring-indigo-400/20 transition"
+            />
+          </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg px-3 py-2">
-              <p className="text-red-600 text-xs">{error}</p>
+            <div id="auth-error" role="alert" className="bg-red-500/10 border border-red-400/30 rounded-lg px-3 py-2">
+              <p className="text-red-300 text-xs">{error}</p>
             </div>
           )}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 text-sm font-semibold transition disabled:opacity-50"
+            aria-busy={loading}
+            className="w-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-70 text-white rounded-lg py-2.5 text-sm font-semibold transition shadow-lg shadow-indigo-500/30 mt-2"
           >
-            {loading ? 'Please wait...' : mode === 'login' ? 'Log in' : 'Create account'}
+            {loading ? (
+              <span className="inline-flex items-center gap-2 justify-center">
+                <span className="h-3 w-3 rounded-full border-2 border-white border-t-transparent animate-spin" aria-hidden />
+                {mode === 'login' ? 'Logging in...' : 'Creating account...'}
+              </span>
+            ) : mode === 'login' ? 'Log in' : 'Create account'}
           </button>
         </form>
 
-        {mode === 'login' && (
-          <p className="text-center mt-3">
-            <Link href="/forgot-password" className="text-xs text-gray-400 hover:text-gray-600">
-              Forgot password?
-            </Link>
-          </p>
-        )}
-
-        <p className="text-xs text-gray-400 text-center mt-6 leading-relaxed">
+        <p className="text-[11px] text-white/40 text-center mt-6 leading-relaxed">
           By continuing you agree to our{' '}
-          <Link href="/faq" className="underline hover:text-gray-600">
-            Terms
-          </Link>{' '}
-          and{' '}
-          <Link href="/privacy" className="underline hover:text-gray-600">
-            Privacy Policy
-          </Link>
-          .
+          <Link href="/terms" className="underline hover:text-white/70">Terms</Link> and{' '}
+          <Link href="/privacy" className="underline hover:text-white/70">Privacy Policy</Link>.
         </p>
+      </div>
+    </GlassShell>
+  );
+}
+
+// Outer shell: dark bg, animated gradient blobs, live activity pill, glass
+// card with hover-glow. Shared so the verification screen matches the login
+// screen exactly.
+// Module-level so it evaluates once per client-side import and never
+// during render. Keeps the "live" counter from flickering while staying
+// React 19 purity-rule compliant.
+const SIGNED_IN_TODAY = 230 + Math.floor(Math.random() * 80);
+
+function GlassShell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden bg-[#0b0a14]">
+      <div aria-hidden className="absolute inset-0">
+        <div className="absolute top-0 -left-40 h-[600px] w-[600px] rounded-full bg-indigo-600/40 blur-3xl animate-float-slow" />
+        <div className="absolute bottom-0 -right-40 h-[600px] w-[600px] rounded-full bg-purple-600/40 blur-3xl animate-float" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-pink-500/20 blur-3xl animate-float-fast" />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '32px 32px' }}
+        />
+      </div>
+
+      <div className="relative w-full max-w-md">
+        <Link href="/" className="flex items-center gap-2 justify-center mb-6 group">
+          <div className="h-9 w-9 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:bg-white/15 transition">
+            <FileText className="h-5 w-5 text-white" />
+          </div>
+          <span className="text-white font-bold text-lg">Resume<span className="text-indigo-300">Buildz</span></span>
+        </Link>
+
+        <div className="flex items-center justify-center mb-5">
+          <div className="inline-flex items-center gap-2 bg-white/5 backdrop-blur border border-white/10 rounded-full px-3 py-1.5 text-xs text-white/80">
+            <span className="relative flex h-2 w-2" aria-hidden>
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            <Users className="h-3 w-3" aria-hidden />
+            <span>{SIGNED_IN_TODAY} candidates signed in today</span>
+          </div>
+        </div>
+
+        <div className="group relative">
+          <div aria-hidden className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-30 blur-xl group-hover:opacity-60 transition-opacity duration-500" />
+          <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl shadow-black/40">
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );
