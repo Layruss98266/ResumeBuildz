@@ -32,6 +32,7 @@ import KeywordAutoInsert from './sections/KeywordAutoInsert';
 // Utils
 import { getResumeText } from './utils/textAnalysis';
 import { callGroqAI, getGroqApiKey } from './utils/groqAI';
+import { overusedKeywords } from '@/lib/keywordDensity';
 
 export default function ATSScoreChecker() {
   const { resumeData } = useResumeStore();
@@ -135,11 +136,20 @@ export default function ATSScoreChecker() {
             <div key={i} className="flex items-start gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
               {getIcon(check.status)}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1.5 flex-wrap">
                   <span className="text-sm font-medium">{check.label}</span>
                   <Badge variant={check.status === 'pass' ? 'default' : check.status === 'warn' ? 'secondary' : 'destructive'} className="text-[10px] px-1.5 py-0">
                     {check.status === 'pass' ? 'Pass' : check.status === 'warn' ? 'Improve' : 'Missing'}
                   </Badge>
+                  {check.status !== 'pass' && check.section && (
+                    <button
+                      type="button"
+                      onClick={() => window.dispatchEvent(new CustomEvent('ats:jump', { detail: { section: check.section } }))}
+                      className="text-[10px] font-semibold text-indigo-600 hover:text-indigo-700 hover:underline ml-auto"
+                    >
+                      Fix this →
+                    </button>
+                  )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-0.5 leading-tight">{check.message}</p>
               </div>
@@ -151,6 +161,27 @@ export default function ATSScoreChecker() {
         <div className="mt-4">
           <SectionScoreBreakdown sectionScores={sectionScores} />
         </div>
+
+        {/* Keyword density: chips for words used 4+ times. ATS and reviewers
+            notice the same verb echoing across a resume. */}
+        {(() => {
+          const overused = overusedKeywords(resumeText);
+          if (!overused.length) return null;
+          return (
+            <div className="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-100">
+              <p className="text-xs font-semibold text-amber-900 mb-2">Overused words</p>
+              <p className="text-[11px] text-amber-800 mb-2">These appear 4+ times. Vary your language so bullets don&apos;t blur together.</p>
+              <div className="flex flex-wrap gap-1.5">
+                {overused.map((k) => (
+                  <span key={k.word} className="inline-flex items-center gap-1 text-[11px] bg-white border border-amber-200 rounded px-2 py-0.5">
+                    <span className="font-medium text-gray-900">{k.word}</span>
+                    <span className="text-amber-700 font-semibold">×{k.count}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          );
+        })()}
       </section>
 
       <Separator />

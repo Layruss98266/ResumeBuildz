@@ -434,6 +434,25 @@ export default function HomePage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resumeData]);
 
+  // ATS "Fix this" deep-link: a child ATS check button dispatches
+  // window.ats:jump with a section id; we switch to edit + that section.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const ev = e as CustomEvent<{ section?: string }>;
+      const section = ev.detail?.section;
+      if (!section) return;
+      setActiveTab('edit');
+      setActiveSection(section);
+      // Small delay so the edit view is mounted before we scroll into view
+      setTimeout(() => {
+        const el = document.getElementById(`section-${section}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
+    };
+    window.addEventListener('ats:jump', handler);
+    return () => window.removeEventListener('ats:jump', handler);
+  }, []);
+
   // Relative-time label: refresh every 30s so "2m ago" stays current.
   useEffect(() => {
     if (typeof window !== 'undefined' && lastEdited === null) {
