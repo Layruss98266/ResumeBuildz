@@ -253,10 +253,14 @@ export default function HomePage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Auth-aware toasts
+  // Auth-aware toasts. Guarded by a ref so the effect only greets the user
+  // once per mount even if `profile` re-references during auth hydration.
+  const greetedRef = useRef(false);
   useEffect(() => {
     if (!mounted) return;
     if (user && profile) {
+      if (greetedRef.current) return;
+      greetedRef.current = true;
       if (isPro()) {
         showToast(`Welcome back, ${profile.full_name || 'Pro member'}! Unlimited access active.`, 'pro', 4000);
       } else {
