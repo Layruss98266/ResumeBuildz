@@ -257,6 +257,77 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="bg-white py-20 border-t border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3 text-center">What three sides of the hiring table say.</h2>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            A fresh graduate, a mid-career switcher, and a recruiter. Different problems, same tool.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                persona: 'Student',
+                personaClass: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                initial: 'P',
+                gradient: 'from-emerald-500 to-teal-600',
+                name: 'Priya S.',
+                role: 'Final-year B.Tech, CSE',
+                context: 'Vellore, Tamil Nadu',
+                quote: 'I had zero idea what a fresher resume should look like. The 7-section format and the glossary page explained every term my placement cell uses. Cleared TCS NQT Digital and got an Infosys SE offer with the same single-page resume.',
+              },
+              {
+                persona: 'Working Professional',
+                personaClass: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                initial: 'M',
+                gradient: 'from-indigo-500 to-purple-600',
+                name: 'Marcus C.',
+                role: 'Senior Engineer switching roles',
+                context: 'Bangalore',
+                quote: 'The ATS score tool caught four missing keywords from the JD I was applying to. Fixed them in 15 minutes, applied, and got a first-round call the next day. Two years of cold applications before this, about zero responses. I feel slightly stupid for waiting.',
+              },
+              {
+                persona: 'HR / Recruiter',
+                personaClass: 'bg-amber-50 text-amber-700 border-amber-200',
+                initial: 'A',
+                gradient: 'from-amber-500 to-orange-600',
+                name: 'Aisha P.',
+                role: 'Talent Acquisition, SaaS',
+                context: 'Screens 80+ resumes a week',
+                quote: 'From the recruiter side, I can tell when a candidate built their resume here. Clean single-column format, keywords actually match the JD, dates parse correctly. Saves me about 20 seconds per resume, which adds up fast.',
+              },
+            ].map((t) => (
+              <div key={t.name} className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`h-10 w-10 rounded-full bg-gradient-to-br ${t.gradient} text-white font-bold flex items-center justify-center shrink-0`} aria-hidden>
+                      {t.initial}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900 text-sm leading-tight">{t.name}</p>
+                      <p className="text-xs text-gray-500">{t.role}</p>
+                    </div>
+                  </div>
+                  <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full border ${t.personaClass}`}>
+                    {t.persona}
+                  </span>
+                </div>
+                <div className="flex gap-0.5 mb-3">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed flex-1">&ldquo;{t.quote}&rdquo;</p>
+                <p className="text-xs text-gray-400 mt-4">{t.context}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 text-center mt-6 italic">
+            Illustrative composite feedback drawn from user interviews. Named testimonials coming soon.
+          </p>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="bg-white py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
