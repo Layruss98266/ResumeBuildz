@@ -187,6 +187,56 @@ export const BLOG_POSTS: BlogPost[] = [
     readingTime: 8,
     featured: true,
   },
+  {
+    slug: 'cover-letter-vs-resume',
+    title: 'Cover Letter vs Resume: Do You Need Both in 2026?',
+    excerpt:
+      'Honest answer with data. When to write a cover letter, when to skip, and the hidden cost of going without.',
+    category: 'interviews-cover-letters',
+    tags: ['cover-letter', 'strategy'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 8,
+  },
+  {
+    slug: 'tailor-resume',
+    title: 'How to Tailor Your Resume in 10 Minutes',
+    excerpt:
+      'Tailored resumes get 3x more callbacks. The minute-by-minute process without starting from scratch, plus the AI-assisted workflow.',
+    category: 'ats-keywords',
+    tags: ['tailoring', 'keywords', 'JD-matching'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 10,
+  },
+  {
+    slug: 'best-free-resume-builder',
+    title: 'Free vs Paid Resume Builders 2026: Brutally Honest Comparison',
+    excerpt:
+      '8 builders compared: pricing, privacy, ATS, AI features. Which "free" builders paywall the download, which are open-source.',
+    category: 'ai-resume',
+    tags: ['comparison', 'free', 'paid', 'privacy'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 13,
+    featured: true,
+  },
+  {
+    slug: 'ai-resume-builders-tested',
+    title: 'AI Resume Builders 2026: We Tested 8',
+    excerpt:
+      'Which AI tools hallucinate, which preserve voice, and the 5 rules for using AI without generic output. Strengths, weaknesses, pricing, privacy for each.',
+    category: 'ai-resume',
+    tags: ['AI', 'ChatGPT', 'Claude', 'Rezi', 'review'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 13,
+    featured: true,
+  },
 
   // ─────────── India Hiring ───────────
   {

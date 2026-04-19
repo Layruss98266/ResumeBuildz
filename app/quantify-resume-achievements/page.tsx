@@ -148,7 +148,7 @@ export default function QuantifyAchievementsPage() {
       category="Resume Writing"
       breadcrumbCurrent="Quantify achievements"
       title="How to Quantify Resume Achievements (50+ Examples by Role)"
-      subtitle="A bullet without a number is a claim without proof. The XYZ formula, nine places to find numbers when you don\'t think you have any, and 50+ examples across 8 roles."
+      subtitle="A bullet without a number is a claim without proof. The XYZ formula, nine places to find numbers when you do not think you have any, and 50+ examples across 8 roles."
       dateModified="2026-04-19"
       readingTime={12}
       toc={TOC}
