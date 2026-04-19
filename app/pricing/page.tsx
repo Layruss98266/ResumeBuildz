@@ -121,7 +121,7 @@ export default function PricingPage() {
           {/* FREE */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Free</h3>
+              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Free</h2>
               <div className="mt-2 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-gray-900">{sym}0</span>
                 <span className="text-gray-500">forever</span>
@@ -157,9 +157,9 @@ export default function PricingPage() {
               MOST POPULAR
             </span>
             <div className="mb-4">
-              <h3 className="text-sm font-semibold text-indigo-600 uppercase tracking-wide flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-indigo-600 uppercase tracking-wide flex items-center gap-2">
                 <Sparkles className="h-4 w-4" /> Pro
-              </h3>
+              </h2>
               <div className="mt-2 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-gray-900">{sym}{proPrice}</span>
                 <span className="text-gray-500 text-sm">{proPeriod}</span>
@@ -205,9 +205,9 @@ export default function PricingPage() {
               BEST VALUE
             </span>
             <div className="mb-4">
-              <h3 className="text-sm font-semibold text-amber-700 uppercase tracking-wide flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-amber-700 uppercase tracking-wide flex items-center gap-2">
                 <InfinityIcon className="h-4 w-4" /> Lifetime
-              </h3>
+              </h2>
               <div className="mt-2 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-gray-900">{sym}{prices.lifetime}</span>
                 <span className="text-gray-500 text-sm">one-time</span>
@@ -243,9 +243,9 @@ export default function PricingPage() {
           {/* COACH */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col">
             <div className="mb-4">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide flex items-center gap-2">
                 <Users className="h-4 w-4" /> Coach
-              </h3>
+              </h2>
               <div className="mt-2 flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-gray-900">{sym}{prices.coach}</span>
                 <span className="text-gray-500 text-sm">/ seat / month</span>

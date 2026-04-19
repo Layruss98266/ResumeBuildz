@@ -122,7 +122,7 @@ export default function TemplatesPage() {
                   </div>
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-gray-900">{t.label}</h3>
+                      <h2 className="font-semibold text-gray-900">{t.label}</h2>
                       <span className="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">
                         {STYLE_TAGS[t.name]}
                       </span>

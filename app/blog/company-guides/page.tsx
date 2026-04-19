@@ -192,9 +192,9 @@ function CompanyGuidesHubContent() {
                         {c.tier}
                       </span>
                     </div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-1 group-hover:text-indigo-700 transition tracking-tight">
+                    <h2 className="text-base font-semibold text-gray-900 mb-1 group-hover:text-indigo-700 transition tracking-tight">
                       {c.name}
-                    </h3>
+                    </h2>
                     <p className="text-xs text-gray-500 mb-1">{c.hq}</p>
                     <p className="text-xs text-gray-500 mb-3">{c.industry}</p>
                     <span className="inline-flex items-center gap-1 text-xs text-indigo-600 font-medium mt-auto">

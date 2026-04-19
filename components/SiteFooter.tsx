@@ -104,7 +104,7 @@ export default function SiteFooter() {
             aria-label="Email address for newsletter"
             className={`flex-1 bg-white/5 border-2 ${
               email ? (valid ? 'border-emerald-400' : 'border-rose-400') : 'border-white/20'
-            } text-white placeholder:text-gray-500 rounded-lg px-4 py-3 text-base transition-colors focus:outline-none focus:border-blue-500`}
+            } text-white placeholder:text-gray-400 rounded-lg px-4 py-3 text-base transition-colors focus:outline-none focus:border-blue-500`}
           />
           <button
             type="submit"

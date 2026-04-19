@@ -1011,7 +1011,7 @@ export default function HomePage() {
                           <div className="fixed bottom-0 left-0 right-0 z-50 bg-background rounded-t-2xl shadow-2xl animate-slide-up max-h-[70vh] overflow-y-auto">
                             <div className="w-12 h-1.5 bg-muted-foreground/30 rounded-full mx-auto mt-3 mb-2" />
                             <div className="px-4 pb-2">
-                              <h3 className="text-sm font-semibold mb-3">Resume Sections</h3>
+                              <h2 className="text-sm font-semibold mb-3">Resume Sections</h2>
                             </div>
                             <div className="px-2 pb-6">
                               {FORM_SECTIONS.map((s, i) => {

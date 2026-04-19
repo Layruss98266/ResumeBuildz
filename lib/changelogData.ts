@@ -14,6 +14,39 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.20.1',
+    date: 'April 19, 2026',
+    isoDate: '2026-04-19',
+    title: 'Welcome Email Pipeline + Lighthouse Accessibility 100',
+    added: [
+      'Welcome email pipeline: send-welcome Supabase Edge Function posts branded HTML to Resend, gated by a shared-secret bearer. A Postgres trigger on auth.users fires it exactly once on email confirmation via pg_net.http_post, so the confirmation flow is never blocked by Resend latency. Dormant until domain verification and secrets are set.',
+      'RESEND_SETUP.html: standalone, offline-friendly setup guide covering Resend signup, Namecheap DNS (MX, SPF, DKIM, DMARC) with the "send" subdomain gotcha, Supabase SMTP config, SQL trigger wiring, and a 7-point end-to-end smoke test.',
+      '/account added to robots.ts disallow list so private settings pages never surface in search.',
+    ],
+    improved: [
+      'Lighthouse Accessibility 91 mobile / 95 desktop to 100 / 100. Fixed heading-order skips across pricing, changelog, templates, blog/company-guides, builder, and footer. Bumped footer body text, CTA, and placeholder from gray-400/500 to gray-300/400 for AA-compliant contrast on the near-black gradient. Added aria-label to the hero "[1]" citation link so screen readers announce the source.',
+      'supabase/README.md: removed the outdated SUPABASE_SERVICE_ROLE_KEY secrets-set step (reserved prefix, auto-injected into every deployed function). Documented the new send-welcome deploy and trigger wiring.',
+      '.gitignore: ignore .claude/ and supabase/.temp/ tooling state (never meant for commit).',
+    ],
+  },
+  {
+    version: 'v1.20.0',
+    date: 'April 18, 2026',
+    isoDate: '2026-04-18',
+    title: 'Account Settings: Tabbed /account Page + Extended Profile Schema',
+    added: [
+      '/account tabbed settings page with seven sections: Profile (avatar upload via Supabase Storage, 2MB cap, JPG/PNG/WebP), Job Search (target role, seniority, industry, locations, open-to-work), Builder Defaults (template, font, accent colour, language, mask-phone toggle), Links (LinkedIn/GitHub/portfolio, https-only), Notifications (ATS tips, product updates), Security (password change, TOTP 2FA enrol/verify/remove, Google connection, sign-out-everywhere), Billing (read-only plan, invoice email).',
+      'lib/accountUpdate.ts field-whitelisted updateProfile helper so forms cannot smuggle extra columns.',
+      'lib/accountSchema.ts Zod validators for every form with length caps and URL/hex/email checks.',
+      'docs/SUPABASE_ACCOUNT_SCHEMA.md migration doc: idempotent SQL for new columns, RLS policies, and owner-only avatars storage bucket.',
+      'Each /account tab is a separate file under components/account/ lazy-loaded via next/dynamic so Turbopack compiles on demand.',
+    ],
+    improved: [
+      'Navbar profile dropdown: "Manage Plan" to "Account Settings" pointing at /account. Upgrade and Reset Password preserved.',
+      'Profile type in hooks/useAuth.ts extended with 21 nullable fields matching the new schema; .select(\'*\') so all fields hydrate on load.',
+    ],
+  },
+  {
     version: 'v1.19.2',
     date: 'April 17, 2026',
     isoDate: '2026-04-17',

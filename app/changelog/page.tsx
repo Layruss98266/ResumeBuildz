@@ -74,13 +74,13 @@ export default function ChangelogPage() {
                       </span>
                       <span className="text-gray-500 text-sm">{entry.date}</span>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">{entry.title}</h3>
+                    <h2 className="text-xl font-bold text-gray-900 mb-4">{entry.title}</h2>
 
                     {entry.added.length > 0 && (
                       <div className="mb-4">
-                        <h4 className="flex items-center gap-2 text-sm font-semibold text-green-600 uppercase tracking-wide mb-2">
+                        <h3 className="flex items-center gap-2 text-sm font-semibold text-green-600 uppercase tracking-wide mb-2">
                           <Plus className="h-4 w-4" /> Added
-                        </h4>
+                        </h3>
                         <ul className="space-y-2">
                           {entry.added.map((item, i) => (
                             <li key={i} className="flex gap-2 text-gray-600 text-sm">
@@ -94,9 +94,9 @@ export default function ChangelogPage() {
 
                     {entry.improved.length > 0 && (
                       <div>
-                        <h4 className="flex items-center gap-2 text-sm font-semibold text-blue-600 uppercase tracking-wide mb-2">
+                        <h3 className="flex items-center gap-2 text-sm font-semibold text-blue-600 uppercase tracking-wide mb-2">
                           <Zap className="h-4 w-4" /> Improved
-                        </h4>
+                        </h3>
                         <ul className="space-y-2">
                           {entry.improved.map((item, i) => (
                             <li key={i} className="flex gap-2 text-gray-600 text-sm">

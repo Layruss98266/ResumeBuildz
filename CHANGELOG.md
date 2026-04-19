@@ -6,6 +6,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.20.1] - 2026-04-19
+
+### Added
+
+- **Welcome email pipeline.** New `supabase/functions/send-welcome` Edge Function posts branded welcome HTML to Resend, gated by a shared-secret bearer (`WELCOME_HOOK_SECRET`). A Postgres trigger on `auth.users` (`supabase/sql/welcome_email_trigger.sql`) fires it exactly once when `email_confirmed_at` transitions from NULL, via `pg_net.http_post`. Async by design — confirmation flow is never blocked by Resend latency. Dormant until domain verification and secrets are in place.
+- **`RESEND_SETUP.html`** standalone, offline-friendly setup guide covering Resend account creation, Namecheap DNS (MX / SPF / DKIM / DMARC) with the `send` subdomain gotcha, API key restrictions, Supabase SMTP configuration for the 13 built-in auth/notification templates, SQL wiring for the welcome trigger, and a 7-point end-to-end smoke test.
+
+### Fixed
+
+- **Lighthouse Accessibility (91 mobile / 95 desktop → 100 / 100):**
+  - Footer column headings `<h4>` → `<h3>` so they nest under the section `<h2>` (was skipping h3 level).
+  - Footer body/CTA/link-grid text bumped from `text-gray-400/500` → `text-gray-300` on the near-black gradient (old `gray-500` scored 4.10:1, failing WCAG AA 4.5:1; `gray-300` is 13.4:1, AAA).
+  - Footer email input placeholder: `text-gray-500` → `text-gray-400`.
+  - Hero "[1]" citation link now has `aria-label="Source: Jobscan 2024 ATS statistics"` so screen readers announce the source rather than just the number.
+  - Changelog list headings: `<h1> → <h3> → <h4>` reshaped to `<h1> → <h2> → <h3>` per entry.
+  - Pricing plan card headings: plan names (`Free`, `Pro`, `Lifetime`, `Coach`) `<h3>` → `<h2>` so they don't skip from the page `<h1>`.
+  - Templates grid card titles: `<h3>` → `<h2>`.
+  - `/blog/company-guides` company card titles: `<h3>` → `<h2>`.
+  - Builder sidebar "Resume Sections" heading: `<h3>` → `<h2>`.
+
+### Security
+
+- **`/account` added to `app/robots.ts`** disallow list. Prevents private, auth-gated settings from appearing in search results.
+
+### Chore
+
+- **`.gitignore`** extended with `.claude/` and `supabase/.temp/` (Claude Code worktrees and Supabase CLI local state — never meant for commit).
+- **`supabase/README.md`** — removed the outdated `supabase secrets set SUPABASE_SERVICE_ROLE_KEY=...` step (the `SUPABASE_` prefix is reserved; Supabase auto-injects `SUPABASE_URL` / `SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` into every deployed function). Documents the new `send-welcome` deploy command and the one-time trigger SQL editing step.
+
+---
+
 ## [1.20.0] - 2026-04-18
 
 ### Added
