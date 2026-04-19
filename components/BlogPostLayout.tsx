@@ -9,8 +9,8 @@
 //  - Bottom block order: Was-this-helpful row, Prev/Next nav, Related cards
 
 import Link from 'next/link';
-import type { ReactNode } from 'react';
-import { ChevronRight, ArrowUpRight } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { ChevronRight, ArrowUpRight, List, ChevronDown } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 
@@ -60,12 +60,14 @@ export default function BlogPostLayout({
   next,
   children,
 }: BlogPostLayoutProps) {
+  const [tocOpen, setTocOpen] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <SiteNavbar />
 
-      <div className="flex-1 max-w-[1200px] mx-auto w-full grid lg:grid-cols-[260px_1fr]">
-        {/* Left sidebar: On this page TOC */}
+      <div className="flex-1 w-full mx-auto max-w-[1200px] grid lg:grid-cols-[260px_1fr]">
+        {/* Left sidebar: On this page TOC (desktop only) */}
         <aside className="hidden lg:block border-r border-gray-200 py-10 px-6 sticky top-0 h-screen overflow-y-auto">
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">
             On this page
@@ -88,36 +90,38 @@ export default function BlogPostLayout({
           </ul>
         </aside>
 
-        {/* Main article column */}
-        <article className="py-10 px-6 md:px-12 max-w-4xl">
+        {/* Main article column. min-w-0 allows grid children to shrink;
+            without it, a wide <pre> or <table> would push the column past
+            viewport width. */}
+        <article className="py-8 md:py-10 px-4 sm:px-6 md:px-12 w-full max-w-4xl mx-auto lg:mx-0 min-w-0">
           {/* Breadcrumb */}
-          <nav className="text-xs text-gray-500 mb-6 flex items-center gap-1.5 flex-wrap">
+          <nav className="text-xs text-gray-500 mb-5 md:mb-6 flex items-center gap-1 flex-wrap">
             <Link href="/blog" className="hover:text-gray-900">
               Guides
             </Link>
-            <ChevronRight className="h-3 w-3" />
-            <span>{category}</span>
-            <ChevronRight className="h-3 w-3" />
-            <span className="text-gray-900">{breadcrumbCurrent}</span>
+            <ChevronRight className="h-3 w-3 shrink-0" />
+            <span className="truncate">{category}</span>
+            <ChevronRight className="h-3 w-3 shrink-0" />
+            <span className="text-gray-900 truncate">{breadcrumbCurrent}</span>
           </nav>
 
           {/* Category eyebrow */}
-          <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600 mb-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600 mb-2 md:mb-3">
             {category}
           </p>
 
-          {/* Title */}
-          <h1 className="text-4xl font-bold text-gray-900 tracking-tight leading-tight mb-4 scroll-mt-6">
+          {/* Title: responsive size so narrow phones aren't crowded */}
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 tracking-tight leading-tight mb-3 md:mb-4 scroll-mt-6 break-words">
             {title}
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle: step down on phones */}
           {subtitle && (
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">{subtitle}</p>
+            <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-6 md:mb-8">{subtitle}</p>
           )}
 
-          {/* Author strip */}
-          <div className="flex items-center gap-4 pb-6 mb-10 border-b border-gray-200 text-sm text-gray-600 flex-wrap">
+          {/* Author strip: tighter gap + smaller avatar on phones */}
+          <div className="flex items-center gap-3 md:gap-4 pb-5 md:pb-6 mb-8 md:mb-10 border-b border-gray-200 text-xs md:text-sm text-gray-600 flex-wrap">
             <div
               className="h-7 w-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold text-xs flex items-center justify-center shrink-0"
               aria-hidden
@@ -133,8 +137,40 @@ export default function BlogPostLayout({
             <span>{readingTime} min</span>
           </div>
 
+          {/* Mobile TOC: collapsible. Hidden on lg where the sticky sidebar
+              is visible. Closed by default to keep the article start unblocked. */}
+          {toc.length > 0 && (
+            <details
+              open={tocOpen}
+              onToggle={(e) => setTocOpen((e.target as HTMLDetailsElement).open)}
+              className="lg:hidden mb-8 border border-gray-200 rounded-lg group"
+            >
+              <summary className="cursor-pointer list-none flex items-center justify-between px-4 py-3 hover:bg-gray-50 transition">
+                <span className="inline-flex items-center gap-2 text-sm font-semibold text-gray-900">
+                  <List className="h-4 w-4 text-indigo-600" />
+                  On this page
+                  <span className="text-xs font-normal text-gray-500 ml-1">({toc.length})</span>
+                </span>
+                <ChevronDown className={`h-4 w-4 text-gray-500 transition-transform ${tocOpen ? 'rotate-180' : ''}`} />
+              </summary>
+              <ul className="border-t border-gray-200 py-2 px-4 space-y-1 text-sm">
+                {toc.map((item) => (
+                  <li key={item.id}>
+                    <a
+                      href={`#${item.id}`}
+                      onClick={() => setTocOpen(false)}
+                      className="block py-1.5 text-gray-600 hover:text-indigo-600"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+
           {/* Article body */}
-          <div className="text-gray-800 text-[16px] leading-[1.7] blog-post-body">{children}</div>
+          <div className="text-gray-800 text-[15px] md:text-[16px] leading-[1.65] md:leading-[1.7] blog-post-body">{children}</div>
 
           {/* Feedback strip. Kept minimal until a real backend lands so no dead
               buttons are in the UI. */}
@@ -148,30 +184,30 @@ export default function BlogPostLayout({
             </Link>
           </div>
 
-          {/* Prev / Next */}
+          {/* Prev / Next: stack on narrow phones, side-by-side from sm up */}
           {(prev || next) && (
-            <nav className="mt-10 grid grid-cols-2 gap-3 text-sm">
+            <nav className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
               {prev ? (
                 <Link
                   href={`/${prev.slug}`}
-                  className="border border-gray-200 rounded-md p-3 hover:border-indigo-300"
+                  className="border border-gray-200 rounded-md p-3 hover:border-indigo-300 transition"
                 >
-                  <p className="text-xs text-gray-500">. Previous</p>
-                  <p className="font-semibold text-gray-900">{prev.title}</p>
+                  <p className="text-xs text-gray-500 mb-1">← Previous</p>
+                  <p className="font-semibold text-gray-900 line-clamp-2">{prev.title}</p>
                 </Link>
               ) : (
-                <div />
+                <div className="hidden sm:block" />
               )}
               {next ? (
                 <Link
                   href={`/${next.slug}`}
-                  className="border border-gray-200 rounded-md p-3 hover:border-indigo-300 text-right"
+                  className="border border-gray-200 rounded-md p-3 hover:border-indigo-300 transition sm:text-right"
                 >
-                  <p className="text-xs text-gray-500">Next .</p>
-                  <p className="font-semibold text-gray-900">{next.title}</p>
+                  <p className="text-xs text-gray-500 mb-1">Next →</p>
+                  <p className="font-semibold text-gray-900 line-clamp-2">{next.title}</p>
                 </Link>
               ) : (
-                <div />
+                <div className="hidden sm:block" />
               )}
             </nav>
           )}

@@ -138,6 +138,34 @@
   }
 }
 
+/* Blog-post body safety net. Prevents long code blocks and images from
+   busting the viewport on narrow phones even when the post author forgot
+   an overflow-x-auto wrapper. */
+.blog-post-body {
+  max-width: 100%;
+}
+.blog-post-body img,
+.blog-post-body svg,
+.blog-post-body video {
+  max-width: 100%;
+  height: auto;
+}
+.blog-post-body pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+}
+.blog-post-body code:not(pre code) {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+/* Any stray raw table (rare; most posts wrap in overflow-x-auto) stays inside. */
+.blog-post-body table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 /* Print styles for resume PDF */
 @media print {
   body * {
