@@ -23,6 +23,7 @@ const TOC = [
   { id: 'right-way', label: 'The right way to use AI' },
   { id: 'detect', label: 'Can ATS detect AI text?' },
   { id: 'privacy', label: 'Where does your data go?' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -177,6 +178,15 @@ export default function AIResumeBuildersPage() {
         <p className="mt-4">
           Most privacy-conscious workflow: use an open-source builder, use Claude or ChatGPT with training history off for rewrites, keep the resume file local. Least private: upload your resume to any free tool that does not explicitly state a no-sale policy.
         </p>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://openai.com/blog" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">OpenAI research blog for current model capabilities</a></li>
+            <li><a href="https://www.jobscan.co/ai-resume-writer" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Jobscan AI resume overview</a></li>
+            <li><a href="https://www.anthropic.com/news" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Anthropic updates on Claude reasoning behaviour</a></li>
+        </ul>
       </section>
 
       <section id="faq" className="mt-12 scroll-mt-6">

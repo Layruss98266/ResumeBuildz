@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { COMPANIES } from '@/lib/resumeCompanyData';
 import { ROLES } from '@/lib/resumeRoleData';
 import { BLOG_CATEGORIES } from '@/lib/blogCategories';
-import { BLOG_POSTS } from '@/lib/blogPosts';
+import { BLOG_POSTS, isPublished } from '@/lib/blogPosts';
 import { SITE_URL } from '@/lib/siteConfig';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -71,7 +71,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Blog posts — auto-discovered from registry so new posts hit the sitemap
   // without manual edits. Slugs point to top-level routes (e.g. /fresher-resume).
   const staticSlugs = new Set(staticEntries.map((e) => e.url));
+  // Scheduled-future posts are excluded from sitemap. Google should never
+  // try to crawl them before their publishAt — the per-post page.tsx
+  // returns 404 on direct hit, and we don't want 404 entries in the map.
   const blogPostEntries: MetadataRoute.Sitemap = BLOG_POSTS
+    .filter((p) => isPublished(p))
     .map((p) => ({
       url: `${base}/${p.slug}`,
       lastModified: new Date(p.dateModified),

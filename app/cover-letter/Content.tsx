@@ -31,6 +31,7 @@ const TOC = [
   { id: 'mistakes', label: 'Mistakes explained' },
   { id: 'templates', label: 'Templates by industry' },
   { id: 'ai', label: 'AI-powered cover letters' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -257,6 +258,15 @@ export default function CoverLetterGuidePage() {
             <span key={t} className="text-xs bg-white/10 text-indigo-300 px-2.5 py-1 rounded-full">{t}</span>
           ))}
         </div>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.amazon.jobs/en/principles" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Amazon Leadership Principles (interview signal reference)</a></li>
+            <li><a href="https://hbr.org/topic/subject/job-interviews" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">HBR on job interviews</a></li>
+            <li><a href="https://www.themuse.com/advice/interviewing" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">The Muse interviewing playbooks</a></li>
+        </ul>
       </section>
 
       <section id="faq" className="mt-12 scroll-mt-6">

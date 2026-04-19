@@ -12,6 +12,7 @@ const TOC = [
   { id: 'ats', label: 'Which format is best for ATS' },
   { id: 'decision', label: 'Choosing by your situation' },
   { id: 'fails', label: 'Where each format falls apart' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -227,6 +228,15 @@ export default function ResumeFormatPage() {
             <p className="font-semibold text-gray-900 mb-1">Hybrid fails when...</p>
             <p className="text-sm text-gray-700">The skills summary section expands to half the page. Recruiters skim past it and lose patience before reaching Experience. Keep the skills highlight to 3 to 6 lines maximum.</p>
           </li>
+        </ul>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.indeed.com/career-advice/resumes-cover-letters" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Indeed Career Guide: resumes & cover letters</a></li>
+            <li><a href="https://www.themuse.com/advice/resumes" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">The Muse resume advice library</a></li>
+            <li><a href="https://hbr.org/topic/subject/resumes" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">HBR resume and hiring research</a></li>
         </ul>
       </section>
 

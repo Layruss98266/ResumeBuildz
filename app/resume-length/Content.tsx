@@ -13,6 +13,7 @@ const TOC = [
   { id: 'industry', label: 'By industry' },
   { id: 'cut', label: 'How to cut to 1 page' },
   { id: 'expand', label: 'How to expand to 2 pages' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -203,6 +204,15 @@ export default function ResumeLengthPage() {
           <li><strong>Expand bullets from 3 to 5 per role.</strong> Only for the most recent 2 to 3 roles.</li>
           <li><strong>Add a Leadership section.</strong> For senior candidates: team sizes, direct reports, hiring decisions, budget scope.</li>
         </ol>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.indeed.com/career-advice/resumes-cover-letters" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Indeed Career Guide: resumes & cover letters</a></li>
+            <li><a href="https://www.themuse.com/advice/resumes" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">The Muse resume advice library</a></li>
+            <li><a href="https://hbr.org/topic/subject/resumes" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">HBR resume and hiring research</a></li>
+        </ul>
       </section>
 
       <section id="faq" className="mt-12 scroll-mt-6">

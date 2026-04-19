@@ -23,6 +23,7 @@ const TOC = [
   { id: 'privacy', label: 'Privacy: what they do with your data' },
   { id: 'open', label: 'Open-source builders' },
   { id: 'checklist', label: 'What to look for' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -190,6 +191,15 @@ export default function BestFreeResumeBuilderPage() {
           <li><strong>AI features, if you want them.</strong> Bullet rewrites, keyword suggestions. Most free builders have some form.</li>
           <li><strong>Cover letter integration.</strong> Matching design with the resume. Small thing; makes a polished impression.</li>
         </ol>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://openai.com/blog" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">OpenAI research blog for current model capabilities</a></li>
+            <li><a href="https://www.jobscan.co/ai-resume-writer" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Jobscan AI resume overview</a></li>
+            <li><a href="https://www.anthropic.com/news" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Anthropic updates on Claude reasoning behaviour</a></li>
+        </ul>
       </section>
 
       <section id="faq" className="mt-12 scroll-mt-6">

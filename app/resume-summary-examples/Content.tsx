@@ -42,6 +42,7 @@ const TOC = [
   { id: 'by-industry', label: '10 examples by industry' },
   { id: 'mistakes', label: 'Mistakes that kill your summary' },
   { id: 'ai-help', label: 'How AI can help' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -175,6 +176,15 @@ export default function ResumeSummaryPage() {
         <p className="mt-4">
           ResumeBuildz&apos;s AI assistant does this compression with the builder context already loaded, so it can pull the specifics from your own experience bullets instead of hallucinating them. One click, no copy-paste.
         </p>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.indeed.com/career-advice/resumes-cover-letters" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Indeed Career Guide: resumes & cover letters</a></li>
+            <li><a href="https://www.themuse.com/advice/resumes" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">The Muse resume advice library</a></li>
+            <li><a href="https://hbr.org/topic/subject/resumes" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">HBR resume and hiring research</a></li>
+        </ul>
       </section>
 
       <section id="faq" className="mt-12 scroll-mt-6">

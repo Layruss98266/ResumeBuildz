@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { articleSchema, breadcrumbSchema, faqPageSchema, combineSchemas, jsonLd } from '@/lib/articleSchema';
 import { absoluteUrl } from '@/lib/siteConfig';
 import { getBlogSeo } from '@/lib/blogSeo';
+import { isPublished } from '@/lib/blogPosts';
 import Content from './Content';
 
 const seo = getBlogSeo('resume-for-career-change')!;
@@ -9,6 +11,7 @@ const seo = getBlogSeo('resume-for-career-change')!;
 export const metadata: Metadata = {
   title: `${seo.title} | ResumeBuildz`,
   description: seo.description,
+  keywords: [seo.primaryKeyword, ...(seo.secondaryKeywords ?? []), ...(seo.longTailKeywords ?? [])].filter(Boolean) as string[],
   alternates: { canonical: absoluteUrl(`/${seo.slug}`) },
   openGraph: {
     title: `${seo.title} | ResumeBuildz`,
@@ -19,6 +22,7 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  if (!isPublished(seo)) notFound();
   const schema = combineSchemas(
     articleSchema({
       headline: seo.title,

@@ -14,6 +14,29 @@ export interface BlogPost {
   dateModified: string; // ISO yyyy-mm-dd
   readingTime: number; // minutes
   featured?: boolean; // show in hero carousel
+  /**
+   * Optional scheduled-publish timestamp. If set AND in the future, the
+   * post is hidden from /blog hub, sitemap, RSS, and related-post arrays,
+   * and its route returns 404 until the date passes. Absent = published
+   * immediately on deploy (current behaviour for every post committed
+   * before scheduling shipped).
+   *
+   * Format: ISO 8601 UTC, e.g. '2026-04-21T04:47:00Z' (09:30 IST).
+   */
+  publishAt?: string;
+}
+
+/**
+ * Returns true when a post is publicly visible — either no schedule
+ * was set, or the scheduled time has passed. Used as the single source
+ * of truth for visibility across hub, sitemap, RSS, and per-route
+ * 404 guards.
+ */
+export function isPublished(post: { publishAt?: string }, now: Date = new Date()): boolean {
+  if (!post.publishAt) return true;
+  const target = new Date(post.publishAt);
+  if (Number.isNaN(target.getTime())) return true; // malformed -> treat as published (fail open)
+  return target.getTime() <= now.getTime();
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -238,7 +261,167 @@ export const BLOG_POSTS: BlogPost[] = [
     featured: true,
   },
 
+  {
+    slug: 'why-should-we-hire-you',
+    title: 'How to Answer "Why Should We Hire You" (8 Examples)',
+    excerpt:
+      '3-pillar formula (Problem, Proof, Compounding), 8 worked examples from fresher to executive, and the 6 mistakes that kill this answer.',
+    category: 'interviews-cover-letters',
+    tags: ['interview', 'closing-question', 'pitch', 'why-hire-you'],
+    author: 'Surya L',
+    datePublished: '2026-05-12',
+    dateModified: '2026-05-12',
+    readingTime: 12,
+    publishAt: '2026-05-12T04:43:00Z',
+  },
+  {
+    slug: 'resume-margins-spacing',
+    title: 'Resume Margins & Spacing: The Ideal Setup (2026)',
+    excerpt:
+      'Exact margin, line-height, and section-spacing values for a resume that parses on ATS and reads clean. 8-point spec plus common layout fixes.',
+    category: 'resume-writing',
+    tags: ['margins', 'spacing', 'formatting', 'layout'],
+    author: 'Surya L',
+    datePublished: '2026-05-14',
+    dateModified: '2026-05-14',
+    readingTime: 10,
+    publishAt: '2026-05-14T05:59:00Z',
+  },
+  {
+    slug: 'workday-resume-tips',
+    title: 'Workday Resume Tips That Actually Pass (2026)',
+    excerpt:
+      'How Workday parses your resume, 8 tactical tips to raise match score, and the Profile Sync gotcha that catches most candidates.',
+    category: 'ats-keywords',
+    tags: ['Workday', 'ATS', 'resume-parsing', 'match-score'],
+    author: 'Surya L',
+    datePublished: '2026-05-17',
+    dateModified: '2026-05-17',
+    readingTime: 11,
+    publishAt: '2026-05-17T05:11:00Z',
+  },
+  {
+    slug: 'star-method-examples',
+    title: 'STAR Method for Behavioural Interviews: 8 Full Examples',
+    excerpt:
+      'The 90-second STAR formula with 8 full worked examples across Tech, Product, Design, Finance, Marketing, Management, and HR, plus the 6 STAR mistakes that tank answers.',
+    category: 'interviews-cover-letters',
+    tags: ['STAR', 'behavioural', 'interview', 'framework', 'examples'],
+    author: 'Surya L',
+    datePublished: '2026-05-05',
+    dateModified: '2026-05-05',
+    readingTime: 15,
+    featured: true,
+    publishAt: '2026-05-05T04:41:00Z',
+  },
+  {
+    slug: 'best-resume-fonts',
+    title: 'Best Resume Fonts 2026 (Tested Against 4 ATS)',
+    excerpt:
+      '10 fonts tested on Workday, Greenhouse, Lever, and Taleo. Safe picks, fonts to avoid, size rules, PDF embedding, and heading-vs-body setup.',
+    category: 'resume-writing',
+    tags: ['fonts', 'typography', 'ATS', 'formatting'],
+    author: 'Surya L',
+    datePublished: '2026-05-07',
+    dateModified: '2026-05-07',
+    readingTime: 12,
+    publishAt: '2026-05-07T06:07:00Z',
+  },
+  {
+    slug: 'wipro-elite-nth-guide',
+    title: 'Wipro Elite NTH 2026: Syllabus, Process & Resume Tips',
+    excerpt:
+      'Complete Wipro NTH 2026 guide: 3-round process, full syllabus, Elite Hire vs Turbo Hire packages, resume placement, and the 45-day prep plan.',
+    category: 'india-hiring',
+    tags: ['Wipro', 'NTH', 'Elite', 'fresher', 'campus', 'India'],
+    author: 'Surya L',
+    datePublished: '2026-05-10',
+    dateModified: '2026-05-10',
+    readingTime: 13,
+    publishAt: '2026-05-10T05:18:00Z',
+  },
+  {
+    slug: 'tell-me-about-yourself',
+    title: 'How to Answer "Tell Me About Yourself" (10 Examples)',
+    excerpt:
+      'The 3-part present-past-future formula, 10 worked examples by career stage, and the 6 mistakes that tank this first-interview question.',
+    category: 'interviews-cover-letters',
+    tags: ['interview', 'tell-me-about-yourself', 'elevator-pitch', 'prep'],
+    author: 'Surya L',
+    datePublished: '2026-04-28',
+    dateModified: '2026-04-28',
+    readingTime: 13,
+    publishAt: '2026-04-28T05:38:00Z',
+  },
+  {
+    slug: 'linkedin-url-on-resume',
+    title: 'Should You Put a LinkedIn URL on Your Resume?',
+    excerpt:
+      'Yes, if your profile passes the 8-point check. 4 reasons to include, 4 cases where you should not, and correct URL formatting.',
+    category: 'resume-writing',
+    tags: ['linkedin', 'resume-header', 'contact', 'social'],
+    author: 'Surya L',
+    datePublished: '2026-04-30',
+    dateModified: '2026-04-30',
+    readingTime: 10,
+    publishAt: '2026-04-30T05:23:00Z',
+  },
+  {
+    slug: 'infosys-infytq-guide',
+    title: 'Infosys InfyTQ Certification: Full 2026 Guide',
+    excerpt:
+      '5-phase process, Foundation + Advanced syllabus, Systems Engineer to Specialist Programmer roles, HackWithInfy accelerator, and resume placement.',
+    category: 'india-hiring',
+    tags: ['Infosys', 'InfyTQ', 'certification', 'fresher', 'HackWithInfy'],
+    author: 'Surya L',
+    datePublished: '2026-04-30',
+    dateModified: '2026-04-30',
+    readingTime: 15,
+    publishAt: '2026-05-03T05:54:00Z',
+  },
+  {
+    slug: 'interview-questions-and-answers',
+    title: '100 Common Interview Questions & How to Answer Them (2026)',
+    excerpt:
+      'The 100 questions hiring managers actually ask in 2026. Behavioural, situational, technical, leadership, culture, tricky, and closing. STAR method + 48-hour prep plan.',
+    category: 'interviews-cover-letters',
+    tags: ['interview', 'STAR', 'behavioural', 'prep', 'questions'],
+    author: 'Surya L',
+    datePublished: '2026-04-21',
+    dateModified: '2026-04-21',
+    readingTime: 16,
+    featured: true,
+    publishAt: '2026-04-21T04:47:00Z',
+  },
+  {
+    slug: 'resume-skills-list',
+    title: 'How to List Skills on a Resume (by Skill Type) in 2026',
+    excerpt:
+      'Hard skills, soft skills, languages, certifications, tools — each lands differently with recruiters and ATS. The exact grouping, order, and formatting.',
+    category: 'resume-writing',
+    tags: ['skills', 'hard-skills', 'soft-skills', 'certifications', 'ATS'],
+    author: 'Surya L',
+    datePublished: '2026-04-23',
+    dateModified: '2026-04-23',
+    readingTime: 11,
+    publishAt: '2026-04-23T06:12:00Z',
+  },
+
   // ─────────── India Hiring ───────────
+  {
+    slug: 'tcs-nqt-resume-guide',
+    title: 'TCS NQT 2026: Resume & Process Playbook for Freshers',
+    excerpt:
+      'Complete TCS NQT 2026 guide: 5-round process, TCS iON-safe resume format, 25 keywords, 3 project templates, timeline, bond, and interview prep.',
+    category: 'india-hiring',
+    tags: ['TCS', 'NQT', 'fresher', 'campus', 'India', 'iON'],
+    author: 'Surya L',
+    datePublished: '2026-04-26',
+    dateModified: '2026-04-26',
+    readingTime: 14,
+    featured: true,
+    publishAt: '2026-04-26T05:05:00Z',
+  },
   {
     slug: 'campus-placement-resume',
     title: 'Campus Placement Resume 2026',
@@ -292,24 +475,31 @@ export const VIRTUAL_POSTS: VirtualPost[] = [
 ];
 
 // ─── Helpers ───
+//
+// Every public getter filters out scheduled-future posts via isPublished().
+// Callers that need the full registry (admin, migrations, debugging) should
+// import BLOG_POSTS directly. Never do that from a public page; ship hidden
+// posts out to Google by mistake.
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
-  return BLOG_POSTS.find((p) => p.slug === slug);
+  const post = BLOG_POSTS.find((p) => p.slug === slug);
+  if (!post) return undefined;
+  return isPublished(post) ? post : undefined; // future posts appear "missing" to callers
 }
 
 export function getPostsByCategory(categorySlug: string): BlogPost[] {
-  return BLOG_POSTS.filter((p) => p.category === categorySlug);
+  return BLOG_POSTS.filter((p) => p.category === categorySlug && isPublished(p));
 }
 
 export function getFeaturedPosts(): BlogPost[] {
-  return BLOG_POSTS.filter((p) => p.featured);
+  return BLOG_POSTS.filter((p) => p.featured && isPublished(p));
 }
 
 export function getAllPosts(): BlogPost[] {
-  return [...BLOG_POSTS].sort((a, b) => b.dateModified.localeCompare(a.dateModified));
+  return BLOG_POSTS.filter((p) => isPublished(p)).sort((a, b) => b.dateModified.localeCompare(a.dateModified));
 }
 
 export function getPostCountByCategory(categorySlug: string): number {
-  return BLOG_POSTS.filter((p) => p.category === categorySlug).length +
+  return BLOG_POSTS.filter((p) => p.category === categorySlug && isPublished(p)).length +
     VIRTUAL_POSTS.filter((p) => p.category === categorySlug).length;
 }

@@ -12,6 +12,7 @@ const TOC = [
   { id: 'skip', label: 'When you can skip it' },
   { id: 'cost', label: 'Real cost of skipping' },
   { id: 'ai', label: 'AI cover letter generators' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -162,6 +163,15 @@ export default function CoverLetterVsResumePage() {
         <p className="mt-5">
           ResumeBuildz&apos;s AI cover letter generator pre-loads your resume as context so it does not invent achievements. Faster + safer than ChatGPT from scratch for this specific task.
         </p>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.amazon.jobs/en/principles" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Amazon Leadership Principles (interview signal reference)</a></li>
+            <li><a href="https://hbr.org/topic/subject/job-interviews" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">HBR on job interviews</a></li>
+            <li><a href="https://www.themuse.com/advice/interviewing" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">The Muse interviewing playbooks</a></li>
+        </ul>
       </section>
 
       <section id="faq" className="mt-12 scroll-mt-6">

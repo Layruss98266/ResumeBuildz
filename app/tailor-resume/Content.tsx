@@ -19,6 +19,7 @@ const TOC = [
   { id: 'whatto', label: 'What to tailor (and leave alone)' },
   { id: 'ai', label: 'Using AI to tailor faster' },
   { id: 'mistakes', label: 'Common tailoring mistakes' },
+  { id: 'refs', label: 'External references' },
   { id: 'faq', label: 'FAQ' },
 ];
 
@@ -165,6 +166,15 @@ export default function TailorResumePage() {
               <p className="text-sm text-gray-700">{item.fix}</p>
             </li>
           ))}
+        </ul>
+      </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.jobscan.co/blog" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Jobscan blog on ATS research</a></li>
+            <li><a href="https://www.workday.com/en-us/resources.html" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Workday resources for candidates</a></li>
+            <li><a href="https://www.greenhouse.io/blog" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Greenhouse hiring research blog</a></li>
         </ul>
       </section>
 

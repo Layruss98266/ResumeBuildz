@@ -162,8 +162,17 @@ export default function CampusPlacementResumePage() {
             ))}
           </div>
         </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.naukri.com/career-guidance" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Naukri Career Guidance hub</a></li>
+            <li><a href="https://www.ncs.gov.in" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">National Career Service (Govt of India) portal</a></li>
+            <li><a href="https://www.shine.com/career-advice" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">Shine career advice archives</a></li>
+        </ul>
+      </section>
 
-        <section id="faq" className="mt-10 scroll-mt-6">
+      <section id="faq" className="mt-10 scroll-mt-6">
           <div className="flex items-center gap-2 mb-3">
             <HelpCircle className="h-5 w-5 text-indigo-600" />
             <h2 className="text-2xl font-bold text-gray-900">Campus placement FAQ</h2>

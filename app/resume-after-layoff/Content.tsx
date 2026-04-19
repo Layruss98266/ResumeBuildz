@@ -191,8 +191,17 @@ export default function ResumeAfterLayoffPage() {
             ))}
           </div>
         </section>
+      <section id="refs" className="mt-12 scroll-mt-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">External references</h2>
+        <p className="mb-3 text-sm text-gray-700">Further reading on this topic from independent sources. All external links open in a new tab.</p>
+        <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
+            <li><a href="https://www.linkedin.com/business/talent/blog" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">LinkedIn Talent Blog on career moves</a></li>
+            <li><a href="https://hbr.org/topic/subject/managing-yourself" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">HBR Managing Yourself archive</a></li>
+            <li><a href="https://www.themuse.com/advice/changing-careers" rel="nofollow noopener noreferrer" target="_blank" className="text-indigo-600 underline">The Muse on changing careers</a></li>
+        </ul>
+      </section>
 
-        <section id="faq" className="mt-10 scroll-mt-6">
+      <section id="faq" className="mt-10 scroll-mt-6">
           <div className="flex items-center gap-2 mb-3">
             <HelpCircle className="h-5 w-5 text-indigo-600" />
             <h2 className="text-2xl font-bold text-gray-900">Post-layoff FAQ</h2>
