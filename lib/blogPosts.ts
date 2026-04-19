@@ -43,6 +43,30 @@ export const BLOG_POSTS: BlogPost[] = [
     dateModified: '2026-04-15',
     readingTime: 9,
   },
+  {
+    slug: 'resume-action-verbs',
+    title: '200+ Resume Action Verbs by Category (with Examples)',
+    excerpt:
+      '210 powerful verbs grouped by role (leadership, technical, sales, analysis, more). Includes the weak-to-strong swap table and 10 real bullet examples.',
+    category: 'resume-writing',
+    tags: ['action-verbs', 'bullets', 'writing'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 9,
+  },
+  {
+    slug: 'resume-length',
+    title: 'Resume Length in 2026: 1 Page vs 2 Pages',
+    excerpt:
+      'How long should a resume be in 2026? 1 page under 5 years, 2 above. Full framework with career stage, industry, and cutting/expanding tactics.',
+    category: 'resume-writing',
+    tags: ['length', 'formatting', 'one-page', 'two-page'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 8,
+  },
 
   // ─────────── ATS & Keywords ───────────
   {
