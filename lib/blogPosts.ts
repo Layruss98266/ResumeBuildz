@@ -67,6 +67,44 @@ export const BLOG_POSTS: BlogPost[] = [
     dateModified: '2026-04-19',
     readingTime: 8,
   },
+  {
+    slug: 'resume-summary-examples',
+    title: '25 Resume Summary Examples That Get Interviews (2026)',
+    excerpt:
+      '15 summary examples by career stage + 10 by industry. Before/after versions, the 4-part formula, common mistakes, and how to use AI without generic phrasing.',
+    category: 'resume-writing',
+    tags: ['summary', 'examples', 'formula'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 14,
+    featured: true,
+  },
+  {
+    slug: 'resume-format-guide',
+    title: 'Best Resume Format 2026: Chronological vs Functional vs Hybrid',
+    excerpt:
+      'The 3 formats compared. Which beats ATS, which recruiters actually read, and the decision tree for picking the right one for your situation.',
+    category: 'resume-writing',
+    tags: ['format', 'chronological', 'hybrid', 'functional', 'ATS'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 10,
+  },
+  {
+    slug: 'quantify-resume-achievements',
+    title: 'How to Quantify Resume Achievements (50+ Examples by Role)',
+    excerpt:
+      'Turn vague bullets into metric-driven proof. The XYZ formula, where to find numbers, and 50+ examples across 8 roles.',
+    category: 'resume-writing',
+    tags: ['metrics', 'bullets', 'XYZ-formula', 'quantification'],
+    author: 'Surya L',
+    datePublished: '2026-04-19',
+    dateModified: '2026-04-19',
+    readingTime: 12,
+    featured: true,
+  },
 
   // ─────────── ATS & Keywords ───────────
   {
