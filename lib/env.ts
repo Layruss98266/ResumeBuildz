@@ -44,6 +44,7 @@ export const env = {
   get STRIPE_PRICE_PRO(): string | undefined { return optionalValue(process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO); },
   get STRIPE_PRICE_TEAM(): string | undefined { return optionalValue(process.env.NEXT_PUBLIC_STRIPE_PRICE_TEAM); },
   get STRIPE_PRICE_LIFETIME(): string | undefined { return optionalValue(process.env.NEXT_PUBLIC_STRIPE_PRICE_LIFETIME); },
+  get SENTRY_DSN(): string | undefined { return optionalValue(process.env.NEXT_PUBLIC_SENTRY_DSN); },
 };
 
 /**
