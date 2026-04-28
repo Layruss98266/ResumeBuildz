@@ -1314,6 +1314,7 @@ export const BLOG_SEO: Record<string, BlogSeo> = {
       { q: 'How often to update?', a: 'Every 6 months minimum. After job change or major win.' },
     ],
   },
+
 };
 
 export function getBlogSeo(slug: string): BlogSeo | undefined {
