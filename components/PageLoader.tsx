@@ -25,7 +25,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import LoaderCard from './LoaderCard';
 
-const SHOW_DELAY_MS = 150;
+const SHOW_DELAY_MS = 300;
 const SAFETY_TIMEOUT_MS = 8000;
 
 const FADE_OUT_MS = 200;

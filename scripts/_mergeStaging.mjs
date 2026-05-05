@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
 
 const seoFile = 'lib/blogSeo.ts';
 const postsFile = 'lib/blogPosts.ts';

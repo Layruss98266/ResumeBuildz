@@ -6,22 +6,25 @@ import { FileText, Menu, X, ArrowRight, LogOut, User, ChevronDown, Settings, Key
 import { useAuthContext as useAuth } from '@/components/Providers';
 import { useLoginGateway } from '@/components/LoginGateway';
 
-// Main nav. Clean, flat set of top-level links. Blog is a single link; the
-// /blog hub has its own filter chips so a mega-dropdown here would duplicate
-// that UI and clutter the header.
 const NAV_LINKS = [
   { href: '/templates', label: 'Templates' },
-  { href: '/cover-letter', label: 'Cover Letter' },
-  { href: '/blog', label: 'Blog' },
   { href: '/about', label: 'About' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/contact', label: 'Contact' },
 ];
 
+const BLOG_LINKS = [
+  { href: '/blog', label: 'All Posts' },
+  { href: '/cover-letter', label: 'Cover Letter' },
+  { href: '/blog/company-guides', label: 'Company Guides' },
+];
+
 export default function SiteNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [blogOpen, setBlogOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+  const blogRef = useRef<HTMLDivElement>(null);
   const { user, profile, signOut, loading, isPro, exportUserData, deleteAccount } = useAuth();
   const { openGateway } = useLoginGateway();
 
@@ -46,6 +49,9 @@ export default function SiteNavbar() {
     const handleClickOutside = (e: MouseEvent) => {
       if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
         setProfileOpen(false);
+      }
+      if (blogRef.current && !blogRef.current.contains(e.target as Node)) {
+        setBlogOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -77,6 +83,36 @@ export default function SiteNavbar() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Blog dropdown */}
+            <div className="relative" ref={blogRef}>
+              <button
+                onClick={() => setBlogOpen(!blogOpen)}
+                aria-label="Blog menu"
+                aria-expanded={blogOpen}
+                aria-haspopup="true"
+                className="flex items-center gap-1 text-gray-700 hover:text-blue-600 text-sm px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors whitespace-nowrap"
+              >
+                Blog <ChevronDown className={`h-3 w-3 transition-transform ${blogOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {blogOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setBlogOpen(false)} />
+                  <div className="absolute left-0 top-full mt-2 z-50 bg-white border border-gray-200 rounded-xl shadow-xl py-1.5 w-44 animate-in fade-in slide-in-from-top-1 duration-150">
+                    {BLOG_LINKS.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setBlogOpen(false)}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Auth + CTA + Mobile toggle */}
@@ -211,6 +247,20 @@ export default function SiteNavbar() {
                   {link.label}
                 </Link>
             ))}
+            {/* Blog section with sub-links */}
+            <div className="px-3 py-1">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Blog</p>
+              {BLOG_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block text-gray-700 hover:text-blue-600 text-sm px-2 py-1.5 rounded-md hover:bg-gray-50 transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
             <Link
               href="/faq"
               onClick={() => setMobileOpen(false)}
