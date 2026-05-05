@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useResumeStore } from '@/store/useResumeStore';
 import { TEMPLATES, DEFAULT_COLORS, sampleResumeData, TemplateName } from '@/types/resume';
 import { Label } from '@/components/ui/label';
@@ -25,9 +26,9 @@ export default function TemplateSelector() {
             const TemplateComponent = getTemplateComponent(t.name);
             const isSelected = selectedTemplate === t.name;
             return (
-              <div
+              <motion.div
                 key={t.name}
-                className={`group relative rounded-lg overflow-hidden border-2 transition-all text-left cursor-pointer ${
+                className={`group relative rounded-lg overflow-hidden border-2 transition-colors text-left cursor-pointer ${
                   isSelected
                     ? 'border-primary shadow-md ring-1 ring-primary/20'
                     : 'border-transparent hover:border-muted-foreground/20 hover:shadow-sm'
@@ -36,6 +37,9 @@ export default function TemplateSelector() {
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedTemplate(t.name); }}
+                whileTap={{ scale: 0.97 }}
+                animate={isSelected ? { scale: [1, 1.03, 1] } : { scale: 1 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
               >
                 {/* Mini preview */}
                 <div className="relative bg-white overflow-hidden" style={{ height: '100px' }}>
@@ -56,11 +60,19 @@ export default function TemplateSelector() {
                       primaryColor={isSelected ? primaryColor : t.primaryColor}
                     />
                   </div>
-                  {isSelected && (
-                    <div className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-primary flex items-center justify-center shadow">
-                      <Check className="h-3 w-3 text-primary-foreground" />
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {isSelected && (
+                      <motion.div
+                        className="absolute top-1.5 right-1.5 h-5 w-5 rounded-full bg-primary flex items-center justify-center shadow"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                      >
+                        <Check className="h-3 w-3 text-primary-foreground" />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   <button
                     onClick={(e) => { e.stopPropagation(); setPreviewTemplate(t.name); }}
                     className="absolute top-1.5 left-1.5 h-6 w-6 rounded-full bg-background/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-background"
@@ -72,7 +84,7 @@ export default function TemplateSelector() {
                 <div className="px-1.5 py-1 bg-muted/50">
                   <span className={`text-xs font-medium ${isSelected ? 'text-primary' : 'text-foreground'}`}>{t.label}</span>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

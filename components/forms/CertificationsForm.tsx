@@ -1,15 +1,26 @@
 'use client';
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useResumeStore } from '@/store/useResumeStore';
 import { Certification } from '@/types/resume';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { toMonthInput, fromMonthInput } from '@/lib/dateUtils';
+import { toMonthInput, fromMonthInput, isValidDateRange } from '@/lib/dateUtils';
 import { Card } from '@/components/ui/card';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import { generateId } from '@/lib/ids';
+
+const certDateSchema = z.object({
+  date: z.string(),
+  expiryDate: z.string(),
+}).refine(
+  (d) => isValidDateRange(d.date, d.expiryDate || 'Present'),
+  { message: 'Expiry must be after issue date', path: ['expiryDate'] },
+);
 
 function CertEntry({ cert, onUpdate, onRemove }: {
   cert: Certification;
@@ -17,6 +28,11 @@ function CertEntry({ cert, onUpdate, onRemove }: {
   onRemove: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(true);
+  const { formState: { errors }, setValue, trigger } = useForm({
+    resolver: zodResolver(certDateSchema),
+    defaultValues: { date: cert.date, expiryDate: cert.expiryDate ?? '' },
+    mode: 'onChange',
+  });
 
   return (
     <Card className="p-4">
@@ -42,11 +58,33 @@ function CertEntry({ cert, onUpdate, onRemove }: {
           </div>
           <div>
             <Label className="text-sm">Date Earned</Label>
-            <Input type="month" value={toMonthInput(cert.date)} onChange={(e) => onUpdate({ date: fromMonthInput(e.target.value) })} />
+            <Input
+              type="month"
+              value={toMonthInput(cert.date)}
+              onChange={(e) => {
+                const display = fromMonthInput(e.target.value);
+                onUpdate({ date: display });
+                setValue('date', display);
+                trigger(['date', 'expiryDate']);
+              }}
+            />
           </div>
           <div>
             <Label className="text-sm">Expiry Date (optional)</Label>
-            <Input type="month" value={toMonthInput(cert.expiryDate)} onChange={(e) => onUpdate({ expiryDate: fromMonthInput(e.target.value) })} />
+            <Input
+              type="month"
+              value={toMonthInput(cert.expiryDate)}
+              onChange={(e) => {
+                const display = fromMonthInput(e.target.value);
+                onUpdate({ expiryDate: display });
+                setValue('expiryDate', display);
+                trigger(['date', 'expiryDate']);
+              }}
+              className={errors.expiryDate ? 'border-red-400' : ''}
+            />
+            {errors.expiryDate && (
+              <p className="text-xs text-red-500 mt-0.5">{errors.expiryDate.message as string}</p>
+            )}
           </div>
           <div>
             <Label className="text-sm">Credential ID (optional)</Label>

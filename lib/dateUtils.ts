@@ -1,30 +1,64 @@
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+import { parse, format, isValid, isBefore, differenceInMonths } from 'date-fns';
 
-/** Convert "Jan 2020" or "January 2020" to "2020-01" for month input */
-export function toMonthInput(display: string): string {
-  if (!display || display === 'Present') return '';
-  // Already in YYYY-MM format
-  if (/^\d{4}-\d{2}$/.test(display)) return display;
-  // Try "Mon YYYY" format
-  const match = display.match(/^(\w+)\s+(\d{4})$/);
-  if (match) {
-    const monthIdx = MONTHS.findIndex(
-      (m) => match[1].toLowerCase().startsWith(m.toLowerCase())
-    );
-    if (monthIdx !== -1) {
-      return `${match[2]}-${String(monthIdx + 1).padStart(2, '0')}`;
-    }
+// Accepted display formats when parsing user input / imported data.
+const PARSE_FORMATS = ['MMM yyyy', 'MMMM yyyy', 'yyyy-MM', 'MM/yyyy', 'yyyy'];
+
+function parseDisplay(display: string): Date | null {
+  for (const fmt of PARSE_FORMATS) {
+    const d = parse(display, fmt, new Date());
+    if (isValid(d)) return d;
   }
-  return '';
+  return null;
 }
 
-/** Convert "2020-01" to "Jan 2020" for display/storage */
+/** Convert "Jan 2020" / "January 2020" / "2020-01" → "2020-01" for <input type="month"> */
+export function toMonthInput(display: string): string {
+  if (!display || display === 'Present') return '';
+  if (/^\d{4}-\d{2}$/.test(display)) return display;
+  const d = parseDisplay(display);
+  return d ? format(d, 'yyyy-MM') : '';
+}
+
+/** Convert "2020-01" → "Jan 2020" for display / storage */
 export function fromMonthInput(value: string): string {
   if (!value) return '';
-  const [year, month] = value.split('-');
-  const idx = parseInt(month, 10) - 1;
-  if (idx >= 0 && idx < 12 && year) {
-    return `${MONTHS[idx]} ${year}`;
-  }
-  return value;
+  const d = parse(value, 'yyyy-MM', new Date());
+  return isValid(d) ? format(d, 'MMM yyyy') : value;
+}
+
+/**
+ * Human-readable duration between two "MMM yyyy" strings.
+ * e.g. formatDuration("Jan 2021", "Apr 2023") → "2 yrs 3 mos"
+ * Pass "Present" (or omit end) to calculate from startDate to today.
+ */
+export function formatDuration(start: string, end?: string): string {
+  const startDate = parseDisplay(start);
+  if (!startDate || !isValid(startDate)) return '';
+
+  const endDate =
+    !end || end === 'Present'
+      ? new Date()
+      : parseDisplay(end) ?? new Date();
+
+  const totalMonths = differenceInMonths(endDate, startDate);
+  if (totalMonths < 0) return '';
+
+  const years = Math.floor(totalMonths / 12);
+  const months = totalMonths % 12;
+
+  if (years === 0) return `${months} mo${months !== 1 ? 's' : ''}`;
+  if (months === 0) return `${years} yr${years !== 1 ? 's' : ''}`;
+  return `${years} yr${years !== 1 ? 's' : ''} ${months} mo${months !== 1 ? 's' : ''}`;
+}
+
+/**
+ * Returns true when startDate precedes endDate (or endDate is "Present").
+ * Both values should be in "MMM yyyy" or "yyyy-MM" format.
+ */
+export function isValidDateRange(start: string, end: string): boolean {
+  if (!start || !end || end === 'Present') return true;
+  const s = parseDisplay(start);
+  const e = parseDisplay(end);
+  if (!s || !e || !isValid(s) || !isValid(e)) return true;
+  return isBefore(s, e) || format(s, 'yyyy-MM') === format(e, 'yyyy-MM');
 }

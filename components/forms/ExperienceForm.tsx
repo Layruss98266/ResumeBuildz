@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useResumeStore } from '@/store/useResumeStore';
 import { Experience } from '@/types/resume';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toMonthInput, fromMonthInput } from '@/lib/dateUtils';
+import { toMonthInput, fromMonthInput, isValidDateRange } from '@/lib/dateUtils';
 import RichTextarea from '@/components/ui/rich-textarea';
 import BulletScoreList from '@/components/forms/BulletScoreList';
 import { ROLE_PRESETS } from '@/lib/rolePresets';
@@ -18,12 +21,25 @@ import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } 
 import { CSS } from '@dnd-kit/utilities';
 import { generateId } from '@/lib/ids';
 
+const expDateSchema = z.object({
+  startDate: z.string(),
+  endDate: z.string(),
+}).refine(
+  (d) => isValidDateRange(d.startDate, d.endDate || 'Present'),
+  { message: 'End date must be after start date', path: ['endDate'] },
+);
+
 function SortableExperienceEntry({ exp, onUpdate, onRemove }: {
   exp: Experience;
   onUpdate: (data: Partial<Experience>) => void;
   onRemove: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(true);
+  const { formState: { errors }, setValue, trigger } = useForm({
+    resolver: zodResolver(expDateSchema),
+    defaultValues: { startDate: exp.startDate, endDate: exp.endDate ?? '' },
+    mode: 'onChange',
+  });
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: exp.id });
 
   const style = {
@@ -97,24 +113,37 @@ function SortableExperienceEntry({ exp, onUpdate, onRemove }: {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label className="text-xs text-muted-foreground">Start Date</Label>
-              <Input type="month" value={toMonthInput(exp.startDate)} onChange={(e) => onUpdate({ startDate: fromMonthInput(e.target.value) })} className="mt-1" />
+              <Input
+                type="month"
+                value={toMonthInput(exp.startDate)}
+                onChange={(e) => {
+                  const display = fromMonthInput(e.target.value);
+                  onUpdate({ startDate: display });
+                  setValue('startDate', display);
+                  trigger(['startDate', 'endDate']);
+                }}
+                className="mt-1"
+              />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground">End Date</Label>
               {exp.current ? (
-                <Input
-                  type="text"
-                  value="Present"
-                  disabled
-                  className="mt-1 opacity-60"
-                />
+                <Input type="text" value="Present" disabled className="mt-1 opacity-60" />
               ) : (
                 <Input
                   type="month"
                   value={toMonthInput(exp.endDate)}
-                  onChange={(e) => onUpdate({ endDate: fromMonthInput(e.target.value) })}
-                  className="mt-1"
+                  onChange={(e) => {
+                    const display = fromMonthInput(e.target.value);
+                    onUpdate({ endDate: display });
+                    setValue('endDate', display);
+                    trigger(['startDate', 'endDate']);
+                  }}
+                  className={`mt-1 ${errors.endDate ? 'border-red-400' : ''}`}
                 />
+              )}
+              {errors.endDate && (
+                <p className="text-xs text-red-500 mt-0.5">{errors.endDate.message as string}</p>
               )}
             </div>
           </div>

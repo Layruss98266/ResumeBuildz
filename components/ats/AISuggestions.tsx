@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { useResumeStore } from '@/store/useResumeStore';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -50,10 +51,7 @@ export default function AISuggestions() {
   const { resumeData } = useResumeStore();
   const { showToast } = useToast();
   const { isPro, user, refreshProfile } = useAuthContext();
-  const [apiKey, setApiKey] = useState(() => {
-    if (typeof window !== 'undefined') return localStorage.getItem('groq-api-key') || '';
-    return '';
-  });
+  const [apiKey, setApiKey] = useLocalStorage('groq-api-key', '');
   const [showKeyInput, setShowKeyInput] = useState(!apiKey);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState('');
@@ -65,7 +63,6 @@ export default function AISuggestions() {
 
   const saveKey = (key: string) => {
     setApiKey(key);
-    localStorage.setItem('groq-api-key', key);
     setShowKeyInput(false);
   };
 
