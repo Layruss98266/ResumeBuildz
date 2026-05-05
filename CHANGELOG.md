@@ -6,6 +6,58 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.22.2] - 2026-05-05
+
+### Fixed
+
+- **Stripe billing now functional**: implemented all three webhook
+  handlers (`checkout.session.completed`, `subscription.updated/deleted`,
+  `invoice.payment_failed`) so `profiles.plan` is correctly set to `pro`
+  after payment. Added `lib/supabase/admin.ts` service-role client used
+  exclusively in the webhook after signature verification.
+- **Bullet evaluator proper noun false positive**: sentence-start
+  capitalised words (e.g. "Led", "Managed") were incorrectly counted as
+  proper nouns, inflating specificity scores. Fixed filter to exclude the
+  first word when it begins the sentence.
+- **Template photo error handling**: all 20 resume templates now use
+  `safePhotoSrc()` and an `onError` handler that hides the `<img>` on
+  broken or malformed data URLs rather than rendering a broken image icon.
+
+### Changed
+
+- **Server-side AI usage counter**: `AISuggestions` and `BulletScoreList`
+  now gate and increment via the `increment-usage` Edge Function instead
+  of localStorage alone. `refreshProfile` is called after each successful
+  use so the quota display updates immediately.
+- **Server-side PDF export counter**: `builder/Content.tsx` increments
+  PDF usage via the Edge Function after each export. `handlePrint()` is
+  kept synchronous before any `await` to preserve the browser gesture
+  context required for `window.print()`.
+- **`structuredClone()` in Zustand store**: replaced all five
+  `JSON.parse(JSON.stringify(...))` deep clones with the native
+  `structuredClone()` (~2× faster).
+- **`deleteAccount` partial-deletion feedback**: navbar now shows a
+  distinct message when the Edge Function was unavailable and only the
+  `profiles` row was deleted, directing the user to contact support for
+  full `auth.users` removal.
+
+### Docs
+
+- `docs/SUPABASE_ACCOUNT_SCHEMA.md` updated with `stripe_customer_id`
+  column + unique index, and daily usage counter columns.
+- `supabase/README.md` client-side wiring updated to reflect current
+  `checkServerUsage` / `incrementServerUsage` API.
+- `tests/e2e/README.md` updated to document the new builder test suite.
+
+### Tests
+
+- Added `tests/e2e/builder.spec.ts`: Playwright golden-path suite covering
+  SSR H1, no JS errors, personal info section, name input, live preview
+  update, experience section, bullet scorer, export buttons, template
+  switcher, and ATS tab smoke test.
+
+---
+
 ## [1.22.1] - 2026-05-05
 
 ### Changed
