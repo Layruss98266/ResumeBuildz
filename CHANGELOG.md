@@ -267,7 +267,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Fixed
 
-- **Runtime crash when Supabase env vars missing.** `createBrowserClient('', '')` was throwing on first render on fresh clones with no `.env.local`. Both `lib/supabase/client.ts` and `lib/supabase/server.ts` now detect missing env and return a no-op stub so the app runs in guest mode. Same guard added to `proxy.ts` (middleware) and `app/auth/callback/route.ts`.
+- **Runtime crash when Supabase env vars missing.** `createBrowserClient('', '')` was throwing on first render on fresh clones with no `.env.local`. Both `lib/supabase/client.ts` and `lib/supabase/server.ts` now detect missing env and return a no-op stub so the app runs in guest mode. Same guard added to `proxy.ts` and `app/auth/callback/route.ts`.
 - **React "script tag while rendering component" warning** in `app/layout.tsx`. Replaced `next/script` with `strategy="beforeInteractive"` (which Next 16 no longer renders correctly when placed in `<body>`) with a plain inline `<script>` tag in `<head>`. Dark-mode init still runs synchronously before hydration — no FOUC.
 - **3 ESLint errors** (`react-hooks/set-state-in-effect`) in `ShareResumeDialog`, `VersionHistoryDialog`, `ATSTrend`, and `app/r/page.tsx`. All legitimate async-state-sync patterns — suppressed with targeted per-line disables + explanatory comments.
 - **Typed env accessors** (`lib/env.ts`) replace scattered `process.env.FOO!` non-null assertions with lazy getters that throw a clear "Missing required env var: X" error at access time. Soft-required helpers return `''` with a dev warning so the app still boots in guest mode.
@@ -290,7 +290,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 4. **Photo upload magic-byte validation** (`lib/imageMagic.ts`): verifies first 12 bytes match JPEG/PNG/GIF/WebP signatures before accepting. MIME type alone was spoofable.
 5. **`maxLength` support in RichTextarea** + 2000-char cap on summary. Defense against multi-MB paste DoS. Pattern available for all RichTextarea usages.
 6. **`Referrer-Policy: no-referrer`** on `/r/*` share pages. Even though URL fragments never hit the wire, this prevents leaking resume content via any potential Referer on outbound link clicks.
-7. **Narrowed proxy middleware matcher** to only auth-requiring paths (`/builder`, `/login`, `/auth/*`, `/api/*`, `/pricing`). Marketing pages no longer trigger Supabase session refresh on every request — less attack surface + faster TTFB.
+7. **Narrowed proxy matcher** to only auth-requiring paths (`/builder`, `/login`, `/auth/*`, `/api/*`, `/pricing`). Marketing pages no longer trigger Supabase session refresh on every request — less attack surface + faster TTFB.
 8. **Stripe webhook signature stub** at `/api/stripe/webhook`: reads raw body, verifies with `STRIPE_WEBHOOK_SECRET`, routes 4 event types. Returns 503 until env vars set so Stripe retries. Prevents spoofed subscription upgrades.
 9. **BYOK security warning banner** in AI tab: explicit callout that the Groq key lives in localStorage and is vulnerable to XSS/extensions, with rotation + spending-cap guidance.
 10. **Production-safe logger** (`lib/logger.ts`): silences `.info`/`.warn` in prod, scrubs sensitive keys (password/token/secret/api_key/auth/cookie/session) from `.error` args. Wired into useAuth, useCloudSync, proxy, webhook handler.

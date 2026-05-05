@@ -5,7 +5,7 @@ import Link from 'next/link';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
-import { jsonLd } from '@/lib/articleSchema';
+import { faqPageSchema, jsonLd } from '@/lib/articleSchema';
 
 const faqItems = [
   {
@@ -193,18 +193,14 @@ export default function FAQPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLd({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: faqItems.map((item) => ({
-              "@type": "Question",
-              name: item.question,
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: item.answer,
-              },
-            })),
-          }),
+          __html: jsonLd(
+            faqPageSchema(
+              faqItems.map((item) => ({
+                q: item.question,
+                a: item.answer,
+              }))
+            )
+          ),
         }}
       />
 

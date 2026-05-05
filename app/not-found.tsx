@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { FileText, Home, Search, ArrowRight } from 'lucide-react';
-import { BLOG_POSTS } from '@/lib/blogPosts';
+import { getAllPosts } from '@/lib/blogPosts';
 import { COMPANIES } from '@/lib/resumeCompanyData';
 
 // All pages a 404'd user might be looking for.
@@ -22,7 +22,7 @@ const SEARCHABLE = [
   { path: '/changelog', title: 'Changelog' },
   { path: '/status', title: 'Status' },
   { path: '/roadmap', title: 'Roadmap' },
-  ...BLOG_POSTS.map((p) => ({ path: `/${p.slug}`, title: p.title })),
+  ...getAllPosts().map((p) => ({ path: `/${p.slug}`, title: p.title })),
   ...COMPANIES.map((c) => ({ path: `/blog/company-guides/${c.slug}`, title: `Resume for ${c.name}` })),
 ];
 

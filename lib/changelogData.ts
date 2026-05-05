@@ -115,7 +115,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Auth error normalization (lib/authErrors.ts) — raw Supabase messages never reflected into URL params or UI; all errors pass through stable codes with friendly labels.',
     ],
     improved: [
-      'Guest-mode boot: Supabase client + server + middleware + auth callback now detect missing NEXT_PUBLIC_SUPABASE_* env vars and fall back to a no-op stub instead of crashing on first render.',
+      'Guest-mode boot: Supabase client + server + proxy + auth callback now detect missing NEXT_PUBLIC_SUPABASE_* env vars and fall back to a no-op stub instead of crashing on first render.',
       'Dark-mode init script moved from next/script (body child) to plain inline <script> in <head> — kills React "script tag while rendering component" warning in Next 16 while still running before hydration.',
       'Lint clean: 3 set-state-in-effect errors suppressed with targeted per-line disables + comments; 16 warnings resolved (unused imports, stale eslint-disable directives, dead hook calls).',
       'Canonical URLs corrected: siteConfig fallback now resume-forge-orcin.vercel.app (the actual Vercel project URL); all GitHub references fixed to Surya8991/ResumeBuildz (proper casing). Affects sitemap, JSON-LD, footer, and README.',
@@ -138,7 +138,7 @@ export const CHANGELOG: ChangelogEntry[] = [
       'Production-safe logger (lib/logger.ts) scrubs password/token/secret/api_key/auth/cookie keys.',
     ],
     improved: [
-      'Narrowed Supabase middleware matcher to /builder, /auth/*, /api/*, /login, /pricing. Marketing pages no longer hit auth refresh.',
+      'Narrowed Supabase proxy matcher to /builder, /auth/*, /api/*, /login, /pricing. Marketing pages no longer hit auth refresh.',
       'Added Cross-Origin-Opener-Policy + Cross-Origin-Resource-Policy headers.',
       '/pdfjs/ worker served with correct Content-Type and 1-year immutable cache.',
       'useAuth, useCloudSync, proxy, webhook handler all use logger instead of console.',

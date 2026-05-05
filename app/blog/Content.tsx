@@ -1,8 +1,8 @@
 'use client';
 
 import { Suspense, useMemo } from 'react';
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { ArrowUpRight, Clock, ChevronLeft, ChevronRight, Building2 } from 'lucide-react';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
@@ -43,6 +43,14 @@ function filterIncludesCompanies(filter: string): boolean {
   return filter === 'all' || filter === 'company-guides';
 }
 
+function buildBlogHref(filter: FilterValue, page: number): string {
+  const params = new URLSearchParams();
+  if (filter !== 'all') params.set('cat', filter);
+  if (page > 1) params.set('page', String(page));
+  const qs = params.toString();
+  return qs ? `/blog?${qs}` : '/blog';
+}
+
 // Next 16 requires useSearchParams to be wrapped in a Suspense boundary so
 // the page can still render statically around the dynamic segment.
 export default function BlogHubPage() {
@@ -59,8 +67,6 @@ function BlogHubSkeleton() {
 
 function BlogHubContent() {
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
 
   // URL is the single source of truth. Deriving state directly from
   // searchParams avoids setState-in-effect cascades and keeps browser
@@ -114,34 +120,6 @@ function BlogHubContent() {
     [allPosts, postsByParent],
   );
 
-  // URL + state sync. `cat` is preserved across pagination; `page` is dropped
-  // when filter changes so the user is not stranded on an empty page 4.
-  const updateUrl = (nextFilter: FilterValue, nextPage: number) => {
-    const params = new URLSearchParams();
-    if (nextFilter !== 'all') params.set('cat', nextFilter);
-    if (nextPage > 1) params.set('page', String(nextPage));
-    const qs = params.toString();
-    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
-  };
-
-  const handleFilter = (value: FilterValue) => {
-    // Reset page when filter changes so the user is not stranded on an
-    // empty page 4 of a smaller result set.
-    updateUrl(value, 1);
-  };
-
-  const handlePage = (next: number) => {
-    updateUrl(filter, next);
-    // Scroll the grid into view on a new frame so the URL replace commits
-    // before the scroll starts.
-    if (typeof window !== 'undefined') {
-      requestAnimationFrame(() => {
-        const grid = document.getElementById('post-grid');
-        if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-  };
-
   // ---------- Filtered results (O(1) via indexes) ----------
   // The hero is only rendered separately on the All filter (page 1). On any
   // other filter the grid shows the complete list without hiding a hero.
@@ -192,20 +170,21 @@ function BlogHubContent() {
           {/* Parent filter chips */}
           <div className="flex flex-wrap gap-2 mt-8">
             {parentChips.map((chip) => (
-              <button
+              <Link
                 key={chip.value}
-                onClick={() => handleFilter(chip.value)}
+                href={buildBlogHref(chip.value, 1)}
                 className={`px-4 py-1.5 text-sm rounded-full border transition ${
                   filter === chip.value
                     ? 'bg-gray-900 text-white border-gray-900 font-medium'
                     : 'border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300'
                 }`}
+                aria-current={filter === chip.value ? 'page' : undefined}
               >
                 {chip.label}
                 <span className={`ml-1.5 text-xs ${filter === chip.value ? 'text-white/70' : 'text-gray-500'}`}>
                   {chip.count}
                 </span>
-              </button>
+              </Link>
             ))}
           </div>
 
@@ -274,9 +253,9 @@ function BlogHubContent() {
 
               {totalPages > 1 && (
                 <Pagination
+                  filter={filter}
                   page={safePage}
                   totalPages={totalPages}
-                  onChange={handlePage}
                 />
               )}
             </>
@@ -358,13 +337,13 @@ function CompanyCard({ company }: { company: CompanyEntry }) {
 // --------------------------------------------------------------------
 
 function Pagination({
+  filter,
   page,
   totalPages,
-  onChange,
 }: {
+  filter: FilterValue;
   page: number;
   totalPages: number;
-  onChange: (n: number) => void;
 }) {
   // Build the range of page numbers to show. For small N we show all; for
   // larger N we elide with ellipses (1 ... 4 5 6 ... 12).
@@ -372,21 +351,26 @@ function Pagination({
 
   return (
     <nav className="mt-14 flex items-center justify-center gap-1 flex-wrap" aria-label="Pagination">
-      <button
-        onClick={() => onChange(page - 1)}
-        disabled={page <= 1}
-        className="px-3 py-2 text-sm rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed transition inline-flex items-center gap-1"
-      >
-        <ChevronLeft className="h-4 w-4" /> Prev
-      </button>
+      {page <= 1 ? (
+        <span className="px-3 py-2 text-sm rounded-md border border-gray-200 text-gray-400 cursor-not-allowed inline-flex items-center gap-1">
+          <ChevronLeft className="h-4 w-4" /> Prev
+        </span>
+      ) : (
+        <Link
+          href={buildBlogHref(filter, page - 1)}
+          className="px-3 py-2 text-sm rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition inline-flex items-center gap-1"
+        >
+          <ChevronLeft className="h-4 w-4" /> Prev
+        </Link>
+      )}
 
       {pages.map((p, i) =>
         p === 'ellipsis' ? (
           <span key={`e-${i}`} className="px-2 text-gray-400 text-sm select-none">…</span>
         ) : (
-          <button
+          <Link
             key={p}
-            onClick={() => onChange(p)}
+            href={buildBlogHref(filter, p)}
             aria-current={p === page ? 'page' : undefined}
             className={`min-w-[36px] px-2 py-2 text-sm rounded-md border transition ${
               p === page
@@ -395,17 +379,22 @@ function Pagination({
             }`}
           >
             {p}
-          </button>
+          </Link>
         ),
       )}
 
-      <button
-        onClick={() => onChange(page + 1)}
-        disabled={page >= totalPages}
-        className="px-3 py-2 text-sm rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-40 disabled:cursor-not-allowed transition inline-flex items-center gap-1"
-      >
-        Next <ChevronRight className="h-4 w-4" />
-      </button>
+      {page >= totalPages ? (
+        <span className="px-3 py-2 text-sm rounded-md border border-gray-200 text-gray-400 cursor-not-allowed inline-flex items-center gap-1">
+          Next <ChevronRight className="h-4 w-4" />
+        </span>
+      ) : (
+        <Link
+          href={buildBlogHref(filter, page + 1)}
+          className="px-3 py-2 text-sm rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition inline-flex items-center gap-1"
+        >
+          Next <ChevronRight className="h-4 w-4" />
+        </Link>
+      )}
     </nav>
   );
 }

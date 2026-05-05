@@ -50,7 +50,7 @@ Privacy-first: resume data lives in your browser by default. Supabase sync is op
 - Full TypeScript, strict mode
 - ESLint + React 19 purity rules enforced
 - JSON-LD structured data across all marketing pages (Article, FAQ, Breadcrumb, HowTo)
-- CSP, HSTS, X-Frame-Options, Referrer-Policy via Next middleware
+- CSP, HSTS, X-Frame-Options, Referrer-Policy via Next proxy
 - Row-Level Security on every Supabase table (`auth.uid() = id`)
 - GDPR: export-my-data + delete-account via Supabase Edge Function
 

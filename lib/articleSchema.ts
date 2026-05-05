@@ -65,18 +65,34 @@ export interface FAQItem {
   a: string;
 }
 
+function normalizeFaqText(value: string): string {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function normalizeSchemaText(value: string): string {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
 export function faqPageSchema(faqs: FAQItem[]) {
+  const mainEntity = faqs
+    .map((faq) => ({
+      q: normalizeFaqText(faq.q),
+      a: normalizeFaqText(faq.a),
+    }))
+    .filter((faq) => faq.q.length > 0 && faq.a.length > 0)
+    .map((faq) => ({
+      '@type': 'Question',
+      name: faq.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.a,
+      },
+    }));
+
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: f.a,
-      },
-    })),
+    mainEntity,
   };
 }
 
@@ -96,13 +112,20 @@ export function howToSchema({
   steps: HowToStep[];
   totalTime?: string; // ISO 8601 duration e.g. "PT30M"
 }) {
+  const normalizedSteps = steps
+    .map((step) => ({
+      name: normalizeSchemaText(step.name),
+      text: normalizeSchemaText(step.text),
+    }))
+    .filter((step) => step.name.length > 0 && step.text.length > 0);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'HowTo',
-    name,
-    description,
+    name: normalizeSchemaText(name),
+    description: normalizeSchemaText(description),
     ...(totalTime && { totalTime }),
-    step: steps.map((s, i) => ({
+    step: normalizedSteps.map((s, i) => ({
       '@type': 'HowToStep',
       position: i + 1,
       name: s.name,
@@ -121,7 +144,13 @@ export function breadcrumbSchema(crumbs: CrumbInput[]) {
   const items = [
     { label: 'Home', slug: '' },
     ...crumbs,
-  ];
+  ]
+    .map((crumb) => ({
+      label: normalizeSchemaText(crumb.label),
+      slug: crumb.slug,
+    }))
+    .filter((crumb) => crumb.label.length > 0);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

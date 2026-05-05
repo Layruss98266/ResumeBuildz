@@ -17,7 +17,7 @@ import dynamic from 'next/dynamic';
 import SiteNavbar from '@/components/SiteNavbar';
 import SiteFooter from '@/components/SiteFooter';
 import { useLoginGateway } from '@/components/LoginGateway';
-import { jsonLd } from '@/lib/articleSchema';
+import { faqPageSchema, jsonLd } from '@/lib/articleSchema';
 
 // Lazy-load the hero illustration. Heavy animations + SVG weight don't
 // need to block LCP. Placeholder keeps layout stable via explicit
@@ -430,19 +430,14 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: jsonLd({
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            // Keep this list in sync with the 4 FAQs rendered above.
-            // Google penalises FAQPage schema whose questions do not
-            // appear in the page content.
-            mainEntity: [
-              { '@type': 'Question', name: 'Is ResumeBuildz really free?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. The free plan gives you all 20 templates, 12 ATS checks, DOCX and HTML export, and guest mode. No credit card, no sign-up required.' } },
-              { '@type': 'Question', name: 'Do I need to create an account?', acceptedAnswer: { '@type': 'Answer', text: 'No. ResumeBuildz works entirely in your browser with no sign-up. Your resume data stays in localStorage on your device.' } },
-              { '@type': 'Question', name: 'Will my data be sold?', acceptedAnswer: { '@type': 'Answer', text: 'No. Your resume content lives in your browser and never leaves it unless you explicitly use the AI feature. Analytics are cookieless and aggregated. No ads, no data brokers.' } },
-              { '@type': 'Question', name: 'What makes a resume ATS-friendly?', acceptedAnswer: { '@type': 'Answer', text: 'Single-column layout, standard section headings, no images, PDF or DOCX format, and keyword density matching the job description. Our 12-point ATS check flags every violation.' } },
-            ],
-          }),
+          __html: jsonLd(
+            faqPageSchema([
+              { q: 'Is ResumeBuildz really free?', a: 'Yes. The free plan gives you all 20 templates, 12 ATS checks, DOCX and HTML export, and guest mode. No credit card, no sign-up required.' },
+              { q: 'Do I need to create an account?', a: 'No. ResumeBuildz works entirely in your browser with no sign-up. Your resume data stays in localStorage on your device.' },
+              { q: 'Will my data be sold?', a: 'No. Your resume content lives in your browser and never leaves it unless you explicitly use the AI feature. Analytics are cookieless and aggregated. No ads, no data brokers.' },
+              { q: 'What makes a resume ATS-friendly?', a: 'Single-column layout, standard section headings, no images, PDF or DOCX format, and keyword density matching the job description. Our 12-point ATS check flags every violation.' },
+            ])
+          ),
         }}
       />
 

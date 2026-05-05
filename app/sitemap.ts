@@ -1,61 +1,43 @@
 import type { MetadataRoute } from 'next';
 import { COMPANIES } from '@/lib/resumeCompanyData';
 import { ROLES } from '@/lib/resumeRoleData';
-import { BLOG_CATEGORIES } from '@/lib/blogCategories';
 import { BLOG_POSTS, isPublished } from '@/lib/blogPosts';
 import { SITE_URL } from '@/lib/siteConfig';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = SITE_URL;
-  const now = new Date();
+  const marketingLastModified = new Date('2026-05-05T00:00:00Z');
+  const companyGuideLastModified = new Date('2026-04-15T00:00:00Z');
+  const roleGuideLastModified = new Date('2026-04-19T00:00:00Z');
 
   const staticEntries: MetadataRoute.Sitemap = [
-    { url: base, lastModified: now, changeFrequency: 'weekly', priority: 1 },
-    { url: `${base}/builder`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/templates`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${base}/pricing`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/ats-guide`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/resume-tips`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/cover-letter`, lastModified: now, changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${base}/about`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${base}/faq`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${base}/terms`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${base}/contact`, lastModified: now, changeFrequency: 'monthly', priority: 0.4 },
-    { url: `${base}/changelog`, lastModified: now, changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${base}/roadmap`, lastModified: now, changeFrequency: 'weekly', priority: 0.4 },
-    { url: `${base}/status`, lastModified: now, changeFrequency: 'daily', priority: 0.3 },
-    { url: `${base}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${base}/refund`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${base}/shipping`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
+    { url: base, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 1 },
+    { url: `${base}/builder`, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/templates`, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${base}/pricing`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/about`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/faq`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/terms`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${base}/contact`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.4 },
+    { url: `${base}/changelog`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${base}/roadmap`, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 0.4 },
+    { url: `${base}/status`, lastModified: marketingLastModified, changeFrequency: 'daily', priority: 0.3 },
+    { url: `${base}/privacy`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${base}/refund`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${base}/shipping`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
 
     // Resources hub + situation pages
-    { url: `${base}/blog/company-guides`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${base}/resume`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${base}/fresher-resume`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/campus-placement-resume`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/naukri-resume-tips`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/resume-after-layoff`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/resume-after-career-gap`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/resume-for-career-change`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${base}/blog/company-guides`, lastModified: companyGuideLastModified, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/resume`, lastModified: roleGuideLastModified, changeFrequency: 'weekly', priority: 0.8 },
 
     // Blog hub
-    { url: `${base}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/blog`, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 0.9 },
   ];
-
-  // Blog filter deep-links (parent groups). Child-category filter deep-links
-  // are also valid but omitted from the sitemap to avoid duplicate-content
-  // flags; the canonical entry for each post handles discovery.
-  const blogFilterEntries: MetadataRoute.Sitemap = BLOG_CATEGORIES.map((c) => ({
-    url: `${base}/blog?cat=${c.slug}`,
-    lastModified: now,
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
 
   // Dynamic company pages (22 entries), now living under /blog/company-guides/.
   const companyEntries: MetadataRoute.Sitemap = COMPANIES.map((c) => ({
     url: `${base}/blog/company-guides/${c.slug}`,
-    lastModified: now,
+    lastModified: companyGuideLastModified,
     changeFrequency: 'monthly' as const,
     priority: 0.6,
   }));
@@ -63,7 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Role-based resume guides.
   const roleEntries: MetadataRoute.Sitemap = ROLES.map((r) => ({
     url: `${base}/resume/${r.slug}`,
-    lastModified: now,
+    lastModified: roleGuideLastModified,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
@@ -84,5 +66,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
     .filter((e) => !staticSlugs.has(e.url));
 
-  return [...staticEntries, ...companyEntries, ...roleEntries, ...blogFilterEntries, ...blogPostEntries];
+  return [...staticEntries, ...companyEntries, ...roleEntries, ...blogPostEntries];
 }
