@@ -625,18 +625,7 @@ export default function HomePage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!mounted) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-background">
-        <div className="flex flex-col items-center gap-3">
-          <Sparkles className="h-12 w-12 text-primary animate-pulse" />
-          <span className="text-2xl font-bold text-foreground">ResumeBuildz</span>
-          <span className="text-sm text-muted-foreground">Loading...</span>
-          <span className="text-xs text-muted-foreground/60 mt-1">Built by Surya L</span>
-        </div>
-      </div>
-    );
-  }
+  if (!mounted) return null;
 
   return (
     <ErrorBoundary>
