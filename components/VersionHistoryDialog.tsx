@@ -38,6 +38,7 @@ function formatRelative(t: number): string {
 }
 
 export default function VersionHistoryDialog({ open, onOpenChange }: Props) {
+  "use no memo";
   const { resumeData, importData } = useResumeStore();
   const { showToast } = useToast();
   const [versions, setVersions] = useState<ResumeVersion[]>([]);
@@ -53,7 +54,6 @@ export default function VersionHistoryDialog({ open, onOpenChange }: Props) {
 
   useEffect(() => {
     // Refresh list from localStorage every time the dialog opens.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) setVersions(listVersions());
   }, [open]);
 

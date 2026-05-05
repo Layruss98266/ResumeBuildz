@@ -33,6 +33,7 @@ const STORAGE_KEY = 'resumeforge-saved-jds';
 const MAX_JDS = 5;
 
 export default function MultiJDMatching({ jobDescription, onLoadJD }: MultiJDMatchingProps) {
+  "use no memo";
   const [savedJDs, setSavedJDs] = useLocalStorage<SavedJD[]>(STORAGE_KEY, []);
   const [comparisons, setComparisons] = useState<ComparisonResult[] | null>(null);
   const { resumeData } = useResumeStore();
@@ -53,7 +54,7 @@ export default function MultiJDMatching({ jobDescription, onLoadJD }: MultiJDMat
   const removeJD = useCallback((id: string) => {
     setSavedJDs((prev) => prev.filter((jd) => jd.id !== id));
     setComparisons((prev) => (prev ? prev.filter((c) => c.id !== id) : null));
-  }, []);
+  }, [setSavedJDs]);
 
   const compareAll = useCallback(() => {
     if (savedJDs.length === 0) return;
