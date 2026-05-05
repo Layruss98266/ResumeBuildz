@@ -46,14 +46,6 @@ test.describe('Builder — golden path', () => {
   });
 
   test('can type into the full name field', async ({ page }) => {
-    // Find the name input — try multiple selectors since the label text may vary
-    const nameInput = page
-      .locator('input')
-      .filter({ hasText: '' })
-      .first()
-      .or(page.getByLabel(/full name/i))
-      .or(page.getByPlaceholder(/john|name/i).first());
-
     // Locate via label association
     const label = page.locator('label').filter({ hasText: /full name/i }).first();
     const forAttr = await label.getAttribute('for').catch(() => null);
