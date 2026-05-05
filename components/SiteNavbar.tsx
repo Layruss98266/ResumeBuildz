@@ -88,6 +88,9 @@ export default function SiteNavbar() {
             <div className="relative" ref={blogRef}>
               <button
                 onClick={() => setBlogOpen(!blogOpen)}
+                aria-label="Blog menu"
+                aria-expanded={blogOpen}
+                aria-haspopup="true"
                 className="flex items-center gap-1 text-gray-700 hover:text-blue-600 text-sm px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors whitespace-nowrap"
               >
                 Blog <ChevronDown className={`h-3 w-3 transition-transform ${blogOpen ? 'rotate-180' : ''}`} />

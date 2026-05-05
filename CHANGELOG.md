@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.22.5] - 2026-05-05
+
+### Fixed
+
+- **PageLoader grace period raised to 300 ms**: fast blog-to-blog navigations
+  (static pages served from CDN in ~100–250 ms) no longer trigger the loading
+  overlay. `SHOW_DELAY_MS` bumped from 150 → 300 in `components/PageLoader.tsx`.
+- **Cover Letter moved into Blog dropdown**: removed Cover Letter from the
+  top-level nav bar. Blog is now a dropdown containing All Posts (`/blog`),
+  Cover Letter (`/cover-letter`), and Company Guides (`/blog/company-guides`).
+  Mobile menu shows the same three links under a "Blog" section header.
+- **Blog dropdown accessibility**: added `aria-expanded`, `aria-haspopup`, and
+  `aria-label="Blog menu"` to the Blog trigger button in `SiteNavbar.tsx`.
+
+---
+
 ## [1.22.4] - 2026-05-05
 
 ### Changed
