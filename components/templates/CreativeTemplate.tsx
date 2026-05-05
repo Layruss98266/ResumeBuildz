@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function CreativeTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -176,7 +176,7 @@ export default function CreativeTemplate({ data, primaryColor }: TemplateProps) 
         <div className="absolute top-0 left-0 w-full h-2" style={{ backgroundColor: primaryColor }} />
         <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-5" style={{ backgroundColor: primaryColor, transform: 'translate(30%, -50%)' }} />
         <div className="flex items-center gap-4 mt-2">
-          {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20" />}
+          {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20" />}
           <div>
             <h1 className="text-[28px] font-bold" style={{ color: primaryColor }}>
               {personalInfo.fullName || 'Your Name'}

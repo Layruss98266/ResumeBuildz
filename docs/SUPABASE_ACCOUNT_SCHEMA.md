@@ -113,3 +113,35 @@ the client ID/secret from Google Cloud Console. No SQL needed.
   image/jpeg|png|webp). Supabase also rejects non-image MIME at upload.
 - Password change, email change, MFA enroll/verify all go through the
   Supabase Auth API which handles re-authentication and audit logging.
+
+## 6. Stripe billing columns
+
+Run after setting up Stripe. Adds `stripe_customer_id` so the webhook can
+map Stripe customer events (subscription.updated / deleted, payment_failed)
+back to the correct user without touching the anon key.
+
+```sql
+alter table public.profiles
+  add column if not exists stripe_customer_id text unique;
+
+-- Allow the webhook's service-role client to look up users by customer ID.
+-- The service role bypasses RLS, so no extra policy is needed.
+-- A unique index makes the look-up O(log n).
+create unique index if not exists profiles_stripe_customer_id_idx
+  on public.profiles (stripe_customer_id)
+  where stripe_customer_id is not null;
+```
+
+## 7. Usage-tracking columns (AI rewrites + PDF exports)
+
+Required by the `increment-usage` Supabase Edge Function. Run once before
+deploying that function. Columns default to 0 / today so existing rows need
+no backfill.
+
+```sql
+alter table public.profiles
+  add column if not exists ai_rewrites_used     int  not null default 0,
+  add column if not exists ai_rewrites_reset_date date not null default current_date,
+  add column if not exists pdf_exports_used     int  not null default 0,
+  add column if not exists pdf_exports_reset_date date not null default current_date;
+```

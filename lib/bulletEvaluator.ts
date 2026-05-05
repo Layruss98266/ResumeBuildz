@@ -148,8 +148,11 @@ export function evaluateBullet(
 
   // 4. Specificity — 15 pts (has a proper noun, tech, or product)
   const properNounMatches = bullet.match(/\b[A-Z][a-zA-Z]{2,}\b/g) || [];
-  // Ignore first word since sentence-start capitalisation is automatic
-  const specificTokens = properNounMatches.filter((_, i) => i > 0 || bullet.indexOf(_) > 0);
+  // Ignore the first word only when it sits at position 0 (sentence-start
+  // capitalisation). bullet.indexOf(w) > 0 is always true for the opening
+  // word of a non-empty string, so the old condition was a no-op that
+  // incorrectly counted "Led", "Built", etc. as specificity tokens.
+  const specificTokens = properNounMatches.filter((w, i) => i > 0 || !bullet.trim().startsWith(w));
   const specScore = specificTokens.length > 0 ? 15 : 0;
   if (!specScore) {
     issues.push({ id: 'no-specifics', severity: 'info', message: 'Add specifics', fix: 'Name the stack, product, framework, or team (Kubernetes, Stripe, etc.)' });

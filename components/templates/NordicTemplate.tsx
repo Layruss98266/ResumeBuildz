@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function NordicTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -165,7 +165,7 @@ export default function NordicTemplate({ data, primaryColor }: TemplateProps) {
       {/* Header - minimal Nordic style */}
       <div className="mb-10">
         <div className="flex items-center gap-4">
-          {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover" />}
+          {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover" />}
           <div>
             <h1 className="text-[20px] font-light tracking-wide text-gray-800">
               {personalInfo.fullName || 'Your Name'}

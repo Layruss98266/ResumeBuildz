@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { create } from 'zustand';
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
@@ -173,7 +173,7 @@ export const useResumeStore = create<ResumeStore>()(
       styleOptions: DEFAULT_STYLE_OPTIONS,
       savedProfiles: [],
       history: [],
-      historyIndex: -1,
+      historyIndex: -1, // sentinel: no snapshot yet; first push sets it to 0
 
       setSelectedTemplate: (template) => set({ selectedTemplate: template }),
       setPrimaryColor: (color) => set({ primaryColor: color }),
@@ -396,7 +396,7 @@ export const useResumeStore = create<ResumeStore>()(
           const profile: SavedProfile = {
             id: generateId(),
             name,
-            data: JSON.parse(JSON.stringify(state.resumeData)),
+            data: structuredClone(state.resumeData),
             template: state.selectedTemplate,
             primaryColor: state.primaryColor,
             createdAt: Date.now(),
@@ -409,7 +409,7 @@ export const useResumeStore = create<ResumeStore>()(
           const profile = state.savedProfiles.find((p) => p.id === id);
           if (!profile) return {};
           return {
-            resumeData: JSON.parse(JSON.stringify(profile.data)),
+            resumeData: structuredClone(profile.data),
             selectedTemplate: profile.template as TemplateName,
             primaryColor: profile.primaryColor,
           };
@@ -428,7 +428,7 @@ export const useResumeStore = create<ResumeStore>()(
       // Undo/Redo: snapshot-based history
       pushHistory: () =>
         set((state) => {
-          const snapshot = JSON.parse(JSON.stringify(state.resumeData));
+          const snapshot = structuredClone(state.resumeData);
           // Drop any "redo" entries when a new edit happens
           const newHistory = state.history.slice(0, state.historyIndex + 1);
           newHistory.push(snapshot);
@@ -441,7 +441,7 @@ export const useResumeStore = create<ResumeStore>()(
           if (state.historyIndex <= 0) return {};
           const newIndex = state.historyIndex - 1;
           return {
-            resumeData: JSON.parse(JSON.stringify(state.history[newIndex])),
+            resumeData: structuredClone(state.history[newIndex]),
             historyIndex: newIndex,
           };
         }),
@@ -450,7 +450,7 @@ export const useResumeStore = create<ResumeStore>()(
           if (state.historyIndex >= state.history.length - 1) return {};
           const newIndex = state.historyIndex + 1;
           return {
-            resumeData: JSON.parse(JSON.stringify(state.history[newIndex])),
+            resumeData: structuredClone(state.history[newIndex]),
             historyIndex: newIndex,
           };
         }),

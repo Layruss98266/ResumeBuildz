@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function InfographicTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -262,7 +262,7 @@ export default function InfographicTemplate({ data, primaryColor }: TemplateProp
         }} />
         <div className="relative flex items-center gap-5">
           {personalInfo.photo && (
-            <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" />
+            <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" />
           )}
           <div className="flex-1">
             <h1 className="text-[26px] font-black leading-tight tracking-tight">

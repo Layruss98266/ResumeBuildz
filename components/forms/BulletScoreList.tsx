@@ -9,7 +9,8 @@ import { useMemo, useState } from 'react';
 import { ChevronDown, ChevronRight, Info, AlertTriangle, AlertCircle, Wand2, Sparkles, Check, X, Loader2 } from 'lucide-react';
 import { evaluateBullet, gradeBg, gradeColor } from '@/lib/bulletEvaluator';
 import { callGroqAI, getGroqApiKey } from '@/components/ats/utils/groqAI';
-import { canUse, incrementUsage } from '@/lib/usage';
+import { checkServerUsage, incrementServerUsage } from '@/lib/usage';
+import { useAuthContext } from '@/components/Providers';
 
 export interface BulletScoreListProps {
   bullets: string[];
@@ -104,6 +105,7 @@ function BulletRow({
   onApplyOpener: (opener: string) => void;
   onReplaceFull: (next: string) => void;
 }) {
+  const { user, refreshProfile } = useAuthContext();
   const [open, setOpen] = useState(grade === 'red');
   const [aiBusy, setAiBusy] = useState(false);
   const [aiResult, setAiResult] = useState<string | null>(null);
@@ -118,7 +120,8 @@ function BulletRow({
       setAiError('Add a Groq API key in AI settings first.');
       return;
     }
-    if (!canUse('ai')) {
+    const { allowed } = await checkServerUsage('ai');
+    if (!allowed) {
       setAiError('Daily free AI limit reached. Upgrade for unlimited.');
       return;
     }
@@ -132,7 +135,8 @@ function BulletRow({
     setAiBusy(false);
     if (success && content) {
       setAiResult(content.replace(/^["']|["']$/g, '').trim());
-      incrementUsage('ai');
+      await incrementServerUsage('ai');
+      if (user) refreshProfile();
     } else {
       setAiError(error || 'AI rewrite failed.');
     }

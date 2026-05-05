@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function TechTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -164,7 +164,7 @@ export default function TechTemplate({ data, primaryColor }: TemplateProps) {
       {/* Dark sidebar */}
       <div className="w-[68mm] p-5" style={{ backgroundColor: '#1a1a2e' }}>
         <div className="mb-5">
-          {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mb-2" />}
+          {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mb-2" />}
           <h1 className="text-[18px] font-bold text-white leading-tight">
             {personalInfo.fullName || 'Your Name'}
           </h1>

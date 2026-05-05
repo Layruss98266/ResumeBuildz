@@ -28,9 +28,18 @@ export default function SiteNavbar() {
   const handleDeleteAccount = async () => {
     if (!confirm('Are you sure you want to delete your account? This cannot be undone. All your data will be permanently erased.')) return;
     if (!confirm('Last warning: This will permanently delete your account, profile, and all resume data. Continue?')) return;
-    const { error } = await deleteAccount();
-    if (error) alert('Failed to delete account: ' + error.message);
-    else alert('Your account has been deleted.');
+    const { error, partialDeletion } = await deleteAccount();
+    if (error) {
+      alert('Failed to delete account: ' + error.message);
+    } else if (partialDeletion) {
+      alert(
+        'Your profile and resume data have been deleted.\n\n' +
+        'Note: your sign-in record could not be fully removed at this time. ' +
+        'If you want it erased completely, please contact support at the email on the About page.',
+      );
+    } else {
+      alert('Your account has been deleted.');
+    }
   };
 
   useEffect(() => {

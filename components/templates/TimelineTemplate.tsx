@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function TimelineTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -183,7 +183,7 @@ export default function TimelineTemplate({ data, primaryColor }: TemplateProps) 
     <div className="bg-white text-black p-8" style={{ width: '210mm', minHeight: '297mm' }}>
       {/* Header */}
       <div className="flex items-center gap-4 mb-5 pb-4 border-b-2" style={{ borderColor: primaryColor }}>
-        {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover border-2" style={{ borderColor: primaryColor }} />}
+        {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover border-2" style={{ borderColor: primaryColor }} />}
         <div className="flex-1">
           <h1 className="text-[22px] font-bold" style={{ color: primaryColor }}>
             {personalInfo.fullName || 'Your Name'}

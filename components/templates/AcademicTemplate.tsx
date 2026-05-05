@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function AcademicTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -175,7 +175,7 @@ export default function AcademicTemplate({ data, primaryColor }: TemplateProps) 
     <div className="bg-white text-black p-10" style={{ width: '210mm', minHeight: '297mm', fontFamily: 'Georgia, serif' }}>
       {/* Header - centered academic style */}
       <div className="text-center mb-5 pb-4 border-b-2" style={{ borderColor: primaryColor }}>
-        {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover mx-auto mb-2 border border-gray-300" />}
+        {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover mx-auto mb-2 border border-gray-300" />}
         <h1 className="text-[22px] font-bold tracking-wide" style={{ color: primaryColor, fontFamily: 'Georgia, serif' }}>
           {personalInfo.fullName || 'Your Name'}
         </h1>

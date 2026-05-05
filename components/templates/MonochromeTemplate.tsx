@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 // This template deliberately ignores primaryColor — pure black and white only.
 export default function MonochromeTemplate({ data }: TemplateProps) {
@@ -189,7 +189,7 @@ export default function MonochromeTemplate({ data }: TemplateProps) {
           <div className="flex items-start justify-between">
             <div>
               {personalInfo.photo && (
-                <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover grayscale mb-3" />
+                <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover grayscale mb-3" />
               )}
               <h1 className="text-[32px] font-extralight text-black leading-none tracking-tight" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
                 {personalInfo.fullName || 'Your Name'}

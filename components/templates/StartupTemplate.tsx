@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function StartupTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -215,7 +215,7 @@ export default function StartupTemplate({ data, primaryColor }: TemplateProps) {
         <div className="p-6 rounded-2xl bg-white" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
           <div className="flex items-center gap-4">
             {personalInfo.photo && (
-              <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-offset-2" style={{ ringColor: primaryColor } as React.CSSProperties} />
+              <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover ring-2 ring-offset-2" style={{ ringColor: primaryColor } as React.CSSProperties} />
             )}
             <div className="flex-1">
               <h1 className="text-[26px] font-black text-gray-900 leading-tight">
