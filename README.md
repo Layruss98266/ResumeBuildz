@@ -77,6 +77,9 @@ All `NEXT_PUBLIC_*` values are inlined at build time. Restart the dev server aft
 | `NEXT_PUBLIC_SUPABASE_URL` | Optional | Auth, cloud sync, `/account`. Omit for guest-only mode. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Optional | Same as above. |
 | `NEXT_PUBLIC_SITE_URL` | Optional | Canonical site URL / OAuth redirect base. Defaults to `https://resumebuildz.tech`. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional (required for billing) | Service-role key used only in `app/api/stripe/webhook` after signature verification to update `profiles.plan`. Never exposed client-side. |
+| `STRIPE_SECRET_KEY` | Optional | Stripe checkout session creation. |
+| `STRIPE_WEBHOOK_SECRET` | Optional | Stripe webhook signature verification. |
 | `GROQ_API_KEY` (per-user, client-side) | Optional | AI rewrites. Stored in `localStorage` under `groq-api-key`; the server never sees it. |
 
 ## Supabase setup

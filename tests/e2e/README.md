@@ -25,24 +25,34 @@ npm run test:e2e:prod
 
 ## What is covered
 
-| Path | Test |
-|---|---|
-| `/` | Loads, has H1, Blog link in nav |
-| `/sitemap.xml` | 200, ≥50 URLs |
-| `/robots.txt` | 200, disallows `/account` + `/login` |
-| `/builder` | sr-only H1 in server HTML, no page errors on mount |
-| `/pricing` | Product + Offer schema present, ≥3 tier labels visible |
-| `/templates` | H1 visible, ≥10 template cards |
-| 10 key routes | Unique `<title>` (not root-layout fallback) + canonical tag |
+| File | Path | Test |
+|---|---|---|
+| `smoke.spec.ts` | `/` | Loads, has H1, Blog link in nav |
+| `smoke.spec.ts` | `/sitemap.xml` | 200, ≥50 URLs |
+| `smoke.spec.ts` | `/robots.txt` | 200, disallows `/account` + `/login` |
+| `smoke.spec.ts` | `/builder` | sr-only H1 in server HTML, no page errors on mount |
+| `smoke.spec.ts` | `/pricing` | Product + Offer schema present, ≥3 tier labels visible |
+| `smoke.spec.ts` | `/templates` | H1 visible, ≥10 template cards |
+| `smoke.spec.ts` | 10 key routes | Unique `<title>` (not root-layout fallback) + canonical tag |
+| `builder.spec.ts` | `/builder` | sr-only H1 in SSR HTML |
+| `builder.spec.ts` | `/builder` | No JS errors on initial load |
+| `builder.spec.ts` | `/builder` | Personal info section visible after hydration |
+| `builder.spec.ts` | `/builder` | Can type into full name field |
+| `builder.spec.ts` | `/builder` | Live preview updates when name is typed |
+| `builder.spec.ts` | `/builder` | Experience section can be expanded and role filled |
+| `builder.spec.ts` | `/builder` | Bullet scorer appears when an achievement is typed |
+| `builder.spec.ts` | `/builder` | Export panel contains PDF/DOCX buttons |
+| `builder.spec.ts` | `/builder` | Template switcher shows multiple templates |
+| `builder.spec.ts` | `/builder` | ATS tab renders without errors |
 
 ## What is NOT covered
 
-- Actual resume-building flow (typing, template switch, export) —
-  too flaky for smoke, belongs in a focused regression suite
 - Auth flow (signup, OAuth) — covered by Supabase integration tests
   we don't have yet
 - Mobile viewport interactions beyond layout — covered by the
   `mobile-chrome` project but minimal assertions
+- Actual file downloads (PDF/DOCX) — require a live Supabase instance
+  and are out of scope for local CI
 
 ## When to expand
 

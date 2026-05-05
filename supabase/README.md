@@ -69,11 +69,13 @@ role for the write.
 // Account deletion (hooks/useAuth.ts → deleteAccount)
 await supabase.functions.invoke('delete-user');
 
-// Rate-limit check (lib/usage.ts → canUseServer)
-const { data } = await supabase.functions.invoke('increment-usage', {
-  body: { feature: 'ai', dryRun: true },
-});
-if (!data.allowed) openUpgradeModal();
+// Pre-check without incrementing (lib/usage.ts → checkServerUsage)
+const { allowed } = await checkServerUsage('ai');
+if (!allowed) { setAiError('Daily free AI limit reached.'); return; }
+
+// Atomic check + increment after successful use (lib/usage.ts → incrementServerUsage)
+await incrementServerUsage('ai');
+// Also mirrors server count into localStorage for UI continuity
 ```
 
 ## Status
