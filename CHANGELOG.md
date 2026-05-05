@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.22.4] - 2026-05-05
+
+### Changed
+
+- **ESLint zero-warning baseline**: removed 20 stale
+  `eslint-disable react/no-unescaped-entities` directives from blog
+  `Content.tsx` files (rule violations were already fixed; directives
+  became no-ops). Removed unused `path` import from
+  `scripts/_mergeStaging.mjs` and dead `nameInput` variable from
+  `tests/e2e/builder.spec.ts`. Pre-push hook now exits clean with 0
+  warnings.
+
+---
+
 ## [1.22.3] - 2026-05-05
 
 ### Fixed
