@@ -76,7 +76,7 @@ All `NEXT_PUBLIC_*` values are inlined at build time. Restart the dev server aft
 |---|---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Optional | Auth, cloud sync, `/account`. Omit for guest-only mode. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Optional | Same as above. |
-| `NEXT_PUBLIC_SITE_URL` | Optional | OAuth redirect base. Defaults to the request host. |
+| `NEXT_PUBLIC_SITE_URL` | Optional | Canonical site URL / OAuth redirect base. Defaults to `https://resumebuildz.tech`. |
 | `GROQ_API_KEY` (per-user, client-side) | Optional | AI rewrites. Stored in `localStorage` under `groq-api-key`; the server never sees it. |
 
 ## Supabase setup
@@ -95,26 +95,27 @@ For the optional Edge Functions (GDPR-compliant delete-account + server-side rat
 npm run dev       # dev server (Turbopack)
 npm run build     # production build (also runs on pre-push)
 npm run start     # serve production build
-npm run lint      # ESLint (also runs on pre-commit)
-npx tsc --noEmit  # TypeScript type-check (also runs on pre-commit)
+npm run lint      # ESLint (also runs on pre-push)
+npx tsc --noEmit  # TypeScript type-check (also runs on pre-push)
 ```
 
-### Pre-commit + pre-push checks
+### Git hooks
 
-Husky is wired so the mandatory pre-commit checklist cannot be
-skipped. On every `git commit`:
+Husky is wired so commits stay fast and the full quality gate runs on push.
 
-1. `npm run lint`
-2. `npx tsc --noEmit`
+On every `git commit`:
+
+1. No-op by design
 
 On every `git push`:
 
-1. `npm run build`
+1. `npm run lint`
+2. `npx tsc --noEmit`
+3. `npm run build`
 
 Hooks auto-install on `npm install` via the `prepare` script. To
-bypass in a genuine emergency use `git commit --no-verify`, but
-this should be rare and followed by a manual fix on the next
-commit.
+bypass in a genuine emergency use `git push --no-verify`, but this
+should be rare and followed by a manual fix on the next commit.
 
 ## Project structure
 
@@ -141,7 +142,7 @@ types/              TypeScript types + TEMPLATES registry
 docs/               Supabase migration doc, blog post template, other reference docs
 supabase/           Edge function source + deploy notes
 instrumentation*.ts Sentry entry points (dormant until DSN is set)
-.husky/             Pre-commit (lint + tsc) + pre-push (build) hooks
+.husky/             Git hooks (pre-commit no-op, pre-push runs lint + tsc + build)
 ```
 
 ## Architecture notes

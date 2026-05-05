@@ -6,6 +6,44 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.22.1] - 2026-05-05
+
+### Changed
+
+- **Crawl/indexing hardening**:
+  - `/blog` filter chips and pagination now render as real links,
+    not JS-only buttons, so Google can follow archive and category
+    states without requiring client interaction.
+  - `app/sitemap.ts` no longer emits duplicate blog filter query
+    URLs, and stable `lastModified` dates replace the old
+    request-time churn on static marketing entries.
+  - `/login`, `/forgot-password`, and `/account` now ship
+    server-rendered `robots: { index: false, follow: false }`
+    metadata in the initial HTML.
+  - `app/robots.ts` now explicitly disallows `/auth` callback
+    paths and advertises the site host alongside the sitemap.
+  - `app/not-found.tsx` now searches only published posts, so
+    scheduled slugs never leak through the 404 helper.
+
+- **Structured-data cleanup**:
+  - `faqPageSchema()` now trims whitespace and drops empty FAQ
+    pairs before emitting JSON-LD, preventing Google Search
+    Console "Unnamed item" rich-result errors from stale or blank
+    FAQ content.
+  - `HowTo` steps and breadcrumb labels now receive the same
+    normalization so empty names cannot leak into schema output.
+
+### Docs
+
+- **README updated** to match the current repo behavior:
+  - `NEXT_PUBLIC_SITE_URL` docs now reflect the
+    `https://resumebuildz.tech` fallback.
+  - Husky docs now reflect the real hook flow: pre-commit is a
+    no-op, while pre-push runs lint, `tsc --noEmit`, and build.
+- **Changelog sources synced** so `CHANGELOG.md` and
+  `lib/changelogData.ts` both include the crawl/indexing and
+  schema-hardening release notes.
+
 ## [1.22.0] - 2026-04-19
 
 ### Added

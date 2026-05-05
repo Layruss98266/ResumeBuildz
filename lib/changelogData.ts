@@ -14,6 +14,18 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.22.1',
+    date: 'May 5, 2026',
+    isoDate: '2026-05-05',
+    title: 'Crawlability Hardening + Schema Cleanup + Docs Sync',
+    added: [],
+    improved: [
+      'Crawl/indexing hardening: /blog filter chips and pagination now render as real links instead of JS-only buttons; sitemap.ts no longer emits duplicate blog filter query URLs; static entries use stable lastModified dates instead of request-time churn; /login, /forgot-password, and /account now ship server-rendered noindex metadata; robots.ts explicitly disallows /auth callback paths; app/not-found.tsx now searches only published posts so scheduled slugs never leak through the 404 helper.',
+      'Structured-data cleanup: faqPageSchema() now trims whitespace and drops empty question/answer pairs before emitting JSON-LD, preventing Search Console "Unnamed item" rich-result errors. HowTo step names/text and breadcrumb labels now receive the same normalization.',
+      'Docs synced with the current codebase: README now documents the real NEXT_PUBLIC_SITE_URL fallback (https://resumebuildz.tech) and the actual Husky hook flow (pre-commit no-op, pre-push runs lint + tsc + build). CHANGELOG.md and lib/changelogData.ts now match the shipped crawl/indexing work.',
+    ],
+  },
+  {
     version: 'v1.22.0',
     date: 'April 19, 2026',
     isoDate: '2026-04-19',
