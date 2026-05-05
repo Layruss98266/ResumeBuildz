@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -148,7 +148,7 @@ export default function ElegantTemplate({ data, primaryColor }: TemplateProps) {
     <div className="bg-white text-black p-10" style={{ width: '210mm', minHeight: '297mm', fontFamily: '"Cormorant Garamond", Georgia, serif' }}>
       {/* Elegant header */}
       <div className="text-center mb-6 pb-4" style={{ borderBottom: `1px solid ${primaryColor}30` }}>
-        {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mx-auto mb-2" />}
+        {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mx-auto mb-2" />}
         <h1 className="text-[28px] font-light tracking-[0.15em] uppercase" style={{ color: primaryColor }}>
           {personalInfo.fullName || 'Your Name'}
         </h1>

@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function ModernTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -139,7 +139,7 @@ export default function ModernTemplate({ data, primaryColor }: TemplateProps) {
       <div className="w-[72mm] p-6" style={{ backgroundColor: primaryColor }}>
         {/* Name in sidebar */}
         <div className="mb-6">
-          {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mb-2" />}
+          {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mb-2" />}
           <h1 className="text-[20px] font-bold text-white leading-tight">
             {personalInfo.fullName || 'Your Name'}
           </h1>

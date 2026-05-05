@@ -36,6 +36,7 @@ export type Profile = {
   notify_ats_tips?: boolean | null;
   notify_product?: boolean | null;
   invoice_email?: string | null;
+  stripe_customer_id?: string | null;
 };
 
 export function useAuth() {
@@ -187,7 +188,7 @@ export function useAuth() {
     setTimeout(() => URL.revokeObjectURL(url), 60_000);
   }, [user, profile]);
 
-  const deleteAccount = useCallback(async () => {
+  const deleteAccount = useCallback(async (): Promise<{ error: Error | null; partialDeletion?: boolean }> => {
     if (!user) return { error: new Error('Not signed in') };
 
     // Primary path: invoke the delete-user Edge Function which deletes BOTH
@@ -207,10 +208,10 @@ export function useAuth() {
     }
 
     if (edgeFailed) {
-      // Legacy fallback: delete only the profiles row. The auth.users row
-      // will persist — deploy the delete-user Edge Function to fix that.
+      // Fallback: delete only the profiles row. The auth.users row will
+      // persist until the delete-user Edge Function is deployed.
       const { error: profileError } = await supabase.from('profiles').delete().eq('id', user.id);
-      if (profileError) return { error: profileError };
+      if (profileError) return { error: profileError as Error };
     }
 
     await supabase.auth.signOut();
@@ -222,8 +223,15 @@ export function useAuth() {
     }
     setUser(null);
     setProfile(null);
-    return { error: null };
+    // partialDeletion: true signals that profile data was removed but the
+    // auth.users record persists (Edge Function unavailable). Callers should
+    // inform the user so they can contact support if needed.
+    return { error: null, partialDeletion: edgeFailed };
   }, [supabase, user]);
+
+  const refreshProfile = useCallback(async () => {
+    if (user) await fetchProfile(user.id);
+  }, [user, fetchProfile]);
 
   return {
     user,
@@ -238,5 +246,6 @@ export function useAuth() {
     signOut,
     exportUserData,
     deleteAccount,
+    refreshProfile,
   };
 }

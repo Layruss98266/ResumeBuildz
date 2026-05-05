@@ -37,7 +37,7 @@ import SaveStateChip from '@/components/SaveStateChip';
 import CommandPalette, { type Command } from '@/components/CommandPalette';
 import { TEMPLATES, sampleResumeData } from '@/types/resume';
 import { resumeFilename } from '@/lib/exportFilename';
-import { getUsage, incrementUsage, canUse } from '@/lib/usage';
+import { getUsage, canUse, incrementServerUsage } from '@/lib/usage';
 import { track } from '@/lib/analytics';
 import { useToast } from '@/components/Toast';
 import { useAuthContext as useAuth } from '@/components/Providers';
@@ -398,7 +398,7 @@ export default function HomePage() {
     }
   };
 
-  const handleExportPdf = () => {
+  const handleExportPdf = async () => {
     if (!canUse('pdf', isPro())) {
       track('upgrade_modal_opened', { feature: 'pdf', source: 'pdf_export' });
       setShowUpgradeModal(true);
@@ -406,10 +406,11 @@ export default function HomePage() {
     }
     setIsExporting(true);
     setExportingType('pdf');
+    // handlePrint() must stay synchronous — browser gesture context expires on await.
     handlePrint();
-    incrementUsage('pdf');
     track('resume_exported', { format: 'pdf' });
-    const remaining = getUsage('pdf').remaining;
+    // Increment server-side after triggering print (auth users) or localStorage (anon).
+    const { remaining } = await incrementServerUsage('pdf');
     setPdfRemaining(remaining);
     if (remaining > 0) {
       showToast(`PDF exported! ${remaining} free export${remaining !== 1 ? 's' : ''} left today.`, 'success');

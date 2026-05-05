@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function SidebarTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -166,7 +166,7 @@ export default function SidebarTemplate({ data, primaryColor }: TemplateProps) {
         <div className="mb-6 pb-4 border-b-2" style={{ borderColor: primaryColor }}>
           <div className="flex items-center gap-4">
             {personalInfo.photo && (
-              <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover" />
+              <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover" />
             )}
             <div>
               <h1 className="text-[24px] font-bold text-gray-900 leading-tight">

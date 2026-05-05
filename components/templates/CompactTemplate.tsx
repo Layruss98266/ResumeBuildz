@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function CompactTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -121,7 +121,7 @@ export default function CompactTemplate({ data, primaryColor }: TemplateProps) {
       {/* Compact header */}
       <div className="mb-3 pb-2 border-b-2" style={{ borderColor: primaryColor }}>
         <div className="flex items-center gap-3">
-          {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-12 h-12 rounded-full object-cover border-2 border-white/20" />}
+          {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-12 h-12 rounded-full object-cover border-2 border-white/20" />}
           <div>
             <h1 className="text-[18px] font-black uppercase tracking-wide" style={{ color: primaryColor }}>
               {personalInfo.fullName || 'Your Name'}

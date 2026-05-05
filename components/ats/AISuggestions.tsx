@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Sparkles, Copy, Check, AlertCircle, Key } from 'lucide-react';
 import { HelpTip } from '@/components/ui/help-tip';
-import { getUsage, incrementUsage, canUse } from '@/lib/usage';
+import { getUsage, canUse, checkServerUsage, incrementServerUsage } from '@/lib/usage';
 import { track } from '@/lib/analytics';
 import UpgradeModal from '@/components/UpgradeModal';
 import { useToast } from '@/components/Toast';
@@ -49,7 +49,7 @@ const PROMPTS: Record<SuggestionType, string> = {
 export default function AISuggestions() {
   const { resumeData } = useResumeStore();
   const { showToast } = useToast();
-  const { isPro } = useAuthContext();
+  const { isPro, user, refreshProfile } = useAuthContext();
   const [apiKey, setApiKey] = useState(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('groq-api-key') || '';
     return '';
@@ -70,7 +70,15 @@ export default function AISuggestions() {
   };
 
   const generate = async (type: SuggestionType) => {
+    // Fast sync gate (obvious non-Pro free users with localStorage intact).
     if (!canUse('ai', isPro())) {
+      track('upgrade_modal_opened', { feature: 'ai', source: 'ai_rewrite' });
+      setShowUpgrade(true);
+      return;
+    }
+    // Server-enforced gate: prevents localStorage-bypass for authenticated users.
+    const { allowed: serverAllowed } = await checkServerUsage('ai', isPro());
+    if (!serverAllowed) {
       track('upgrade_modal_opened', { feature: 'ai', source: 'ai_rewrite' });
       setShowUpgrade(true);
       return;
@@ -124,9 +132,10 @@ export default function AISuggestions() {
     }
 
     setResult(res.content!);
-    incrementUsage('ai');
-    const remaining = getUsage('ai').remaining;
+    const { remaining } = await incrementServerUsage('ai');
     setAiRemaining(remaining);
+    // Keep the auth profile's ai_rewrites_used in sync so canUseAI() stays accurate.
+    if (user) refreshProfile();
     track('ai_rewrite_used', { remaining });
     if (remaining === 0) {
       showToast('Last free AI rewrite used today. Upgrade for unlimited.', 'warning', 5000);

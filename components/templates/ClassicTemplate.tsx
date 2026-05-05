@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function ClassicTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -159,7 +159,7 @@ export default function ClassicTemplate({ data, primaryColor }: TemplateProps) {
     <div className="bg-white text-black p-8 font-serif" style={{ width: '210mm', minHeight: '297mm' }}>
       {/* Header */}
       <div className="text-center mb-4">
-        {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mx-auto mb-2" />}
+        {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-16 h-16 rounded-full object-cover border-2 border-white/20 mx-auto mb-2" />}
         <h1 style={{ color: primaryColor }} className="text-[22px] font-bold uppercase tracking-wide">
           {personalInfo.fullName || 'Your Name'}
         </h1>

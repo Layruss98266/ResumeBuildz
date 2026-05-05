@@ -1,6 +1,6 @@
-'use client';
+﻿'use client';
 
-import { TemplateProps, formatBullet, renderCustomSection, ensureUrl } from './TemplateWrapper';
+import { TemplateProps, formatBullet, renderCustomSection, ensureUrl, safePhotoSrc } from './TemplateWrapper';
 
 export default function BoldTemplate({ data, primaryColor }: TemplateProps) {
   const { personalInfo, summary, experience, education, skills, projects, certifications, languages, sectionOrder } = data;
@@ -178,7 +178,7 @@ export default function BoldTemplate({ data, primaryColor }: TemplateProps) {
       {/* Header with dark background */}
       <div className="px-8 py-6" style={{ backgroundColor: primaryColor }}>
         <div className="flex items-center gap-4">
-          {personalInfo.photo && <img src={personalInfo.photo} alt="" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" />}
+          {personalInfo.photo && <img src={safePhotoSrc(personalInfo.photo)} onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} alt="" className="w-14 h-14 rounded-full object-cover border-2 border-white/30" />}
           <div>
             <h1 className="text-[28px] font-black uppercase tracking-wider text-white leading-tight">
               {personalInfo.fullName || 'Your Name'}
