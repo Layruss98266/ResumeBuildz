@@ -32,6 +32,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // Blog hub
     { url: `${base}/blog`, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 0.9 },
+
+    // Author page
+    { url: `${base}/author/surya-l`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.4 },
   ];
 
   // Dynamic company pages (22 entries), now living under /blog/company-guides/.

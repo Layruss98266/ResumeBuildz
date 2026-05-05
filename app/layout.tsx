@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    locale: "en_IN",
+    locale: "en_US",
     url: siteUrl,
     siteName: "ResumeBuildz",
     title: "ResumeBuildz - Free ATS Resume Builder with 20 Templates & AI",

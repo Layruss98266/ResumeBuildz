@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.22.3] - 2026-05-05
+
+### Fixed
+
+- **Builder double-loading screen removed**: replaced the full-screen
+  Sparkles hydration splash in `builder/Content.tsx` with a `null` return
+  while `mounted` is `false`. The `PageLoader` already covers the
+  navigation transition, so the second blocking screen was redundant and
+  annoying.
+- **PageLoader hard-cut on dismiss fixed**: the page-transition overlay
+  previously vanished instantly when navigation completed. It now fades
+  out over 200 ms via a `leaving` state + CSS `transition-opacity`. A ref
+  guard prevents a phantom fade-out when the loader never rendered (grace
+  period not elapsed).
+
+### Fixed (SEO / Crawlability)
+
+- **`/author/surya-l` added to sitemap**: the author page existed with
+  full metadata and Person schema but was absent from `app/sitemap.ts`,
+  making it undiscoverable by Google without an inbound link.
+- **`og:locale` corrected to `en_US`**: root layout was declaring
+  `en_IN`, signalling Indian-English to social crawlers (Facebook,
+  LinkedIn) despite the product targeting US/global job seekers.
+
+---
+
 ## [1.22.2] - 2026-05-05
 
 ### Fixed

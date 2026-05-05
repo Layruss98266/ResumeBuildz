@@ -28,11 +28,16 @@ import LoaderCard from './LoaderCard';
 const SHOW_DELAY_MS = 150;
 const SAFETY_TIMEOUT_MS = 8000;
 
+const FADE_OUT_MS = 200;
+
 export default function PageLoader() {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const isVisibleRef = useRef(false);
   const showTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const safetyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastPathnameRef = useRef(pathname);
 
   const stopLoading = useCallback(() => {
@@ -44,18 +49,27 @@ export default function PageLoader() {
       clearTimeout(safetyTimerRef.current);
       safetyTimerRef.current = null;
     }
-    setVisible(false);
+    if (!isVisibleRef.current) return; // loader never showed, skip fade-out
+    setLeaving(true);
+    leaveTimerRef.current = setTimeout(() => {
+      setVisible(false);
+      setLeaving(false);
+      isVisibleRef.current = false;
+    }, FADE_OUT_MS);
   }, []);
 
   const startLoading = useCallback(() => {
     // Cancel any prior timers (rapid double-click, prefetch, etc.)
     if (showTimerRef.current) clearTimeout(showTimerRef.current);
     if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+    if (leaveTimerRef.current) { clearTimeout(leaveTimerRef.current); leaveTimerRef.current = null; }
+    setLeaving(false);
 
     // Wait SHOW_DELAY_MS before actually rendering, so a fast same-route
     // recompile or instant client-side nav never causes the loader to flash.
     showTimerRef.current = setTimeout(() => {
       setVisible(true);
+      isVisibleRef.current = true;
     }, SHOW_DELAY_MS);
 
     // Safety net: if navigation never completes (cancelled / failed / crashed),
@@ -129,16 +143,17 @@ export default function PageLoader() {
     return () => {
       if (showTimerRef.current) clearTimeout(showTimerRef.current);
       if (safetyTimerRef.current) clearTimeout(safetyTimerRef.current);
+      if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
     };
   }, []);
 
-  if (!visible) return null;
+  if (!visible && !leaving) return null;
 
   return (
     <div
       role="status"
       aria-live="polite"
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-white/85 backdrop-blur-sm pointer-events-none animate-fade-in"
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-white/85 backdrop-blur-sm pointer-events-none transition-opacity duration-200 ${leaving ? 'opacity-0' : 'animate-fade-in'}`}
     >
       {/* Visually-hidden announcement for screen readers */}
       <span className="sr-only">Loading page</span>
