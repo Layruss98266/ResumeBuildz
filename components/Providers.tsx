@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext } from 'react';
+import { Toaster } from 'sonner';
 import { ToastProvider } from '@/components/Toast';
 import { LoginGatewayProvider } from '@/components/LoginGateway';
 import CookieBanner from '@/components/CookieBanner';
@@ -27,6 +28,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           <CookieBanner />
         </LoginGatewayProvider>
       </ToastProvider>
+      <Toaster position="top-right" richColors closeButton />
     </AuthContext.Provider>
   );
 }

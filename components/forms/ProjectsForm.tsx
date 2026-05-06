@@ -1,13 +1,16 @@
 'use client';
 
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import { useResumeStore } from '@/store/useResumeStore';
 import { Project } from '@/types/resume';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import RichTextarea from '@/components/ui/rich-textarea';
 import BulletScoreList from '@/components/forms/BulletScoreList';
-import { toMonthInput, fromMonthInput } from '@/lib/dateUtils';
+import { toMonthInput, fromMonthInput, isValidDateRange } from '@/lib/dateUtils';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Plus, Trash2, ChevronDown, ChevronUp, GripVertical } from 'lucide-react';
@@ -16,12 +19,25 @@ import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } 
 import { CSS } from '@dnd-kit/utilities';
 import { generateId } from '@/lib/ids';
 
+const projDateSchema = z.object({
+  startDate: z.string(),
+  endDate: z.string(),
+}).refine(
+  (d) => isValidDateRange(d.startDate, d.endDate || 'Present'),
+  { message: 'End date must be after start date', path: ['endDate'] },
+);
+
 function SortableProjectEntry({ project, onUpdate, onRemove }: {
   project: Project;
   onUpdate: (data: Partial<Project>) => void;
   onRemove: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(true);
+  const { formState: { errors }, setValue, trigger } = useForm({
+    resolver: zodResolver(projDateSchema),
+    defaultValues: { startDate: project.startDate, endDate: project.endDate ?? '' },
+    mode: 'onChange',
+  });
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: project.id });
 
   const style = {
@@ -64,11 +80,33 @@ function SortableProjectEntry({ project, onUpdate, onRemove }: {
             </div>
             <div>
               <Label className="text-sm">Start Date</Label>
-              <Input type="month" value={toMonthInput(project.startDate)} onChange={(e) => onUpdate({ startDate: fromMonthInput(e.target.value) })} />
+              <Input
+                type="month"
+                value={toMonthInput(project.startDate)}
+                onChange={(e) => {
+                  const display = fromMonthInput(e.target.value);
+                  onUpdate({ startDate: display });
+                  setValue('startDate', display);
+                  trigger(['startDate', 'endDate']);
+                }}
+              />
             </div>
             <div>
               <Label className="text-sm">End Date</Label>
-              <Input type="month" value={toMonthInput(project.endDate)} onChange={(e) => onUpdate({ endDate: fromMonthInput(e.target.value) })} />
+              <Input
+                type="month"
+                value={toMonthInput(project.endDate)}
+                onChange={(e) => {
+                  const display = fromMonthInput(e.target.value);
+                  onUpdate({ endDate: display });
+                  setValue('endDate', display);
+                  trigger(['startDate', 'endDate']);
+                }}
+                className={errors.endDate ? 'border-red-400' : ''}
+              />
+              {errors.endDate && (
+                <p className="text-xs text-red-500 mt-0.5">{errors.endDate.message as string}</p>
+              )}
             </div>
             <div className="md:col-span-2">
               <Label className="text-sm">Technologies (comma-separated)</Label>

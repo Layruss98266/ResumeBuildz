@@ -1,6 +1,8 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
+import { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { useResumeStore } from '@/store/useResumeStore';
 import { Separator } from '@/components/ui/separator';
 import { Plus, BarChart3, X, FileText } from 'lucide-react';
@@ -30,31 +32,11 @@ interface MultiJDMatchingProps {
 const STORAGE_KEY = 'resumeforge-saved-jds';
 const MAX_JDS = 5;
 
-function loadSavedJDs(): SavedJD[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-}
-
-function persistJDs(jds: SavedJD[]) {
-  if (typeof window === 'undefined') return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(jds));
-}
-
 export default function MultiJDMatching({ jobDescription, onLoadJD }: MultiJDMatchingProps) {
-  const [savedJDs, setSavedJDs] = useState<SavedJD[]>([]);
+  "use no memo";
+  const [savedJDs, setSavedJDs] = useLocalStorage<SavedJD[]>(STORAGE_KEY, []);
   const [comparisons, setComparisons] = useState<ComparisonResult[] | null>(null);
   const { resumeData } = useResumeStore();
-
-  // Load saved JDs from localStorage on mount
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setSavedJDs(loadSavedJDs()));
-    return () => cancelAnimationFrame(id);
-  }, []);
 
   const saveCurrentJD = useCallback(() => {
     if (!jobDescription.trim()) return;
@@ -66,21 +48,13 @@ export default function MultiJDMatching({ jobDescription, onLoadJD }: MultiJDMat
       savedAt: Date.now(),
     };
 
-    setSavedJDs((prev) => {
-      const updated = [newJD, ...prev].slice(0, MAX_JDS);
-      persistJDs(updated);
-      return updated;
-    });
-  }, [jobDescription]);
+    setSavedJDs((prev) => [newJD, ...prev].slice(0, MAX_JDS));
+  }, [jobDescription, setSavedJDs]);
 
   const removeJD = useCallback((id: string) => {
-    setSavedJDs((prev) => {
-      const updated = prev.filter((jd) => jd.id !== id);
-      persistJDs(updated);
-      return updated;
-    });
+    setSavedJDs((prev) => prev.filter((jd) => jd.id !== id));
     setComparisons((prev) => (prev ? prev.filter((c) => c.id !== id) : null));
-  }, []);
+  }, [setSavedJDs]);
 
   const compareAll = useCallback(() => {
     if (savedJDs.length === 0) return;

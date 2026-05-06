@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.23.0] - 2026-05-05
+
+### Added
+
+- **sonner** — replaced custom `Toast.tsx` with sonner. All existing `useToast` / `showToast` call sites unchanged; the adapter maps `success/warning/info/pro` types to sonner's built-in variants. `<Toaster position="top-right" richColors closeButton />` added to `Providers.tsx`.
+- **react-hook-form + @hookform/resolvers** — added date-range validation to all four form components (`ExperienceForm`, `EducationForm`, `CertificationsForm`, `ProjectsForm`). End-date fields show inline red error messages when start > end.
+- **date-fns** — rewrote `lib/dateUtils.ts` with `parse`/`format`/`isBefore`/`differenceInMonths` from date-fns. Same `toMonthInput`/`fromMonthInput` API; added new exports `formatDuration` and `isValidDateRange`.
+- **usehooks-ts** — replaced manual `localStorage.getItem/setItem` calls in `AISuggestions.tsx` (groq-api-key) and `MultiJDMatching.tsx` (saved JDs) with typed `useLocalStorage` hook.
+- **next-safe-action** — created `lib/safe-action.ts` with `action` and `actionWithAuth` clients. `actionWithAuth` middleware verifies Supabase session server-side. First server action: `lib/actions/profileActions.ts` (`updateProfileAction`) — Zod-validated, auth-gated profile update.
+- **@tanstack/react-virtual** — applied `useVirtualizer` to the version history list in `VersionHistoryDialog.tsx`. Renders only visible rows regardless of how many saved snapshots exist.
+- **framer-motion** — added spring-bounce animation to template selection in `TemplateSelector.tsx`. Selected card scales `1→1.03→1`; checkmark badge animates in/out with `AnimatePresence`.
+
+---
+
 ## [1.22.5] - 2026-05-05
 
 ### Fixed

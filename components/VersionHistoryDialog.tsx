@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   Dialog,
   DialogContent,
@@ -37,14 +38,22 @@ function formatRelative(t: number): string {
 }
 
 export default function VersionHistoryDialog({ open, onOpenChange }: Props) {
+  "use no memo";
   const { resumeData, importData } = useResumeStore();
   const { showToast } = useToast();
   const [versions, setVersions] = useState<ResumeVersion[]>([]);
   const [newLabel, setNewLabel] = useState('');
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const virtualizer = useVirtualizer({
+    count: versions.length,
+    getScrollElement: () => listRef.current,
+    estimateSize: () => 64,
+    overscan: 5,
+  });
 
   useEffect(() => {
     // Refresh list from localStorage every time the dialog opens.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (open) setVersions(listVersions());
   }, [open]);
 
@@ -109,53 +118,62 @@ export default function VersionHistoryDialog({ open, onOpenChange }: Props) {
         </div>
 
         {/* List */}
-        <div className="flex-1 overflow-y-auto -mx-6 px-6">
+        <div ref={listRef} className="flex-1 overflow-y-auto -mx-6 px-6">
           {versions.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-8">
               No versions yet. Save your first snapshot above.
             </p>
           ) : (
-            <ul className="space-y-1">
-              {versions.map((v) => (
-                <li key={v.id} className="flex items-start gap-2 p-2 rounded-lg hover:bg-muted group">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-1.5">
+            <ul
+              style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}
+            >
+              {virtualizer.getVirtualItems().map((vItem) => {
+                const v = versions[vItem.index];
+                return (
+                  <li
+                    key={v.id}
+                    style={{ position: 'absolute', top: 0, transform: `translateY(${vItem.start}px)`, width: '100%' }}
+                    className="flex items-start gap-2 p-2 rounded-lg hover:bg-muted group"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => handleRename(v.id, v.label)}
+                          className="text-sm font-medium text-left truncate hover:underline"
+                          title="Click to rename"
+                        >
+                          {v.label}
+                        </button>
+                        {v.auto && <Bot className="h-3 w-3 text-muted-foreground shrink-0" aria-label="Auto-saved" />}
+                      </div>
+                      <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-0.5">
+                        <Clock className="h-2.5 w-2.5" />
+                        {formatRelative(v.createdAt)}
+                        <span>·</span>
+                        <span>{v.data.personalInfo.fullName || 'Unnamed'}</span>
+                        <span>·</span>
+                        <span>{v.data.experience.length} exp, {v.data.skills.reduce((s, g) => s + g.items.length, 0)} skills</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
                       <button
-                        onClick={() => handleRename(v.id, v.label)}
-                        className="text-sm font-medium text-left truncate hover:underline"
-                        title="Click to rename"
+                        onClick={() => handleRestore(v.id)}
+                        className="p-1.5 rounded hover:bg-background text-primary"
+                        title="Restore this version"
                       >
-                        {v.label}
+                        <RotateCcw className="h-3.5 w-3.5" />
                       </button>
-                      {v.auto && <Bot className="h-3 w-3 text-muted-foreground shrink-0" aria-label="Auto-saved" />}
+                      <button
+                        onClick={() => handleDelete(v.id)}
+                        className="p-1.5 rounded hover:bg-background text-destructive"
+                        title="Delete"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] text-muted-foreground mt-0.5">
-                      <Clock className="h-2.5 w-2.5" />
-                      {formatRelative(v.createdAt)}
-                      <span>·</span>
-                      <span>{v.data.personalInfo.fullName || 'Unnamed'}</span>
-                      <span>·</span>
-                      <span>{v.data.experience.length} exp, {v.data.skills.reduce((s, g) => s + g.items.length, 0)} skills</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
-                    <button
-                      onClick={() => handleRestore(v.id)}
-                      className="p-1.5 rounded hover:bg-background text-primary"
-                      title="Restore this version"
-                    >
-                      <RotateCcw className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(v.id)}
-                      className="p-1.5 rounded hover:bg-background text-destructive"
-                      title="Delete"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
