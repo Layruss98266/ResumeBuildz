@@ -33,14 +33,14 @@ export function overusedKeywords(text: string, minCount = 4, top = 5): KeywordCo
     .toLowerCase()
     .replace(/[^a-z\s]/g, ' ')
     .split(/\s+/)
-    .filter((t) => t.length >= 3 && !STOPWORDS.has(t));
+    .filter((t) => t.length >= 3 && !STOPWORDS.has(t)); // Skip two-letter tokens and stopwords; neither are meaningful keyword signals.
 
   const counts = new Map<string, number>();
   for (const t of tokens) counts.set(t, (counts.get(t) || 0) + 1);
 
   return [...counts.entries()]
     .map(([word, count]) => ({ word, count }))
-    .filter((x) => x.count >= minCount)
+    .filter((x) => x.count >= minCount) // 4+ occurrences signals repetition noticeable to a reader; lower counts are normal topic coverage.
     .sort((a, b) => b.count - a.count)
     .slice(0, top);
 }

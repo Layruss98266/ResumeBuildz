@@ -47,7 +47,7 @@ Welcome, and thank you for your interest in contributing to ResumeBuildz! This i
 - Use functional components with hooks.
 - Keep components focused on a single responsibility.
 - Co-locate related utilities and types with their components.
-- Use Zustand for state management -- see `lib/store.ts` for the existing store.
+- Use Zustand for state management -- see `store/useResumeStore.ts` for the existing store.
 
 ## File Structure Overview
 

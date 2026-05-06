@@ -30,6 +30,7 @@ function readRecord(feature: GatedFeature): UsageRecord {
     if (parsed.date !== today()) return { count: 0, date: today() };
     return parsed;
   } catch {
+    // On corrupt or missing data, start fresh — localStorage errors are non-fatal.
     return { count: 0, date: today() };
   }
 }
@@ -71,11 +72,15 @@ export function canUse(feature: GatedFeature, isPro = false): boolean {
  * Falls back to localStorage for anonymous users or when Supabase isn't
  * configured.
  */
+// Sentinel for pro users — large enough to never be a real limit but safe
+// across JSON serialisation (Infinity becomes null in JSON.stringify).
+const UNLIMITED = 9999;
+
 export async function checkServerUsage(
   feature: GatedFeature,
   isPro = false,
 ): Promise<{ allowed: boolean; remaining: number }> {
-  if (isPro) return { allowed: true, remaining: Infinity };
+  if (isPro) return { allowed: true, remaining: UNLIMITED };
   if (typeof window === 'undefined') return { allowed: true, remaining: FREE_LIMITS[feature] };
 
   const supabase = createClient();
@@ -92,7 +97,7 @@ export async function checkServerUsage(
     if (error || !data) throw new Error('edge-fn unavailable');
     return { allowed: data.allowed, remaining: data.remaining };
   } catch {
-    // Edge Function not deployed yet — fall back gracefully.
+    // Edge Function not deployed or Supabase not configured; fall back to localStorage.
     const u = getUsage(feature);
     return { allowed: u.remaining > 0, remaining: u.remaining };
   }

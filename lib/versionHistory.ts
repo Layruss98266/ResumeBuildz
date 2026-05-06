@@ -11,7 +11,7 @@ import type { ResumeData } from '@/types/resume';
 
 const KEY = 'resumeforge-versions';
 const MAX_VERSIONS = 30;
-const AUTO_MIN_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+const AUTO_MIN_INTERVAL_MS = 60 * 60 * 1000; // One auto-snapshot per hour prevents the list filling during long edit sessions.
 
 export interface ResumeVersion {
   id: string;
@@ -65,7 +65,7 @@ export function saveVersion(data: ResumeData, label: string, auto = false): Resu
 export function saveAutoSnapshot(data: ResumeData, label: string) {
   const list = read();
   const lastAuto = list.find((v) => v.auto);
-  if (lastAuto && Date.now() - lastAuto.createdAt < AUTO_MIN_INTERVAL_MS) return;
+  if (lastAuto && Date.now() - lastAuto.createdAt < AUTO_MIN_INTERVAL_MS) return; // undefined on first run → treat as eligible.
   saveVersion(data, label, true);
 }
 

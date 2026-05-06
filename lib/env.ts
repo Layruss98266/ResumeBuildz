@@ -12,6 +12,7 @@
 // This keeps `next build` passing when the build environment lacks non-build
 // secrets (e.g., SUPABASE_SERVICE_ROLE_KEY isn't needed to compile).
 
+/** Returns '' and warns in dev. Used for public vars that degrade gracefully when unset. */
 function softValue(name: string, v: string | undefined): string {
   if (!v || v.trim() === '') {
     if (typeof console !== 'undefined' && typeof process !== 'undefined' && process.env.NODE_ENV !== 'production') {
@@ -22,10 +23,12 @@ function softValue(name: string, v: string | undefined): string {
   return v;
 }
 
+/** Returns undefined silently. Used for optional integrations (Stripe, Sentry) that are skipped when not configured. */
 function optionalValue(v: string | undefined): string | undefined {
   return v && v.trim() !== '' ? v : undefined;
 }
 
+/** Throws at access time. Used for server-only secrets that must be present at runtime. */
 function requiredValue(name: string, v: string | undefined): string {
   if (!v || v.trim() === '') {
     throw new Error(
@@ -49,11 +52,23 @@ export const env = {
 
 /**
  * Server-only env. Call from Route Handlers / Server Components only.
- * Accessing from a Client Component will throw because Next.js strips
- * non-public env vars from the client bundle.
+ * Accessing from a Client Component will throw at runtime because Next.js
+ * strips non-public env vars from the client bundle (they'll be undefined).
+ *
+ * The guard below adds an explicit, readable error so accidental client-side
+ * imports surface immediately rather than silently returning empty strings.
  */
+function assertServerSide(name: string): void {
+  if (typeof window !== 'undefined') {
+    throw new Error(
+      `[env] ${name} was accessed on the client. ` +
+      'Move this call to a Route Handler, Server Action, or Server Component.',
+    );
+  }
+}
+
 export const serverEnv = {
-  get STRIPE_SECRET_KEY(): string { return requiredValue('STRIPE_SECRET_KEY', process.env.STRIPE_SECRET_KEY); },
-  get STRIPE_WEBHOOK_SECRET(): string { return requiredValue('STRIPE_WEBHOOK_SECRET', process.env.STRIPE_WEBHOOK_SECRET); },
-  get SUPABASE_SERVICE_ROLE_KEY(): string { return requiredValue('SUPABASE_SERVICE_ROLE_KEY', process.env.SUPABASE_SERVICE_ROLE_KEY); },
+  get STRIPE_SECRET_KEY(): string { assertServerSide('STRIPE_SECRET_KEY'); return requiredValue('STRIPE_SECRET_KEY', process.env.STRIPE_SECRET_KEY); },
+  get STRIPE_WEBHOOK_SECRET(): string { assertServerSide('STRIPE_WEBHOOK_SECRET'); return requiredValue('STRIPE_WEBHOOK_SECRET', process.env.STRIPE_WEBHOOK_SECRET); },
+  get SUPABASE_SERVICE_ROLE_KEY(): string { assertServerSide('SUPABASE_SERVICE_ROLE_KEY'); return requiredValue('SUPABASE_SERVICE_ROLE_KEY', process.env.SUPABASE_SERVICE_ROLE_KEY); },
 };

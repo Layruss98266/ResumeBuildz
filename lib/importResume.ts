@@ -590,7 +590,7 @@ function parseEntries(lines: string[]): { title: string; subtitle: string; locat
 
 // ---- AI Parsing via Groq ----
 
-import { callGroqAI } from '@/components/ats/utils/groqAI';
+import { callGroqAI, getGroqApiKey } from '@/components/ats/utils/groqAI';
 
 async function parseWithAI(rawText: string, apiKey: string): Promise<ResumeData | null> {
   const systemPrompt = `You are a resume parser. Return ONLY valid JSON matching this schema (no markdown):
@@ -643,7 +643,7 @@ export async function importResumeFromFile(file: File): Promise<ImportResult> {
 
     if (!rawText.trim()) return { success: false, error: 'No text extracted. File may be empty.' };
 
-    const groqKey = typeof window !== 'undefined' ? localStorage.getItem('groq-api-key') : null;
+    const groqKey = getGroqApiKey();
     if (groqKey) {
       const aiData = await parseWithAI(rawText, groqKey);
       if (aiData) return { success: true, data: aiData, rawText };
@@ -667,7 +667,7 @@ export async function importResumeFromText(text: string): Promise<ImportResult> 
   if (trimmed.length > 100000) return { success: false, error: 'Text exceeds 100k characters. Please paste a smaller section.' };
 
   try {
-    const groqKey = typeof window !== 'undefined' ? localStorage.getItem('groq-api-key') : null;
+    const groqKey = getGroqApiKey();
     if (groqKey) {
       const aiData = await parseWithAI(trimmed, groqKey);
       if (aiData) return { success: true, data: aiData, rawText: trimmed };

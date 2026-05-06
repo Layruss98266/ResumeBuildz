@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sparkles, Copy, Check } from 'lucide-react';
-import { streamGroqAI } from '@/components/ats/utils/groqAI';
+import { streamGroqAI, getGroqApiKey } from '@/components/ats/utils/groqAI';
 
 type Tone = 'professional' | 'formal' | 'casual' | 'concise';
 
@@ -41,7 +41,7 @@ export default function CoverLetterForm() {
   }, []);
 
   const generateCoverLetter = async () => {
-    const apiKey = localStorage.getItem('groq-api-key');
+    const apiKey = getGroqApiKey();
     if (!apiKey) {
       alert('Set up your Groq API key in the AI tab first.');
       return;

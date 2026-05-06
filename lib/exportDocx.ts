@@ -1,3 +1,4 @@
+// Word export using the docx package. Mirrors the Classic template layout in OOXML.
 import {
   Document,
   Paragraph,
@@ -11,10 +12,12 @@ import {
 import { saveAs } from 'file-saver';
 import { ResumeData } from '@/types/resume';
 
+// docx renders its own bullet glyphs; remove any user-typed bullet prefix to avoid doubles.
 function formatBullet(text: string): string {
   return text.replace(/^[•\-\*]\s*/, '');
 }
 
+// docx color props expect a 6-char hex without '#'; this just strips it.
 function hexToRgb(hex: string): string {
   return hex.replace('#', '');
 }
@@ -123,6 +126,7 @@ export async function downloadDocx(data: ResumeData, primaryColor: string) {
       children.push(
         new Paragraph({
           spacing: { before: 120 },
+          // Right-aligned tab at TabStopPosition.MAX pushes the date to the right margin, matching the visual template.
           tabStops: [{ type: TabStopType.RIGHT, position: TabStopPosition.MAX }],
           children: [
             new TextRun({ text: exp.position, bold: true, size: 22 }),

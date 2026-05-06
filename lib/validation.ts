@@ -5,7 +5,8 @@
 
 export type Validator = (value: string) => string | null;
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Pragmatic check; not RFC 5322 compliant but sufficient to catch obvious typos.
+// PHONE_RE accepts formatting chars; PHONE_DIGIT_RE then counts raw digits to require ≥7 (allows international formats).
 const PHONE_RE = /^[+\d][\d\s\-().]{6,}$/;
 const PHONE_DIGIT_RE = /\d/g;
 const URL_RE = /^https?:\/\/[^\s]+$/;
@@ -58,7 +59,7 @@ export function sanitizeText(value: string): string {
   return value.replace(/\s+/g, ' ').trim();
 }
 
-/** Strip control characters and zero-width characters that can break ATS parsing. */
+/** Strip chars that break ATS parsing: C0 controls (U+0000–U+001F), DEL (U+007F), zero-width Unicode (U+200B–U+200D, U+FEFF). */
 export function stripControlChars(value: string): string {
   return value.replace(/[\u0000-\u001F\u007F\u200B-\u200D\uFEFF]/g, '');
 }

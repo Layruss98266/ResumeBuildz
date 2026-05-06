@@ -10,6 +10,7 @@ import type { ResumeData } from '@/types/resume';
 import { formatBullet } from '@/components/templates/TemplateWrapper';
 import { resumeFilename } from '@/lib/exportFilename';
 
+// Inline to avoid coupling the export module to lib/dateUtils.ts.
 function fmtDate(exp: { startDate: string; endDate: string; current?: boolean }): string {
   const end = exp.current ? 'Present' : (exp.endDate || 'Present');
   if (!exp.startDate && !exp.endDate) return '';
@@ -155,6 +156,7 @@ export function generateAtsText(data: ResumeData): string {
   if (contact.length > 0) lines.push(contact.join(' | '));
   lines.push('');
 
+  // Plain underline headings survive ATS parsers that strip # markdown syntax.
   const heading = (t: string) => {
     lines.push('');
     lines.push(t.toUpperCase());
@@ -243,13 +245,13 @@ export function generateAtsText(data: ResumeData): string {
 
   for (const key of sectionOrder) render(key);
 
-  // Strip non-ASCII (bullet chars, em-dashes etc.) for strict ATS compatibility.
+  // Strip non-ASCII for strict ATS compatibility.
   return lines
     .join('\n')
-    .replace(/[\u2013\u2014]/g, '-')
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/[\u201C\u201D]/g, '"')
-    .replace(/[\u2022\u25E6\u2043]/g, '-')
+    .replace(/[\u2013\u2014]/g, '-')    // em-dash / en-dash \u2192 hyphen
+    .replace(/[\u2018\u2019]/g, "'")    // smart single quotes \u2192 apostrophe
+    .replace(/[\u201C\u201D]/g, '"')    // smart double quotes \u2192 straight quote
+    .replace(/[\u2022\u25E6\u2043]/g, '-') // bullet glyphs \u2192 hyphen
     .replace(/\n{3,}/g, '\n\n')
     .trim() + '\n';
 }

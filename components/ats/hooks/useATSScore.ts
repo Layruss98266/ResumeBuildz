@@ -35,6 +35,10 @@ export function useATSScore() {
     let score = 0;
     const maxScore = 100;
 
+    // Weights sum to 100. Contact & experience carry the most weight because
+    // ATS parsers reject resumes that are missing either field entirely.
+    // Contact 15 | Summary 10 | Experience 25 | Education 15 | Skills 20 | Action Verbs 10 | Quantified 5
+
     // Contact info completeness (15 pts)
     const { personalInfo } = resumeData;
     const contactFields = [personalInfo.fullName, personalInfo.email, personalInfo.phone, personalInfo.location];
@@ -129,6 +133,7 @@ export function useATSScore() {
 
     // Quantified achievements (5 pts)
     let quantifiedEarned = 0;
+    // Matches: percentage (50%), dollar amount ($1M), count with plus (10+).
     const hasNumbers = allHighlights.some((h) => /\d+%|\$\d+|\d+\+/.test(h));
     if (hasNumbers) {
       checks.push({ section: 'experience', label: 'Quantified Results', status: 'pass', message: 'Achievements include measurable results' });

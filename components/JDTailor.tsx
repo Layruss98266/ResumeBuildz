@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Sparkles, Wand2, AlertCircle, Loader2 } from 'lucide-react';
-import { streamGroqAI } from '@/components/ats/utils/groqAI';
+import { streamGroqAI, getGroqApiKey } from '@/components/ats/utils/groqAI';
 import { saveVersion } from '@/lib/versionHistory';
 import { useToast } from '@/components/Toast';
 import ResumeDiff from '@/components/ResumeDiff';
@@ -32,7 +32,7 @@ export default function JDTailor() {
 
   const run = async () => {
     if (!canRun) return;
-    const apiKey = localStorage.getItem('groq-api-key');
+    const apiKey = getGroqApiKey();
     if (!apiKey) {
       setError('Set your Groq API key in the AI tab first.');
       return;

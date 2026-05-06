@@ -18,11 +18,13 @@ export default function JDComparison({ resumeText, jobDescription, keywordMatche
     const foundKeywords = keywordMatches
       .filter((m) => m.found)
       .map((m) => m.keyword)
-      .sort((a, b) => b.length - a.length); // Longest first to avoid partial matches
+      // Sort longest first so "machine learning" is highlighted before "machine" consumes the match.
+      .sort((a, b) => b.length - a.length);
 
     if (foundKeywords.length === 0) return resumeText;
 
-    // Build a regex that matches any found keyword (case-insensitive)
+    // Split on the pattern to interleave matched and non-matched spans in a single pass,
+    // then map each part to a highlighted or plain span to build the React node array.
     const escapedKeywords = foundKeywords.map((kw) =>
       kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     );

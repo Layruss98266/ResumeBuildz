@@ -6,6 +6,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.23.1] - 2026-05-06
+
+### Security
+
+- **Checkout privilege escalation fixed**: `app/api/checkout/route.ts` now extracts `userId` from the server-side Supabase session cookie instead of trusting the request body. Prevents any authenticated user from upgrading an arbitrary account.
+- **Groq API key moved to `sessionStorage`**: keys are now scoped to the current tab and cleared automatically when it closes, reducing the exposure window vs. `localStorage`. All reads centralised through `getGroqApiKey()` in `lib/groqAI.ts`.
+- **Share invite endpoint gated behind auth**: `app/api/share/invite/route.ts` now returns 401 for unauthenticated requests — previously an open endpoint could be used to send email from the domain.
+- **Stripe webhook casts hardened**: replaced `as StripeX` with `as unknown as StripeX` throughout `app/api/stripe/webhook/route.ts`; the intermediate `unknown` step is now required by TypeScript's strict overlap check.
+
+### Fixed
+
+- **Auth race condition**: `hooks/useAuth.ts` — `fetchProfile` is now `await`-ed before `setLoading(false)`. Previously the loading state cleared before the profile was available, causing brief "no plan" flashes.
+- **Supabase guest stub fragility**: replaced the hard-coded method stub in `lib/supabase/client.ts` and `lib/supabase/server.ts` with a recursive `Proxy`. Any query chain (`.select().eq().single()`, etc.) now resolves safely without needing every method enumerated.
+- **`useMemo(() => createClient(), [])` removed**: `createClient()` is already a module singleton — the wrapper added unnecessary closure overhead with no benefit.
+- **`importData` undo gap**: `store/useResumeStore.ts` — importing a JSON resume now snapshots the previous state into history so the user can undo an accidental import.
+- **`UNLIMITED = 9999`**: `lib/usage.ts` replaced `Infinity` — `JSON.stringify(Infinity)` serialises to `null`, which would have broken any response that included the remaining count.
+- **Server-only env guard**: `lib/env.ts` — `serverEnv` getters now call `assertServerSide()` which throws an explicit error if accessed from a Client Component, instead of silently returning `undefined`.
+- **Import hoisting**: `store/useResumeStore.ts` — all `import` statements moved above module-level side effects (`addEventListener` calls) to satisfy the ES module spec.
+
+### Changed
+
+- **`AISuggestions.tsx`** switched from `useLocalStorage` to `useSessionStorage` for the Groq key; security notice updated to explain the tab-close behaviour.
+- **`components/forms/CoverLetterForm.tsx`**, **`components/JDTailor.tsx`**, **`lib/importResume.ts`** — updated to use `getGroqApiKey()` instead of direct `localStorage.getItem` calls.
+
+### Docs
+
+- **`SECURITY.md`** — complete rewrite to reflect the current hybrid architecture (Supabase, Stripe, Edge Functions, sessionStorage API keys). The previous version described a purely client-side app with no auth or backend.
+- **`CONTRIBUTING.md`** — fixed stale `lib/store.ts` path reference → `store/useResumeStore.ts`.
+- **`.env.example`** — added missing server-side variables: `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `SHARE_INVITE_FROM`.
+- **`README.md`** — clarified Groq API key storage (sessionStorage, cleared on tab close).
+
+### Internal
+
+- Added targeted WHY-focused comments across 20 files covering: SSE buffer/parse loop, Flesch-Kincaid syllable algorithm, ATS scoring weights, bigram keyword extraction, `"use no memo"` pragma, `pagehide` mobile bfcache behaviour, Server Component cookie write error, env accessor semantics, and more.
+
+---
+
 ## [1.23.0] - 2026-05-05
 
 ### Added

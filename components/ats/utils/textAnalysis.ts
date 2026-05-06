@@ -1,5 +1,7 @@
 import { ResumeData } from '@/types/resume';
 
+// Domain-extended stop list: standard English function words plus common resume filler terms
+// that appear in every resume and carry no keyword signal.
 export const STOP_WORDS = new Set([
   'a', 'an', 'the', 'and', 'or', 'but', 'is', 'are', 'was', 'were', 'be', 'been',
   'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall',
@@ -36,7 +38,8 @@ export function extractKeywords(text: string): string[] {
     }
   }
 
-  // Also extract multi-word phrases (bigrams) for tech terms — skip stop-word pairs
+  // Bigrams (two-word phrases) improve match quality for tech stacks (e.g. "machine learning").
+  // Require ≥5 chars and at least one letter to skip numeric pairs and short noise.
   for (let i = 0; i < words.length - 1; i++) {
     const w1 = words[i].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
     const w2 = words[i + 1].replace(/^[^a-z0-9]+|[^a-z0-9]+$/g, '');
@@ -69,6 +72,7 @@ export function countWords(text: string): number {
   return text.split(/\s+/).filter((w) => w.length > 0).length;
 }
 
+// Flesch-Kincaid syllable approximation: count vowel groups, subtract silent-e endings and diphthongs.
 export function countSyllables(word: string): number {
   word = word.toLowerCase().replace(/[^a-z]/g, '');
   if (word.length <= 3) return 1;

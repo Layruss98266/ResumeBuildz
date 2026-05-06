@@ -28,6 +28,36 @@ import { PLANS, type PlanId } from '@/lib/stripe';
 // retries. Stripe signs every request, so spam from other parties fails
 // at the signature check anyway.
 
+// Minimal local types for the three Stripe event shapes we handle.
+// Using full Stripe SDK types would require a static import, which defeats the
+// lazy-load pattern. These cover exactly the fields we access.
+interface StripeCustomer { id: string }
+type StripeCustomerOrId = string | StripeCustomer;
+
+interface StripeCheckoutSession {
+  client_reference_id?: string | null;
+  customer?: StripeCustomerOrId | null;
+  metadata?: Record<string, string | null> | null;
+}
+
+interface StripeSubscriptionItem {
+  price?: { id?: string };
+}
+
+interface StripeSubscription {
+  customer: StripeCustomerOrId;
+  status: string;
+  items?: { data?: StripeSubscriptionItem[] };
+}
+
+interface StripeInvoice {
+  customer: StripeCustomerOrId;
+}
+
+function customerId(raw: StripeCustomerOrId): string {
+  return typeof raw === 'string' ? raw : raw.id;
+}
+
 // Node runtime required because we need the raw body for signature check.
 export const runtime = 'nodejs';
 // Disable Next.js body parsing; Stripe needs the exact raw bytes.
@@ -79,12 +109,10 @@ export async function POST(req: NextRequest) {
 
     switch (event.type) {
       case 'checkout.session.completed': {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const session = event.data.object as any;
+        const session = event.data.object as unknown as StripeCheckoutSession;
         const userId: string | null = session.client_reference_id ?? session.metadata?.userId ?? null;
         const plan: string | null = session.metadata?.plan ?? null;
-        const customerId: string | null =
-          typeof session.customer === 'string' ? session.customer : session.customer?.id ?? null;
+        const cid: string | null = session.customer != null ? customerId(session.customer) : null;
 
         if (!userId) {
           logger.warn('[stripe-webhook] checkout.session.completed: no userId in client_reference_id or metadata');
@@ -96,13 +124,12 @@ export async function POST(req: NextRequest) {
         }
 
         const update: Record<string, unknown> = { plan: plan as PlanId };
-        if (customerId) update.stripe_customer_id = customerId;
+        if (cid) update.stripe_customer_id = cid;
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { error } = await (db.from('profiles') as any).update(update).eq('id', userId);
         if (error) {
           logger.error('[stripe-webhook] failed to upgrade profile:', error.message);
-          // Return 500 so Stripe retries.
           return new NextResponse('DB update failed', { status: 500 });
         }
         logger.info(`[stripe-webhook] upgraded user ${userId} to plan ${plan}`);
@@ -111,9 +138,8 @@ export async function POST(req: NextRequest) {
 
       case 'customer.subscription.updated':
       case 'customer.subscription.deleted': {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const sub = event.data.object as any;
-        const customerId: string = typeof sub.customer === 'string' ? sub.customer : sub.customer?.id;
+        const sub = event.data.object as unknown as StripeSubscription;
+        const cid: string = customerId(sub.customer);
 
         // Determine new plan: active subscriptions map price → plan; anything
         // else (canceled, unpaid, incomplete_expired) reverts to free.
@@ -127,23 +153,22 @@ export async function POST(req: NextRequest) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { error } = await (db.from('profiles') as any)
           .update({ plan: newPlan })
-          .eq('stripe_customer_id', customerId);
+          .eq('stripe_customer_id', cid);
         if (error) {
           logger.error('[stripe-webhook] failed to sync subscription plan:', error.message);
           return new NextResponse('DB update failed', { status: 500 });
         }
-        logger.info(`[stripe-webhook] subscription ${event.type}: customer ${customerId} → plan ${newPlan}`);
+        logger.info(`[stripe-webhook] subscription ${event.type}: customer ${cid} → plan ${newPlan}`);
         break;
       }
 
       case 'invoice.payment_failed': {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const invoice = event.data.object as any;
-        const customerId: string = typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id;
+        const invoice = event.data.object as unknown as StripeInvoice;
+        const cid: string = customerId(invoice.customer);
         // Stripe handles retries and grace periods via dunning settings.
         // Log here for ops visibility; revoke access only after subscription
         // transitions to 'canceled' (handled by subscription.deleted above).
-        logger.warn(`[stripe-webhook] payment_failed for customer ${customerId}`);
+        logger.warn(`[stripe-webhook] payment_failed for customer ${cid}`);
         break;
       }
 

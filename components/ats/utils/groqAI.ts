@@ -3,7 +3,9 @@ const GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 
 export function getGroqApiKey(): string | null {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('groq-api-key');
+  // sessionStorage: key is scoped to the current tab and cleared automatically
+  // when the tab closes, limiting the exposure window vs. localStorage.
+  return sessionStorage.getItem('groq-api-key');
 }
 
 export async function callGroqAI(
@@ -113,15 +115,17 @@ export async function streamGroqAI(
       if (done) break;
       buffer += decoder.decode(value, { stream: true });
 
-      // Parse SSE lines (data: {...}\n\n)
+      // Server-Sent Events format: "data: {...}\n\n"
+      // Each reader chunk may contain partial lines; buffer accumulates and
+      // splits on \n so we never parse an incomplete JSON object.
       const lines = buffer.split('\n');
       buffer = lines.pop() || '';
 
       for (const line of lines) {
         const trimmed = line.trim();
         if (!trimmed.startsWith('data:')) continue;
-        const payload = trimmed.slice(5).trim();
-        if (payload === '[DONE]') continue;
+        const payload = trimmed.slice(5).trim(); // Remove "data: " prefix (5 chars) before JSON.parse.
+        if (payload === '[DONE]') continue; // Groq signals end-of-stream with the literal string '[DONE]'; skip it.
         try {
           const json = JSON.parse(payload);
           const delta: string = json.choices?.[0]?.delta?.content || '';
@@ -129,7 +133,7 @@ export async function streamGroqAI(
             full += delta;
             onChunk(delta, full);
           }
-        } catch { /* skip malformed chunk */ }
+        } catch { /* Skip corrupted SSE chunks and continue; one bad chunk shouldn't abort the stream. */ }
       }
     }
 

@@ -4,6 +4,7 @@ import { SITE_URL } from '@/lib/siteConfig';
 import { rateLimit, clientId } from '@/lib/rateLimit';
 import { serverEnv } from '@/lib/env';
 import { loadStripe } from '@/lib/lazyStripe';
+import { createClient } from '@/lib/supabase/server';
 
 // Stripe checkout session creator.
 //
@@ -59,14 +60,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: { plan?: PlanId; userId?: string; email?: string };
+  // Extract the authenticated user server-side — never trust userId from the
+  // request body, as a caller could supply any user's ID and attribute the
+  // payment to a victim's account.
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id ?? null;
+  const email = user?.email ?? undefined;
+
+  let body: { plan?: PlanId };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { plan, userId, email } = body;
+  const { plan } = body;
   if (!plan || !(plan in PLANS)) {
     return NextResponse.json({ error: 'Unknown plan' }, { status: 400 });
   }

@@ -1,3 +1,6 @@
+// Central data contract for the resume builder.
+// TemplateName + TEMPLATES power the template picker; sectionOrder controls render order in all templates.
+
 export interface PersonalInfo {
   fullName: string;
   jobTitle: string;
@@ -92,7 +95,7 @@ export interface ResumeData {
   certifications: Certification[];
   languages: Language[];
   customSections: CustomSection[];
-  sectionOrder: string[];
+  sectionOrder: string[]; // Determines render order in templates; reordering this array moves sections up/down in the preview.
 }
 
 export type TemplateName = 'classic' | 'modern' | 'minimalist' | 'professional' | 'executive' | 'creative' | 'compact' | 'tech' | 'elegant' | 'bold' | 'academic' | 'corporate' | 'nordic' | 'gradient' | 'timeline' | 'sidebar' | 'infographic' | 'federal' | 'startup' | 'monochrome';
@@ -127,6 +130,7 @@ export const TEMPLATES: TemplateConfig[] = [
   { name: 'monochrome', label: 'Monochrome', description: 'Pure black and white, no color accents', primaryColor: '#18181b' },
 ];
 
+// Accent presets offered in the builder color picker.
 export const DEFAULT_COLORS = [
   '#1a1a1a', '#2563eb', '#0f766e', '#4338ca', '#db2777',
   '#dc2626', '#ea580c', '#16a34a', '#7c3aed', '#0891b2',

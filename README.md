@@ -15,7 +15,7 @@ Live site: [resumebuildz.tech](https://resumebuildz.tech)
 
 Most resume tools optimise for looking pretty in PDF viewers. ATS software doesn't parse pretty — it parses structured text, keywords, and conventional section headings. ResumeBuildz is built around that reality: every template is ATS-safe, every bullet is scored against the rules real screeners apply, and every export renders predictable, keyword-rich output.
 
-Privacy-first: resume data lives in your browser by default. Supabase sync is opt-in for signed-in users. Groq API keys are stored client-side; the server never sees them.
+Privacy-first: resume data lives in your browser by default. Supabase sync is opt-in for signed-in users. Groq API keys are stored in `sessionStorage` (cleared when the tab closes) and sent directly to Groq — the ResumeBuildz server never sees them.
 
 ## Features
 
@@ -80,7 +80,14 @@ All `NEXT_PUBLIC_*` values are inlined at build time. Restart the dev server aft
 | `SUPABASE_SERVICE_ROLE_KEY` | Optional (required for billing) | Service-role key used only in `app/api/stripe/webhook` after signature verification to update `profiles.plan`. Never exposed client-side. |
 | `STRIPE_SECRET_KEY` | Optional | Stripe checkout session creation. |
 | `STRIPE_WEBHOOK_SECRET` | Optional | Stripe webhook signature verification. |
-| `GROQ_API_KEY` (per-user, client-side) | Optional | AI rewrites. Stored in `localStorage` under `groq-api-key`; the server never sees it. |
+| `NEXT_PUBLIC_STRIPE_PRICE_STARTER` | Optional | Stripe price ID for the Starter plan. |
+| `NEXT_PUBLIC_STRIPE_PRICE_PRO` | Optional | Stripe price ID for the Pro plan. |
+| `NEXT_PUBLIC_STRIPE_PRICE_TEAM` | Optional | Stripe price ID for the Team plan. |
+| `NEXT_PUBLIC_STRIPE_PRICE_LIFETIME` | Optional | Stripe price ID for the Lifetime plan. |
+| `RESEND_API_KEY` | Optional | Share-invite emails. Omit to disable email; UI falls back to copy-link mode. |
+| `SHARE_INVITE_FROM` | Optional | From address for share-invite emails (e.g. `ResumeBuildz <noreply@yourdomain.com>`). |
+| `NEXT_PUBLIC_SENTRY_DSN` | Optional | Sentry error monitoring. Omit to disable. |
+| Groq API key (per-user, client-side) | — | Users enter their own key in the builder. Stored in `sessionStorage` (cleared on tab close); the server never sees it. |
 
 ## Supabase setup
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { rateLimit, clientId } from '@/lib/rateLimit';
 import { SITE_URL } from '@/lib/siteConfig';
+import { createClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,6 +16,7 @@ type InviteBody = {
 };
 
 export async function POST(req: NextRequest) {
+  // Same-origin enforcement prevents third-party forms from sending invite emails from our domain.
   const origin = req.headers.get('origin');
   if (!origin) {
     return NextResponse.json({ emailSent: false, error: 'Missing Origin header' }, { status: 403 });
@@ -30,6 +32,14 @@ export async function POST(req: NextRequest) {
     }
   } catch {
     return NextResponse.json({ emailSent: false, error: 'Invalid Origin' }, { status: 403 });
+  }
+
+  // Require an authenticated session — share invites are a signed-in feature
+  // and an open endpoint would let anyone send email from our domain.
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ emailSent: false, error: 'Authentication required.' }, { status: 401 });
   }
 
   const rl = rateLimit(`share-invite:${clientId(req)}`, 10, 60 * 60 * 1000);
@@ -66,6 +76,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ emailSent: false, error: 'Invalid invite link.' }, { status: 400 });
   }
 
+  // Only allow /r#… share links from this domain so the endpoint can't be used to send arbitrary URLs.
   const siteOrigin = new URL(SITE_URL).origin;
   if (parsedInviteUrl.origin !== reqOrigin && parsedInviteUrl.origin !== siteOrigin) {
     return NextResponse.json({ emailSent: false, error: 'Invite link origin is not allowed.' }, { status: 400 });
@@ -137,6 +148,7 @@ function inviteHtml({ resumeName, inviteUrl, canCopy }: { resumeName: string; in
 </html>`;
 }
 
+// Prevents HTML injection in email body; resumeName and inviteUrl come from user input.
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')

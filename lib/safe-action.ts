@@ -19,6 +19,8 @@ export const actionWithAuth = createSafeActionClient({
     return 'An unexpected error occurred.';
   },
 }).use(async ({ next }) => {
+  // Middleware runs before the action. next({ ctx }) injects userId into the action context
+  // so individual actions don't need to re-fetch auth. Throwing here triggers handleServerError.
   const supabase = await createServerClient();
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) throw new Error('Unauthorized');
