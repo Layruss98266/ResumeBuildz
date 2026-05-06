@@ -33,7 +33,7 @@ const STORAGE_KEY = 'resumeforge-saved-jds';
 const MAX_JDS = 5;
 
 export default function MultiJDMatching({ jobDescription, onLoadJD }: MultiJDMatchingProps) {
-  "use no memo";
+  "use no memo"; // Suppresses React Compiler auto-memoization which conflicts with useLocalStorage's reference identity.
   const [savedJDs, setSavedJDs] = useLocalStorage<SavedJD[]>(STORAGE_KEY, []);
   const [comparisons, setComparisons] = useState<ComparisonResult[] | null>(null);
   const { resumeData } = useResumeStore();
@@ -77,6 +77,7 @@ export default function MultiJDMatching({ jobDescription, onLoadJD }: MultiJDMat
     setComparisons(results);
   }, [savedJDs, resumeData]);
 
+  // Green ≥70%, amber ≥40%, red below — mirrors ATSScoreChecker keyword thresholds.
   const getMatchColor = (pct: number) => {
     if (pct >= 70) return 'text-green-600';
     if (pct >= 40) return 'text-yellow-600';

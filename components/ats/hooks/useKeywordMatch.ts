@@ -25,10 +25,10 @@ export function useKeywordMatch(jobDescription: string): KeywordMatchResult | nu
     const resumeText = getResumeText(resumeData);
 
     const matches: KeywordMatch[] = jdKeywords
-      .filter((kw) => kw.length >= 3)
+      .filter((kw) => kw.length >= 3) // Skip 1-2 char tokens (articles, prepositions) that match everywhere but carry no signal.
       .map((keyword) => {
         const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+        const regex = new RegExp(`\\b${escaped}\\b`, 'gi'); // Word boundaries prevent "Java" matching "JavaScript".
         const occurrenceMatches = resumeText.match(regex);
         const occurrences = occurrenceMatches ? occurrenceMatches.length : 0;
 
@@ -38,7 +38,7 @@ export function useKeywordMatch(jobDescription: string): KeywordMatchResult | nu
           occurrences,
         };
       })
-      // Sort: missing first, then found; within found sort by occurrences descending
+      // Missing keywords first so the user sees gaps before confirming matches; then descending occurrence count.
       .sort((a, b) => {
         if (a.found !== b.found) return a.found ? 1 : -1;
         return b.occurrences - a.occurrences;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { useSessionStorage } from 'usehooks-ts';
 import { useResumeStore } from '@/store/useResumeStore';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -51,7 +51,7 @@ export default function AISuggestions() {
   const { resumeData } = useResumeStore();
   const { showToast } = useToast();
   const { isPro, user, refreshProfile } = useAuthContext();
-  const [apiKey, setApiKey] = useLocalStorage('groq-api-key', '');
+  const [apiKey, setApiKey] = useSessionStorage('groq-api-key', '');
   const [showKeyInput, setShowKeyInput] = useState(!apiKey);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState('');
@@ -171,10 +171,9 @@ export default function AISuggestions() {
           <div className="text-[11px] bg-amber-50 border border-amber-200 rounded-md p-2 space-y-1 text-amber-900">
             <p className="font-semibold">Security notice</p>
             <ul className="list-disc list-inside space-y-0.5">
-              <li>Key lives in localStorage — any browser extension or XSS could read it.</li>
-              <li>Set a <strong>low spending cap</strong> in the Groq console so leaks are bounded.</li>
-              <li>Rotate the key if you sign in on a shared/public machine.</li>
-              <li>Use &ldquo;Change key&rdquo; above to remove it when finished.</li>
+              <li>Key is stored in <strong>sessionStorage</strong> and cleared automatically when this tab closes.</li>
+              <li>Any browser extension with page access can still read it — set a <strong>low spending cap</strong> in the Groq console.</li>
+              <li>Never use this on a shared or public machine.</li>
             </ul>
           </div>
           <div className="flex gap-2">

@@ -25,6 +25,7 @@ function read(): TrendPoint[] {
 
 function write(points: TrendPoint[]) {
   try {
+    // Cap at MAX_POINTS (~3 hours of editing) to bound localStorage growth; oldest entries are evicted first.
     localStorage.setItem(KEY, JSON.stringify(points.slice(-MAX_POINTS)));
   } catch {
     /* ignore */
@@ -41,7 +42,8 @@ export function recordScore(score: number) {
   const list = read();
   const last = list[list.length - 1];
   if (last && last.s === rounded) return;
-  // Also skip if multiple snapshots within the same minute — avoids noise.
+  // Skip snapshots within ±2 points of the last to avoid chart jitter from minor text edits.
+  // 60-second window debounces rapid typing; at most one snapshot per minute is recorded.
   if (last && Date.now() - last.t < 60_000 && Math.abs(last.s - rounded) < 2) return;
   list.push({ t: Date.now(), s: rounded });
   write(list);

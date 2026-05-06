@@ -1,6 +1,6 @@
 import { parse, format, isValid, isBefore, differenceInMonths } from 'date-fns';
 
-// Accepted display formats when parsing user input / imported data.
+// Try display format (MMM yyyy) before ISO (yyyy-MM); display is the primary UI input so it gets priority.
 const PARSE_FORMATS = ['MMM yyyy', 'MMMM yyyy', 'yyyy-MM', 'MM/yyyy', 'yyyy'];
 
 function parseDisplay(display: string): Date | null {
@@ -8,7 +8,7 @@ function parseDisplay(display: string): Date | null {
     const d = parse(display, fmt, new Date());
     if (isValid(d)) return d;
   }
-  return null;
+  return null; // Callers treat null as "no date" rather than crashing on parse failure.
 }
 
 /** Convert "Jan 2020" / "January 2020" / "2020-01" → "2020-01" for <input type="month"> */
@@ -56,6 +56,8 @@ export function formatDuration(start: string, end?: string): string {
  * Both values should be in "MMM yyyy" or "yyyy-MM" format.
  */
 export function isValidDateRange(start: string, end: string): boolean {
+  // Present/empty end is always valid (ongoing role).
+  // Parse failure on either date is treated as valid to avoid blocking input with false errors.
   if (!start || !end || end === 'Present') return true;
   const s = parseDisplay(start);
   const e = parseDisplay(end);

@@ -15,7 +15,7 @@ Live site: [resumebuildz.tech](https://resumebuildz.tech)
 
 Most resume tools optimise for looking pretty in PDF viewers. ATS software doesn't parse pretty — it parses structured text, keywords, and conventional section headings. ResumeBuildz is built around that reality: every template is ATS-safe, every bullet is scored against the rules real screeners apply, and every export renders predictable, keyword-rich output.
 
-Privacy-first: resume data lives in your browser by default. Supabase sync is opt-in for signed-in users. Groq API keys are stored client-side; the server never sees them.
+Privacy-first: resume data lives in your browser by default. Supabase sync is opt-in for signed-in users. Groq API keys are stored in `sessionStorage` (cleared when the tab closes) and sent directly to Groq — the ResumeBuildz server never sees them.
 
 ## Features
 

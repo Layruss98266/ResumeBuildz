@@ -1,3 +1,4 @@
+// Self-contained HTML export with embedded CSS — no external assets, safe to email or open offline.
 import { ResumeData } from '@/types/resume';
 import { resumeFilename } from '@/lib/exportFilename';
 
@@ -9,6 +10,7 @@ function formatBullet(text: string): string {
   return escapeHtml(text.replace(/^[•\-\*]\s*/, ''));
 }
 
+// Default matches the builder's default accent; keeps the export valid even when color is not yet set.
 function sanitizeColor(color: string): string {
   return /^#[0-9A-Fa-f]{3,8}$/.test(color) ? color : '#2563eb';
 }
@@ -33,6 +35,7 @@ function generateResumeHtml(data: ResumeData, primaryColor: string): string {
 <title>${escapeHtml(personalInfo.fullName || 'Resume')} - Resume</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* 800px matches A4/Letter width at 96 dpi; wider causes clipping when printed. */
   body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; line-height: 1.5; max-width: 800px; margin: 0 auto; padding: 40px 30px; }
   h1 { font-size: 28px; color: ${primaryColor}; margin-bottom: 4px; }
   .job-title { font-size: 14px; color: #666; margin-bottom: 8px; }
@@ -50,6 +53,7 @@ function generateResumeHtml(data: ResumeData, primaryColor: string): string {
   .skills-category span { font-size: 13px; color: #555; }
   .cert-row, .lang-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
   .tech { font-size: 11px; color: #888; font-style: italic; }
+  /* Removes padding for printing; browsers add their own margins on top otherwise. */
   @media print { body { padding: 20px; } }
 </style>
 </head>

@@ -6,41 +6,49 @@ type SupabaseClient = ReturnType<typeof createBrowserClient>;
 let client: SupabaseClient | null = null;
 
 // Guest-mode stub. When NEXT_PUBLIC_SUPABASE_* env vars aren't set (e.g. fresh
-// clone with no .env.local), we hand callers an object with the same shape
-// that returns "not authenticated" for every operation. Keeps the builder
-// usable without credentials; auth UI still renders but sign-in is disabled.
+// clone with no .env.local), we return a Proxy that intercepts any property or
+// method access and returns safe async defaults. This covers every query chain
+// shape without needing to enumerate them manually (the old hard-coded stub
+// would throw on any chain it didn't anticipate, e.g. .select().limit()).
+//
+// Special cases handled explicitly:
+//   - auth.getUser / getSession → "not signed in" shape
+//   - auth.onAuthStateChange   → no-op subscription (sync, not async)
+//   - functions.invoke         → not-configured error
+//   - everything else          → resolves to { data: null, error: null }
 function guestStub(): SupabaseClient {
-  const noUser = { data: { user: null }, error: null };
-  const noSession = { data: { session: null }, error: null };
-  const authError = { error: { message: 'Supabase not configured' } };
-  const stub = {
-    auth: {
-      getUser: async () => noUser,
-      getSession: async () => noSession,
-      signInWithPassword: async () => authError,
-      signUp: async () => authError,
-      signInWithOAuth: async () => authError,
-      signOut: async () => ({ error: null }),
-      resetPasswordForEmail: async () => authError,
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
-    },
-    from: () => ({
-      select: () => ({
-        eq: () => ({
-          single: async () => ({ data: null, error: null }),
-          maybeSingle: async () => ({ data: null, error: null }),
-        }),
-      }),
-      insert: async () => ({ data: null, error: null }),
-      update: () => ({ eq: async () => ({ error: null }) }),
-      upsert: async () => ({ data: null, error: null }),
-      delete: () => ({ eq: async () => ({ error: null }) }),
-    }),
-    functions: {
-      invoke: async () => ({ error: { message: 'Supabase not configured' } }),
-    },
-  };
-  return stub as unknown as SupabaseClient;
+  function makeProxy(): unknown {
+    return new Proxy(
+      // Use a callable function as the target so the Proxy works both as an
+      // object (property access) and as a function (call).
+      function () {} as unknown as object,
+      {
+        get(_target, prop: string) {
+          // auth.getUser / auth.getSession return the "no user" shape.
+          if (prop === 'getUser') return async () => ({ data: { user: null }, error: null });
+          if (prop === 'getSession') return async () => ({ data: { session: null }, error: null });
+          // auth.onAuthStateChange must return a sync subscription object.
+          if (prop === 'onAuthStateChange') {
+            return () => ({ data: { subscription: { unsubscribe: () => {} } } });
+          }
+          // functions.invoke signals Supabase is not configured.
+          if (prop === 'invoke') {
+            return async () => ({ data: null, error: { message: 'Supabase not configured' } });
+          }
+          // Every other property access returns another Proxy so arbitrary
+          // chains like .from('x').select('*').eq('id', 1).single() all work.
+          return makeProxy();
+        },
+        // When the proxy itself is called (e.g. the terminal .single() call),
+        // resolve to a safe empty result.
+        apply() {
+          return Promise.resolve({ data: null, error: null });
+        },
+      },
+    );
+  }
+
+  return makeProxy() as unknown as SupabaseClient;
 }
 
 export function createClient() {

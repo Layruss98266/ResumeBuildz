@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import type { User } from '@supabase/supabase-js';
+import type { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
 import { SITE_URL } from '@/lib/siteConfig';
 
@@ -43,7 +43,7 @@ export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = useMemo(() => createClient(), []);
+  const supabase = createClient();
 
   const fetchProfile = useCallback(
     async (userId: string) => {
@@ -70,7 +70,7 @@ export function useAuth() {
         const { data: { user } } = await supabase.auth.getUser();
         if (isMounted) {
           setUser(user);
-          if (user) fetchProfile(user.id);
+          if (user) await fetchProfile(user.id);
         }
       } catch {
         // Auth check failed
@@ -81,7 +81,7 @@ export function useAuth() {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event: string, session: { user: User | null } | null) => {
+    } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
       if (!isMounted) return;
       setUser(session?.user ?? null);
       if (session?.user) fetchProfile(session.user.id);

@@ -3,12 +3,25 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage, type StateStorage } from 'zustand/middleware';
 import { generateId } from '@/lib/ids';
+import {
+  ResumeData,
+  TemplateName,
+  PersonalInfo,
+  Experience,
+  Education,
+  Skill,
+  Project,
+  Certification,
+  Language,
+  CustomSection,
+  defaultResumeData,
+  sampleResumeData,
+} from '@/types/resume';
+import { StyleOptions, DEFAULT_STYLE_OPTIONS } from '@/components/templates/TemplateWrapper';
 
-/**
- * Debounced localStorage wrapper.
- * Writes are batched and flushed after 1 second of inactivity.
- * Reduces battery drain on mobile devices and improves typing performance.
- */
+// Debounced localStorage wrapper.
+// Writes are batched and flushed after 1 second of inactivity.
+// Reduces battery drain on mobile devices and improves typing performance.
 let writeTimer: ReturnType<typeof setTimeout> | null = null;
 const pendingWrites = new Map<string, string>();
 
@@ -28,7 +41,7 @@ function flushWrites() {
 const debouncedStorage: StateStorage = {
   getItem: (name) => {
     if (typeof window === 'undefined') return null;
-    // Check pending writes first to avoid stale reads
+    // Read from pending buffer to avoid stale values while the 1-second flush is in flight.
     if (pendingWrites.has(name)) return pendingWrites.get(name) ?? null;
     return window.localStorage.getItem(name);
   },
@@ -48,26 +61,12 @@ const debouncedStorage: StateStorage = {
   },
 };
 
-// Flush pending writes before page unload to prevent data loss
+// Flush pending writes before page unload to prevent data loss.
+// pagehide also fires on mobile bfcache navigation where beforeunload is skipped.
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeunload', flushWrites);
   window.addEventListener('pagehide', flushWrites);
 }
-import {
-  ResumeData,
-  TemplateName,
-  PersonalInfo,
-  Experience,
-  Education,
-  Skill,
-  Project,
-  Certification,
-  Language,
-  CustomSection,
-  defaultResumeData,
-  sampleResumeData,
-} from '@/types/resume';
-import { StyleOptions, DEFAULT_STYLE_OPTIONS } from '@/components/templates/TemplateWrapper';
 
 interface ResumeStore {
   resumeData: ResumeData;
@@ -388,7 +387,15 @@ export const useResumeStore = create<ResumeStore>()(
           resumeData: { ...state.resumeData, sectionOrder: order },
         })),
 
-      importData: (data) => set({ resumeData: data }),
+      importData: (data) =>
+        set((state) => {
+          // Snapshot current state before replacing so the user can undo an import.
+          const snapshot = structuredClone(state.resumeData);
+          const newHistory = state.history.slice(0, state.historyIndex + 1);
+          newHistory.push(snapshot);
+          while (newHistory.length > MAX_HISTORY) newHistory.shift();
+          return { resumeData: data, history: newHistory, historyIndex: newHistory.length - 1 };
+        }),
       resetData: () => set({ resumeData: defaultResumeData }),
 
       saveProfile: (name) =>
@@ -460,10 +467,9 @@ export const useResumeStore = create<ResumeStore>()(
     {
       name: 'resumeforge-storage',
       storage: createJSONStorage(() => debouncedStorage),
-      // Don't persist history - it should reset between sessions
+      // History is session-only; persisting 50 deep-cloned snapshots would bloat localStorage by megabytes.
       partialize: (state) => {
         const { history: _h, historyIndex: _i, ...rest } = state;
-        void _h; void _i;
         return rest;
       },
     }
