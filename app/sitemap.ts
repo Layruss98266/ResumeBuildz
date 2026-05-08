@@ -17,16 +17,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/pricing`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/about`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/faq`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.5 },
-    { url: `${base}/terms`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.3 },
-    { url: `${base}/contact`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.4 },
-    { url: `${base}/changelog`, lastModified: marketingLastModified, changeFrequency: 'monthly', priority: 0.3 },
-    { url: `${base}/roadmap`, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 0.4 },
-    { url: `${base}/status`, lastModified: marketingLastModified, changeFrequency: 'daily', priority: 0.3 },
-    { url: `${base}/privacy`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${base}/refund`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${base}/shipping`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${base}/contact`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${base}/changelog`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${base}/roadmap`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${base}/status`, lastModified: marketingLastModified, changeFrequency: 'weekly', priority: 0.1 },
+    { url: `${base}/privacy`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.1 },
+    { url: `${base}/refund`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.1 },
+    { url: `${base}/shipping`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.1 },
+    { url: `${base}/terms`, lastModified: marketingLastModified, changeFrequency: 'yearly', priority: 0.1 },
 
-    // Resources hub + situation pages
+    // Search-focused hubs stay relatively strong. Utility/support/legal pages
+    // remain included above, but intentionally sit at much lower priority.
     { url: `${base}/blog/company-guides`, lastModified: companyGuideLastModified, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/resume`, lastModified: roleGuideLastModified, changeFrequency: 'weekly', priority: 0.8 },
 

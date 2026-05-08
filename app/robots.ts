@@ -9,7 +9,9 @@ export default function robots(): MetadataRoute.Robots {
       // Internal preview tools + auth-only flows — no public SEO value.
       // Auth pages (/login, /forgot-password) deliberately excluded from
       // indexing so they don't outrank product/marketing pages on brand queries.
-      disallow: ['/loader-preview', '/hero-preview', '/r', '/r/*', '/login', '/forgot-password', '/account', '/auth', '/auth/*'],
+      // Blog filter query URLs canonicalize back to /blog, so block crawling
+      // of the parameterized duplicates directly in robots.
+      disallow: ['/loader-preview', '/hero-preview', '/r', '/r/*', '/login', '/forgot-password', '/account', '/auth', '/auth/*', '/blog?cat='],
     },
     host: SITE_URL,
     sitemap: `${SITE_URL}/sitemap.xml`,
