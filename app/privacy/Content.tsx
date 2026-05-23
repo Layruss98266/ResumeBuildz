@@ -10,7 +10,7 @@ const sections = [
   },
   {
     title: 'Account Data (Optional)',
-    content: "Sign-in is optional. If you create an account (Google or email/password), we store: your email address, full name (if provided via Google), avatar URL (if provided via Google), and your plan tier. We do NOT store your resume content on our servers. Your resume always lives in your browser.",
+    content: "Sign-in is optional. If you create an account (Google or email/password), we store: your email address, full name (if provided via Google), avatar URL (if you upload one or it's provided via Google), your plan tier, and the account preferences you choose (notification settings, builder defaults, and any optional job-search profile fields you fill in). We do NOT store your resume content on our servers. Your resume always lives in your browser.",
   },
   {
     title: 'Analytics',
@@ -22,11 +22,11 @@ const sections = [
   },
   {
     title: 'Third-Party Services',
-    content: 'ResumeBuildz offers an optional AI-powered feature that uses the Groq API. This feature requires your own free API key from console.groq.com. When you use this feature, your resume data is sent directly from your browser to Groq\'s servers. It never passes through our servers. We do not have access to your API key or the data you send to Groq. Please review Groq\'s privacy policy for information about how they handle your data.',
+    content: 'ResumeBuildz offers an optional AI-powered feature that uses the Groq API. This feature requires your own free API key from console.groq.com. When you use this feature, your resume data is sent directly from your browser to Groq\'s servers. It never passes through our servers. We do not have access to your API key or the data you send to Groq. We also use Resend to deliver account emails (your email address is shared with Resend only to send them) and, if enabled, Cloudflare R2 to store avatar uploads. Please review each provider\'s privacy policy for how they handle data.',
   },
   {
-    title: 'Waitlist Emails',
-    content: "If you join our Pro launch waitlist via the pricing page, your email is stored on our servers. When the Pro plan launches, you will be notified. You can request removal at any time by contacting us.",
+    title: 'Email & Communications',
+    content: "If you create an account, we send transactional emails essential to the service: a welcome message, email verification, password resets, security alerts (e.g. when your password changes), email-change confirmations, and an account-deletion confirmation. These are tied to your account and are not promotional. We may also send product updates and occasional getting-started reminders; you control these in Account → Notifications and every such email includes a one-click unsubscribe link (we honor List-Unsubscribe). If you join the Pro launch waitlist, your email is stored so we can notify you when Pro launches. If you use the contact form, the message and your email are stored and forwarded to us so we can reply. Email delivery is handled by Resend. You can request removal of your email at any time by contacting us.",
   },
   {
     title: 'Data Security',
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
       <section className="bg-gradient-to-br from-gray-900 via-slate-900 to-black py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 animate-fade-in-up">Privacy Policy</h1>
-          <p className="text-xl text-gray-300 animate-fade-in-up delay-100">Last updated: April 14, 2026</p>
+          <p className="text-xl text-gray-300 animate-fade-in-up delay-100">Last updated: May 24, 2026</p>
         </div>
       </section>
 
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
           <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-6 animate-fade-in-up">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-indigo-700 mb-2">The short version</h2>
             <p className="text-gray-800 leading-relaxed">
-              Your resume stays in your browser. It never touches our servers. Sign-in is optional and only stores your email and plan tier. Analytics are cookieless. AI calls (if you use them) go directly from your browser to Groq with your own key. Below is the long version.
+              Your resume stays in your browser. It never touches our servers. Sign-in is optional and only stores your email, plan tier, and preferences. Analytics are cookieless. AI calls (if you use them) go directly from your browser to Groq with your own key. We send account emails (welcome, verification, password reset, security alerts); product updates and reminders are opt-out with one-click unsubscribe. Below is the long version.
             </p>
           </div>
 

@@ -31,15 +31,15 @@ export default function NotificationsPanel() {
         <label className="flex items-start gap-3 p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
           <input type="checkbox" checked={form.notify_ats_tips} onChange={(e) => setForm({ ...form, notify_ats_tips: e.target.checked })} className="mt-0.5 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
           <span>
-            <span className="block text-sm font-medium text-gray-900">Weekly ATS tips</span>
-            <span className="block text-xs text-gray-500 mt-0.5">One short email a week with a concrete ATS improvement you can make in 5 minutes.</span>
+            <span className="block text-sm font-medium text-gray-900">ATS tips</span>
+            <span className="block text-xs text-gray-500 mt-0.5">Occasional, actionable ATS improvement tips — each one you can apply in about 5 minutes.</span>
           </span>
         </label>
         <label className="flex items-start gap-3 p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
           <input type="checkbox" checked={form.notify_product} onChange={(e) => setForm({ ...form, notify_product: e.target.checked })} className="mt-0.5 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
           <span>
             <span className="block text-sm font-medium text-gray-900">Product updates</span>
-            <span className="block text-xs text-gray-500 mt-0.5">New templates, features, and improvements. Roughly once a month.</span>
+            <span className="block text-xs text-gray-500 mt-0.5">New templates, features, and improvements — occasionally. You can unsubscribe anytime.</span>
           </span>
         </label>
       </div>
