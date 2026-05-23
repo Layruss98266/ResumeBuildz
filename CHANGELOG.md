@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.25.0] - 2026-05-23
+
+### Added
+
+- **Welcome email re-wired for Better Auth.** The old Supabase `send-welcome` Edge Function was removed in the migration, leaving new signups with no welcome mail. It now sends via a Better Auth `databaseHooks.user.create.after` Resend call — best-effort and non-blocking, so a slow or failed send can never break signup.
+- **Contact-form operator notifications.** `/api/leads/contact` now emails `CONTACT_NOTIFY_TO` with each submission (Reply-To set to the sender) instead of silently storing it in `contact_messages`. Skips cleanly when unset.
+- **`lib/email.ts`** shared Resend wrapper: a single `sendEmail()` that no-ops without `RESEND_API_KEY` and never throws, plus `escapeHtml`. Welcome, password-reset, and contact-notify paths all route through it.
+- New env vars documented in `.env.example`: `WELCOME_FROM` (optional from-address override) and `CONTACT_NOTIFY_TO`.
+
+### Changed
+
+- **Production Google OAuth fixed.** Switched `DATABASE_URL` to the Neon pooled (`-pooler`) connection string, resolving `fetch failed` on the `verification` insert during the OAuth callback under serverless concurrency. `README.md` and `.env.example` now document the pooled-string requirement and that `NEXT_PUBLIC_SITE_URL` is baked in at build time.
+
+### Security
+
+- **Lead API hardening.** `/api/leads/contact` and `/api/leads/waitlist` now enforce server-side length caps, email-format validation, safe JSON parsing, and per-IP rate limiting (contact 5/hr, waitlist 10/hr). The API no longer trusts client-side trimming alone.
+
+---
+
 ## [1.24.0] - 2026-05-23
 
 ### Changed

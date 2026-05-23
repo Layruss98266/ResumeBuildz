@@ -39,11 +39,11 @@ Copy `.env.example` and fill in:
 
 | Variable | Required | Purpose |
 |---|---|---|
-| `DATABASE_URL` | Yes | Neon PostgreSQL connection string |
+| `DATABASE_URL` | Yes | Neon PostgreSQL connection string (use the **pooled** `-pooler` string for serverless/Vercel) |
 | `BETTER_AUTH_SECRET` | Yes | Session signing secret |
 | `GOOGLE_CLIENT_ID` | Yes | Google OAuth |
 | `GOOGLE_CLIENT_SECRET` | Yes | Google OAuth |
-| `NEXT_PUBLIC_SITE_URL` | No | Defaults to `https://resumebuildz.tech` |
+| `NEXT_PUBLIC_SITE_URL` | No | Canonical origin for OAuth redirects. Defaults to `https://resumebuildz.tech`. **Baked in at build time** — set it in your host (e.g. Vercel) and redeploy if you change it. |
 | `R2_*` | No | Cloudflare R2 for avatar uploads |
 | `STRIPE_*` | No | Billing |
 | `RESEND_API_KEY` | No | Password reset + share invite emails |
@@ -53,8 +53,20 @@ Full list in [`.env.example`](.env.example).
 ## Database setup
 
 1. Create a project at [neon.tech](https://neon.tech), copy the connection string into `DATABASE_URL`.
+   - For **serverless deployments (Vercel)**, enable **Connection pooling** in Neon and use the `-pooler` connection string (e.g. `...-pooler.c-2.<region>.aws.neon.tech...`). The direct (non-pooled) host works locally but can intermittently `fetch failed` under serverless concurrency.
+   - Paste the value with no wrapping quotes or trailing whitespace, and keep the `?sslmode=require` suffix.
 2. Run `npx drizzle-kit migrate`.
 3. Add `https://yourdomain.com/api/auth/callback/google` as a redirect URI in Google Cloud Console.
+
+## Deploying to production (Vercel)
+
+Set these in **Settings → Environment Variables** (Production + Preview), then **redeploy** — Vercel only applies env changes to new builds:
+
+- `DATABASE_URL` — the Neon **pooled** (`-pooler`) connection string
+- `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+- `NEXT_PUBLIC_SITE_URL=https://yourdomain.com` (build-time; not `localhost`)
+
+In Google Cloud Console, the OAuth client must list both the production redirect URI (`https://yourdomain.com/api/auth/callback/google`) and `https://yourdomain.com` as an authorized JavaScript origin.
 
 ## Scripts
 

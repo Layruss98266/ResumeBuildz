@@ -14,6 +14,21 @@ export interface ChangelogEntry {
 
 export const CHANGELOG: ChangelogEntry[] = [
   {
+    version: 'v1.25.0',
+    date: 'May 23, 2026',
+    isoDate: '2026-05-23',
+    title: 'Production Auth Fix + Transactional Email Re-wire + Lead API Hardening',
+    added: [
+      'Welcome email re-implemented for the Better Auth stack. The old Supabase send-welcome Edge Function was removed in the migration, leaving new signups with no welcome mail; it now sends via a Better Auth databaseHooks.user.create.after Resend call. Best-effort and non-blocking — a slow or failed send can never break signup.',
+      'Contact-form submissions now notify the operator. /api/leads/contact emails CONTACT_NOTIFY_TO with the message (Reply-To set to the sender) instead of silently piling up in the contact_messages table. Skips cleanly when unset.',
+      'lib/email.ts shared Resend wrapper: a single sendEmail() helper that no-ops without RESEND_API_KEY and never throws, plus escapeHtml. Welcome, password-reset, and contact-notify paths all route through it.',
+    ],
+    improved: [
+      'Production Google OAuth fixed: switched DATABASE_URL to the Neon pooled (-pooler) connection string, resolving "fetch failed" on the verification insert during the OAuth callback under serverless concurrency. README + .env.example now document the pooled-string requirement and the build-time nature of NEXT_PUBLIC_SITE_URL.',
+      'Lead API hardening: /api/leads/contact and /api/leads/waitlist now enforce server-side length caps, email-format validation, safe JSON parsing, and per-IP rate limiting (contact 5/hr, waitlist 10/hr) — the API no longer trusts client-side trimming alone.',
+    ],
+  },
+  {
     version: 'v1.22.1',
     date: 'May 5, 2026',
     isoDate: '2026-05-05',
