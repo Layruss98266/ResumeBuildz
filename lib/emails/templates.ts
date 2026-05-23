@@ -151,13 +151,14 @@ export function productUpdateEmail(opts: {
 
 export function resumeReminderEmail(opts: { name: string; unsubscribeUrl: string }): RenderedEmail {
   return {
-    subject: 'Your resume is waiting on ResumeBuildz',
+    subject: 'Ready to build your resume on ResumeBuildz?',
     html: renderEmail({
-      heading: 'Pick up where you left off',
+      heading: 'Ready to build your resume?',
       preheader: 'Your ATS-ready resume is a few clicks away.',
       bodyHtml: `<p style="margin:0 0 12px;">${greeting(opts.name)}</p>
-        <p style="margin:0 0 20px;">You signed up but haven't built a resume yet. It only takes a few
-        minutes &mdash; choose a template and let the AI do the heavy lifting on your bullet points.</p>`,
+        <p style="margin:0 0 20px;">Thanks for signing up! Whenever you're ready, building an ATS-ready
+        resume only takes a few minutes &mdash; choose a template and let the AI do the heavy lifting on
+        your bullet points. Everything stays private in your browser.</p>`,
       cta: { label: 'Build my resume', url: builderUrl() },
       unsubscribeUrl: opts.unsubscribeUrl,
     }),

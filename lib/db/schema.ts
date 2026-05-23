@@ -4,7 +4,6 @@ import {
   timestamp,
   boolean,
   integer,
-  jsonb,
 } from 'drizzle-orm/pg-core';
 
 // ── Better Auth core tables ──────────────────────────────────────────────────
@@ -95,13 +94,6 @@ export const profiles = pgTable('profiles', {
   stripeCustomerId: text('stripe_customer_id'),
 });
 
-export const resumes = pgTable('resumes', {
-  userId: text('user_id')
-    .primaryKey()
-    .references(() => user.id, { onDelete: 'cascade' }),
-  data: jsonb('data').notNull(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-});
 
 export const waitlist = pgTable('waitlist', {
   id: text('id').primaryKey(),

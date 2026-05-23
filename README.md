@@ -84,9 +84,9 @@ Pre-push hook runs lint + tsc + build automatically.
 ## Project structure
 
 ```
-app/            Pages + API routes (auth, profile, sync, usage, billing)
+app/            Pages + API routes (auth, profile, usage, billing, email)
 components/     Templates (20), forms, account panels, ATS tools, UI primitives
-hooks/          Auth, cloud sync, toast
+hooks/          Auth, toast
 lib/            Auth config, DB client, export helpers, Zod schemas
 store/          Zustand store with undo history
 drizzle/        Generated DB migrations

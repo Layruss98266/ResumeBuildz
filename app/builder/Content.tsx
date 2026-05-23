@@ -41,7 +41,6 @@ import { getUsage, canUse, incrementServerUsage } from '@/lib/usage';
 import { track } from '@/lib/analytics';
 import { useToast } from '@/components/Toast';
 import { useAuthContext as useAuth } from '@/components/Providers';
-import { useCloudSync } from '@/hooks/useCloudSync';
 import CustomSectionForm from '@/components/forms/CustomSectionForm';
 import CoverLetterForm from '@/components/forms/CoverLetterForm';
 import { Button } from '@/components/ui/button';
@@ -124,9 +123,6 @@ export default function HomePage() {
   const [showShare, setShowShare] = useState(false);
   const { showToast } = useToast();
   const { user, profile, isPro, isEmailVerified } = useAuth();
-  // Cloud sync: pull on sign-in, debounced push on edits. Silent fallback
-  // to localStorage when the resumes table isn't provisioned yet.
-  const { state: syncState } = useCloudSync();
 
   // Touch swipe handler for mobile tabs
   const touchStartX = useRef<number>(0);
@@ -1198,11 +1194,6 @@ export default function HomePage() {
           {lastEditedLabel && (
             <span className="text-[10px] text-gray-500 hidden sm:inline" title="Auto-saved locally">
               · {lastEditedLabel}
-            </span>
-          )}
-          {user && syncState !== 'idle' && syncState !== 'offline' && (
-            <span className="text-[10px] text-blue-400 hidden md:inline" title="Cloud sync">
-              · {syncState === 'pulling' ? 'Loading cloud...' : syncState === 'pushing' ? 'Syncing...' : 'Sync error'}
             </span>
           )}
         </div>

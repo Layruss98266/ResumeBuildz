@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ---
 
+## [1.28.0] - 2026-05-24
+
+### Removed
+
+- **All server-side resume storage**, to match the privacy promise that resumes never leave the browser. Deleted `/api/cloud-sync`, `hooks/useCloudSync.ts`, the builder sync indicator, and the `resumes` table (migration `0001_mysterious_mercury.sql` drops it `CASCADE`). Neon now stores only login details (Better Auth `user`/`session`/`account`/`verification`) and profile data (`profiles`), plus `waitlist` and `contact_messages`.
+
+### Changed
+
+- **Resume-reminder cron** reframed to a gentle new-user nudge (signup age + opt-out consent) since resume state is no longer visible server-side; email copy updated accordingly.
+
+---
+
 ## [1.27.0] - 2026-05-24
 
 ### Added

@@ -12,7 +12,7 @@
 
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { user, profiles, resumes } from '@/lib/db/schema';
+import { user, profiles } from '@/lib/db/schema';
 import { and, eq, gte, lt, isNull, or } from 'drizzle-orm';
 import { sendEmail, emailEnabled } from '@/lib/email';
 import { resumeReminderEmail } from '@/lib/emails/templates';
@@ -33,8 +33,9 @@ export async function GET(request: Request) {
   const windowStart = new Date(now - 3 * DAY_MS); // 3 days ago
   const windowEnd = new Date(now - 2 * DAY_MS); // 2 days ago
 
-  // Users who signed up 2-3 days ago and have no saved resume yet (resumes has
-  // one row per user keyed by userId). Lifecycle nudge consent is opt-OUT: send
+  // Resumes live only in the user's browser (no server-side copy), so we can't
+  // tell who has built one. Instead we send a gentle "come build your resume"
+  // nudge to everyone who signed up 2-3 days ago. Consent is opt-OUT: send
   // unless the user explicitly turned product updates off (notifyProduct=false);
   // NULL (never chose) and true both receive it, and every email carries an
   // unsubscribe link. Bulk marketing (/api/admin/broadcast) stays strict opt-in.
@@ -42,13 +43,11 @@ export async function GET(request: Request) {
     .select({ id: user.id, email: user.email, name: user.name })
     .from(user)
     .innerJoin(profiles, eq(profiles.id, user.id))
-    .leftJoin(resumes, eq(resumes.userId, user.id))
     .where(
       and(
         gte(user.createdAt, windowStart),
         lt(user.createdAt, windowEnd),
         or(eq(profiles.notifyProduct, true), isNull(profiles.notifyProduct)),
-        isNull(resumes.userId),
       ),
     );
 
