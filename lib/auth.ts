@@ -65,11 +65,6 @@ function createAuth() {
         const { subject, html } = verifyEmail(url);
         await sendEmail({ to: user.email, subject, html });
       },
-      // Credential signups get their welcome here (once verified) so they don't
-      // receive both a verification email and a welcome email at signup.
-      async afterEmailVerification(verifiedUser) {
-        await sendWelcome(verifiedUser.email, verifiedUser.name);
-      },
     },
 
     user: {
@@ -140,11 +135,12 @@ function createAuth() {
         create: {
           after: async (newUser) => {
             await db.insert(profiles).values({ id: newUser.id }).onConflictDoNothing();
-            // Welcome only the already-verified (social/Google) users here.
-            // Credential users are welcomed in emailVerification.afterEmailVerification
-            // so they don't get a welcome + a verification email at once.
+            // Welcome every new user immediately, regardless of signup method or
+            // verification state. (Email/password users may also receive a
+            // separate verification email — an acceptable duplicate, far better
+            // than missing the welcome if they never verify.)
             // No-ops without RESEND_API_KEY and never throws.
-            if (newUser.emailVerified) await sendWelcome(newUser.email, newUser.name);
+            await sendWelcome(newUser.email, newUser.name);
           },
         },
       },

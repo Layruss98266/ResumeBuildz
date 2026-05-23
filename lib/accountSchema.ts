@@ -81,6 +81,9 @@ export const notificationsSchema = z.object({
 
 export const passwordSchema = z
   .object({
+    // Better Auth's /change-password verifies the current password, so it must
+    // be collected and sent — an empty value always fails with INVALID_PASSWORD.
+    current_password: z.string().min(1, 'Enter your current password'),
     new_password: z
       .string()
       .min(8, 'Minimum 8 characters')

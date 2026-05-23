@@ -20,10 +20,12 @@ export default function ForgotPasswordPage() {
     setError('');
 
     try {
-      const res = await fetch('/api/auth/forget-password', {
+      // Better Auth 1.6 endpoint is /request-password-reset (no /forget-password).
+      // redirectTo must land on our /reset-password page (it receives ?token=).
+      const res = await fetch('/api/auth/request-password-reset', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, redirectTo: `${SITE_URL}/builder` }),
+        body: JSON.stringify({ email, redirectTo: `${SITE_URL}/reset-password` }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));

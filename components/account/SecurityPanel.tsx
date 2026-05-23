@@ -12,7 +12,7 @@ export default function SecurityPanel() {
   const router = useRouter();
 
   const pwSave = useSaveState();
-  const [pw, setPw] = useState({ new_password: '', confirm_password: '' });
+  const [pw, setPw] = useState({ current_password: '', new_password: '', confirm_password: '' });
   const [pwFieldErrors, setPwFieldErrors] = useState<Record<string, string>>({});
 
   async function handlePasswordChange(e: React.FormEvent) {
@@ -28,11 +28,11 @@ export default function SecurityPanel() {
     pwSave.start();
     const { error: upErr } = await authClient.changePassword({
       newPassword: parsed.data.new_password,
-      currentPassword: '',
+      currentPassword: parsed.data.current_password,
       revokeOtherSessions: false,
     });
     pwSave.done(upErr?.message || null);
-    if (!upErr) setPw({ new_password: '', confirm_password: '' });
+    if (!upErr) setPw({ current_password: '', new_password: '', confirm_password: '' });
   }
 
   async function handleSignOutEverywhere() {
@@ -52,7 +52,12 @@ export default function SecurityPanel() {
 
       <section className="mb-10">
         <h3 className="text-sm font-semibold text-gray-900 mb-3">Change password</h3>
+        <p className="text-xs text-gray-500 mb-3">Signed up with Google and never set a password? Use <a href="/forgot-password" className="text-indigo-600 hover:underline">Forgot password</a> to set one first.</p>
         <form onSubmit={handlePasswordChange} className="grid sm:grid-cols-2 gap-4">
+          <Field label="Current password" error={pwFieldErrors['current_password']}>
+            <input type="password" value={pw.current_password} onChange={(e) => setPw({ ...pw, current_password: e.target.value })} className={inputCls} autoComplete="current-password" required />
+          </Field>
+          <div className="hidden sm:block" aria-hidden />
           <Field label="New password" hint="Minimum 8 characters" error={pwFieldErrors['new_password']}>
             <input type="password" minLength={8} maxLength={72} value={pw.new_password} onChange={(e) => setPw({ ...pw, new_password: e.target.value })} className={inputCls} autoComplete="new-password" required />
           </Field>

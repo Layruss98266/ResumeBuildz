@@ -30,7 +30,11 @@ export interface SendEmailOptions {
  */
 export async function sendEmail(opts: SendEmailOptions): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
-  if (!key) return false;
+  if (!key) {
+    // Visible in server logs so a missing key isn't a silent black hole.
+    console.warn('[email] RESEND_API_KEY not set — skipping send to', opts.to);
+    return false;
+  }
 
   const from =
     opts.from ||
@@ -54,8 +58,16 @@ export async function sendEmail(opts: SendEmailOptions): Promise<boolean> {
         ...(opts.headers ? { headers: opts.headers } : {}),
       }),
     });
-    return res.ok;
-  } catch {
+    if (!res.ok) {
+      // Surface Resend's reason (unverified domain, bad from address, invalid
+      // key, rate limit, ...) instead of failing silently.
+      const detail = await res.text().catch(() => '');
+      console.error(`[email] Resend ${res.status} sending "${opts.subject}" from "${from}" to ${opts.to}: ${detail}`);
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error('[email] send threw:', e);
     return false;
   }
 }
