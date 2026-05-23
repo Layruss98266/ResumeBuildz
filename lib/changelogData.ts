@@ -17,10 +17,10 @@ export const CHANGELOG: ChangelogEntry[] = [
     version: 'v1.28.0',
     date: 'May 24, 2026',
     isoDate: '2026-05-24',
-    title: 'Resumes Stay in Your Browser — Server-Side Resume Storage Removed',
+    title: 'Resumes Stay in Your Browser — Cloud Sync Disabled',
     added: [],
     improved: [
-      'Removed all server-side resume storage to match our privacy promise: deleted the cloud-sync API, the useCloudSync hook, the builder sync indicator, and the resumes table (migration 0001 drops it). Your resume now lives only in your browser — Neon stores only login details (Better Auth tables) and profile data.',
+      'Disabled all server-side resume storage to match our privacy promise: deleted the cloud-sync API, the useCloudSync hook, and the builder sync indicator. The resumes table is kept in the schema but is now dormant — nothing reads or writes it. Your resume lives only in your browser; Neon stores only login details (Better Auth tables) and profile data.',
       'Reset-password + change-password flows fixed (correct Better Auth endpoints, new /reset-password page, current-password field) and email failures now log their reason server-side.',
       'Resume-reminder cron reframed to a gentle new-user nudge (signup age + opt-out consent) since resume state is no longer visible server-side.',
     ],

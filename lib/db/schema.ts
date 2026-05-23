@@ -4,6 +4,7 @@ import {
   timestamp,
   boolean,
   integer,
+  jsonb,
 } from 'drizzle-orm/pg-core';
 
 // ── Better Auth core tables ──────────────────────────────────────────────────
@@ -94,6 +95,17 @@ export const profiles = pgTable('profiles', {
   stripeCustomerId: text('stripe_customer_id'),
 });
 
+// Dormant: the table is kept (so it stays in the DB and can be re-enabled
+// later) but NOTHING reads or writes it — resume content lives only in the
+// user's browser. There is no cloud-sync route. Do not wire this up without
+// updating the Privacy Policy first.
+export const resumes = pgTable('resumes', {
+  userId: text('user_id')
+    .primaryKey()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  data: jsonb('data').notNull(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
 
 export const waitlist = pgTable('waitlist', {
   id: text('id').primaryKey(),
