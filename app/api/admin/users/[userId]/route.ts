@@ -3,6 +3,8 @@ import { db } from '@/lib/db';
 import { profiles, user } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { requireAdminSession, isAdminResponse } from '@/lib/adminAuth';
+import { sendEmail } from '@/lib/email';
+import { rolePromotedEmail, planChangedEmail } from '@/lib/emails/templates';
 
 type Params = { params: Promise<{ userId: string }> };
 
@@ -51,10 +53,11 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   const { userId } = await params;
 
-  // Fetch target to check scope before applying changes.
+  // Fetch target to check scope and get contact info for post-update notifications.
   const [target] = await db
-    .select({ managedBy: profiles.managedBy, role: profiles.role })
+    .select({ managedBy: profiles.managedBy, role: profiles.role, email: user.email, name: user.name })
     .from(profiles)
+    .innerJoin(user, eq(user.id, profiles.id))
     .where(eq(profiles.id, userId))
     .limit(1);
 
@@ -103,6 +106,18 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   await db.update(profiles).set(patch).where(eq(profiles.id, userId));
+
+  // Transactional notifications — best-effort, never block the response.
+  const notifyEmail = target.email;
+  const notifyName = target.name ?? '';
+  if ('role' in patch && patch.role === 'admin') {
+    const { subject, html } = rolePromotedEmail({ name: notifyName });
+    sendEmail({ to: notifyEmail, subject, html }).catch(() => {});
+  }
+  if ('plan' in patch && typeof patch.plan === 'string') {
+    const { subject, html } = planChangedEmail({ name: notifyName, plan: patch.plan });
+    sendEmail({ to: notifyEmail, subject, html }).catch(() => {});
+  }
 
   return NextResponse.json({ updated: true });
 }
