@@ -136,9 +136,11 @@ function createAuth() {
         create: {
           after: async (newUser) => {
             await db.insert(profiles).values({ id: newUser.id, lastSeenAt: new Date() }).onConflictDoNothing();
-            // Bootstrap superadmin: if the new account matches SUPERADMIN_EMAIL,
-            // promote immediately. Subsequent superadmins are promoted via /admin/users.
-            if (process.env.SUPERADMIN_EMAIL && newUser.email === process.env.SUPERADMIN_EMAIL) {
+            // Bootstrap superadmin: comma-separated list of emails that are
+            // auto-promoted on first signup. e.g. SUPERADMIN_EMAIL=a@x.com,b@x.com
+            const superadminEmails = (process.env.SUPERADMIN_EMAIL ?? '')
+              .split(',').map((e) => e.trim().toLowerCase()).filter(Boolean);
+            if (superadminEmails.includes(newUser.email.toLowerCase())) {
               await db.update(profiles).set({ role: 'superadmin' }).where(eq(profiles.id, newUser.id)).catch(() => {});
             }
             // Welcome every new user immediately, regardless of signup method or
