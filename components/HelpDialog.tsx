@@ -93,7 +93,7 @@ export default function HelpDialog() {
                 <li><strong className="text-foreground">Reorder sections &amp; entries</strong>  -  Click &quot;Reorder Sections&quot; at the bottom of any form. You can also drag-and-drop individual entries within Experience, Education, and Projects.</li>
                 <li><strong className="text-foreground">Write a cover letter</strong>  -  Use the Cover Letter tab with optional AI generation.</li>
                 <li><strong className="text-foreground">Check ATS score</strong>  -  Click &quot;ATS&quot; to analyze compatibility, readability, formatting, and match keywords from a job description. Expand &quot;Enhanced Analysis&quot; for readability scoring, resume length check, date consistency, and active voice detection. Use &quot;Smart Matching&quot; for industry-specific keywords and multi-JD comparison.</li>
-                <li><strong className="text-foreground">Use AI suggestions</strong>  -  Click &quot;AI&quot; to generate summaries, bullet points, and skills (bring your own free Groq API key).</li>
+                <li><strong className="text-foreground">Use AI suggestions</strong>  -  Click &quot;AI&quot; to generate summaries, bullet points, and skills. Included on paid plans; free users can add their own Groq key.</li>
                 <li><strong className="text-foreground">Import existing resume</strong>  -  Upload a PDF, DOCX, TXT, HTML, or MD file to auto-fill the form. PDF import extracts text directly from your document.</li>
                 <li><strong className="text-foreground">Navigate sections</strong>  -  Use Previous/Next buttons at the bottom, the dropdown navigator, or click any progress dot at the top. On mobile, swipe left/right to switch between tabs (Edit, Preview, Style, ATS, AI) and use the bottom sheet section picker for quick navigation.</li>
                 <li><strong className="text-foreground">Manage profiles</strong>  -  Save up to 10 resume profiles from the header menu. Load, rename, or delete profiles to target different jobs.</li>
@@ -172,7 +172,7 @@ export default function HelpDialog() {
                 <h3 className="font-semibold text-base">Import & Export</h3>
               </div>
               <div className="space-y-1.5 text-muted-foreground text-xs">
-                <div><strong className="text-foreground">Import:</strong> PDF, DOCX, TXT, HTML, MD. AI-powered parsing available with your own Groq API key (free).</div>
+                <div><strong className="text-foreground">Import:</strong> PDF, DOCX, TXT, HTML, MD. AI-powered parsing available on paid plans or with your own Groq key.</div>
                 <div><strong className="text-foreground">PDF Export:</strong> Best for ATS. Uses browser print for pixel-perfect output.</div>
                 <div><strong className="text-foreground">DOCX Export:</strong> Microsoft Word format. Use when employers require .docx.</div>
                 <div><strong className="text-foreground">HTML Export:</strong> Web-ready format. Can be hosted online as a resume page.</div>
@@ -188,14 +188,15 @@ export default function HelpDialog() {
                 <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-primary/10">
                   <Sparkles className="h-4 w-4 text-primary" />
                 </div>
-                <h3 className="font-semibold text-base">AI Features (Free)</h3>
+                <h3 className="font-semibold text-base">AI Features</h3>
               </div>
               <div className="space-y-1.5 text-muted-foreground text-xs">
-                <div><strong className="text-foreground">Setup:</strong> No key is included. Get your own free key at <span className="text-primary">console.groq.com/keys</span>, paste it in the AI tab.</div>
+                <div><strong className="text-foreground">Paid plans (Pro / Team / Lifetime):</strong> AI is included — no personal key needed. Just click and generate.</div>
+                <div><strong className="text-foreground">Free plan:</strong> Bring your own free key from <span className="text-primary">console.groq.com/keys</span> and paste it in the AI tab.</div>
                 <div><strong className="text-foreground">Writing Assistant:</strong> Generate professional summaries, bullet points, skills, or custom prompts.</div>
                 <div><strong className="text-foreground">Cover Letter:</strong> AI-generate cover letters with job title and company context.</div>
                 <div><strong className="text-foreground">Smart Import:</strong> AI parses uploaded resumes more accurately than heuristic parsing.</div>
-                <div><strong className="text-foreground">Privacy:</strong> Your API key stays in your browser only. Never sent to our servers.</div>
+                <div><strong className="text-foreground">Privacy:</strong> Only the specific text being rewritten is sent to Groq — never your full resume, name, or email.</div>
               </div>
             </CardContent>
           </Card>
@@ -274,7 +275,7 @@ export default function HelpDialog() {
                 <div><strong className="text-foreground">Why is the preview blank?</strong> Fill in at least your name and one section. The preview updates in real-time.</div>
                 <div><strong className="text-foreground">Can I have multiple resumes?</strong> Yes! Use the Resume Profiles feature in the header menu to save up to 10 separate profiles. Each stores its own data, template, and accent color.</div>
                 <div><strong className="text-foreground">How do I navigate between sections?</strong> Use the Previous/Next buttons at the bottom of each form, or click any progress dot at the top. On mobile, swipe between tabs and tap the section picker at the bottom to open a slide-up sheet with icons and completion dots.</div>
-                <div><strong className="text-foreground">Is this free?</strong> Yes, completely free. AI features require your own Groq API key (also free at console.groq.com).</div>
+                <div><strong className="text-foreground">Is this free?</strong> Yes, core features are free. AI is included on paid plans (Pro/Team/Lifetime); free users can bring their own Groq key from console.groq.com.</div>
               </div>
             </CardContent>
           </Card>

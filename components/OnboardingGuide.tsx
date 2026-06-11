@@ -82,9 +82,9 @@ const STEPS: Step[] = [
   },
   {
     title: 'AI Writing Assistant',
-    description: 'Get AI-powered suggestions for your summary, bullet points, and skills. Requires your own Groq API key (free)  -  no key is included with the app.',
+    description: 'Get AI-powered suggestions for your summary, bullet points, and skills. Included on Pro, Team, and Lifetime plans — no key needed. Free users can add their own Groq key.',
     icon: <Sparkles className="h-8 w-8" />,
-    tip: 'Bring your own key from console.groq.com/keys (free, takes 1 minute). Stored in your browser only.',
+    tip: 'On a paid plan? Just click Generate — AI is ready to go. Free plan users: grab a free key at console.groq.com/keys (takes 1 minute).',
   },
   {
     title: 'Import & Export',

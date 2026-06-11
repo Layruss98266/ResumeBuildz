@@ -38,11 +38,11 @@ const faqItems = [
   },
   {
     question: 'How does the AI feature work?',
-    answer: "The AI feature uses the Groq API to provide intelligent suggestions for improving your resume content. You'll need your own free Groq API key, which you can obtain from Groq's website. Your data is sent directly from your browser to Groq  -  it never passes through our servers. The AI can help rewrite bullet points, suggest skills, and optimize your content for ATS systems.",
+    answer: "The AI feature uses Groq (Llama 3.3 70B) to rewrite bullet points, suggest skills, generate cover letters, and optimize your content for ATS. Pro, Team, and Lifetime plan holders get AI included — no personal API key needed. Free users can bring their own free Groq key from console.groq.com/keys to unlock AI features.",
   },
   {
     question: 'Is my data private?',
-    answer: "Yes, 100%. ResumeBuildz is entirely client-side, meaning all processing happens in your browser. We don't collect any data, use any cookies, or run any analytics. Your resume content is never sent to any server (unless you optionally use the AI feature, which communicates directly with Groq).",
+    answer: "Yes. For paid plan users, AI requests are routed through our server proxy — only the specific text being rewritten is sent to Groq, never your name, email, or full resume. For free users using their own Groq key, the request goes directly from your browser to Groq. We don't collect any data, use any cookies, or run any analytics.",
   },
   {
     question: 'What is ATS?',
@@ -78,7 +78,7 @@ const faqItems = [
   },
   {
     question: 'What does the Pro tier unlock?',
-    answer: 'Pro unlocks unlimited AI bullet rewrites (free plan caps at 1 per day), unlimited PDF exports (free plan caps at 3 per day), priority support, and all future Pro-only features. The core build-and-export loop remains free forever. Payments integration is rolling out; see the pricing page for current status.',
+    answer: 'Pro unlocks unlimited AI rewrites with no personal API key required (AI is powered by our server), unlimited PDF exports (free plan caps at 3 per day), priority support, and all future Pro-only features. The core build-and-export loop remains free forever. See the pricing page for current plan status.',
   },
   {
     question: 'Why is there a 10-resume profile limit?',
@@ -86,7 +86,7 @@ const faqItems = [
   },
   {
     question: 'How does ResumeBuildz handle my privacy with AI features?',
-    answer: 'AI rewrites send only the specific text being rewritten (one bullet, one summary) to Groq via a server-side proxy. Your name, email, and full resume context are never included in the request. For Bring-Your-Own-Key AI users, the request goes directly from your browser to Groq with no server in between.',
+    answer: 'AI rewrites send only the specific text being rewritten (one bullet, one summary) to Groq. Your name, email, and full resume context are never included. For paid plan users the request routes through our server proxy; for free users using their own Groq key the request goes directly from your browser to Groq.',
   },
   {
     question: 'Are there keyboard shortcuts?',

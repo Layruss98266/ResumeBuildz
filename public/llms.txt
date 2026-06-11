@@ -4,7 +4,7 @@ ResumeBuildz is a free, client-side ATS-friendly resume builder built by Surya L
 
 ## What it does
 - 20 ATS-optimized resume templates
-- AI writing assistant powered by Groq (Llama 3.3 70B) — bring your own key
+- AI writing assistant powered by Groq (Llama 3.3 70B) — included for Pro/Team/Lifetime; free users can bring their own key
 - 12-point ATS score checker with job description keyword matching
 - Cover letter builder with AI generation
 - Multi-format export: PDF, DOCX, HTML

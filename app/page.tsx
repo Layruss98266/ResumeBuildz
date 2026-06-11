@@ -397,7 +397,7 @@ export default function HomePage() {
               },
               {
                 q: 'Will my data be sold?',
-                a: 'No. Your resume content lives in your browser and never leaves it unless you explicitly use the AI feature (which goes directly to Groq with your own API key). Analytics are cookieless and aggregated. No ads, no data brokers, no retargeting.',
+                a: 'No. Your resume content lives in your browser and never leaves it unless you use the AI feature. For paid plan users, AI requests go through our server proxy — only the specific text being rewritten is sent, never your full resume. Analytics are cookieless and aggregated. No ads, no data brokers, no retargeting.',
               },
               {
                 q: 'What makes a resume ATS-friendly?',

@@ -32,7 +32,7 @@ Works at http://localhost:3000 without env vars (guest mode, everything in local
 | Billing | Stripe |
 | Email | Resend |
 | Rate limiting | Upstash Redis (optional — falls back to in-memory) |
-| AI | Groq (user-supplied key, client-side only) |
+| AI | Groq via server proxy (`GROQ_API_KEY`) — included for Pro/Team/Lifetime; free users can bring their own key |
 
 ## Environment variables
 
@@ -48,6 +48,7 @@ Copy `.env.example` and fill in:
 | `R2_*` | No | Cloudflare R2 for avatar uploads |
 | `STRIPE_*` | No | Billing |
 | `RESEND_API_KEY` | No | Password reset + share invite emails |
+| `GROQ_API_KEY` | No | Powers the `/api/ai/groq` server proxy so Pro/Team/Lifetime users get AI without supplying their own key. Free users fall back to BYOK. |
 | `UPSTASH_REDIS_REST_URL` / `_TOKEN` | No | Real per-IP rate limiting on public write endpoints. Without these, the limiter is a per-process in-memory burst guard (fine for dev/self-host; trivial to bypass on Vercel). |
 | `SUPERADMIN_EMAIL` | No | Auto-promotes this email to superadmin on first signup. For existing accounts run `UPDATE profiles SET role = 'superadmin' WHERE id = '<id>';`. Additional admins can be promoted from `/admin/users`. |
 

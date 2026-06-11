@@ -3,7 +3,13 @@
     "allow": [
       "Bash(wc -l D:/Coding/ResumeForge/components/ats/utils/textAnalysis.ts D:/Coding/ResumeForge/components/ats/hooks/*.ts D:/Coding/ResumeForge/components/ats/sections/*.tsx D:/Coding/ResumeForge/components/ats/data/industryKeywords.ts)",
       "Bash(npx next:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm run *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git add *)",
+      "Bash(Remove-Item -Recurse -Force .next\\\\dev\\\\types -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -Last 5)",
+      "PowerShell(npx tsc --noEmit 2>&1)"
     ]
   }
 }
